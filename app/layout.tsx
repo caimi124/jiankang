@@ -47,8 +47,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
     languages: {
-      'en-US': '/en',
-      'zh-CN': '/zh'
+      'en-US': '/',
+      'zh-CN': '/zh',
+      'en': '/',
+      'zh': '/zh'
     }
   },
   openGraph: {
@@ -115,12 +117,65 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         
+        {/* 添加 JSON-LD 结构化数据 */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "HerbScience.shop",
+              "description": "Evidence-based herbal supplement guidance with TCM insights and safety analysis",
+              "url": "https://herbscience.shop",
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://herbscience.shop/search?q={search_term_string}",
+                "query-input": "required name=search_term_string"
+              },
+              "publisher": {
+                "@type": "Organization",
+                "name": "HerbScience.shop",
+                "logo": {
+                  "@type": "ImageObject",
+                  "url": "https://herbscience.shop/logo.png"
+                }
+              }
+            })
+          }}
+        />
+        
+        {/* 医疗相关结构化数据 */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "MedicalWebPage",
+              "name": "Herbal Supplement Safety and Information",
+              "description": "Professional guidance on herbal supplements, traditional Chinese medicine, and natural health",
+              "medicalAudience": {
+                "@type": "MedicalAudience",
+                "audienceType": "General Public"
+              },
+              "about": {
+                "@type": "Thing",
+                "name": "Herbal Medicine and Traditional Chinese Medicine"
+              }
+            })
+          }}
+        />
+        
+        {/* 关键资源预加载 */}
+        <link rel="preload" href="/hero-bg.webp" as="image" type="image/webp" />
+        <link rel="modulepreload" href="/js/search.js" />
+        
         {/* 添加 theme-color for PWA */}
         <meta name="theme-color" content="#16a34a" />
         <meta name="color-scheme" content="light" />
+        <meta name="format-detection" content="telephone=no" />
         
-        {/* 优化视窗配置 */}
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
+        {/* 改进的视窗配置 */}
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes, viewport-fit=cover" />
       </head>
       <body className={`${inter.className} antialiased bg-white text-gray-900 font-feature-settings-default`}>
         {children}

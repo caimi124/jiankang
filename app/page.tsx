@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Header from '../components/Header'
 import SmartSearch from '../components/SmartSearch'
 import TrustIndicators from '../components/TrustIndicators'
 import PersonalizedRecommendations from '../components/PersonalizedRecommendations'
@@ -8,34 +9,8 @@ import PersonalizedRecommendations from '../components/PersonalizedRecommendatio
 export default function Home() {
   return (
     <main className="min-h-screen bg-white">
-      {/* Navigation */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <Link href="/" className="text-2xl font-bold text-green-700">
-                🌿 HerbScience.shop
-              </Link>
-            </div>
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-8">
-                <Link href="/herb-finder" className="text-gray-700 hover:text-green-600 px-3 py-2 text-sm font-medium">
-                  Herb Finder
-                </Link>
-                <Link href="/ingredient-checker" className="text-gray-700 hover:text-green-600 px-3 py-2 text-sm font-medium">
-                  Ingredient Checker
-                </Link>
-                <Link href="/knowledge-center" className="text-gray-700 hover:text-green-600 px-3 py-2 text-sm font-medium">
-                  Knowledge Center
-                </Link>
-                <Link href="/user-experiences" className="text-gray-700 hover:text-green-600 px-3 py-2 text-sm font-medium">
-                  User Experiences
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
+      {/* Unified Header Component */}
+      <Header />
 
       {/* Hero Section with Enhanced Visual Design */}
       <section className="relative bg-gradient-to-br from-green-50 via-emerald-50 to-teal-100 py-20 overflow-hidden">
