@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Navigation from '../../components/Navigation'
 import Breadcrumb from '../../components/Breadcrumb'
-import { Star, ThumbsUp, MessageCircle, Shield, User, Calendar } from 'lucide-react'
+import { Star, ThumbsUp, MessageCircle, Shield, User, Calendar, AlertTriangle } from 'lucide-react'
 
 export default function UserExperiencesPage() {
   const [selectedFilter, setSelectedFilter] = useState('all')

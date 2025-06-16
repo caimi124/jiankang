@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import SmartSearch from '../components/SmartSearch'
 import TrustIndicators from '../components/TrustIndicators'
