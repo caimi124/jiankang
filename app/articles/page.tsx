@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import Breadcrumb from '../../components/Breadcrumb'
+import Breadcrumbs from '../../components/Breadcrumbs'
 import SmartSearch from '../../components/SmartSearch'
 import { Calendar, Clock, Tag, TrendingUp, BookOpen, Eye } from 'lucide-react'
 
@@ -136,7 +136,7 @@ export default function ArticlesPage() {
   return (
     <main className="bg-white min-h-screen">
       {/* Breadcrumb */}
-      <Breadcrumb items={[{ label: 'Articles' }]} />
+      <Breadcrumbs items={[{ label: 'Articles' }]} />
 
       {/* Header */}
       <section className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-16 px-6">
