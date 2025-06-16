@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# Block access to sensitive areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+
+# Allow specific bots to access API routes for better indexing
+User-agent: Googlebot
+Allow: /api/sitemap
+
+Sitemap: https://herbscience.shop/sitemap.xml 
