@@ -2,26 +2,14 @@
 const nextConfig = {
   // Performance Optimizations
   experimental: {
-    // Enable edge runtime for better performance
-    runtime: 'nodejs',
-    // Optimize bundle size
+    // Enable bundle optimization
     optimizeCss: true,
-    // Enable concurrent features
-    appDir: true,
-    // Enable server components logging
-    logging: {
-      fetches: {
-        fullUrl: true,
-      },
-    },
   },
 
   // Image Optimization
   images: {
     // Enable modern image formats
     formats: ['image/webp', 'image/avif'],
-    // Image quality settings
-    quality: 80,
     // Device sizes for responsive images
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     // Image sizes for different viewports
@@ -30,8 +18,6 @@ const nextConfig = {
     domains: ['images.unsplash.com', 'via.placeholder.com'],
     // Minimize image size for better loading
     minimumCacheTTL: 31536000, // 1 year
-    // Enable blur placeholder
-    placeholder: 'blur',
     // Remote patterns for security
     remotePatterns: [
       {
@@ -78,17 +64,6 @@ const nextConfig = {
           },
         },
       }
-    }
-
-    // Add bundle analyzer in development
-    if (process.env.ANALYZE === 'true') {
-      const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
-      config.plugins.push(
-        new BundleAnalyzerPlugin({
-          analyzerMode: 'server',
-          openAnalyzer: true,
-        })
-      )
     }
 
     return config
@@ -177,22 +152,8 @@ const nextConfig = {
     ignoreDuringBuilds: false,
   },
 
-  // Output settings for deployment
-  output: 'standalone', // For Docker deployments
-  
   // Enable static optimization
   trailingSlash: false,
-  
-  // API routes
-  async apiRoutes() {
-    return {
-      '/api/health': {
-        headers: {
-          'Cache-Control': 'no-cache',
-        },
-      },
-    }
-  },
 }
 
 module.exports = nextConfig 
