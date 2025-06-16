@@ -71,7 +71,7 @@ export default function PersonalizedRecommendations() {
 
   const selectedGoalData = healthGoals.find(goal => goal.id === selectedGoal)
 
-  return (
+    return (
     <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
@@ -87,7 +87,7 @@ export default function PersonalizedRecommendations() {
         {/* Health Goal Selection */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {healthGoals.map((goal) => (
-            <button
+                  <button
               key={goal.id}
               onClick={() => setSelectedGoal(goal.id === selectedGoal ? '' : goal.id)}
               className={`p-6 rounded-2xl border-2 transition-all duration-300 text-left group hover:shadow-lg ${
@@ -111,9 +111,9 @@ export default function PersonalizedRecommendations() {
                           <span key={index} className={`text-xs px-2 py-1 bg-${goal.color}-100 text-${goal.color}-700 rounded-full`}>
                             {herb}
                           </span>
-                        ))}
-                      </div>
-                    </div>
+                ))}
+              </div>
+            </div>
                   )}
                 </div>
               </div>
@@ -127,14 +127,14 @@ export default function PersonalizedRecommendations() {
             <div className="text-center mb-8">
               <div className={`w-20 h-20 bg-gradient-to-br ${getColorClasses(selectedGoalData.color)} rounded-2xl flex items-center justify-center text-white text-3xl mx-auto mb-4 shadow-lg`}>
                 {selectedGoalData.icon}
-              </div>
+      </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-2">
                 Personalized Plan for {selectedGoalData.title}
               </h3>
               <p className="text-gray-600 max-w-2xl mx-auto">
                 Based on traditional use and modern research, here are the most effective herbs for your goal.
               </p>
-            </div>
+        </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               {selectedGoalData.herbs.map((herb, index) => (
@@ -155,9 +155,9 @@ export default function PersonalizedRecommendations() {
                   </p>
                   <Link 
                     href={`/herbs/${herb.toLowerCase().replace(/\s+/g, '-')}`}
-                    className="text-green-600 hover:text-green-700 font-medium text-sm"
-                  >
-                    Learn More →
+                      className="text-green-600 hover:text-green-700 font-medium text-sm"
+                    >
+                      Learn More →
                   </Link>
                 </div>
               ))}
@@ -172,7 +172,7 @@ export default function PersonalizedRecommendations() {
                 Get Detailed Personal Plan
                 <span className="ml-2">→</span>
               </Link>
-            </div>
+              </div>
           </div>
         )}
 

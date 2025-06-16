@@ -120,7 +120,6 @@ export default function KnowledgeCenter() {
                   setSearchTerm(query)
                   // Handle filtered search results
                 }}
-                showFilters={true}
               />
             </div>
           </div>

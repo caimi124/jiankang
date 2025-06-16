@@ -153,7 +153,6 @@ export default function ArticlesPage() {
             <SmartSearch 
               placeholder="Search articles by herb, condition, or topic..."
               onSearch={(query) => setSearchQuery(query)}
-              showFilters={false}
             />
           </div>
         </div>
