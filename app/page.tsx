@@ -37,16 +37,36 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Hero Section with Enhanced Search */}
-      <section className="bg-gradient-to-br from-green-50 to-emerald-100 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Hero Section with Enhanced Visual Design */}
+      <section className="relative bg-gradient-to-br from-green-50 via-emerald-50 to-teal-100 py-20 overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 left-10 w-20 h-20 text-green-600">🌿</div>
+          <div className="absolute top-20 right-20 w-16 h-16 text-blue-600">⚗️</div>
+          <div className="absolute bottom-20 left-20 w-18 h-18 text-purple-600">🧬</div>
+          <div className="absolute bottom-10 right-10 w-16 h-16 text-green-700">🌱</div>
+          <div className="absolute top-1/2 left-1/4 w-12 h-12 text-emerald-600">✨</div>
+          <div className="absolute top-1/3 right-1/4 w-14 h-14 text-teal-600">🔬</div>
+        </div>
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+            {/* Trust Badge */}
+            <div className="inline-flex items-center bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 mb-6 shadow-lg">
+              <span className="text-green-600 font-medium">✅ Trusted by 50,000+ Users</span>
+            </div>
+            
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
               Herbal Supplements,
-              <span className="text-green-600 block">Demystified</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600 block">
+                Demystified
+              </span>
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Understand what you take. Discover what works. Make informed decisions about herbal supplements with science-backed insights and personalized recommendations.
+            
+            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+              Understand what you take. Discover what works. Make informed decisions about herbal supplements with 
+              <span className="font-semibold text-green-700"> science-backed insights</span> and 
+              <span className="font-semibold text-blue-700"> personalized recommendations</span>.
             </p>
             
             {/* Enhanced Search Bar */}
@@ -60,13 +80,40 @@ export default function Home() {
               />
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/herb-finder" className="bg-green-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-700 transition-colors">
-                Find Your Herbs
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+              <Link href="/herb-finder" className="group bg-green-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-green-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                <span className="flex items-center justify-center">
+                  🔍 Find Your Herbs
+                  <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                </span>
               </Link>
-              <Link href="/ingredient-checker" className="border-2 border-green-600 text-green-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-50 transition-colors">
-                Check Safety
+              <Link href="/ingredient-checker" className="group border-2 border-green-600 text-green-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-green-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                <span className="flex items-center justify-center">
+                  🛡️ Check Safety
+                  <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                </span>
               </Link>
+            </div>
+
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+              <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-white/20">
+                <div className="text-2xl font-bold text-green-600">500+</div>
+                <div className="text-xs text-gray-600">Herbs Analyzed</div>
+              </div>
+              <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-white/20">
+                <div className="text-2xl font-bold text-blue-600">50K+</div>
+                <div className="text-xs text-gray-600">Users Helped</div>
+              </div>
+              <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-white/20">
+                <div className="text-2xl font-bold text-purple-600">2K+</div>
+                <div className="text-xs text-gray-600">Research Citations</div>
+              </div>
+              <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-white/20">
+                <div className="text-2xl font-bold text-emerald-600">24/7</div>
+                <div className="text-xs text-gray-600">Updated Database</div>
+              </div>
             </div>
           </div>
         </div>
@@ -75,48 +122,79 @@ export default function Home() {
       {/* Core Functions */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-16">
-            Everything You Need to Navigate Herbal Supplements
-          </h2>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Everything You Need to Navigate Herbal Supplements
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              From safety checking to personalized recommendations, our evidence-based tools guide you every step of the way.
+            </p>
+          </div>
+          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Link href="/herb-finder" className="group">
-              <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow group-hover:border-green-200">
-                <div className="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mb-6">
-                  <span className="text-2xl">🔍</span>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">Symptom-Based Finder</h3>
-                <p className="text-gray-600">Enter your symptoms and discover which herbs might help, backed by traditional use and modern research.</p>
+            <Link href="/herb-finder" className="group herb-card">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:shadow-xl transition-all">
+                <span className="text-2xl">🔍</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-green-700 transition-colors">Symptom-Based Finder</h3>
+              <p className="text-gray-600 leading-relaxed">Enter your symptoms and discover which herbs might help, backed by traditional use and modern research.</p>
+              <div className="mt-4 flex items-center text-green-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                <span>Try it now</span>
+                <span className="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
               </div>
             </Link>
 
-            <Link href="/ingredient-checker" className="group">
-              <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow group-hover:border-green-200">
-                <div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
-                  <span className="text-2xl">🛡️</span>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">Safety Checker</h3>
-                <p className="text-gray-600">Upload your supplement label and get detailed safety analysis of each ingredient and potential interactions.</p>
+            <Link href="/ingredient-checker" className="group herb-card">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:shadow-xl transition-all">
+                <span className="text-2xl">🛡️</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-blue-700 transition-colors">Safety Checker</h3>
+              <p className="text-gray-600 leading-relaxed">Upload your supplement label and get detailed safety analysis of each ingredient and potential interactions.</p>
+              <div className="mt-4 flex items-center text-blue-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                <span>Check safety</span>
+                <span className="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
               </div>
             </Link>
 
-            <Link href="/knowledge-center" className="group">
-              <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow group-hover:border-green-200">
-                <div className="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
-                  <span className="text-2xl">📚</span>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">Knowledge Base</h3>
-                <p className="text-gray-600">Browse comprehensive guides on herbs, research studies, and traditional medicine principles.</p>
+            <Link href="/knowledge-center" className="group herb-card">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:shadow-xl transition-all">
+                <span className="text-2xl">📚</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-purple-700 transition-colors">Knowledge Base</h3>
+              <p className="text-gray-600 leading-relaxed">Browse comprehensive guides on herbs, research studies, and traditional medicine principles.</p>
+              <div className="mt-4 flex items-center text-purple-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                <span>Explore now</span>
+                <span className="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
               </div>
             </Link>
 
-            <Link href="/constitution-test" className="group">
-              <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow group-hover:border-green-200">
-                <div className="w-16 h-16 bg-orange-100 rounded-lg flex items-center justify-center mb-6">
-                  <span className="text-2xl">🧠</span>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">Body Constitution Quiz</h3>
-                <p className="text-gray-600">Discover your unique body type through Traditional Chinese Medicine assessment for personalized recommendations.</p>
+            <Link href="/constitution-test" className="group herb-card relative overflow-hidden">
+              {/* Popular Badge */}
+              <div className="absolute top-4 right-4 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                Popular!
               </div>
+              <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:shadow-xl transition-all">
+                <span className="text-2xl">🧠</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-orange-700 transition-colors">Body Constitution Quiz</h3>
+              <p className="text-gray-600 leading-relaxed">Discover your unique body type through Traditional Chinese Medicine assessment for personalized recommendations.</p>
+              <div className="mt-4 flex items-center text-orange-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                <span>Take quiz</span>
+                <span className="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+              </div>
+            </Link>
+          </div>
+
+          {/* Interactive CTA Section */}
+          <div className="mt-16 bg-gradient-to-r from-green-600 to-emerald-600 rounded-3xl p-8 text-center text-white">
+            <h3 className="text-2xl font-bold mb-4">Not Sure Where to Start?</h3>
+            <p className="text-green-100 mb-6 max-w-2xl mx-auto">
+              Take our quick 2-minute assessment to get personalized recommendations based on your health goals and concerns.
+            </p>
+            <Link href="/constitution-test" className="inline-flex items-center bg-white text-green-600 px-8 py-4 rounded-xl font-semibold hover:bg-green-50 transition-colors shadow-lg hover:shadow-xl">
+              <span className="mr-2">🎯</span>
+              Get Personalized Recommendations
+              <span className="ml-2">→</span>
             </Link>
           </div>
         </div>
@@ -216,49 +294,128 @@ export default function Home() {
       <PersonalizedRecommendations />
 
       {/* User Testimonials */}
-      <section className="py-20 bg-green-50">
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-16">
-            What Our Users Say
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">What Our Users Say</h2>
+            <p className="text-lg text-gray-600">Real stories from people who've transformed their herbal supplement journey</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:border-green-200 transition-colors">
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                  <span className="text-lg font-semibold">SM</span>
+                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mr-4 text-white font-bold">
+                  SM
                 </div>
-                <div className="ml-4">
-                  <h4 className="font-semibold">Sarah M.</h4>
-                  <p className="text-sm text-gray-600">Wellness Enthusiast</p>
+                <div>
+                  <h4 className="font-semibold text-gray-900">Sarah M.</h4>
+                  <p className="text-gray-600 text-sm">Wellness Enthusiast</p>
                 </div>
               </div>
-              <p className="text-gray-700">"Finally found a reliable source for herbal information. The safety checker saved me from a potentially dangerous interaction!"</p>
+              <p className="text-gray-700 leading-relaxed mb-4">
+                "Finally found a reliable source for herbal information. The safety checker saved me from a potentially dangerous interaction!"
+              </p>
+              <div className="flex text-yellow-400">
+                ⭐⭐⭐⭐⭐
+              </div>
             </div>
 
-            <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:border-blue-200 transition-colors">
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                  <span className="text-lg font-semibold">DL</span>
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mr-4 text-white font-bold">
+                  DL
                 </div>
-                <div className="ml-4">
-                  <h4 className="font-semibold">David L.</h4>
-                  <p className="text-sm text-gray-600">Chronic Pain Sufferer</p>
+                <div>
+                  <h4 className="font-semibold text-gray-900">David L.</h4>
+                  <p className="text-gray-600 text-sm">Chronic Pain Sufferer</p>
                 </div>
               </div>
-              <p className="text-gray-700">"The symptom-based finder helped me discover turmeric and boswellia. My joint pain has improved significantly."</p>
+              <p className="text-gray-700 leading-relaxed mb-4">
+                "The symptom-based finder helped me discover turmeric and boswellia. My joint pain has improved significantly."
+              </p>
+              <div className="flex text-yellow-400">
+                ⭐⭐⭐⭐⭐
+              </div>
             </div>
 
-            <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:border-purple-200 transition-colors">
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                  <span className="text-lg font-semibold">MJ</span>
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mr-4 text-white font-bold">
+                  MJ
                 </div>
-                <div className="ml-4">
-                  <h4 className="font-semibold">Maria J.</h4>
-                  <p className="text-sm text-gray-600">Anxiety Management</p>
+                <div>
+                  <h4 className="font-semibold text-gray-900">Maria J.</h4>
+                  <p className="text-gray-600 text-sm">Anxiety Management</p>
                 </div>
               </div>
-              <p className="text-gray-700">"The constitution quiz revealed I'm a 'heat' type. The cooling herbs recommended work perfectly for my anxiety."</p>
+              <p className="text-gray-700 leading-relaxed mb-4">
+                "The constitution quiz revealed I'm a 'heat' type. The cooling herbs recommended work perfectly for my anxiety."
+              </p>
+              <div className="flex text-yellow-400">
+                ⭐⭐⭐⭐⭐
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter & Lead Magnet Section */}
+      <section className="py-20 bg-gradient-to-br from-green-700 via-green-600 to-emerald-600">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Get Your Free Herbal Guide
+            </h2>
+            <p className="text-xl text-green-100 mb-8 max-w-2xl mx-auto">
+              Download our comprehensive "Traditional Chinese Medicine Body Constitution Guide" and weekly evidence-based herbal insights.
+            </p>
+            
+            {/* Lead Magnet Benefits */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-green-100">
+              <div className="flex items-center justify-center md:justify-start">
+                <span className="mr-2">📊</span>
+                <span>TCM Constitution Assessment</span>
+              </div>
+              <div className="flex items-center justify-center md:justify-start">
+                <span className="mr-2">🌿</span>
+                <span>Personalized Herb Recommendations</span>
+              </div>
+              <div className="flex items-center justify-center md:justify-start">
+                <span className="mr-2">📚</span>
+                <span>Weekly Research Updates</span>
+              </div>
+            </div>
+
+            {/* Email Signup Form */}
+            <div className="max-w-md mx-auto">
+              <div className="flex flex-col sm:flex-row gap-3">
+                <input
+                  type="email"
+                  placeholder="Enter your email address"
+                  className="flex-1 px-4 py-3 rounded-xl border-0 focus:outline-none focus:ring-2 focus:ring-white/50 text-gray-900"
+                />
+                <button className="bg-white text-green-600 px-6 py-3 rounded-xl font-semibold hover:bg-green-50 transition-colors shadow-lg whitespace-nowrap">
+                  Get Free Guide
+                </button>
+              </div>
+              <p className="text-green-200 text-sm mt-3">
+                No spam. Unsubscribe anytime. 📧 Join 15,000+ herb enthusiasts.
+              </p>
+            </div>
+
+            {/* Social Proof */}
+            <div className="mt-8 flex items-center justify-center space-x-6 text-green-200">
+              <div className="flex items-center">
+                <span className="mr-2">👥</span>
+                <span className="text-sm">15,000+ subscribers</span>
+              </div>
+              <div className="flex items-center">
+                <span className="mr-2">⭐</span>
+                <span className="text-sm">4.9/5 rating</span>
+              </div>
+              <div className="flex items-center">
+                <span className="mr-2">📈</span>
+                <span className="text-sm">98% find it helpful</span>
+              </div>
             </div>
           </div>
         </div>

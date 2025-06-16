@@ -25,9 +25,19 @@ export default function Navigation() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <a href="/" className="flex items-center space-x-2">
-              <span className="text-2xl">🌿</span>
-              <span className="text-xl font-bold text-green-700">HerbScience</span>
+            <a href="/" className="flex items-center space-x-3">
+              <div className="relative">
+                <div className="w-10 h-10 bg-gradient-to-br from-green-600 to-green-700 rounded-full flex items-center justify-center shadow-lg">
+                  <span className="text-white text-lg font-bold">🌿</span>
+                </div>
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
+                  <span className="text-white text-xs">⚗️</span>
+                </div>
+              </div>
+              <div>
+                <span className="text-xl font-bold text-green-700">HerbScience</span>
+                <div className="text-xs text-gray-500 -mt-1">Evidence-Based Guidance</div>
+              </div>
             </a>
           </div>
 
