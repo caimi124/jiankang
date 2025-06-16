@@ -368,19 +368,19 @@ export default function Home() {
             <div>
               <h4 className="font-semibold mb-4">Resources</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">Research Studies</a></li>
-                <li><a href="#" className="hover:text-white">Safety Guidelines</a></li>
-                <li><a href="#" className="hover:text-white">TCM Basics</a></li>
-                <li><a href="#" className="hover:text-white">Herb Dictionary</a></li>
+                <li><Link href="/blog" className="hover:text-white">Health Blog</Link></li>
+                <li><Link href="/constitution-test" className="hover:text-white">Constitution Test</Link></li>
+                <li><Link href="/dosage-calculator" className="hover:text-white">Dosage Calculator</Link></li>
+                <li><Link href="/articles" className="hover:text-white">Research Articles</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Support</h4>
+              <h4 className="font-semibold mb-4">Company</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">FAQ</a></li>
-                <li><a href="#" className="hover:text-white">Contact Us</a></li>
-                <li><a href="#" className="hover:text-white">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-white">Terms of Service</a></li>
+                <li><Link href="/about" className="hover:text-white">About Us</Link></li>
+                <li><Link href="/contact" className="hover:text-white">Contact Us</Link></li>
+                <li><Link href="/privacy" className="hover:text-white">Privacy Policy</Link></li>
+                <li><a href="/knowledge-center#faq" className="hover:text-white">FAQ</a></li>
               </ul>
             </div>
           </div>

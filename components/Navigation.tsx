@@ -13,8 +13,10 @@ export default function Navigation() {
     { name: 'Safety Checker', href: '/ingredient-checker' },
     { name: 'Knowledge Center', href: '/knowledge-center' },
     { name: 'Constitution Test', href: '/constitution-test' },
-    { name: 'Dosage Calculator', href: '/dosage-calculator' },
-    { name: 'User Reviews', href: '/user-experiences' }
+    { name: 'User Reviews', href: '/user-experiences' },
+    { name: 'Blog', href: '/blog' },
+    { name: 'About', href: '/about' },
+    { name: 'Contact', href: '/contact' }
   ]
 
   return (
