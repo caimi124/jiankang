@@ -3,11 +3,37 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Font Variables */
+:root {
+  --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-noto-sans-sc: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
 /* Custom Global Styles for Better Typography */
 @layer base {
+  html {
+    font-family: var(--font-inter);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'rlig' 1, 'calt' 1, 'kern' 1;
+    font-optical-sizing: auto;
+  }
+  
   body {
-    font-feature-settings: 'rlig' 1, 'calt' 1;
+    font-feature-settings: 'rlig' 1, 'calt' 1, 'kern' 1;
     line-height: 1.6;
+    font-synthesis: none;
+  }
+  
+  /* 中文内容使用中文字体 */
+  [lang="zh"], [lang="zh-CN"], .chinese-text {
+    font-family: var(--font-noto-sans-sc);
+  }
+  
+  /* 优化字体渲染 */
+  .font-feature-settings-default {
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'pnum' 1;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -154,5 +180,28 @@
   
   .animation-delay-600 {
     animation-delay: 600ms;
+  }
+}
+
+/* Performance optimizations */
+@layer base {
+  /* 启用硬件加速 */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+  
+  /* 图片优化 */
+  img {
+    content-visibility: auto;
+  }
+  
+  /* 减少重绘 */
+  .contain-layout {
+    contain: layout;
+  }
+  
+  .contain-paint {
+    contain: paint;
   }
 } 
