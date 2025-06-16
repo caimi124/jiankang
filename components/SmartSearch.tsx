@@ -1,216 +1,95 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { Search, X, Filter, ChevronDown } from 'lucide-react'
-
-interface SearchResult {
-  id: string
-  title: string
-  type: 'herb' | 'condition' | 'article'
-  description: string
-  url: string
-}
+import { useState } from 'react'
 
 interface SmartSearchProps {
-  placeholder?: string
-  onSearch?: (query: string, filters: string[]) => void
-  showFilters?: boolean
+  placeholder: string
+  onSearch: (query: string, filters: any) => void
 }
 
-export default function SmartSearch({ 
-  placeholder = "Search herbs, conditions, or articles...",
-  onSearch,
-  showFilters = true 
-}: SmartSearchProps) {
+export default function SmartSearch({ placeholder, onSearch }: SmartSearchProps) {
   const [query, setQuery] = useState('')
-  const [isOpen, setIsOpen] = useState(false)
-  const [results, setResults] = useState<SearchResult[]>([])
-  const [filters, setFilters] = useState<string[]>([])
-  const [showFilterMenu, setShowFilterMenu] = useState(false)
-  const searchRef = useRef<HTMLDivElement>(null)
+  const [isExpanded, setIsExpanded] = useState(false)
 
-  // Mock search data - in real app, this would come from API
-  const searchData: SearchResult[] = [
-    { id: '1', title: 'Ashwagandha', type: 'herb', description: 'Adaptogenic herb for stress relief', url: '/herbs/ashwagandha' },
-    { id: '2', title: 'Anxiety Management', type: 'condition', description: 'Natural approaches to anxiety', url: '/conditions/anxiety' },
-    { id: '3', title: 'Turmeric Benefits', type: 'article', description: 'Anti-inflammatory properties of turmeric', url: '/articles/turmeric-benefits' },
-    { id: '4', title: 'Reishi Mushroom', type: 'herb', description: 'Immune support and stress relief', url: '/herbs/reishi' },
-    { id: '5', title: 'Insomnia Solutions', type: 'condition', description: 'Herbal remedies for sleep issues', url: '/conditions/insomnia' },
-  ]
-
-  const filterOptions = [
-    { value: 'herb', label: '🌿 Herbs', count: 127 },
-    { value: 'condition', label: '🎯 Conditions', count: 45 },
-    { value: 'article', label: '📄 Articles', count: 89 },
-    { value: 'research', label: '🔬 Research', count: 156 }
-  ]
-
-  useEffect(() => {
-    if (query.length > 1) {
-      // Simulate search API call
-      const filteredResults = searchData.filter(item =>
-        item.title.toLowerCase().includes(query.toLowerCase()) ||
-        item.description.toLowerCase().includes(query.toLowerCase())
-      ).filter(item => 
-        filters.length === 0 || filters.includes(item.type)
-      )
-      setResults(filteredResults)
-      setIsOpen(true)
-    } else {
-      setResults([])
-      setIsOpen(false)
-    }
-  }, [query, filters])
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-        setIsOpen(false)
-        setShowFilterMenu(false)
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
-
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onSearch?.(query, filters)
-    setIsOpen(false)
-  }
-
-  const toggleFilter = (filterValue: string) => {
-    setFilters(prev => 
-      prev.includes(filterValue) 
-        ? prev.filter(f => f !== filterValue)
-        : [...prev, filterValue]
-    )
-  }
-
-  const clearSearch = () => {
-    setQuery('')
-    setResults([])
-    setIsOpen(false)
-  }
-
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case 'herb': return '🌿'
-      case 'condition': return '🎯'
-      case 'article': return '📄'
-      default: return '📋'
+    if (query.trim()) {
+      onSearch(query, {})
     }
   }
+
+  const suggestions = [
+    "anxiety natural remedies",
+    "turmeric benefits",
+    "ginseng dosage",
+    "sleep herbs",
+    "digestive enzymes"
+  ]
 
   return (
-    <div ref={searchRef} className="relative w-full max-w-2xl mx-auto">
-      {/* Search Input */}
-      <form onSubmit={handleSearch} className="relative">
-        <div className="relative flex items-center">
-          <div className="absolute left-4 text-gray-400">
-            <Search className="w-5 h-5" />
+    <div className="max-w-2xl mx-auto">
+      <form onSubmit={handleSubmit} className="relative">
+        <div className="flex bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden focus-within:ring-2 focus-within:ring-green-500 focus-within:border-green-500 transition-all">
+          <div className="flex-1 flex items-center px-6 py-4">
+            <span className="text-gray-400 mr-3 text-xl">🔍</span>
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onFocus={() => setIsExpanded(true)}
+              onBlur={() => setTimeout(() => setIsExpanded(false), 200)}
+              placeholder={placeholder}
+              className="flex-1 text-lg text-gray-900 placeholder-gray-500 border-none outline-none bg-transparent"
+            />
           </div>
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder={placeholder}
-            className="w-full pl-12 pr-20 py-4 text-gray-900 bg-white rounded-2xl border-2 border-gray-200 focus:border-green-500 focus:outline-none text-lg"
-          />
-          <div className="absolute right-2 flex items-center space-x-2">
-            {query && (
-              <button
-                type="button"
-                onClick={clearSearch}
-                className="p-2 text-gray-400 hover:text-gray-600"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            )}
-            {showFilters && (
-              <button
-                type="button"
-                onClick={() => setShowFilterMenu(!showFilterMenu)}
-                className={`p-2 rounded-lg transition-colors ${
-                  filters.length > 0 || showFilterMenu 
-                    ? 'text-green-600 bg-green-50' 
-                    : 'text-gray-400 hover:text-gray-600'
-                }`}
-              >
-                <Filter className="w-4 h-4" />
-              </button>
-            )}
-          </div>
+          <button
+            type="submit"
+            className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 font-semibold transition-colors"
+          >
+            Search
+          </button>
         </div>
-      </form>
-
-      {/* Filter Menu */}
-      {showFilterMenu && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-lg border border-gray-200 p-4 z-50">
-          <h3 className="font-semibold text-gray-900 mb-3">Filter by type:</h3>
-          <div className="grid grid-cols-2 gap-2">
-            {filterOptions.map((option) => (
-              <label
-                key={option.value}
-                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer"
-              >
-                <input
-                  type="checkbox"
-                  checked={filters.includes(option.value)}
-                  onChange={() => toggleFilter(option.value)}
-                  className="w-4 h-4 text-green-600 rounded focus:ring-green-500"
-                />
-                <span className="flex-1">{option.label}</span>
-                <span className="text-sm text-gray-500">({option.count})</span>
-              </label>
-            ))}
-          </div>
-          {filters.length > 0 && (
-            <button
-              onClick={() => setFilters([])}
-              className="mt-3 text-sm text-green-600 hover:text-green-700"
-            >
-              Clear all filters
-            </button>
-          )}
-        </div>
-      )}
-
-      {/* Search Results */}
-      {isOpen && results.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-lg border border-gray-200 max-h-96 overflow-y-auto z-40">
-          {results.map((result) => (
-            <a
-              key={result.id}
-              href={result.url}
-              className="block p-4 hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
-              onClick={() => setIsOpen(false)}
-            >
-              <div className="flex items-start space-x-3">
-                <span className="text-lg">{getTypeIcon(result.type)}</span>
-                <div className="flex-1">
-                  <h4 className="font-semibold text-gray-900">{result.title}</h4>
-                  <p className="text-sm text-gray-600 mt-1">{result.description}</p>
-                  <span className="inline-block mt-2 text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-full capitalize">
-                    {result.type}
-                  </span>
-                </div>
+        
+        {/* Search Suggestions */}
+        {isExpanded && (
+          <div className="absolute top-full left-0 right-0 bg-white mt-2 rounded-xl shadow-lg border border-gray-200 z-10">
+            <div className="p-4">
+              <h4 className="text-sm font-semibold text-gray-700 mb-3">Popular Searches</h4>
+              <div className="space-y-2">
+                {suggestions.map((suggestion, index) => (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      setQuery(suggestion)
+                      onSearch(suggestion, {})
+                    }}
+                    className="block w-full text-left px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
+                  >
+                    <span className="mr-2">🔍</span>
+                    {suggestion}
+                  </button>
+                ))}
               </div>
-            </a>
-          ))}
-        </div>
-      )}
-
-      {/* No Results */}
-      {isOpen && query.length > 1 && results.length === 0 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-lg border border-gray-200 p-8 text-center z-40">
-          <div className="text-gray-400 mb-2">
-            <Search className="w-8 h-8 mx-auto" />
+            </div>
           </div>
-          <p className="text-gray-600">No results found for "{query}"</p>
-          <p className="text-sm text-gray-500 mt-1">Try adjusting your search terms or filters</p>
-        </div>
-      )}
+        )}
+      </form>
+      
+      {/* Quick Filter Tags */}
+      <div className="mt-4 flex flex-wrap gap-2 justify-center">
+        {['Anxiety', 'Sleep', 'Digestion', 'Energy', 'Immunity'].map((tag) => (
+          <button
+            key={tag}
+            onClick={() => {
+              setQuery(tag.toLowerCase())
+              onSearch(tag.toLowerCase(), { category: tag })
+            }}
+            className="px-4 py-2 bg-green-50 text-green-700 rounded-full text-sm font-medium hover:bg-green-100 transition-colors"
+          >
+            {tag}
+          </button>
+        ))}
+      </div>
     </div>
   )
 } 

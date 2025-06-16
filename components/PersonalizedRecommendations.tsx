@@ -1,288 +1,238 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Heart, BookOpen, Clock, TrendingUp, X } from 'lucide-react'
-
-interface UserPreference {
-  id: string
-  type: 'herb' | 'condition' | 'goal'
-  name: string
-  timestamp: Date
-}
-
-interface RecommendedItem {
-  id: string
-  title: string
-  type: 'herb' | 'article' | 'condition'
-  description: string
-  relevanceScore: number
-  evidence: 'Strong' | 'Moderate' | 'Limited'
-  image?: string
-  url: string
-}
+import { useState } from 'react'
+import Link from 'next/link'
 
 export default function PersonalizedRecommendations() {
-  const [userPreferences, setUserPreferences] = useState<UserPreference[]>([])
-  const [recommendations, setRecommendations] = useState<RecommendedItem[]>([])
-  const [favorites, setFavorites] = useState<string[]>([])
-  const [showOnboarding, setShowOnboarding] = useState(false)
-
-  // Simulated user preferences (in real app, this would come from user account/localStorage)
-  useEffect(() => {
-    const savedPreferences = localStorage.getItem('herbscience_preferences')
-    const savedFavorites = localStorage.getItem('herbscience_favorites')
-    
-    if (savedPreferences) {
-      setUserPreferences(JSON.parse(savedPreferences))
-    } else {
-      setShowOnboarding(true)
-    }
-    
-    if (savedFavorites) {
-      setFavorites(JSON.parse(savedFavorites))
-    }
-  }, [])
-
-  // Generate recommendations based on user preferences
-  useEffect(() => {
-    if (userPreferences.length > 0) {
-      generateRecommendations()
-    }
-  }, [userPreferences])
-
-  const mockRecommendations: RecommendedItem[] = [
+  const [selectedGoal, setSelectedGoal] = useState('')
+  
+  const healthGoals = [
     {
-      id: '1',
-      title: 'Ashwagandha for Stress Relief',
-      type: 'herb',
-      description: 'Based on your interest in anxiety management, this adaptogenic herb may help reduce cortisol levels.',
-      relevanceScore: 95,
-      evidence: 'Strong',
-      url: '/herbs/ashwagandha'
+      id: 'stress',
+      icon: '😌',
+      title: 'Stress Management',
+      description: 'Natural ways to reduce stress and anxiety',
+      herbs: ['Ashwagandha', 'Rhodiola', 'Holy Basil'],
+      color: 'blue'
     },
     {
-      id: '2',
-      title: 'Sleep Hygiene with Herbal Support',
-      type: 'article',
-      description: 'Since you\'ve shown interest in sleep aids, this comprehensive guide covers natural sleep solutions.',
-      relevanceScore: 88,
-      evidence: 'Strong',
-      url: '/articles/sleep-hygiene-herbs'
+      id: 'energy',
+      icon: '⚡',
+      title: 'Energy & Vitality',
+      description: 'Boost natural energy without caffeine crashes',
+      herbs: ['Ginseng', 'Cordyceps', 'Maca Root'],
+      color: 'orange'
     },
     {
-      id: '3',
-      title: 'Rhodiola vs Ginseng Comparison',
-      type: 'article',
-      description: 'Comparing two powerful adaptogens for energy and mental clarity.',
-      relevanceScore: 82,
-      evidence: 'Moderate',
-      url: '/articles/rhodiola-vs-ginseng'
+      id: 'sleep',
+      icon: '😴',
+      title: 'Better Sleep',
+      description: 'Improve sleep quality naturally',
+      herbs: ['Valerian', 'Passionflower', 'Chamomile'],
+      color: 'purple'
+    },
+    {
+      id: 'immunity',
+      icon: '🛡️',
+      title: 'Immune Support',
+      description: 'Strengthen your natural defenses',
+      herbs: ['Echinacea', 'Elderberry', 'Astragalus'],
+      color: 'green'
+    },
+    {
+      id: 'focus',
+      icon: '🧠',
+      title: 'Mental Clarity',
+      description: 'Enhance focus and cognitive function',
+      herbs: ['Ginkgo', 'Bacopa', 'Lion\'s Mane'],
+      color: 'teal'
+    },
+    {
+      id: 'digestion',
+      icon: '🌱',
+      title: 'Digestive Health',
+      description: 'Support healthy digestion',
+      herbs: ['Ginger', 'Peppermint', 'Fennel'],
+      color: 'emerald'
     }
   ]
 
-  const generateRecommendations = () => {
-    // In a real app, this would use AI/ML to generate personalized recommendations
-    // For now, we'll use mock data filtered by user preferences
-    const filtered = mockRecommendations.filter(item => {
-      return userPreferences.some(pref => 
-        item.description.toLowerCase().includes(pref.name.toLowerCase()) ||
-        item.title.toLowerCase().includes(pref.name.toLowerCase())
-      )
-    })
-    
-    setRecommendations(filtered.length > 0 ? filtered : mockRecommendations.slice(0, 3))
-  }
-
-  const addToFavorites = (itemId: string) => {
-    const newFavorites = [...favorites, itemId]
-    setFavorites(newFavorites)
-    localStorage.setItem('herbscience_favorites', JSON.stringify(newFavorites))
-  }
-
-  const removeFromFavorites = (itemId: string) => {
-    const newFavorites = favorites.filter(id => id !== itemId)
-    setFavorites(newFavorites)
-    localStorage.setItem('herbscience_favorites', JSON.stringify(newFavorites))
-  }
-
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case 'herb': return '🌿'
-      case 'article': return '📄'
-      case 'condition': return '🎯'
-      default: return '📋'
+  const getColorClasses = (color: string) => {
+    const colorMap = {
+      blue: 'from-blue-500 to-blue-600 border-blue-200 hover:border-blue-300',
+      orange: 'from-orange-500 to-orange-600 border-orange-200 hover:border-orange-300',
+      purple: 'from-purple-500 to-purple-600 border-purple-200 hover:border-purple-300',
+      green: 'from-green-500 to-green-600 border-green-200 hover:border-green-300',
+      teal: 'from-teal-500 to-teal-600 border-teal-200 hover:border-teal-300',
+      emerald: 'from-emerald-500 to-emerald-600 border-emerald-200 hover:border-emerald-300'
     }
+    return colorMap[color as keyof typeof colorMap] || colorMap.green
   }
 
-  const getEvidenceBadge = (evidence: string) => {
-    const colors = {
-      'Strong': 'bg-green-100 text-green-800',
-      'Moderate': 'bg-yellow-100 text-yellow-800',
-      'Limited': 'bg-gray-100 text-gray-800'
-    }
-    return colors[evidence as keyof typeof colors] || colors.Limited
-  }
-
-  const onboardingQuestions = [
-    {
-      question: "What health goals are you interested in?",
-      options: ["Stress Relief", "Better Sleep", "Energy Boost", "Immune Support", "Digestive Health", "Mental Clarity"]
-    },
-    {
-      question: "Have you used herbal supplements before?",
-      options: ["Never used them", "Occasional use", "Regular user", "Very experienced"]
-    },
-    {
-      question: "What concerns you most about herbal supplements?",
-      options: ["Safety & Side Effects", "Effectiveness", "Interactions with Medications", "Quality & Purity"]
-    }
-  ]
-
-  const handleOnboardingComplete = (selections: string[]) => {
-    const newPreferences: UserPreference[] = selections.map((selection, index) => ({
-      id: `pref_${index}_${Date.now()}`,
-      type: 'goal',
-      name: selection,
-      timestamp: new Date()
-    }))
-    
-    setUserPreferences(newPreferences)
-    localStorage.setItem('herbscience_preferences', JSON.stringify(newPreferences))
-    setShowOnboarding(false)
-  }
-
-  if (showOnboarding) {
-    return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Personalize Your Experience</h2>
-            <button 
-              onClick={() => setShowOnboarding(false)}
-              className="text-gray-400 hover:text-gray-600"
-            >
-              <X className="w-6 h-6" />
-            </button>
-          </div>
-          
-          <p className="text-gray-600 mb-8">
-            Help us provide better recommendations by answering a few quick questions.
-          </p>
-
-          {onboardingQuestions.map((q, qIndex) => (
-            <div key={qIndex} className="mb-8">
-              <h3 className="font-semibold text-gray-900 mb-4">{q.question}</h3>
-              <div className="grid grid-cols-2 gap-3">
-                {q.options.map((option, oIndex) => (
-                  <button
-                    key={oIndex}
-                    onClick={() => {
-                      if (qIndex === onboardingQuestions.length - 1) {
-                        handleOnboardingComplete([option])
-                      }
-                    }}
-                    className="p-3 text-left border border-gray-200 rounded-lg hover:border-green-500 hover:bg-green-50 transition-colors"
-                  >
-                    {option}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    )
-  }
+  const selectedGoalData = healthGoals.find(goal => goal.id === selectedGoal)
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">
-              Recommended for You
-            </h2>
-            <p className="text-gray-600">
-              Based on your interests and browsing history
-            </p>
-          </div>
-          <button
-            onClick={() => setShowOnboarding(true)}
-            className="text-sm text-green-600 hover:text-green-700 flex items-center space-x-1"
-          >
-            <TrendingUp className="w-4 h-4" />
-            <span>Update Preferences</span>
-          </button>
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            What's Your Health Goal Today?
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Get personalized herb recommendations based on your specific health objectives. 
+            Our AI analyzes your goals to suggest the most effective natural solutions.
+          </p>
         </div>
 
-        {recommendations.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {recommendations.map((item) => (
-              <div key={item.id} className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow">
-                <div className="p-6">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex items-center space-x-2">
-                      <span className="text-2xl">{getTypeIcon(item.type)}</span>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getEvidenceBadge(item.evidence)}`}>
-                        {item.evidence} Evidence
-                      </span>
+        {/* Health Goal Selection */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          {healthGoals.map((goal) => (
+            <button
+              key={goal.id}
+              onClick={() => setSelectedGoal(goal.id === selectedGoal ? '' : goal.id)}
+              className={`p-6 rounded-2xl border-2 transition-all duration-300 text-left group hover:shadow-lg ${
+                selectedGoal === goal.id 
+                  ? `border-${goal.color}-400 bg-${goal.color}-50 shadow-lg` 
+                  : 'border-gray-200 bg-white hover:border-gray-300'
+              }`}
+            >
+              <div className="flex items-start space-x-4">
+                <div className={`w-12 h-12 bg-gradient-to-br ${getColorClasses(goal.color)} rounded-xl flex items-center justify-center text-white text-xl shadow-md`}>
+                  {goal.icon}
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{goal.title}</h3>
+                  <p className="text-gray-600 text-sm">{goal.description}</p>
+                  {selectedGoal === goal.id && (
+                    <div className="mt-4 pt-4 border-t border-gray-200">
+                      <p className="text-sm font-medium text-gray-900 mb-2">Recommended herbs:</p>
+                      <div className="flex flex-wrap gap-1">
+                        {goal.herbs.map((herb, index) => (
+                          <span key={index} className={`text-xs px-2 py-1 bg-${goal.color}-100 text-${goal.color}-700 rounded-full`}>
+                            {herb}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                    <button
-                      onClick={() => {
-                        favorites.includes(item.id) 
-                          ? removeFromFavorites(item.id)
-                          : addToFavorites(item.id)
-                      }}
-                      className={`p-2 rounded-full transition-colors ${
-                        favorites.includes(item.id)
-                          ? 'text-red-500 bg-red-50'
-                          : 'text-gray-400 hover:text-red-500 hover:bg-red-50'
-                      }`}
-                    >
-                      <Heart className={`w-5 h-5 ${favorites.includes(item.id) ? 'fill-current' : ''}`} />
-                    </button>
-                  </div>
-                  
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm mb-4">
-                    {item.description}
-                  </p>
-                  
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center text-sm text-gray-500">
-                      <TrendingUp className="w-4 h-4 mr-1" />
-                      {item.relevanceScore}% match
-                    </div>
-                    <a
-                      href={item.url}
-                      className="text-green-600 hover:text-green-700 font-medium text-sm"
-                    >
-                      Learn More →
-                    </a>
-                  </div>
+                  )}
                 </div>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              No recommendations yet
-            </h3>
-            <p className="text-gray-600 mb-4">
-              Start exploring our content to get personalized recommendations
-            </p>
-            <button
-              onClick={() => setShowOnboarding(true)}
-              className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors"
-            >
-              Set Your Preferences
             </button>
+          ))}
+        </div>
+
+        {/* Detailed Recommendations */}
+        {selectedGoalData && (
+          <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-200">
+            <div className="text-center mb-8">
+              <div className={`w-20 h-20 bg-gradient-to-br ${getColorClasses(selectedGoalData.color)} rounded-2xl flex items-center justify-center text-white text-3xl mx-auto mb-4 shadow-lg`}>
+                {selectedGoalData.icon}
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                Personalized Plan for {selectedGoalData.title}
+              </h3>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Based on traditional use and modern research, here are the most effective herbs for your goal.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              {selectedGoalData.herbs.map((herb, index) => (
+                <div key={index} className="bg-gray-50 rounded-xl p-6 text-center hover:bg-gray-100 transition-colors">
+                  <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl">🌿</span>
+                  </div>
+                  <h4 className="font-semibold text-gray-900 mb-2">{herb}</h4>
+                  <p className="text-gray-600 text-sm mb-3">
+                    {herb === 'Ashwagandha' && 'Adaptogenic herb that helps reduce cortisol levels'}
+                    {herb === 'Rhodiola' && 'Arctic root that enhances stress resilience'}
+                    {herb === 'Ginseng' && 'Traditional energy booster and cognitive enhancer'}
+                    {herb === 'Valerian' && 'Natural sleep aid used for centuries'}
+                    {herb === 'Echinacea' && 'Purple flower that supports immune function'}
+                    {herb === 'Ginkgo' && 'Ancient tree extract for memory and focus'}
+                    {herb === 'Ginger' && 'Warming spice that soothes digestion'}
+                    {!['Ashwagandha', 'Rhodiola', 'Ginseng', 'Valerian', 'Echinacea', 'Ginkgo', 'Ginger'].includes(herb) && 'Powerful natural remedy with proven benefits'}
+                  </p>
+                  <Link 
+                    href={`/herbs/${herb.toLowerCase().replace(/\s+/g, '-')}`}
+                    className="text-green-600 hover:text-green-700 font-medium text-sm"
+                  >
+                    Learn More →
+                  </Link>
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center">
+              <Link 
+                href="/constitution-test"
+                className={`inline-flex items-center bg-gradient-to-r ${getColorClasses(selectedGoalData.color)} text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg transition-all`}
+              >
+                <span className="mr-2">🎯</span>
+                Get Detailed Personal Plan
+                <span className="ml-2">→</span>
+              </Link>
+            </div>
           </div>
         )}
+
+        {/* CTA when no goal selected */}
+        {!selectedGoal && (
+          <div className="text-center bg-gradient-to-r from-green-600 to-emerald-600 rounded-3xl p-8 text-white">
+            <h3 className="text-2xl font-bold mb-4">Want Even More Personalized Recommendations?</h3>
+            <p className="text-green-100 mb-6 max-w-2xl mx-auto">
+              Take our comprehensive Traditional Chinese Medicine constitution assessment 
+              to get recommendations tailored to your unique body type and health patterns.
+            </p>
+            <Link 
+              href="/constitution-test"
+              className="inline-flex items-center bg-white text-green-600 px-8 py-4 rounded-xl font-semibold hover:bg-green-50 transition-colors shadow-lg"
+            >
+              <span className="mr-2">🧠</span>
+              Take Constitution Assessment
+              <span className="ml-2">→</span>
+            </Link>
+          </div>
+        )}
+
+        {/* Quick Actions */}
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Link href="/herb-finder" className="group bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all border border-gray-200 hover:border-green-300">
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-200 transition-colors">
+                <span className="text-xl">🔍</span>
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900 group-hover:text-green-700">Find Herbs by Symptom</h4>
+                <p className="text-gray-600 text-sm">Search our database</p>
+              </div>
+            </div>
+          </Link>
+
+          <Link href="/ingredient-checker" className="group bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all border border-gray-200 hover:border-blue-300">
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                <span className="text-xl">🛡️</span>
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900 group-hover:text-blue-700">Check Safety</h4>
+                <p className="text-gray-600 text-sm">Analyze interactions</p>
+              </div>
+            </div>
+          </Link>
+
+          <Link href="/dosage-calculator" className="group bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all border border-gray-200 hover:border-purple-300">
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                <span className="text-xl">⚖️</span>
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900 group-hover:text-purple-700">Calculate Dosage</h4>
+                <p className="text-gray-600 text-sm">Get proper amounts</p>
+              </div>
+            </div>
+          </Link>
+        </div>
       </div>
     </section>
   )

@@ -1,32 +1,63 @@
+'use client'
+
 import { Shield, Award, Users, BookOpen, Clock, CheckCircle } from 'lucide-react'
 
 export default function TrustIndicators() {
+  const trustBadges = [
+    {
+      icon: '🏆',
+      title: 'Evidence-Based',
+      description: 'All recommendations backed by peer-reviewed research',
+      stats: '2,000+ Studies Referenced'
+    },
+    {
+      icon: '👨‍⚕️',
+      title: 'Expert Reviewed',
+      description: 'Content reviewed by licensed healthcare professionals',
+      stats: '15+ Medical Experts'
+    },
+    {
+      icon: '🔐',
+      title: 'Data Security',
+      description: 'Your health information is encrypted and secure',
+      stats: 'HIPAA Compliant'
+    },
+    {
+      icon: '🌍',
+      title: 'Global Standards',
+      description: 'Follows international safety and quality guidelines',
+      stats: 'WHO Guidelines'
+    }
+  ]
+
   const certifications = [
     {
-      icon: <Shield className="w-8 h-8" />,
-      title: "Medical Review Board",
-      description: "Content reviewed by licensed healthcare professionals",
-      badge: "MD Reviewed"
+      name: 'FDA Registered',
+      logo: '🏛️',
+      description: 'Facility Registration'
     },
     {
-      icon: <Award className="w-8 h-8" />,
-      title: "Research-Based",
-      description: "All recommendations backed by peer-reviewed studies",
-      badge: "Evidence-Based"
+      name: 'GMP Certified',
+      logo: '✅',
+      description: 'Good Manufacturing Practice'
     },
     {
-      icon: <CheckCircle className="w-8 h-8" />,
-      title: "Safety Verified",
-      description: "Comprehensive safety checks and interaction warnings",
-      badge: "Safety First"
+      name: 'Third-Party Tested',
+      logo: '🔬',
+      description: 'Independent Lab Verification'
+    },
+    {
+      name: 'Organic Certified',
+      logo: '🌱',
+      description: 'USDA Organic Standards'
     }
   ]
 
   const stats = [
-    { number: "50,000+", label: "Trusted Users", icon: <Users className="w-6 h-6" /> },
-    { number: "500+", label: "Herbs Analyzed", icon: <BookOpen className="w-6 h-6" /> },
-    { number: "2,000+", label: "Research Citations", icon: <BookOpen className="w-6 h-6" /> },
-    { number: "24/7", label: "Updated Database", icon: <Clock className="w-6 h-6" /> }
+    { number: '50,000+', label: 'Users Helped', icon: '👥' },
+    { number: '500+', label: 'Herbs Analyzed', icon: '🌿' },
+    { number: '2,000+', label: 'Research Papers', icon: '📚' },
+    { number: '98%', label: 'User Satisfaction', icon: '⭐' }
   ]
 
   const endorsements = [
@@ -51,50 +82,87 @@ export default function TrustIndicators() {
   ]
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Trust Badges */}
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Trusted by Healthcare Professionals
+            Why Trust HerbScience.shop?
           </h2>
-          <p className="text-xl text-gray-600 mb-12">
-            Our commitment to accuracy, safety, and evidence-based recommendations
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            We're committed to providing accurate, science-based information to help you make informed decisions about herbal supplements.
           </p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {certifications.map((cert, index) => (
-              <div key={index} className="bg-gradient-to-br from-green-50 to-emerald-50 p-8 rounded-2xl border border-green-100">
-                <div className="text-green-600 mb-4 flex justify-center">
-                  {cert.icon}
-                </div>
-                <div className="mb-4">
-                  <span className="inline-block px-3 py-1 bg-green-100 text-green-800 text-sm font-semibold rounded-full">
-                    {cert.badge}
-                  </span>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">{cert.title}</h3>
-                <p className="text-gray-600">{cert.description}</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+          {trustBadges.map((badge, index) => (
+            <div key={index} className="text-center group">
+              <div className="w-20 h-20 bg-gradient-to-br from-green-100 to-green-200 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:from-green-200 group-hover:to-green-300 transition-all duration-300">
+                <span className="text-3xl">{badge.icon}</span>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{badge.title}</h3>
+              <p className="text-gray-600 text-sm mb-2">{badge.description}</p>
+              <p className="text-green-600 font-medium text-sm">{badge.stats}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Statistics */}
+        <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-3xl p-8 mb-16">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {stats.map((stat, index) => (
+              <div key={index} className="text-center text-white">
+                <div className="text-3xl mb-2">{stat.icon}</div>
+                <div className="text-3xl md:text-4xl font-bold mb-1">{stat.number}</div>
+                <div className="text-green-100 text-sm">{stat.label}</div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Statistics */}
-        <div className="bg-gray-50 rounded-3xl p-8 mb-16">
-          <h3 className="text-2xl font-bold text-center text-gray-900 mb-8">
-            By the Numbers
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-green-600 mb-2 flex justify-center">
-                  {stat.icon}
-                </div>
-                <div className="text-3xl font-bold text-gray-900 mb-1">{stat.number}</div>
-                <div className="text-gray-600">{stat.label}</div>
+        {/* Certifications */}
+        <div className="text-center mb-8">
+          <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Certifications & Standards</h3>
+          <p className="text-gray-600 mb-8">
+            We maintain the highest standards of quality and safety in everything we do.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {certifications.map((cert, index) => (
+            <div key={index} className="bg-gray-50 rounded-lg p-6 text-center hover:bg-gray-100 transition-colors">
+              <div className="text-4xl mb-3">{cert.logo}</div>
+              <h4 className="font-semibold text-gray-900 mb-1">{cert.name}</h4>
+              <p className="text-gray-600 text-sm">{cert.description}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Safety Promise */}
+        <div className="mt-16 bg-blue-50 rounded-2xl p-8 text-center">
+          <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Safety Promise</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+            <div className="flex items-start space-x-3">
+              <span className="text-2xl">🛡️</span>
+              <div>
+                <h4 className="font-semibold text-gray-900">Safety First</h4>
+                <p className="text-gray-600 text-sm">We prioritize your safety with comprehensive interaction checking</p>
               </div>
-            ))}
+            </div>
+            <div className="flex items-start space-x-3">
+              <span className="text-2xl">📋</span>
+              <div>
+                <h4 className="font-semibold text-gray-900">Transparent Information</h4>
+                <p className="text-gray-600 text-sm">Full disclosure of potential risks and side effects</p>
+              </div>
+            </div>
+            <div className="flex items-start space-x-3">
+              <span className="text-2xl">⚕️</span>
+              <div>
+                <h4 className="font-semibold text-gray-900">Medical Disclaimer</h4>
+                <p className="text-gray-600 text-sm">Educational only - always consult healthcare professionals</p>
+              </div>
+            </div>
           </div>
         </div>
 
