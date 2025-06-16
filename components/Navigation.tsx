@@ -12,6 +12,8 @@ export default function Navigation() {
     { name: 'Herb Finder', href: '/herb-finder' },
     { name: 'Safety Checker', href: '/ingredient-checker' },
     { name: 'Knowledge Center', href: '/knowledge-center' },
+    { name: 'Constitution Test', href: '/constitution-test' },
+    { name: 'Dosage Calculator', href: '/dosage-calculator' },
     { name: 'User Reviews', href: '/user-experiences' }
   ]
 

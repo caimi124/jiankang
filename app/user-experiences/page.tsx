@@ -2,244 +2,335 @@
 
 import { useState } from 'react'
 import Navigation from '../../components/Navigation'
-
-interface UserExperience {
-  id: number
-  user: string
-  age: number
-  gender: string
-  herb: string
-  condition: string
-  duration: string
-  effectiveness: number
-  sideEffects: string
-  wouldRecommend: boolean
-  story: string
-  tags: string[]
-  verifiedPurchase: boolean
-}
+import Breadcrumb from '../../components/Breadcrumb'
+import { Star, ThumbsUp, MessageCircle, Shield, User, Calendar } from 'lucide-react'
 
 export default function UserExperiencesPage() {
   const [selectedFilter, setSelectedFilter] = useState('all')
-  const [selectedHerb, setSelectedHerb] = useState('')
+  const [sortBy, setSortBy] = useState('recent')
 
-  const experiences: UserExperience[] = [
+  const userReviews = [
     {
       id: 1,
-      user: "Sarah M.",
-      age: 34,
-      gender: "Female",
+      name: "Sarah M.",
+      location: "California, USA",
       herb: "Ashwagandha",
-      condition: "Chronic Anxiety",
+      condition: "Stress & Anxiety",
+      rating: 5,
       duration: "3 months",
-      effectiveness: 4,
-      sideEffects: "None reported",
-      wouldRecommend: true,
-      story: "I was skeptical about herbal supplements, but after struggling with anxiety for years, I decided to try ashwagandha. Within 2 weeks, I noticed my stress levels were more manageable. After 3 months, my sleep improved significantly and I feel much calmer during stressful situations at work.",
-      tags: ["anxiety", "stress", "sleep", "work-related"],
-      verifiedPurchase: true
+      date: "2024-01-15",
+      verified: true,
+      helpful: 124,
+      review: "After struggling with work stress for months, I started taking ashwagandha based on this site's recommendations. The dosage calculator was incredibly helpful - I started with a lower dose and gradually increased. Within 2 weeks, I noticed better sleep and less anxiety during meetings. The safety checker confirmed it was safe with my blood pressure medication.",
+      beforeAfter: {
+        before: "Constant anxiety, poor sleep, difficulty concentrating",
+        after: "Calmer mindset, better sleep quality, improved focus at work"
+      },
+      sideEffects: "None experienced",
+      wouldRecommend: true
     },
     {
       id: 2,
-      user: "Michael K.",
-      age: 45,
-      gender: "Male",
-      herb: "Turmeric + Black Pepper",
+      name: "Michael R.",
+      location: "London, UK",
+      herb: "Turmeric & Ginger",
       condition: "Joint Pain",
-      duration: "6 weeks",
-      effectiveness: 5,
-      sideEffects: "Mild stomach upset initially",
-      wouldRecommend: true,
-      story: "As a runner, I was dealing with knee pain that was affecting my training. Started taking turmeric with black pepper extract. The initial stomach upset went away after a week. Now 6 weeks in, my joint pain has reduced by about 80%. I can run longer distances without discomfort.",
-      tags: ["joint-pain", "inflammation", "sports", "running"],
-      verifiedPurchase: true
+      rating: 4,
+      duration: "6 months",
+      date: "2024-01-10",
+      verified: true,
+      helpful: 89,
+      review: "I've been dealing with knee pain from running for years. The symptom finder suggested turmeric with black pepper and ginger. I was skeptical at first, but the evidence-based approach convinced me. After 6 months, my morning stiffness is gone and I can run pain-free again. The knowledge center helped me understand why these herbs work.",
+      beforeAfter: {
+        before: "Daily knee pain, morning stiffness, limited running",
+        after: "95% reduction in pain, running 5K again, better mobility"
+      },
+      sideEffects: "Mild stomach upset first week (took with food after)",
+      wouldRecommend: true
+    },
+    {
+      id: 3,
+      name: "Dr. Jennifer L.",
+      location: "Toronto, Canada",
+      herb: "Rhodiola & Ginseng",
+      condition: "Mental Fatigue",
+      rating: 5,
+      duration: "4 months",
+      date: "2024-01-08",
+      verified: true,
+      helpful: 156,
+      review: "As a physician working long hours, I needed evidence-based solutions for mental fatigue. This platform's research citations and safety profiles impressed me. The combination of rhodiola and ginseng has significantly improved my mental clarity and energy levels without the jitters from caffeine.",
+      beforeAfter: {
+        before: "Afternoon crashes, mental fog, relying on caffeine",
+        after: "Sustained energy, clear thinking, reduced caffeine dependency"
+      },
+      sideEffects: "None",
+      wouldRecommend: true
+    },
+    {
+      id: 4,
+      name: "Emma K.",
+      location: "Sydney, Australia",
+      herb: "Reishi Mushroom",
+      condition: "Sleep Issues",
+      rating: 4,
+      duration: "2 months",
+      date: "2024-01-05",
+      verified: true,
+      helpful: 67,
+      review: "The AI constitution test identified me as having 'liver qi stagnation' and recommended reishi mushroom. I was curious about the TCM approach. While it took about 3 weeks to notice changes, my sleep quality has improved dramatically. I now fall asleep faster and wake up more refreshed.",
+      beforeAfter: {
+        before: "Taking 2+ hours to fall asleep, frequent waking",
+        after: "Asleep within 30 minutes, deeper sleep, more energy"
+      },
+      sideEffects: "Slight drowsiness first few days",
+      wouldRecommend: true
     }
   ]
 
-  const herbs = Array.from(new Set(experiences.map(exp => exp.herb)))
+  const successMetrics = [
+    { number: "89%", label: "Report Positive Results", icon: "📈" },
+    { number: "2-4", label: "Weeks Average to See Benefits", icon: "⏱️" },
+    { number: "94%", label: "Would Recommend to Friends", icon: "👥" },
+    { number: "12+", label: "Months Average Usage", icon: "📅" }
+  ]
 
-  const filteredExperiences = experiences.filter(exp => {
-    if (selectedFilter === 'effective' && exp.effectiveness < 4) return false
-    if (selectedFilter === 'no-side-effects' && exp.sideEffects !== 'None reported') return false
-    if (selectedHerb && exp.herb !== selectedHerb) return false
-    return true
+  const commonConditions = [
+    { condition: "Stress & Anxiety", users: 1204, avgRating: 4.3 },
+    { condition: "Sleep Issues", users: 987, avgRating: 4.1 },
+    { condition: "Digestive Health", users: 756, avgRating: 4.2 },
+    { condition: "Energy & Fatigue", users: 623, avgRating: 4.0 },
+    { condition: "Joint Health", users: 445, avgRating: 4.4 },
+    { condition: "Cognitive Function", users: 378, avgRating: 4.2 }
+  ]
+
+  const filteredReviews = userReviews.filter(review => {
+    if (selectedFilter === 'all') return true
+    return review.condition.toLowerCase().includes(selectedFilter.toLowerCase())
   })
 
-  const averageRating = (experiences: UserExperience[]) => {
-    return (experiences.reduce((sum, exp) => sum + exp.effectiveness, 0) / experiences.length).toFixed(1)
-  }
-
   return (
-    <div>
+    <div className="min-h-screen bg-gray-50">
       <Navigation />
-      <main className="bg-white min-h-screen">
-        {/* Header */}
-        <section className="bg-gradient-to-r from-orange-500 to-red-600 text-white py-16 px-6">
-          <div className="max-w-7xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+      
+      <main className="py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Breadcrumb 
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'User Experiences', href: '/user-experiences' }
+            ]} 
+          />
+
+          {/* Header */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">
               Real User Experiences
             </h1>
-            <p className="text-xl opacity-90 max-w-3xl mx-auto mb-8">
-              Honest reviews and experiences from people who have used herbal supplements. Learn from their journeys, successes, and challenges.
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Verified stories from our community of herb users. See how others have used herbal supplements to improve their health and wellbeing.
             </p>
-            <div className="flex justify-center items-center gap-8 text-lg">
-              <div className="flex items-center">
-                <span className="text-2xl mr-2">📊</span>
-                <span>{experiences.length} Verified Reviews</span>
-              </div>
-              <div className="flex items-center">
-                <span className="text-2xl mr-2">⭐</span>
-                <span>{averageRating(experiences)}/5 Average Rating</span>
-              </div>
-            </div>
           </div>
-        </section>
 
-        {/* Filters */}
-        <section className="py-8 px-6 bg-gray-50 border-b">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex flex-wrap gap-4 justify-center mb-6">
-              <button
-                onClick={() => setSelectedFilter('all')}
-                className={`px-6 py-3 rounded-2xl font-medium transition-all ${
-                  selectedFilter === 'all' 
-                    ? 'bg-orange-500 text-white' 
-                    : 'bg-white text-gray-700 hover:bg-orange-50'
-                }`}
-              >
-                All Experiences
-              </button>
-              <button
-                onClick={() => setSelectedFilter('effective')}
-                className={`px-6 py-3 rounded-2xl font-medium transition-all ${
-                  selectedFilter === 'effective' 
-                    ? 'bg-green-500 text-white' 
-                    : 'bg-white text-gray-700 hover:bg-green-50'
-                }`}
-              >
-                Highly Effective (4+ stars)
-              </button>
-              <button
-                onClick={() => setSelectedFilter('no-side-effects')}
-                className={`px-6 py-3 rounded-2xl font-medium transition-all ${
-                  selectedFilter === 'no-side-effects' 
-                    ? 'bg-blue-500 text-white' 
-                    : 'bg-white text-gray-700 hover:bg-blue-50'
-                }`}
-              >
-                No Side Effects
-              </button>
-            </div>
-
-            <div className="text-center">
-              <select
-                value={selectedHerb}
-                onChange={(e) => setSelectedHerb(e.target.value)}
-                className="px-4 py-2 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:outline-none"
-              >
-                <option value="">Filter by Herb</option>
-                {herbs.map(herb => (
-                  <option key={herb} value={herb}>{herb}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </section>
-
-        {/* Experiences Grid */}
-        <section className="py-16 px-6">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">
-                {filteredExperiences.length} Experience{filteredExperiences.length !== 1 ? 's' : ''} Found
-              </h2>
-              <p className="text-gray-600">Each review is from a verified purchase and real user experience</p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredExperiences.map((experience) => (
-                <div key={experience.id} className="bg-white border-2 border-gray-100 rounded-3xl p-8 hover:shadow-xl transition-shadow duration-300">
-                  {/* Header */}
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <h3 className="font-bold text-lg">{experience.user}</h3>
-                      <p className="text-gray-600 text-sm">{experience.age}y, {experience.gender}</p>
-                    </div>
-                    <div className="flex items-center">
-                      {experience.verifiedPurchase && (
-                        <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full mr-2">
-                          ✓ Verified
-                        </span>
-                      )}
-                      <div className="flex">
-                        {[...Array(5)].map((_, i) => (
-                          <span
-                            key={i}
-                            className={i < experience.effectiveness ? 'text-yellow-400' : 'text-gray-300'}
-                          >
-                            ⭐
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Herb & Condition */}
-                  <div className="mb-4">
-                    <div className="bg-purple-50 px-3 py-1 rounded-full inline-block mb-2">
-                      <span className="text-purple-700 font-medium">{experience.herb}</span>
-                    </div>
-                    <p className="text-gray-700">
-                      <strong>Used for:</strong> {experience.condition}
-                    </p>
-                    <p className="text-gray-700">
-                      <strong>Duration:</strong> {experience.duration}
-                    </p>
-                  </div>
-
-                  {/* Story */}
-                  <p className="text-gray-700 mb-4 italic leading-relaxed">
-                    "{experience.story}"
-                  </p>
-
-                  {/* Side Effects */}
-                  <div className="mb-4">
-                    <p className="text-sm">
-                      <strong className="text-gray-600">Side Effects:</strong>{' '}
-                      <span className={experience.sideEffects === 'None reported' ? 'text-green-600' : 'text-orange-600'}>
-                        {experience.sideEffects}
-                      </span>
-                    </p>
-                  </div>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {experience.tags.map((tag, index) => (
-                      <span
-                        key={index}
-                        className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full"
-                      >
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Recommendation */}
-                  <div className="text-center">
-                    <span className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${
-                      experience.wouldRecommend 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-red-100 text-red-800'
-                    }`}>
-                      {experience.wouldRecommend ? '👍 Would Recommend' : '👎 Would Not Recommend'}
-                    </span>
-                  </div>
+          {/* Success Metrics */}
+          <div className="bg-white rounded-3xl shadow-lg p-8 mb-12">
+            <h2 className="text-2xl font-bold text-center mb-8">Community Results</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {successMetrics.map((metric, index) => (
+                <div key={index} className="text-center">
+                  <div className="text-3xl mb-2">{metric.icon}</div>
+                  <div className="text-3xl font-bold text-green-600 mb-1">{metric.number}</div>
+                  <div className="text-sm text-gray-600">{metric.label}</div>
                 </div>
               ))}
             </div>
           </div>
-        </section>
+
+          {/* Popular Conditions */}
+          <div className="bg-white rounded-3xl shadow-lg p-8 mb-12">
+            <h2 className="text-2xl font-bold mb-6">Most Reviewed Conditions</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {commonConditions.map((item, index) => (
+                <div key={index} className="bg-gray-50 p-4 rounded-xl">
+                  <div className="flex justify-between items-center mb-2">
+                    <h3 className="font-semibold">{item.condition}</h3>
+                    <div className="flex items-center">
+                      <Star className="w-4 h-4 text-yellow-400 fill-current mr-1" />
+                      <span className="text-sm font-medium">{item.avgRating}</span>
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-600">{item.users} user reviews</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Filters and Sort */}
+          <div className="flex flex-col md:flex-row justify-between items-center mb-8 space-y-4 md:space-y-0">
+            <div className="flex space-x-4">
+              <select
+                value={selectedFilter}
+                onChange={(e) => setSelectedFilter(e.target.value)}
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+              >
+                <option value="all">All Conditions</option>
+                <option value="stress">Stress & Anxiety</option>
+                <option value="sleep">Sleep Issues</option>
+                <option value="energy">Energy & Fatigue</option>
+                <option value="joint">Joint Health</option>
+              </select>
+              
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+              >
+                <option value="recent">Most Recent</option>
+                <option value="helpful">Most Helpful</option>
+                <option value="rating">Highest Rated</option>
+              </select>
+            </div>
+            
+            <div className="text-sm text-gray-600">
+              Showing {filteredReviews.length} verified reviews
+            </div>
+          </div>
+
+          {/* Reviews */}
+          <div className="space-y-6">
+            {filteredReviews.map((review) => (
+              <div key={review.id} className="bg-white rounded-3xl shadow-lg p-8">
+                {/* Review Header */}
+                <div className="flex justify-between items-start mb-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                      <User className="w-6 h-6 text-green-600" />
+                    </div>
+                    <div>
+                      <div className="flex items-center space-x-2">
+                        <h3 className="font-semibold text-gray-900">{review.name}</h3>
+                        {review.verified && (
+                          <div className="flex items-center space-x-1 bg-green-100 px-2 py-1 rounded-full">
+                            <Shield className="w-3 h-3 text-green-600" />
+                            <span className="text-xs text-green-600">Verified</span>
+                          </div>
+                        )}
+                      </div>
+                      <p className="text-sm text-gray-600">{review.location}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="text-right">
+                    <div className="flex items-center space-x-1 mb-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-4 h-4 ${
+                            i < review.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Calendar className="w-3 h-3 mr-1" />
+                      {review.date}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Condition and Herb */}
+                <div className="grid md:grid-cols-3 gap-4 mb-6">
+                  <div className="bg-blue-50 p-4 rounded-xl">
+                    <h4 className="font-semibold text-blue-800 mb-1">Condition</h4>
+                    <p className="text-blue-700">{review.condition}</p>
+                  </div>
+                  <div className="bg-green-50 p-4 rounded-xl">
+                    <h4 className="font-semibold text-green-800 mb-1">Herb Used</h4>
+                    <p className="text-green-700">{review.herb}</p>
+                  </div>
+                  <div className="bg-purple-50 p-4 rounded-xl">
+                    <h4 className="font-semibold text-purple-800 mb-1">Duration</h4>
+                    <p className="text-purple-700">{review.duration}</p>
+                  </div>
+                </div>
+
+                {/* Review Content */}
+                <div className="mb-6">
+                  <p className="text-gray-700 leading-relaxed">{review.review}</p>
+                </div>
+
+                {/* Before/After */}
+                <div className="grid md:grid-cols-2 gap-6 mb-6">
+                  <div className="bg-red-50 p-4 rounded-xl">
+                    <h4 className="font-semibold text-red-800 mb-2">Before</h4>
+                    <p className="text-red-700 text-sm">{review.beforeAfter.before}</p>
+                  </div>
+                  <div className="bg-green-50 p-4 rounded-xl">
+                    <h4 className="font-semibold text-green-800 mb-2">After</h4>
+                    <p className="text-green-700 text-sm">{review.beforeAfter.after}</p>
+                  </div>
+                </div>
+
+                {/* Side Effects & Recommendation */}
+                <div className="grid md:grid-cols-2 gap-6 mb-6">
+                  <div>
+                    <h4 className="font-semibold text-gray-800 mb-2">Side Effects</h4>
+                    <p className="text-gray-700 text-sm">{review.sideEffects}</p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-800 mb-2">Would Recommend?</h4>
+                    <p className="text-gray-700 text-sm">
+                      {review.wouldRecommend ? '✅ Yes, absolutely' : '❌ No'}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+                  <div className="flex items-center space-x-4">
+                    <button className="flex items-center space-x-2 text-gray-600 hover:text-green-600">
+                      <ThumbsUp className="w-4 h-4" />
+                      <span className="text-sm">Helpful ({review.helpful})</span>
+                    </button>
+                    <button className="flex items-center space-x-2 text-gray-600 hover:text-green-600">
+                      <MessageCircle className="w-4 h-4" />
+                      <span className="text-sm">Comment</span>
+                    </button>
+                  </div>
+                  
+                  <div className="text-xs text-gray-500">
+                    This review has been verified by our medical team
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Share Your Experience CTA */}
+          <div className="mt-12 bg-gradient-to-br from-green-600 to-green-700 rounded-3xl p-8 text-center text-white">
+            <h2 className="text-2xl font-bold mb-4">Share Your Experience</h2>
+            <p className="text-green-100 mb-6 max-w-2xl mx-auto">
+              Help others by sharing your herbal supplement journey. Your story could help someone make an informed decision about their health.
+            </p>
+            <button className="bg-white text-green-600 px-8 py-3 rounded-xl font-semibold hover:bg-green-50 transition-colors">
+              Write a Review
+            </button>
+          </div>
+
+          {/* Medical Disclaimer */}
+          <div className="mt-8 bg-yellow-50 border border-yellow-200 rounded-2xl p-6">
+            <div className="flex items-start space-x-3">
+              <AlertTriangle className="w-5 h-5 text-yellow-600 mt-0.5" />
+              <div>
+                <h3 className="font-semibold text-yellow-800 mb-2">Medical Disclaimer</h3>
+                <p className="text-yellow-700 text-sm leading-relaxed">
+                  User experiences are individual and may not reflect typical results. These reviews are for educational purposes only and should not replace professional medical advice. Always consult with healthcare providers before starting any herbal supplement regimen.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   )
-} 
+}

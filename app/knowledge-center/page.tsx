@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import Navigation from '../../components/Navigation'
+import Breadcrumb from '../../components/Breadcrumb'
+import SmartSearch from '../../components/SmartSearch'
 
 export default function KnowledgeCenter() {
   const [activeTab, setActiveTab] = useState('faq')
@@ -91,6 +93,14 @@ export default function KnowledgeCenter() {
   return (
     <div>
       <Navigation />
+      
+      {/* Breadcrumb Navigation */}
+      <Breadcrumb 
+        items={[
+          { label: 'Knowledge Center' }
+        ]} 
+      />
+
       <main className="bg-white min-h-screen">
         {/* Header */}
         <section className="bg-gradient-to-r from-purple-600 to-indigo-700 text-white py-16 px-6">
@@ -102,14 +112,15 @@ export default function KnowledgeCenter() {
               Science-backed answers to all your herbal supplement questions. From safety to effectiveness, we've got you covered.
             </p>
             
-            {/* Search Bar */}
+            {/* Enhanced Search Bar */}
             <div className="max-w-2xl mx-auto">
-              <input
-                type="text"
-                placeholder="Search herbs, conditions, or questions..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full p-4 text-gray-900 rounded-2xl text-lg focus:outline-none focus:ring-4 focus:ring-purple-300"
+              <SmartSearch 
+                placeholder="Search herbs, conditions, safety info, or research..."
+                onSearch={(query, filters) => {
+                  setSearchTerm(query)
+                  // Handle filtered search results
+                }}
+                showFilters={true}
               />
             </div>
           </div>

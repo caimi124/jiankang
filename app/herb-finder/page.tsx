@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Breadcrumb from '../../components/Breadcrumb'
 
 export default function HerbFinderPage() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -34,6 +35,13 @@ export default function HerbFinderPage() {
 
   return (
     <main className="bg-white min-h-screen">
+      {/* Breadcrumb Navigation */}
+      <Breadcrumb 
+        items={[
+          { label: 'Herb Finder' }
+        ]} 
+      />
+
       {/* Header */}
       <section className="bg-gradient-to-r from-green-600 to-green-700 text-white py-16 px-6">
         <div className="max-w-7xl mx-auto text-center">
