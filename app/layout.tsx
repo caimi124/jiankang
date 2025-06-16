@@ -6,6 +6,7 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://herbscience.shop'),
   title: {
     default: 'HerbScience.shop - Discover the Science of Herbal Supplements',
     template: '%s | HerbScience.shop'
