@@ -1,9 +1,9 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import LanguageSwitcher from './LanguageSwitcher'
+import { getTranslation } from '../lib/i18n'
 
 interface NavItem {
   name: string
@@ -16,69 +16,75 @@ export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [focusedIndex, setFocusedIndex] = useState(-1)
   const pathname = usePathname()
+  const router = useRouter()
   const menuRef = useRef<HTMLDivElement>(null)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
   const menuItemsRef = useRef<(HTMLAnchorElement | null)[]>([])
 
+  // 检测当前语言
+  const currentLocale = pathname.startsWith('/zh') ? 'zh' : 'en'
+  const t = getTranslation(currentLocale)
+
   const navItems: NavItem[] = [
     { 
-      name: 'Home', 
+      name: t.nav.home, 
       href: '/',
       ariaLabel: 'Go to homepage',
       description: 'Main page with overview of our services'
     },
     { 
-      name: 'Herb Finder', 
+      name: t.nav.herbFinder, 
       href: '/herb-finder',
       ariaLabel: 'Find herbs by symptoms',
       description: 'Search for herbs based on your health symptoms'
     },
     { 
-      name: 'Safety Checker', 
+      name: t.nav.safetyChecker, 
       href: '/ingredient-checker',
       ariaLabel: 'Check supplement safety',
       description: 'Verify herb safety and drug interactions'
     },
     { 
-      name: 'Knowledge Center', 
+      name: t.nav.knowledgeCenter, 
       href: '/knowledge-center',
       ariaLabel: 'Browse herb knowledge base',
       description: 'Comprehensive information about herbs and research'
     },
     { 
-      name: 'Constitution Test', 
+      name: t.nav.constitutionTest, 
       href: '/constitution-test',
       ariaLabel: 'Take TCM body constitution assessment',
       description: 'Discover your Traditional Chinese Medicine body type'
     },
     { 
-      name: 'User Reviews', 
+      name: t.nav.userReviews, 
       href: '/user-experiences',
       ariaLabel: 'Read user experiences and reviews',
       description: 'Real stories from our community members'
     },
     { 
-      name: 'Blog', 
+      name: t.nav.blog, 
       href: '/blog',
       ariaLabel: 'Read health and wellness articles',
       description: 'Latest research and insights on herbal medicine'
     },
     { 
-      name: 'About', 
+      name: t.nav.about, 
       href: '/about',
-      ariaLabel: 'Learn about our team and mission',
-      description: 'Our story, team, and evidence-based approach'
-    },
-    { 
-      name: 'Contact', 
-      href: '/contact',
-      ariaLabel: 'Get in touch with our team',
-      description: 'Contact information and support resources'
+      ariaLabel: 'Learn about our team and get in touch',
+      description: 'Our story, team, mission, and contact information'
     }
   ]
 
-  // 检测当前语言
-  const currentLocale = pathname.startsWith('/zh') ? 'zh' : 'en'
+  // 语言切换功能
+  const handleLanguageSwitch = (newLocale: string) => {
+    const currentPath = pathname.replace(/^\/zh/, '') || '/'
+    if (newLocale === 'zh') {
+      router.push(`/zh${currentPath}`)
+    } else {
+      router.push(currentPath)
+    }
+  }
 
   // 键盘导航处理
   useEffect(() => {
@@ -201,13 +207,13 @@ export default function Navigation() {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <div className="flex space-x-8" role="menubar">
+              <div className="flex space-x-6" role="menubar">
                 {navItems.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
                     className={`px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2 rounded-lg ${
-                      pathname === item.href
+                      pathname === item.href || (pathname.replace('/zh', '') === item.href && currentLocale === 'zh')
                         ? 'text-green-600 border-b-2 border-green-600'
                         : 'text-gray-700 hover:text-green-600'
                     }`}
@@ -221,12 +227,57 @@ export default function Navigation() {
               </div>
               
               {/* Language Switcher */}
-              <LanguageSwitcher currentLocale={currentLocale} />
+              <div className="relative">
+                <div className="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
+                  <button
+                    onClick={() => handleLanguageSwitch('en')}
+                    className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${
+                      currentLocale === 'en' 
+                        ? 'bg-white text-green-600 shadow-sm' 
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    🇺🇸 EN
+                  </button>
+                  <button
+                    onClick={() => handleLanguageSwitch('zh')}
+                    className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${
+                      currentLocale === 'zh' 
+                        ? 'bg-white text-green-600 shadow-sm' 
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    🇨🇳 中文
+                  </button>
+                </div>
+              </div>
             </div>
 
             {/* Mobile menu and language switcher */}
-            <div className="md:hidden flex items-center space-x-2" ref={menuRef}>
-              <LanguageSwitcher currentLocale={currentLocale} className="text-xs" />
+            <div className="md:hidden flex items-center space-x-2">
+              {/* Mobile Language Switcher */}
+              <div className="flex items-center space-x-1">
+                <button
+                  onClick={() => handleLanguageSwitch('en')}
+                  className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
+                    currentLocale === 'en' 
+                      ? 'bg-green-100 text-green-600' 
+                      : 'text-gray-600'
+                  }`}
+                >
+                  🇺🇸
+                </button>
+                <button
+                  onClick={() => handleLanguageSwitch('zh')}
+                  className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
+                    currentLocale === 'zh' 
+                      ? 'bg-green-100 text-green-600' 
+                      : 'text-gray-600'
+                  }`}
+                >
+                  🇨🇳
+                </button>
+              </div>
               
               <button
                 ref={menuButtonRef}
@@ -264,7 +315,7 @@ export default function Navigation() {
                           menuItemsRef.current[index] = el
                         }}
                         className={`block px-3 py-2 text-base font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-lg mx-2 ${
-                          pathname === item.href
+                          pathname === item.href || (pathname.replace('/zh', '') === item.href && currentLocale === 'zh')
                             ? 'text-green-600 bg-green-50'
                             : 'text-gray-700 hover:text-green-600 hover:bg-gray-50'
                         }`}

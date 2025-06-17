@@ -86,10 +86,14 @@ export function getLocaleFromPath(path: string): { locale: Locale; pathname: str
 
 export interface TranslationKeys {
   nav: {
+    home: string
     herbFinder: string
-    ingredientChecker: string
+    safetyChecker: string
     knowledgeCenter: string
-    userExperiences: string
+    constitutionTest: string
+    userReviews: string
+    blog: string
+    about: string
     language: string
   }
   home: {
@@ -153,10 +157,14 @@ export interface TranslationKeys {
 export const translations: Record<string, TranslationKeys> = {
   en: {
     nav: {
+      home: 'Home',
       herbFinder: 'Herb Finder',
-      ingredientChecker: 'Ingredient Checker',
+      safetyChecker: 'Safety Checker',
       knowledgeCenter: 'Knowledge Center',
-      userExperiences: 'User Experiences',
+      constitutionTest: 'Constitution Test',
+      userReviews: 'User Reviews',
+      blog: 'Blog',
+      about: 'About',
       language: 'Language'
     },
     home: {
@@ -218,10 +226,14 @@ export const translations: Record<string, TranslationKeys> = {
   },
   zh: {
     nav: {
-      herbFinder: '草药查找器',
-      ingredientChecker: '成分安全检查',
+      home: '首页',
+      herbFinder: '草药搜索器',
+      safetyChecker: '安全检查器',
       knowledgeCenter: '知识中心',
-      userExperiences: '用户体验',
+      constitutionTest: '体质测试',
+      userReviews: '用户评论',
+      blog: '博客',
+      about: '关于我们',
       language: '语言'
     },
     home: {

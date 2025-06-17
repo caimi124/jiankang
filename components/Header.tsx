@@ -14,11 +14,19 @@ export default function Header() {
 
   const t = getTranslation(currentLang)
 
+  // 检测当前语言
+  const currentLocale = pathname.startsWith('/zh') ? 'zh' : 'en'
+  const t_corrected = getTranslation(currentLocale)
+
   const navigationItems = [
-    { href: '/herb-finder', label: t.nav.herbFinder, icon: '🔍' },
-    { href: '/ingredient-checker', label: t.nav.ingredientChecker, icon: '🛡️' },
-    { href: '/knowledge-center', label: t.nav.knowledgeCenter, icon: '📚' },
-    { href: '/user-experiences', label: t.nav.userExperiences, icon: '💬' }
+    { href: '/', label: t_corrected.nav.home, icon: '🏠' },
+    { href: '/herb-finder', label: t_corrected.nav.herbFinder, icon: '🔍' },
+    { href: '/ingredient-checker', label: t_corrected.nav.safetyChecker, icon: '🛡️' },
+    { href: '/knowledge-center', label: t_corrected.nav.knowledgeCenter, icon: '📚' },
+    { href: '/constitution-test', label: t_corrected.nav.constitutionTest, icon: '🧠' },
+    { href: '/user-experiences', label: t_corrected.nav.userReviews, icon: '💬' },
+    { href: '/blog', label: t_corrected.nav.blog, icon: '📝' },
+    { href: '/about', label: t_corrected.nav.about, icon: 'ℹ️' }
   ]
 
   const isActive = (href: string) => {

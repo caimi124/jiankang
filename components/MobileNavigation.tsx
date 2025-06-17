@@ -2,11 +2,18 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { X, Menu, Search, ChevronDown } from 'lucide-react'
+import { getTranslation } from '../lib/i18n'
 
 export default function MobileNavigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [expandedSection, setExpandedSection] = useState<string | null>(null)
+  const pathname = usePathname()
+  
+  // 检测当前语言
+  const currentLocale = pathname.startsWith('/zh') ? 'zh' : 'en'
+  const t = getTranslation(currentLocale)
 
   const menuItems = [
     {
@@ -141,15 +148,7 @@ export default function MobileNavigation() {
                     className="flex items-center p-3 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
                   >
                     <span className="mr-3">ℹ️</span>
-                    <span>About Us</span>
-                  </Link>
-                  <Link
-                    href="/contact"
-                    onClick={() => setIsOpen(false)}
-                    className="flex items-center p-3 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                  >
-                    <span className="mr-3">📧</span>
-                    <span>Contact</span>
+                    <span>{t.nav.about}</span>
                   </Link>
                 </div>
               </nav>

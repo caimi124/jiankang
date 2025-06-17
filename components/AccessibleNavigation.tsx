@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
+import { getTranslation } from '../lib/i18n'
 
 interface NavItem {
   name: string
@@ -19,60 +20,58 @@ export default function AccessibleNavigation() {
   const menuButtonRef = useRef<HTMLButtonElement>(null)
   const menuItemsRef = useRef<(HTMLAnchorElement | null)[]>([])
 
+  // 检测当前语言
+  const currentLocale = pathname.startsWith('/zh') ? 'zh' : 'en'
+  const t = getTranslation(currentLocale)
+
   const navItems: NavItem[] = [
     { 
-      name: 'Home', 
+      name: t.nav.home, 
       href: '/',
       ariaLabel: 'Go to homepage',
       description: 'Main page with overview of our services'
     },
     { 
-      name: 'Herb Finder', 
+      name: t.nav.herbFinder, 
       href: '/herb-finder',
       ariaLabel: 'Find herbs by symptoms',
       description: 'Search for herbs based on your health symptoms'
     },
     { 
-      name: 'Safety Checker', 
+      name: t.nav.safetyChecker, 
       href: '/ingredient-checker',
       ariaLabel: 'Check supplement safety',
       description: 'Verify herb safety and drug interactions'
     },
     { 
-      name: 'Knowledge Center', 
+      name: t.nav.knowledgeCenter, 
       href: '/knowledge-center',
       ariaLabel: 'Browse herb knowledge base',
       description: 'Comprehensive information about herbs and research'
     },
     { 
-      name: 'Constitution Test', 
+      name: t.nav.constitutionTest, 
       href: '/constitution-test',
       ariaLabel: 'Take TCM body constitution assessment',
       description: 'Discover your Traditional Chinese Medicine body type'
     },
     { 
-      name: 'User Reviews', 
+      name: t.nav.userReviews, 
       href: '/user-experiences',
       ariaLabel: 'Read user experiences and reviews',
       description: 'Real stories from our community members'
     },
     { 
-      name: 'Blog', 
+      name: t.nav.blog, 
       href: '/blog',
       ariaLabel: 'Read health and wellness articles',
       description: 'Latest research and insights on herbal medicine'
     },
     { 
-      name: 'About', 
+      name: t.nav.about, 
       href: '/about',
-      ariaLabel: 'Learn about our team and mission',
-      description: 'Our story, team, and evidence-based approach'
-    },
-    { 
-      name: 'Contact', 
-      href: '/contact',
-      ariaLabel: 'Get in touch with our team',
-      description: 'Contact information and support resources'
+      ariaLabel: 'Learn about our team and get in touch',
+      description: 'Our story, team, mission, and contact information'
     }
   ]
 
