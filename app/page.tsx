@@ -1,12 +1,17 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import Header from '../components/Header'
 import SmartSearch from '../components/SmartSearch'
 import TrustIndicators from '../components/TrustIndicators'
 import PersonalizedRecommendations from '../components/PersonalizedRecommendations'
+import { getTranslation } from '../lib/i18n'
 
 export default function Home() {
+  const pathname = usePathname()
+  const currentLocale = pathname.startsWith('/zh') ? 'zh' : 'en'
+  const t = getTranslation(currentLocale)
   return (
     <main className="min-h-screen bg-white">
       {/* Unified Header Component */}
@@ -28,26 +33,24 @@ export default function Home() {
           <div className="text-center">
             {/* Trust Badge */}
             <div className="inline-flex items-center bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 mb-6 shadow-lg">
-              <span className="text-green-600 font-medium">✅ Trusted by 50,000+ Users</span>
+              <span className="text-green-600 font-medium">✅ {t.home.heroSubtitle}</span>
             </div>
             
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              Herbal Supplements,
+              {t.home.title}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600 block">
-                Demystified
+                {t.home.subtitle}
               </span>
             </h1>
             
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Understand what you take. Discover what works. Make informed decisions about herbal supplements with 
-              <span className="font-semibold text-green-700"> science-backed insights</span> and 
-              <span className="font-semibold text-blue-700"> personalized recommendations</span>.
+              {t.home.description}
             </p>
             
             {/* Enhanced Search Bar */}
             <div className="mb-8">
               <SmartSearch 
-                placeholder="Search herbs, symptoms, or get safety information..."
+                placeholder={currentLocale === 'zh' ? '搜索草药、症状或获取安全信息...' : 'Search herbs, symptoms, or get safety information...'}
                 onSearch={(query, filters) => {
                   // Handle search - could redirect to search results page
                   console.log('Search:', query, filters);
@@ -59,13 +62,13 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <Link href="/herb-finder" className="group bg-green-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-green-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                 <span className="flex items-center justify-center">
-                  🔍 Find Your Herbs
+                  🔍 {t.home.findHerbs}
                   <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
                 </span>
               </Link>
               <Link href="/ingredient-checker" className="group border-2 border-green-600 text-green-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-green-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                 <span className="flex items-center justify-center">
-                  🛡️ Check Safety
+                  🛡️ {t.home.checkSafety}
                   <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
                 </span>
               </Link>
@@ -75,19 +78,19 @@ export default function Home() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
               <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-white/20">
                 <div className="text-2xl font-bold text-green-600">500+</div>
-                <div className="text-xs text-gray-600">Herbs Analyzed</div>
+                <div className="text-xs text-gray-600">{t.home.heroStats.herbs}</div>
               </div>
               <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-white/20">
                 <div className="text-2xl font-bold text-blue-600">50K+</div>
-                <div className="text-xs text-gray-600">Users Helped</div>
+                <div className="text-xs text-gray-600">{t.home.heroStats.users}</div>
               </div>
               <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-white/20">
                 <div className="text-2xl font-bold text-purple-600">2K+</div>
-                <div className="text-xs text-gray-600">Research Citations</div>
+                <div className="text-xs text-gray-600">{t.home.heroStats.research}</div>
               </div>
               <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-white/20">
                 <div className="text-2xl font-bold text-emerald-600">24/7</div>
-                <div className="text-xs text-gray-600">Updated Database</div>
+                <div className="text-xs text-gray-600">{t.home.heroStats.database}</div>
               </div>
             </div>
           </div>
