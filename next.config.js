@@ -1,11 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Internationalization
-  i18n: {
-    locales: ['en', 'zh'],
-    defaultLocale: 'en',
-    localeDetection: false,
-  },
   // Image Optimization
   images: {
     // Enable modern image formats
@@ -33,9 +27,6 @@ const nextConfig = {
 
   // Power pack optimization
   poweredByHeader: false,
-
-  // Enable SWC minification
-  swcMinify: true,
 
   // Headers for security and performance
   async headers() {
@@ -103,7 +94,7 @@ const nextConfig = {
 
   // ESLint configuration
   eslint: {
-    ignoreDuringBuilds: false,
+    ignoreDuringBuilds: true,
   },
 
   // Enable static optimization

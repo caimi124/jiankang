@@ -1,11 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import Header from '../../components/Header'
-import Breadcrumbs from '../../components/Breadcrumbs'
-import SmartSearch from '../../components/SmartSearch'
-import { LoadingSpinner, CardSkeleton } from '../../components/LoadingSpinner'
-import { searchHerbsBySymptom, convertHerbsToResults, advancedSearch } from '../../lib/herbs-data'
+import Header from '../../../components/Header'
+import Breadcrumbs from '../../../components/Breadcrumbs'
+import SmartSearch from '../../../components/SmartSearch'
+import { LoadingSpinner, CardSkeleton } from '../../../components/LoadingSpinner'
+import { searchHerbsBySymptom, convertHerbsToResults, advancedSearch } from '../../../lib/herbs-data'
 
 interface HerbResult {
   id: string
@@ -27,21 +27,21 @@ interface HerbResult {
   imageUrl?: string
 }
 
-export default function HerbFinder() {
+export default function ZhHerbFinder() {
   const [searchResults, setSearchResults] = useState<HerbResult[]>([])
   const [loading, setLoading] = useState(false)
   const [hasSearched, setHasSearched] = useState(false)
 
   const breadcrumbItems = [
-    { label: 'Tools', href: '/tools', icon: '🔧' },
-    { label: 'Herb Finder', icon: '🔍' }
+    { label: '工具', href: '/zh/tools', icon: '🔧' },
+    { label: '草药查找器', icon: '🔍' }
   ]
 
   const handleSearch = async (query: string, filters: any) => {
     setLoading(true)
     setHasSearched(true)
     
-    // Simulate API delay for better UX, then use real data
+    // 模拟API延迟，然后使用真实数据
     setTimeout(() => {
       try {
         // 使用真实的草药数据搜索
@@ -55,11 +55,11 @@ export default function HerbFinder() {
         
         setSearchResults(finalResults)
       } catch (error) {
-        console.error('Search error:', error)
+        console.error('搜索错误:', error)
         setSearchResults([])
       }
       setLoading(false)
-    }, 800) // 减少延迟时间提供更好的用户体验
+    }, 800)
   }
 
   const getSafetyColor = (safety: string) => {
@@ -80,52 +80,71 @@ export default function HerbFinder() {
     }
   }
 
+  const getSafetyLabel = (safety: string) => {
+    switch (safety) {
+      case 'high': return '高安全性'
+      case 'medium': return '中等安全性'
+      case 'low': return '低安全性'
+      default: return '未知'
+    }
+  }
+
+  const getEvidenceLabel = (evidence: string) => {
+    switch (evidence) {
+      case 'strong': return '强证据'
+      case 'moderate': return '中等证据'
+      case 'limited': return '有限证据'
+      default: return '未知'
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Unified Header */}
+      {/* 统一标题栏 */}
       <Header />
       
-      {/* Page Content */}
+      {/* 页面内容 */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Breadcrumbs */}
+        {/* 面包屑导航 */}
         <Breadcrumbs items={breadcrumbItems} className="mb-6" />
         
-        {/* Page Header */}
+        {/* 页面标题 */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            🔍 Herb Finder
+            🔍 草药查找器
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Enter your symptoms or health goals to discover herbs that might help. 
-            All recommendations are backed by traditional use and modern scientific research.
+            输入您的症状或健康目标，发现可能有帮助的草药。所有推荐都基于传统使用和现代科学研究。
           </p>
         </div>
 
-        {/* Search Section */}
+        {/* 搜索区域 */}
         <div className="max-w-4xl mx-auto mb-12">
           <div className="bg-white rounded-2xl shadow-lg p-8">
             <h2 className="text-2xl font-semibold text-gray-900 mb-6 text-center">
-              What are you looking to address?
+              您希望改善什么健康问题？
             </h2>
             
             <SmartSearch
-              placeholder="Enter symptoms, health goals, or herb names..."
+              placeholder="输入症状、健康目标或草药名称..."
               onSearch={handleSearch}
             />
             
-            {/* Popular Searches */}
+            {/* 热门搜索 */}
             <div className="mt-6">
-              <p className="text-sm text-gray-600 mb-3">Popular searches:</p>
+              <p className="text-sm text-gray-600 mb-3">热门搜索:</p>
               <div className="flex flex-wrap gap-2">
                 {[
-                  'anxiety relief',
-                  'better sleep',
-                  'joint pain',
-                  'digestive issues',
-                  'immune support',
-                  'energy boost',
-                  'stress management',
-                  'cognitive function'
+                  '缓解焦虑',
+                  '改善睡眠',
+                  '关节疼痛',
+                  '消化问题',
+                  '免疫支持',
+                  '提升能量',
+                  '压力管理',
+                  '认知功能',
+                  '抗炎',
+                  '肝脏保护'
                 ].map((term) => (
                   <button
                     key={term}
@@ -140,25 +159,26 @@ export default function HerbFinder() {
           </div>
         </div>
 
-        {/* Results Section */}
+        {/* 加载状态 */}
         {loading && (
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8">
               <LoadingSpinner size="lg" />
-              <p className="mt-4 text-gray-600">Searching our comprehensive herb database...</p>
+              <p className="mt-4 text-gray-600">正在搜索我们的综合草药数据库...</p>
             </div>
             <CardSkeleton count={3} />
           </div>
         )}
 
+        {/* 搜索结果 */}
         {!loading && hasSearched && searchResults.length > 0 && (
           <div className="max-w-4xl mx-auto">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-2xl font-semibold text-gray-900">
-                Found {searchResults.length} herbs for you
+                为您找到 {searchResults.length} 种草药
               </h3>
               <div className="text-sm text-gray-600">
-                Sorted by relevance
+                按相关性排序
               </div>
             </div>
 
@@ -168,20 +188,20 @@ export default function HerbFinder() {
                   key={herb.id}
                   className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow p-6"
                 >
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+                  <div className="flex flex-col">
                     <div className="flex-1">
                       <div className="flex items-center mb-2">
                         <h4 className="text-xl font-semibold text-gray-900 mr-2">
-                          {herb.name}
+                          {herb.chineseName}
                         </h4>
                         <span className="text-lg text-gray-600 mr-4">
-                          {herb.chineseName}
+                          {herb.name}
                         </span>
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${getSafetyColor(herb.safety)}`}>
-                          {herb.safety} safety
+                          {getSafetyLabel(herb.safety)}
                         </span>
                         <span className={`ml-2 px-2 py-1 rounded-full text-xs font-medium ${getEvidenceColor(herb.evidence)}`}>
-                          {herb.evidence} evidence
+                          {getEvidenceLabel(herb.evidence)}
                         </span>
                       </div>
                       
@@ -230,15 +250,13 @@ export default function HerbFinder() {
                         <p className="text-sm font-medium text-gray-600 mb-1">注意事项:</p>
                         <p className="text-sm text-orange-600">{herb.precautions}</p>
                       </div>
-                    </div>
-                    
-                    <div className="flex flex-col space-y-2 md:ml-6">
-                      <button className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium">
-                        View Details
-                      </button>
-                      <button className="px-6 py-2 border border-green-600 text-green-600 rounded-lg hover:bg-green-50 transition-colors font-medium">
-                        Check Safety
-                      </button>
+                      
+                      {herb.caseStudy && (
+                        <div className="bg-gray-50 rounded-lg p-4 mt-4">
+                          <p className="text-sm font-medium text-gray-600 mb-2">临床案例:</p>
+                          <p className="text-sm text-gray-700">{herb.caseStudy}</p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -247,57 +265,23 @@ export default function HerbFinder() {
           </div>
         )}
 
+        {/* 无搜索结果 */}
         {!loading && hasSearched && searchResults.length === 0 && (
-          <div className="max-w-4xl mx-auto text-center py-12">
-            <div className="text-6xl mb-4">🔍</div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No herbs found</h3>
-            <p className="text-gray-600 mb-6">
-              Try adjusting your search terms or browse our categories below.
-            </p>
-            <button 
-              onClick={() => {
-                setHasSearched(false)
-                setSearchResults([])
-              }}
-              className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
-            >
-              Try New Search
-            </button>
-          </div>
-        )}
-
-        {/* Browse Categories */}
-        {!hasSearched && (
-          <div className="max-w-6xl mx-auto">
-            <h3 className="text-2xl font-semibold text-gray-900 mb-8 text-center">
-              Browse by Category
-            </h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                { name: 'Digestive Health', icon: '🦾', count: 45, color: 'from-blue-500 to-blue-600' },
-                { name: 'Stress & Anxiety', icon: '🧘', count: 38, color: 'from-purple-500 to-purple-600' },
-                { name: 'Energy & Vitality', icon: '⚡', count: 52, color: 'from-orange-500 to-orange-600' },
-                { name: 'Sleep Support', icon: '😴', count: 31, color: 'from-indigo-500 to-indigo-600' },
-                { name: 'Immune System', icon: '🛡️', count: 29, color: 'from-green-500 to-green-600' },
-                { name: 'Pain Relief', icon: '💊', count: 24, color: 'from-red-500 to-red-600' }
-              ].map((category) => (
-                <button
-                  key={category.name}
-                  onClick={() => handleSearch(category.name.toLowerCase(), {})}
-                  className="group bg-white rounded-xl shadow-md hover:shadow-lg transition-all p-6 text-left"
-                >
-                  <div className={`w-12 h-12 bg-gradient-to-br ${category.color} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                    <span className="text-2xl">{category.icon}</span>
-                  </div>
-                  <h4 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-green-700 transition-colors">
-                    {category.name}
-                  </h4>
-                  <p className="text-gray-600 text-sm">
-                    {category.count} herbs available
-                  </p>
-                </button>
-              ))}
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="bg-white rounded-xl shadow-md p-12">
+              <div className="text-6xl mb-4">🔍</div>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-4">
+                未找到相关草药
+              </h3>
+              <p className="text-gray-600 mb-6">
+                请尝试使用不同的关键词搜索，或者浏览我们的热门搜索建议。
+              </p>
+              <button
+                onClick={() => handleSearch('', {})}
+                className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors"
+              >
+                浏览所有草药
+              </button>
             </div>
           </div>
         )}

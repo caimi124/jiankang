@@ -1,30 +1,50 @@
 {
-  "name": "herbscience-shop",
-  "version": "0.1.0",
-  "private": true,
+  "name": "notion-herb-updater",
+  "version": "1.0.0",
+  "description": "自动化草药数据库Notion条目创建和更新工具",
+  "main": "notion-herb-updater.js",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "notion": "node notion-herb-updater.js",
+    "create-herbs": "node create-all-herbs.js",
+    "manage-database": "node notion-database-manager.js",
+    "export-data": "node -e \"const {NotionDatabaseManager} = require('./notion-database-manager.js'); new NotionDatabaseManager().exportToCSV()\"",
+    "stats": "node -e \"const {NotionDatabaseManager} = require('./notion-database-manager.js'); new NotionDatabaseManager().getStatsByCategory()\"",
+    "test-website": "npm run build && npm run start"
   },
   "dependencies": {
-    "next": "14.0.4",
-    "react": "^18",
-    "react-dom": "^18",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "autoprefixer": "^10.0.1",
-    "postcss": "^8",
-    "tailwindcss": "^3.3.0",
-    "typescript": "^5",
-    "lucide-react": "^0.292.0",
-    "@headlessui/react": "^1.7.17",
-    "framer-motion": "^10.16.4"
+    "@notionhq/client": "^2.3.0",
+    "@tailwindcss/postcss": "^4.1.10",
+    "@tailwindcss/typography": "^0.5.16",
+    "autoprefixer": "^10.4.21",
+    "clsx": "^2.1.1",
+    "dotenv": "^16.5.0",
+    "lucide-react": "^0.516.0",
+    "next": "^15.3.3",
+    "postcss": "^8.5.6",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^4.1.10"
   },
+  "keywords": [
+    "notion",
+    "database",
+    "herbs",
+    "automation"
+  ],
+  "author": "",
+  "license": "MIT",
   "devDependencies": {
-    "eslint": "^8",
-    "eslint-config-next": "14.0.4"
+    "@types/node": "^24.0.3",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "eslint": "^9.29.0",
+    "eslint-config-next": "^15.3.3",
+    "typescript": "^5.8.3"
   }
-} 
+}
