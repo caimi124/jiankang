@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { ChevronRight, Home } from 'lucide-react'
 
 interface BreadcrumbItem {
@@ -15,6 +16,17 @@ interface BreadcrumbsProps {
 }
 
 export default function Breadcrumbs({ items, className = '' }: BreadcrumbsProps) {
+  const pathname = usePathname()
+  const currentLocale = pathname.startsWith('/zh') ? 'zh' : 'en'
+  
+  // 添加语言前缀的函数
+  const addLocalePrefix = (href: string) => {
+    if (currentLocale === 'zh') {
+      return `/zh${href}`
+    }
+    return href
+  }
+
   return (
     <nav 
       className={`flex items-center space-x-2 text-sm text-gray-600 ${className}`}
@@ -22,7 +34,7 @@ export default function Breadcrumbs({ items, className = '' }: BreadcrumbsProps)
     >
       {/* Home Link */}
       <Link 
-        href="/" 
+        href={addLocalePrefix('/')} 
         className="flex items-center hover:text-green-600 transition-colors"
         aria-label="Go to homepage"
       >
@@ -36,7 +48,7 @@ export default function Breadcrumbs({ items, className = '' }: BreadcrumbsProps)
           
           {item.href && index < items.length - 1 ? (
             <Link 
-              href={item.href}
+              href={addLocalePrefix(item.href)}
               className="hover:text-green-600 transition-colors flex items-center"
             >
               {item.icon && <span className="mr-1">{item.icon}</span>}

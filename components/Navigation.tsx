@@ -25,6 +25,14 @@ export default function Navigation() {
   const currentLocale = pathname.startsWith('/zh') ? 'zh' : 'en'
   const t = getTranslation(currentLocale)
 
+  // 添加语言前缀的函数
+  const addLocalePrefix = (href: string) => {
+    if (currentLocale === 'zh') {
+      return `/zh${href}`
+    }
+    return href
+  }
+
   const navItems: NavItem[] = [
     { 
       name: t.nav.home, 
@@ -186,7 +194,7 @@ export default function Navigation() {
             {/* Logo */}
             <div className="flex items-center">
               <Link 
-                href="/" 
+                href={addLocalePrefix('/')} 
                 className="flex items-center space-x-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2 rounded-lg p-1"
                 aria-label="HerbScience.shop homepage"
               >
@@ -208,22 +216,25 @@ export default function Navigation() {
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
               <div className="flex space-x-6" role="menubar">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={`px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2 rounded-lg ${
-                      pathname === item.href || (pathname.replace('/zh', '') === item.href && currentLocale === 'zh')
-                        ? 'text-green-600 border-b-2 border-green-600'
-                        : 'text-gray-700 hover:text-green-600'
-                    }`}
-                    role="menuitem"
-                    aria-label={item.ariaLabel}
-                    title={item.description}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
+                {navItems.map((item) => {
+                  const localizedHref = addLocalePrefix(item.href)
+                  return (
+                    <Link
+                      key={item.name}
+                      href={localizedHref}
+                      className={`px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2 rounded-lg ${
+                        pathname === localizedHref
+                          ? 'text-green-600 border-b-2 border-green-600'
+                          : 'text-gray-700 hover:text-green-600'
+                      }`}
+                      role="menuitem"
+                      aria-label={item.ariaLabel}
+                      title={item.description}
+                    >
+                      {item.name}
+                    </Link>
+                  )
+                })}
               </div>
               
               {/* Language Switcher */}
@@ -307,32 +318,35 @@ export default function Navigation() {
                   aria-labelledby="mobile-menu-button"
                 >
                   <div className="py-2 space-y-1">
-                    {navItems.map((item, index) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        ref={(el) => {
-                          menuItemsRef.current[index] = el
-                        }}
-                        className={`block px-3 py-2 text-base font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-lg mx-2 ${
-                          pathname === item.href || (pathname.replace('/zh', '') === item.href && currentLocale === 'zh')
-                            ? 'text-green-600 bg-green-50'
-                            : 'text-gray-700 hover:text-green-600 hover:bg-gray-50'
-                        }`}
-                        role="menuitem"
-                        aria-label={item.ariaLabel}
-                        onClick={closeMenu}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault()
-                            closeMenu()
-                          }
-                        }}
-                      >
-                        {item.name}
-                        <span className="sr-only">. {item.description}</span>
-                      </Link>
-                    ))}
+                    {navItems.map((item, index) => {
+                      const localizedHref = addLocalePrefix(item.href)
+                      return (
+                        <Link
+                          key={item.name}
+                          href={localizedHref}
+                          ref={(el) => {
+                            menuItemsRef.current[index] = el
+                          }}
+                          className={`block px-3 py-2 text-base font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-lg mx-2 ${
+                            pathname === localizedHref
+                              ? 'text-green-600 bg-green-50'
+                              : 'text-gray-700 hover:text-green-600 hover:bg-gray-50'
+                          }`}
+                          role="menuitem"
+                          aria-label={item.ariaLabel}
+                          onClick={closeMenu}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault()
+                              closeMenu()
+                            }
+                          }}
+                        >
+                          {item.name}
+                          <span className="sr-only">. {item.description}</span>
+                        </Link>
+                      )
+                    })}
                   </div>
                 </div>
               )}

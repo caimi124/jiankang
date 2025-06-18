@@ -12,6 +12,14 @@ export default function Home() {
   const pathname = usePathname()
   const currentLocale = pathname.startsWith('/zh') ? 'zh' : 'en'
   const t = getTranslation(currentLocale)
+  
+  // 添加语言前缀的函数
+  const addLocalePrefix = (href: string) => {
+    if (currentLocale === 'zh') {
+      return `/zh${href}`
+    }
+    return href
+  }
   return (
     <main className="min-h-screen bg-white">
       {/* Unified Header Component */}
@@ -60,13 +68,13 @@ export default function Home() {
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Link href="/herb-finder" className="group bg-green-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-green-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+              <Link href={addLocalePrefix("/herb-finder")} className="group bg-green-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-green-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                 <span className="flex items-center justify-center">
                   🔍 {t.home.findHerbs}
                   <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
                 </span>
               </Link>
-              <Link href="/ingredient-checker" className="group border-2 border-green-600 text-green-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-green-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+              <Link href={addLocalePrefix("/ingredient-checker")} className="group border-2 border-green-600 text-green-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-green-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                 <span className="flex items-center justify-center">
                   🛡️ {t.home.checkSafety}
                   <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
@@ -110,7 +118,7 @@ export default function Home() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Link href="/herb-finder" className="group herb-card">
+            <Link href={addLocalePrefix("/herb-finder")} className="group herb-card">
               <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:shadow-xl transition-all">
                 <span className="text-2xl">🔍</span>
               </div>
@@ -122,7 +130,7 @@ export default function Home() {
               </div>
             </Link>
 
-            <Link href="/ingredient-checker" className="group herb-card">
+            <Link href={addLocalePrefix("/ingredient-checker")} className="group herb-card">
               <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:shadow-xl transition-all">
                 <span className="text-2xl">🛡️</span>
               </div>
@@ -134,7 +142,7 @@ export default function Home() {
               </div>
             </Link>
 
-            <Link href="/knowledge-center" className="group herb-card">
+            <Link href={addLocalePrefix("/knowledge-center")} className="group herb-card">
               <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:shadow-xl transition-all">
                 <span className="text-2xl">📚</span>
               </div>
@@ -146,7 +154,7 @@ export default function Home() {
               </div>
             </Link>
 
-            <Link href="/constitution-test" className="group herb-card relative overflow-hidden">
+            <Link href={addLocalePrefix("/constitution-test")} className="group herb-card relative overflow-hidden">
               {/* Popular Badge */}
               <div className="absolute top-4 right-4 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
                 Popular!
@@ -169,7 +177,7 @@ export default function Home() {
             <p className="text-green-100 mb-6 max-w-2xl mx-auto">
               Take our quick 2-minute assessment to get personalized recommendations based on your health goals and concerns.
             </p>
-            <Link href="/constitution-test" className="inline-flex items-center bg-white text-green-600 px-8 py-4 rounded-xl font-semibold hover:bg-green-50 transition-colors shadow-lg hover:shadow-xl">
+            <Link href={addLocalePrefix("/constitution-test")} className="inline-flex items-center bg-white text-green-600 px-8 py-4 rounded-xl font-semibold hover:bg-green-50 transition-colors shadow-lg hover:shadow-xl">
               <span className="mr-2">🎯</span>
               Get Personalized Recommendations
               <span className="ml-2">→</span>
@@ -471,10 +479,10 @@ export default function Home() {
             Join thousands of users who trust HerbScience.shop for reliable herbal information
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/herb-finder" className="bg-white text-green-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors">
+            <Link href={addLocalePrefix("/herb-finder")} className="bg-white text-green-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors">
               Start Herb Finder
             </Link>
-            <Link href="/ingredient-checker" className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-700 transition-colors">
+            <Link href={addLocalePrefix("/ingredient-checker")} className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-700 transition-colors">
               Check My Supplements
             </Link>
           </div>
@@ -494,28 +502,28 @@ export default function Home() {
             <div>
               <h4 className="font-semibold mb-4">Tools</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><Link href="/herb-finder" className="hover:text-white">Herb Finder</Link></li>
-                <li><Link href="/ingredient-checker" className="hover:text-white">Safety Checker</Link></li>
-                <li><Link href="/knowledge-center" className="hover:text-white">Knowledge Base</Link></li>
-                <li><Link href="/user-experiences" className="hover:text-white">User Reviews</Link></li>
+                <li><Link href={addLocalePrefix("/herb-finder")} className="hover:text-white">Herb Finder</Link></li>
+                <li><Link href={addLocalePrefix("/ingredient-checker")} className="hover:text-white">Safety Checker</Link></li>
+                <li><Link href={addLocalePrefix("/knowledge-center")} className="hover:text-white">Knowledge Base</Link></li>
+                <li><Link href={addLocalePrefix("/user-experiences")} className="hover:text-white">User Reviews</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Resources</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><Link href="/blog" className="hover:text-white">Health Blog</Link></li>
-                <li><Link href="/constitution-test" className="hover:text-white">Constitution Test</Link></li>
-                <li><Link href="/dosage-calculator" className="hover:text-white">Dosage Calculator</Link></li>
-                <li><Link href="/articles" className="hover:text-white">Research Articles</Link></li>
+                <li><Link href={addLocalePrefix("/blog")} className="hover:text-white">Health Blog</Link></li>
+                <li><Link href={addLocalePrefix("/constitution-test")} className="hover:text-white">Constitution Test</Link></li>
+                <li><Link href={addLocalePrefix("/dosage-calculator")} className="hover:text-white">Dosage Calculator</Link></li>
+                <li><Link href={addLocalePrefix("/articles")} className="hover:text-white">Research Articles</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Company</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><Link href="/about" className="hover:text-white">About Us</Link></li>
-                <li><Link href="/about#contact" className="hover:text-white">Contact Us</Link></li>
-                <li><Link href="/privacy" className="hover:text-white">Privacy Policy</Link></li>
-                <li><a href="/knowledge-center#faq" className="hover:text-white">FAQ</a></li>
+                <li><Link href={addLocalePrefix("/about")} className="hover:text-white">About Us</Link></li>
+                <li><Link href={addLocalePrefix("/about#contact")} className="hover:text-white">Contact Us</Link></li>
+                <li><Link href={addLocalePrefix("/privacy")} className="hover:text-white">Privacy Policy</Link></li>
+                <li><a href={addLocalePrefix("/knowledge-center#faq")} className="hover:text-white">FAQ</a></li>
               </ul>
             </div>
           </div>

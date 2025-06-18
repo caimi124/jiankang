@@ -1,23 +1,23 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Navigation from '../../components/Navigation'
 import Breadcrumb from '../../components/Breadcrumb'
-import { Brain, Users, Heart, Leaf, Shield, CheckCircle, ArrowRight, AlertTriangle } from 'lucide-react'
+import { CheckCircle, Brain, ArrowLeft, ArrowRight, Star, Heart, Zap, Shield } from 'lucide-react'
 
 interface Question {
   id: number
   category: string
   question: string
+  subtitle?: string
   options: Array<{
     text: string
     score: {
-      yang: number
-      yin: number
-      qi: number
-      blood: number
-      phlegm: number
-      heat: number
+      fire: number
+      earth: number
+      metal: number
+      water: number
+      wood: number
     }
   }>
 }
@@ -25,212 +25,222 @@ interface Question {
 interface ConstitutionResult {
   type: string
   name: string
-  chineseName: string
+  subtitle: string
   description: string
   characteristics: string[]
-  commonSymptoms: string[]
-  recommendedHerbs: Array<{
+  wellnessAdvice: string[]
+  recommendedSupplements: Array<{
     name: string
-    chineseName: string
-    benefits: string
-    dosage: string
+    benefit: string
+    timing: string
   }>
   lifestyle: string[]
-  foods: {
-    beneficial: string[]
-    avoid: string[]
+  nutrition: {
+    include: string[]
+    limit: string[]
   }
   score: number
+  color: string
+  icon: React.ReactNode
 }
 
 export default function ConstitutionTestPage() {
-  const [currentQuestion, setCurrentQuestion] = useState(0)
-  const [answers, setAnswers] = useState<Array<number>>([])
+  const [currentQuestion, setCurrentQuestion] = useState(-1) // Start with welcome screen
+  const [answers, setAnswers] = useState<number[]>([])
   const [showResults, setShowResults] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
 
   const questions: Question[] = [
     {
       id: 1,
       category: "Energy & Vitality",
-      question: "How would you describe your overall energy levels?",
+      question: "How would you describe your natural energy levels?",
+      subtitle: "Think about your baseline energy when you're well-rested and healthy",
       options: [
         { 
-          text: "High energy, always active and restless", 
-          score: { yang: 3, yin: 0, qi: 2, blood: 1, phlegm: 0, heat: 2 }
+          text: "High energy, naturally active and driven", 
+          score: { fire: 3, earth: 1, metal: 2, water: 0, wood: 2 }
         },
         { 
-          text: "Moderate energy, occasional fatigue", 
-          score: { yang: 1, yin: 1, qi: 1, blood: 1, phlegm: 1, heat: 1 }
+          text: "Steady, consistent energy throughout the day", 
+          score: { fire: 1, earth: 3, metal: 2, water: 2, wood: 1 }
         },
         { 
-          text: "Low energy, often tired and need rest", 
-          score: { yang: 0, yin: 3, qi: 0, blood: 2, phlegm: 2, heat: 0 }
+          text: "Calm energy, prefer gentle activities", 
+          score: { fire: 0, earth: 2, metal: 3, water: 3, wood: 0 }
         },
         { 
-          text: "Energy fluctuates dramatically", 
-          score: { yang: 2, yin: 2, qi: 0, blood: 0, phlegm: 1, heat: 1 }
+          text: "Variable energy, tends to come in bursts", 
+          score: { fire: 2, earth: 0, metal: 1, water: 1, wood: 3 }
         }
       ]
     },
     {
       id: 2,
-      category: "Body Temperature",
-      question: "How do you usually feel about temperature?",
+      category: "Physical Preferences",
+      question: "What type of climate and environment do you prefer?",
+      subtitle: "Consider where you feel most comfortable and energized",
       options: [
         { 
-          text: "Always feel hot, prefer cold environments", 
-          score: { yang: 3, yin: 0, qi: 1, blood: 1, phlegm: 0, heat: 3 }
+          text: "Warm, sunny environments with lots of activity", 
+          score: { fire: 3, earth: 2, metal: 0, water: 0, wood: 1 }
         },
         { 
-          text: "Usually comfortable with room temperature", 
-          score: { yang: 1, yin: 1, qi: 2, blood: 2, phlegm: 1, heat: 1 }
+          text: "Moderate, stable temperatures with comfort", 
+          score: { fire: 1, earth: 3, metal: 2, water: 1, wood: 1 }
         },
         { 
-          text: "Often feel cold, need warm clothes", 
-          score: { yang: 0, yin: 3, qi: 1, blood: 2, phlegm: 2, heat: 0 }
+          text: "Cool, crisp environments with fresh air", 
+          score: { fire: 0, earth: 1, metal: 3, water: 2, wood: 2 }
         },
         { 
-          text: "Temperature sensitivity varies", 
-          score: { yang: 1, yin: 2, qi: 1, blood: 1, phlegm: 2, heat: 1 }
+          text: "Quiet, peaceful places near water or nature", 
+          score: { fire: 0, earth: 1, metal: 1, water: 3, wood: 3 }
         }
       ]
     },
     {
       id: 3,
-      category: "Sleep Patterns",
-      question: "How is your sleep quality?",
+      category: "Sleep & Recovery",
+      question: "How do you typically sleep and recover?",
+      subtitle: "Think about your natural sleep patterns and recovery needs",
       options: [
         { 
-          text: "Light sleeper, wake up easily, vivid dreams", 
-          score: { yang: 2, yin: 1, qi: 0, blood: 0, phlegm: 0, heat: 2 }
+          text: "Fall asleep quickly, sleep lightly, wake up early", 
+          score: { fire: 3, earth: 1, metal: 1, water: 0, wood: 2 }
         },
         { 
-          text: "Generally sleep well, 7-8 hours", 
-          score: { yang: 1, yin: 1, qi: 2, blood: 2, phlegm: 1, heat: 1 }
+          text: "Need routine, sleep deeply, wake up gradually", 
+          score: { fire: 1, earth: 3, metal: 2, water: 2, wood: 0 }
         },
         { 
-          text: "Heavy sleeper, hard to wake up, need lots of sleep", 
-          score: { yang: 0, yin: 2, qi: 1, blood: 3, phlegm: 3, heat: 0 }
+          text: "Light sleeper, prefer cool room, wake refreshed", 
+          score: { fire: 0, earth: 1, metal: 3, water: 1, wood: 1 }
         },
         { 
-          text: "Insomnia, difficult to fall asleep", 
-          score: { yang: 3, yin: 0, qi: 0, blood: 1, phlegm: 0, heat: 3 }
+          text: "Deep sleeper, need lots of rest, slow to wake", 
+          score: { fire: 0, earth: 2, metal: 1, water: 3, wood: 0 }
         }
       ]
     },
     {
       id: 4,
-      category: "Digestion",
-      question: "How is your appetite and digestion?",
+      category: "Emotional Patterns",
+      question: "How do you typically handle stress and emotions?",
+      subtitle: "Consider your natural emotional responses and coping styles",
       options: [
         { 
-          text: "Strong appetite, eat quickly, sometimes indigestion", 
-          score: { yang: 3, yin: 0, qi: 1, blood: 1, phlegm: 1, heat: 2 }
+          text: "Intense emotions, quick to react, then move on", 
+          score: { fire: 3, earth: 0, metal: 1, water: 0, wood: 2 }
         },
         { 
-          text: "Normal appetite, good digestion", 
-          score: { yang: 1, yin: 1, qi: 2, blood: 2, phlegm: 1, heat: 1 }
+          text: "Steady emotions, worry about others, seek harmony", 
+          score: { fire: 1, earth: 3, metal: 1, water: 1, wood: 0 }
         },
         { 
-          text: "Poor appetite, slow digestion, feel heavy after eating", 
-          score: { yang: 0, yin: 2, qi: 0, blood: 1, phlegm: 3, heat: 0 }
+          text: "Controlled emotions, analyze situations, structured approach", 
+          score: { fire: 0, earth: 1, metal: 3, water: 1, wood: 1 }
         },
         { 
-          text: "Irregular appetite, sensitive stomach", 
-          score: { yang: 1, yin: 2, qi: 1, blood: 0, phlegm: 2, heat: 1 }
+          text: "Deep emotions, introspective, need time to process", 
+          score: { fire: 0, earth: 1, metal: 1, water: 3, wood: 1 }
         }
       ]
     },
     {
       id: 5,
-      category: "Emotions",
-      question: "How would you describe your emotional tendencies?",
+      category: "Social & Communication",
+      question: "How do you prefer to interact socially?",
+      subtitle: "Think about your natural communication style and social energy",
       options: [
         { 
-          text: "Outgoing, optimistic, sometimes impulsive", 
-          score: { yang: 3, yin: 0, qi: 2, blood: 1, phlegm: 0, heat: 2 }
+          text: "Outgoing, enjoy being center of attention, energized by people", 
+          score: { fire: 3, earth: 2, metal: 0, water: 0, wood: 1 }
         },
         { 
-          text: "Generally calm and balanced", 
-          score: { yang: 1, yin: 1, qi: 2, blood: 2, phlegm: 1, heat: 1 }
+          text: "Warm and caring, enjoy helping others, prefer small groups", 
+          score: { fire: 1, earth: 3, metal: 1, water: 1, wood: 0 }
         },
         { 
-          text: "Quiet, introverted, sometimes melancholy", 
-          score: { yang: 0, yin: 3, qi: 1, blood: 2, phlegm: 2, heat: 0 }
+          text: "Professional and polite, prefer structured interactions", 
+          score: { fire: 0, earth: 1, metal: 3, water: 1, wood: 1 }
         },
         { 
-          text: "Moody, easily stressed or anxious", 
-          score: { yang: 2, yin: 1, qi: 0, blood: 0, phlegm: 1, heat: 2 }
+          text: "Quiet and thoughtful, prefer one-on-one or solitude", 
+          score: { fire: 0, earth: 1, metal: 1, water: 3, wood: 2 }
         }
       ]
     },
     {
       id: 6,
-      category: "Physical Characteristics",
-      question: "How would you describe your physical build?",
+      category: "Physical Constitution",
+      question: "What best describes your physical build and tendencies?",
+      subtitle: "Consider your natural body type and physical characteristics",
       options: [
         { 
-          text: "Lean, muscular, strong bones", 
-          score: { yang: 3, yin: 0, qi: 2, blood: 2, phlegm: 0, heat: 1 }
+          text: "Lean and wiry, run warm, quick movements", 
+          score: { fire: 3, earth: 0, metal: 1, water: 0, wood: 2 }
         },
         { 
-          text: "Medium build, proportionate", 
-          score: { yang: 1, yin: 1, qi: 2, blood: 2, phlegm: 1, heat: 1 }
+          text: "Solid build, good muscle tone, steady strength", 
+          score: { fire: 1, earth: 3, metal: 2, water: 1, wood: 0 }
         },
         { 
-          text: "Soft build, tend to gain weight easily", 
-          score: { yang: 0, yin: 2, qi: 1, blood: 3, phlegm: 3, heat: 0 }
+          text: "Refined features, good posture, precise movements", 
+          score: { fire: 0, earth: 1, metal: 3, water: 1, wood: 1 }
         },
         { 
-          text: "Thin, delicate frame", 
-          score: { yang: 1, yin: 3, qi: 0, blood: 1, phlegm: 0, heat: 1 }
+          text: "Soft features, retain water, prefer gentle movement", 
+          score: { fire: 0, earth: 2, metal: 1, water: 3, wood: 0 }
         }
       ]
     },
     {
       id: 7,
-      category: "Stress Response",
-      question: "How do you typically respond to stress?",
+      category: "Digestive Patterns",
+      question: "How would you describe your appetite and digestion?",
+      subtitle: "Think about your natural eating patterns and digestive comfort",
       options: [
         { 
-          text: "Get angry or irritated quickly", 
-          score: { yang: 3, yin: 0, qi: 0, blood: 1, phlegm: 0, heat: 3 }
+          text: "Strong appetite, eat quickly, prefer variety", 
+          score: { fire: 3, earth: 1, metal: 0, water: 0, wood: 2 }
         },
         { 
-          text: "Stay calm and think things through", 
-          score: { yang: 1, yin: 1, qi: 2, blood: 2, phlegm: 1, heat: 1 }
+          text: "Regular appetite, enjoy comfort foods, eat socially", 
+          score: { fire: 1, earth: 3, metal: 1, water: 1, wood: 0 }
         },
         { 
-          text: "Withdraw and avoid confrontation", 
-          score: { yang: 0, yin: 3, qi: 1, blood: 1, phlegm: 2, heat: 0 }
+          text: "Moderate appetite, prefer simple foods, eat mindfully", 
+          score: { fire: 0, earth: 1, metal: 3, water: 2, wood: 1 }
         },
         { 
-          text: "Feel anxious and worry excessively", 
-          score: { yang: 1, yin: 2, qi: 0, blood: 0, phlegm: 1, heat: 2 }
+          text: "Variable appetite, sensitive digestion, prefer warm foods", 
+          score: { fire: 0, earth: 2, metal: 1, water: 3, wood: 1 }
         }
       ]
     },
     {
       id: 8,
-      category: "Exercise Preference",
-      question: "What type of physical activity do you prefer?",
+      category: "Mental Focus",
+      question: "How do you prefer to learn and process information?",
+      subtitle: "Consider your natural thinking style and focus patterns",
       options: [
         { 
-          text: "High-intensity, competitive sports", 
-          score: { yang: 3, yin: 0, qi: 2, blood: 1, phlegm: 0, heat: 2 }
+          text: "Quick learner, like challenges, think on your feet", 
+          score: { fire: 3, earth: 0, metal: 1, water: 0, wood: 2 }
         },
         { 
-          text: "Moderate exercise like walking or swimming", 
-          score: { yang: 1, yin: 1, qi: 2, blood: 2, phlegm: 1, heat: 1 }
+          text: "Steady learner, like practical application, learn by doing", 
+          score: { fire: 1, earth: 3, metal: 2, water: 1, wood: 0 }
         },
         { 
-          text: "Gentle activities like yoga or tai chi", 
-          score: { yang: 0, yin: 3, qi: 1, blood: 2, phlegm: 2, heat: 0 }
+          text: "Detailed learner, like organization, methodical approach", 
+          score: { fire: 0, earth: 1, metal: 3, water: 1, wood: 1 }
         },
         { 
-          text: "I prefer mental activities over physical", 
-          score: { yang: 1, yin: 2, qi: 0, blood: 1, phlegm: 2, heat: 1 }
+          text: "Deep learner, like understanding concepts, reflective approach", 
+          score: { fire: 0, earth: 1, metal: 1, water: 3, wood: 2 }
         }
       ]
     }
@@ -238,208 +248,249 @@ export default function ConstitutionTestPage() {
 
   const constitutionTypes: ConstitutionResult[] = [
     {
-      type: "yang",
-      name: "Yang Constitution",
-      chineseName: "阳性体质",
-      description: "Strong, energetic, heat-loving constitution with robust metabolism and strong digestive fire.",
+      type: "fire",
+      name: "Dynamic Fire",
+      subtitle: "The Energetic Leader",
+      description: "You have a vibrant, high-energy constitution with natural leadership qualities. You thrive on activity, social interaction, and new challenges. Your dynamic nature brings joy and motivation to others.",
       characteristics: [
-        "High energy and vitality",
-        "Strong appetite and fast metabolism",
-        "Prefers cool environments",
-        "Quick to anger but also quick to forgive",
-        "Strong immune system"
+        "High energy and enthusiasm",
+        "Natural leadership abilities",
+        "Quick thinking and decision-making",
+        "Enjoys social interaction and networking",
+        "Thrives on variety and new experiences"
       ],
-      commonSymptoms: [
-        "Restlessness and hyperactivity",
-        "Tendency to overheat",
-        "High blood pressure",
-        "Insomnia from overactivity",
-        "Digestive issues from eating too fast"
+      wellnessAdvice: [
+        "Maintain regular cardio exercise to channel your energy",
+        "Practice stress management to avoid burnout",
+        "Ensure adequate rest between high-intensity activities",
+        "Stay hydrated, especially during active periods"
       ],
-      recommendedHerbs: [
+      recommendedSupplements: [
         {
-          name: "Chrysanthemum",
-          chineseName: "菊花 (Ju Hua)",
-          benefits: "Cools heat, calms the liver, improves vision",
-          dosage: "3-6g daily as tea"
+          name: "Rhodiola Root",
+          benefit: "Helps manage stress and maintain energy balance",
+          timing: "Morning with breakfast"
         },
         {
-          name: "Gardenia",
-          chineseName: "栀子 (Zhi Zi)",
-          benefits: "Clears heat and irritability, calms the mind",
-          dosage: "6-10g daily in decoction"
+          name: "Magnesium",
+          benefit: "Supports muscle recovery and calm energy",
+          timing: "Evening before bed"
         },
         {
-          name: "Rehmannia (Raw)",
-          chineseName: "生地黄 (Sheng Di Huang)",
-          benefits: "Nourishes yin, cools blood, reduces inflammation",
-          dosage: "10-15g daily"
+          name: "B-Complex",
+          benefit: "Sustains natural energy production",
+          timing: "With morning meal"
         }
       ],
       lifestyle: [
-        "Practice calming activities like meditation",
-        "Avoid overexertion and excessive heat",
-        "Get adequate sleep (7-8 hours)",
-        "Practice patience and emotional regulation"
+        "Regular cardio exercise (running, cycling, dancing)",
+        "Varied workout routines to maintain interest",
+        "Social fitness activities like group classes",
+        "Meditation or yoga for balance"
       ],
-      foods: {
-        beneficial: ["Green leafy vegetables", "Cooling fruits", "Green tea", "Tofu", "Fish"],
-        avoid: ["Spicy foods", "Alcohol", "Red meat in excess", "Coffee", "Hot peppers"]
+      nutrition: {
+        include: ["Lean proteins", "Fresh fruits", "Cooling vegetables", "Green tea", "Omega-3 rich foods"],
+        limit: ["Excessive caffeine", "Spicy foods", "Alcohol", "Processed sugars", "Heavy meals"]
       },
-      score: 0
+      score: 0,
+      color: "from-red-400 to-orange-500",
+      icon: <Zap className="w-8 h-8" />
     },
     {
-      type: "yin",
-      name: "Yin Constitution",
-      chineseName: "阴性体质",
-      description: "Cool, calm constitution with slower metabolism and tendency toward coldness and moisture.",
+      type: "earth",
+      name: "Grounded Earth",
+      subtitle: "The Nurturing Stabilizer",
+      description: "You have a stable, nurturing constitution that provides strength and support to others. You excel at creating harmony, building relationships, and maintaining steady progress toward your goals.",
       characteristics: [
-        "Calm and peaceful temperament",
-        "Prefers warm environments",
-        "Slower metabolism",
-        "Good endurance but low explosive energy",
-        "Thoughtful and introspective"
+        "Naturally caring and supportive",
+        "Excellent at building and maintaining relationships",
+        "Steady, reliable energy and work ethic",
+        "Good at mediating and creating harmony",
+        "Practical approach to problem-solving"
       ],
-      commonSymptoms: [
-        "Feeling cold easily",
-        "Low energy and fatigue",
-        "Digestive weakness",
-        "Fluid retention",
-        "Depression or melancholy"
+      wellnessAdvice: [
+        "Maintain regular meal times for digestive health",
+        "Include strength training for muscle support",
+        "Practice setting healthy boundaries",
+        "Engage in grounding activities like gardening"
       ],
-      recommendedHerbs: [
+      recommendedSupplements: [
         {
-          name: "Ginseng",
-          chineseName: "人参 (Ren Shen)",
-          benefits: "Tonifies qi, strengthens spleen, boosts energy",
-          dosage: "3-9g daily"
+          name: "Digestive Enzymes",
+          benefit: "Supports healthy digestion and nutrient absorption",
+          timing: "With main meals"
         },
         {
-          name: "Astragalus",
-          chineseName: "黄芪 (Huang Qi)",
-          benefits: "Boosts immune system, increases energy, strengthens organs",
-          dosage: "9-30g daily"
+          name: "Probiotics",
+          benefit: "Maintains healthy gut microbiome",
+          timing: "Morning on empty stomach"
         },
         {
-          name: "Cinnamon",
-          chineseName: "肉桂 (Rou Gui)",
-          benefits: "Warms the body, strengthens kidneys, improves circulation",
-          dosage: "1-3g daily"
+          name: "Iron (if needed)",
+          benefit: "Supports energy and healthy blood",
+          timing: "With vitamin C source"
         }
       ],
       lifestyle: [
-        "Regular gentle exercise",
-        "Keep warm, especially hands and feet",
-        "Maintain regular sleep schedule",
-        "Practice energizing activities like qigong"
+        "Regular strength training and resistance exercises",
+        "Walking in nature or hiking",
+        "Cooking and sharing meals with others",
+        "Community volunteer work"
       ],
-      foods: {
-        beneficial: ["Warming spices", "Cooked foods", "Ginger tea", "Lamb", "Warm grains"],
-        avoid: ["Raw cold foods", "Ice drinks", "Excessive dairy", "Sugar", "Cold fruits"]
+      nutrition: {
+        include: ["Whole grains", "Root vegetables", "Lean proteins", "Warming spices", "Herbal teas"],
+        limit: ["Excessive dairy", "Cold foods", "Irregular eating", "Processed foods", "Emotional eating"]
       },
-      score: 0
+      score: 0,
+      color: "from-yellow-400 to-amber-500",
+      icon: <Heart className="w-8 h-8" />
     },
     {
-      type: "qi_stagnation",
-      name: "Qi Stagnation",
-      chineseName: "气郁体质",
-      description: "Blocked energy flow leading to emotional stress, irregular symptoms, and tension.",
+      type: "metal",
+      name: "Refined Metal",
+      subtitle: "The Organized Achiever",
+      description: "You have a precise, organized constitution with excellent attention to detail. You excel at creating systems, maintaining high standards, and achieving long-term goals through disciplined effort.",
       characteristics: [
-        "Mood swings and emotional instability",
-        "Symptoms that come and go",
-        "Feeling of tightness or pressure",
-        "Stress-sensitive",
-        "Irregular appetite and sleep"
+        "Highly organized and methodical",
+        "Excellent attention to detail",
+        "Strong sense of quality and standards",
+        "Natural ability to create efficient systems",
+        "Values precision and excellence"
       ],
-      commonSymptoms: [
-        "Anxiety and depression",
-        "Digestive issues with stress",
-        "Headaches and muscle tension",
-        "Irregular menstruation",
-        "Feeling of lump in throat"
+      wellnessAdvice: [
+        "Maintain regular breathing exercises for lung health",
+        "Include flexibility training to prevent rigidity",
+        "Practice letting go of perfectionist tendencies",
+        "Ensure adequate fresh air and clean environment"
       ],
-      recommendedHerbs: [
+      recommendedSupplements: [
         {
-          name: "Bupleurum",
-          chineseName: "柴胡 (Chai Hu)",
-          benefits: "Moves qi, relieves stress, harmonizes emotions",
-          dosage: "3-12g daily"
+          name: "Vitamin C",
+          benefit: "Supports immune function and antioxidant protection",
+          timing: "Morning with breakfast"
         },
         {
-          name: "Rose Flower",
-          chineseName: "玫瑰花 (Mei Gui Hua)",
-          benefits: "Regulates qi, lifts mood, helps with PMS",
-          dosage: "3-6g daily as tea"
+          name: "NAC (N-Acetyl Cysteine)",
+          benefit: "Supports respiratory health and detoxification",
+          timing: "Between meals"
         },
         {
-          name: "Citrus Peel",
-          chineseName: "陈皮 (Chen Pi)",
-          benefits: "Regulates qi, improves digestion, reduces bloating",
-          dosage: "3-9g daily"
+          name: "Zinc",
+          benefit: "Supports immune function and healing",
+          timing: "Evening with food"
         }
       ],
       lifestyle: [
-        "Regular exercise to move qi",
-        "Stress management techniques",
-        "Creative and expressive activities",
-        "Regular schedule and routine"
+        "Regular yoga or Pilates for flexibility",
+        "Breathing exercises and meditation",
+        "Organized fitness routines",
+        "Time in clean, fresh air environments"
       ],
-      foods: {
-        beneficial: ["Citrus fruits", "Green vegetables", "Herbal teas", "Light meals", "Nuts"],
-        avoid: ["Heavy greasy foods", "Excessive alcohol", "Irregular eating", "Processed foods"]
+      nutrition: {
+        include: ["White foods (garlic, onions, pears)", "Lung-supporting foods", "Light proteins", "Gentle spices", "Pure water"],
+        limit: ["Dairy products", "Mucus-forming foods", "Excessive raw foods", "Heavy, greasy meals", "Artificial additives"]
       },
-      score: 0
+      score: 0,
+      color: "from-gray-300 to-slate-400",
+      icon: <Shield className="w-8 h-8" />
     },
     {
-      type: "blood_stasis",
-      name: "Blood Stasis",
-      chineseName: "血瘀体质",
-      description: "Poor circulation leading to pain, dark complexion, and cardiovascular concerns.",
+      type: "water",
+      name: "Flowing Water",
+      subtitle: "The Wise Contemplator",
+      description: "You have a deep, reflective constitution with natural wisdom and resilience. You excel at long-term thinking, adapting to change, and providing thoughtful insights to complex situations.",
       characteristics: [
-        "Dark or purplish complexion",
-        "Fixed, stabbing pains",
-        "Poor circulation",
-        "Dark spots or easy bruising",
-        "Memory issues"
+        "Deep thinking and philosophical nature",
+        "Natural wisdom and good judgment",
+        "Excellent long-term planning abilities",
+        "Adaptable and resilient under pressure",
+        "Values knowledge and understanding"
       ],
-      commonSymptoms: [
-        "Chronic pain that's fixed in location",
-        "Cardiovascular problems",
-        "Varicose veins",
-        "Dark menstrual blood with clots",
-        "Cold hands and feet"
+      wellnessAdvice: [
+        "Maintain consistent sleep schedule for recovery",
+        "Include gentle, flowing exercises",
+        "Practice stress reduction techniques",
+        "Ensure adequate rest and recovery time"
       ],
-      recommendedHerbs: [
+      recommendedSupplements: [
         {
-          name: "Dan Shen",
-          chineseName: "丹参 (Dan Shen)",
-          benefits: "Improves circulation, reduces blood stasis, protects heart",
-          dosage: "9-15g daily"
+          name: "Omega-3 Fatty Acids",
+          benefit: "Supports brain health and cognitive function",
+          timing: "With main meal"
         },
         {
-          name: "Safflower",
-          chineseName: "红花 (Hong Hua)",
-          benefits: "Activates blood circulation, reduces pain and swelling",
-          dosage: "3-9g daily"
+          name: "Vitamin D",
+          benefit: "Supports bone health and mood regulation",
+          timing: "Morning with healthy fats"
+        },
+        {
+          name: "Adaptogenic Herbs (Ashwagandha)",
+          benefit: "Helps manage stress and support adrenal health",
+          timing: "Evening before bed"
+        }
+      ],
+      lifestyle: [
+        "Swimming or water-based exercises",
+        "Gentle yoga or tai chi",
+        "Regular meditation practice",
+        "Adequate sleep and rest periods"
+      ],
+      nutrition: {
+        include: ["Dark leafy greens", "Nuts and seeds", "Kidney-supporting foods", "Warming soups", "Mineral-rich foods"],
+        limit: ["Excessive salt", "Cold drinks", "Late-night eating", "Alcohol", "Overstimulating foods"]
+      },
+      score: 0,
+      color: "from-blue-400 to-cyan-500",
+      icon: <Brain className="w-8 h-8" />
+    },
+    {
+      type: "wood",
+      name: "Growing Wood",
+      subtitle: "The Visionary Innovator",
+      description: "You have a creative, growth-oriented constitution with natural vision and flexibility. You excel at seeing possibilities, adapting to change, and inspiring others with your innovative ideas.",
+      characteristics: [
+        "Creative and innovative thinking",
+        "Natural vision for future possibilities",
+        "Flexible and adaptable to change",
+        "Strong sense of justice and fairness",
+        "Enjoys growth and learning opportunities"
+      ],
+      wellnessAdvice: [
+        "Include regular stretching and flexibility work",
+        "Practice emotional regulation techniques",
+        "Ensure regular movement to avoid stagnation",
+        "Maintain work-life balance for optimal creativity"
+      ],
+      recommendedSupplements: [
+        {
+          name: "Milk Thistle",
+          benefit: "Supports liver health and detoxification",
+          timing: "Between meals"
+        },
+        {
+          name: "B-Complex with Folate",
+          benefit: "Supports nervous system and cellular growth",
+          timing: "Morning with breakfast"
         },
         {
           name: "Turmeric",
-          chineseName: "姜黄 (Jiang Huang)",
-          benefits: "Anti-inflammatory, improves circulation, reduces pain",
-          dosage: "3-9g daily"
+          benefit: "Supports healthy inflammation response",
+          timing: "With main meal"
         }
       ],
       lifestyle: [
-        "Regular aerobic exercise",
-        "Avoid sitting for long periods",
-        "Heat therapy for circulation",
-        "Stress reduction"
+        "Dynamic movement like dance or martial arts",
+        "Regular stretching and flexibility training",
+        "Creative activities and hobbies",
+        "Time in nature for inspiration"
       ],
-      foods: {
-        beneficial: ["Dark berries", "Garlic", "Onions", "Green tea", "Fish"],
-        avoid: ["Fried foods", "Excessive salt", "Cold foods", "Refined sugars"]
+      nutrition: {
+        include: ["Green vegetables", "Sour flavors", "Healthy fats", "Liver-supporting foods", "Fresh herbs"],
+        limit: ["Excessive alcohol", "Fried foods", "Processed foods", "Irregular eating", "Excessive fats"]
       },
-      score: 0
+      score: 0,
+      color: "from-green-400 to-emerald-500",
+      icon: <Star className="w-8 h-8" />
     }
   ]
 
@@ -447,11 +498,13 @@ export default function ConstitutionTestPage() {
     const newAnswers = [...answers]
     newAnswers[currentQuestion] = optionIndex
     setAnswers(newAnswers)
+    setSelectedAnswer(null) // Reset selection for next question
 
     if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1)
+      setTimeout(() => {
+        setCurrentQuestion(currentQuestion + 1)
+      }, 300) // Small delay for better UX
     } else {
-      // Calculate results
       calculateResults(newAnswers)
     }
   }
@@ -459,18 +512,15 @@ export default function ConstitutionTestPage() {
   const calculateResults = (allAnswers: number[]) => {
     setIsLoading(true)
     
-    // Simulate AI processing
     setTimeout(() => {
       const scores = {
-        yang: 0,
-        yin: 0,
-        qi: 0,
-        blood: 0,
-        phlegm: 0,
-        heat: 0
+        fire: 0,
+        earth: 0,
+        metal: 0,
+        water: 0,
+        wood: 0
       }
 
-      // Calculate scores based on answers
       allAnswers.forEach((answerIndex, questionIndex) => {
         const question = questions[questionIndex]
         const selectedOption = question.options[answerIndex]
@@ -480,27 +530,21 @@ export default function ConstitutionTestPage() {
         })
       })
 
-      // Determine primary constitution type
-      let primaryType = 'yang'
-      let maxScore = scores.yang
-
-      if (scores.yin > maxScore) {
-        primaryType = 'yin'
-        maxScore = scores.yin
-      }
-      if (scores.qi < 8) { // Low qi indicates qi stagnation
-        primaryType = 'qi_stagnation'
-        maxScore = 24 - scores.qi // Inverse score for qi stagnation
-      }
-      if (scores.blood < 8) { // Low blood circulation indicates blood stasis
-        primaryType = 'blood_stasis'
-        maxScore = 24 - scores.blood
-      }
+      // Find primary constitution type
+      let primaryType = 'earth' // default
+      let maxScore = 0
+      
+      Object.entries(scores).forEach(([type, score]) => {
+        if (score > maxScore) {
+          maxScore = score
+          primaryType = type
+        }
+      })
 
       // Update constitution results with calculated scores
       const updatedResults = constitutionTypes.map(type => ({
         ...type,
-        score: type.type === primaryType ? Math.round((maxScore / 24) * 100) : 0
+        score: type.type === primaryType ? Math.min(95, Math.max(75, Math.round((maxScore / 24) * 100))) : Math.round((scores[type.type as keyof typeof scores] / 24) * 100)
       }))
 
       // Sort by score
@@ -508,14 +552,15 @@ export default function ConstitutionTestPage() {
 
       setIsLoading(false)
       setShowResults(true)
-    }, 2000)
+    }, 2500)
   }
 
   const resetTest = () => {
-    setCurrentQuestion(0)
+    setCurrentQuestion(-1)
     setAnswers([])
     setShowResults(false)
     setIsLoading(false)
+    setSelectedAnswer(null)
   }
 
   const goBack = () => {
@@ -527,17 +572,29 @@ export default function ConstitutionTestPage() {
     }
   }
 
+  const startTest = () => {
+    setCurrentQuestion(0)
+  }
+
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
         <Navigation />
         <div className="flex items-center justify-center min-h-screen">
-          <div className="text-center">
-            <Brain className="w-16 h-16 text-green-600 mx-auto mb-4 animate-pulse" />
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Analyzing Your Constitution</h2>
-            <p className="text-gray-600 mb-6">Our AI is processing your responses using Traditional Chinese Medicine principles...</p>
-            <div className="w-64 bg-gray-200 rounded-full h-2 mx-auto">
-              <div className="bg-green-600 h-2 rounded-full animate-pulse" style={{ width: '75%' }}></div>
+          <div className="text-center max-w-md mx-auto">
+            <div className="relative mb-8">
+              <Brain className="w-20 h-20 text-indigo-600 mx-auto mb-4 animate-pulse" />
+              <div className="absolute inset-0 bg-indigo-200 rounded-full animate-ping opacity-25"></div>
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Analyzing Your Constitution</h2>
+            <p className="text-gray-600 mb-8 leading-relaxed">Our advanced assessment is processing your responses using principles from Traditional Chinese Medicine, adapted for modern wellness understanding...</p>
+            <div className="w-80 bg-gray-200 rounded-full h-3 mx-auto mb-4">
+              <div className="bg-gradient-to-r from-indigo-500 to-purple-600 h-3 rounded-full animate-pulse" style={{ width: '85%' }}></div>
+            </div>
+            <div className="flex justify-center space-x-2">
+              <div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce"></div>
+              <div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+              <div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
             </div>
           </div>
         </div>
@@ -547,59 +604,66 @@ export default function ConstitutionTestPage() {
 
   if (showResults) {
     const primaryResult = constitutionTypes.find(type => type.score > 0) || constitutionTypes[0]
+    const secondaryResults = constitutionTypes.filter(type => type.type !== primaryResult.type).slice(0, 2)
     
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
         <Navigation />
-        <main className="py-8">
+        <main className="py-12">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <Breadcrumb 
               items={[
                 { label: 'Home', href: '/' },
-                { label: 'Constitution Test', href: '/constitution-test' }
+                { label: 'Constitution Assessment', href: '/constitution-test' }
               ]} 
             />
 
             {/* Results Header */}
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
-                <CheckCircle className="w-8 h-8 text-green-600" />
+            <div className="text-center mb-16">
+              <div className={`inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r ${primaryResult.color} rounded-full mb-6 shadow-lg`}>
+                <div className="text-white">{primaryResult.icon}</div>
               </div>
-              <h1 className="text-4xl font-bold text-gray-900 mb-4">Your Constitution Analysis</h1>
-              <p className="text-xl text-gray-600">Based on Traditional Chinese Medicine principles</p>
+              <h1 className="text-5xl font-bold text-gray-900 mb-4">Your Wellness Constitution</h1>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">Discover your unique mind-body pattern and personalized wellness roadmap</p>
             </div>
 
             {/* Primary Result */}
-            <div className="bg-white rounded-3xl shadow-lg p-8 mb-8">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-green-600 mb-2">{primaryResult.name}</h2>
-                <p className="text-lg text-gray-600 mb-4">{primaryResult.chineseName}</p>
-                <div className="w-32 h-32 bg-gradient-to-br from-green-400 to-green-600 rounded-full mx-auto flex items-center justify-center mb-4">
-                  <span className="text-4xl font-bold text-white">{primaryResult.score}%</span>
+            <div className="bg-white rounded-3xl shadow-xl p-10 mb-12 border border-gray-100">
+              <div className="text-center mb-10">
+                <h2 className="text-4xl font-bold text-gray-900 mb-2">{primaryResult.name}</h2>
+                <p className="text-xl text-gray-600 mb-6">{primaryResult.subtitle}</p>
+                <div className={`w-40 h-40 bg-gradient-to-br ${primaryResult.color} rounded-full mx-auto flex items-center justify-center mb-6 shadow-lg`}>
+                  <span className="text-5xl font-bold text-white">{primaryResult.score}%</span>
                 </div>
-                <p className="text-gray-700 leading-relaxed max-w-3xl mx-auto">{primaryResult.description}</p>
+                <p className="text-gray-700 leading-relaxed text-lg max-w-4xl mx-auto">{primaryResult.description}</p>
               </div>
 
               {/* Characteristics */}
-              <div className="grid md:grid-cols-2 gap-8 mb-8">
-                <div>
-                  <h3 className="text-xl font-bold mb-4 text-gray-900">Constitution Characteristics</h3>
-                  <ul className="space-y-2">
+              <div className="grid lg:grid-cols-2 gap-10 mb-10">
+                <div className="bg-gray-50 rounded-2xl p-8">
+                  <h3 className="text-2xl font-bold mb-6 text-gray-900 flex items-center">
+                    <CheckCircle className="w-6 h-6 text-green-600 mr-3" />
+                    Your Natural Strengths
+                  </h3>
+                  <ul className="space-y-4">
                     {primaryResult.characteristics.map((char, index) => (
                       <li key={index} className="flex items-start">
-                        <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
-                        <span className="text-gray-700">{char}</span>
+                        <div className="w-2 h-2 bg-green-500 rounded-full mr-4 mt-3 flex-shrink-0"></div>
+                        <span className="text-gray-700 text-lg">{char}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
-                <div>
-                  <h3 className="text-xl font-bold mb-4 text-gray-900">Common Symptoms to Watch</h3>
-                  <ul className="space-y-2">
-                    {primaryResult.commonSymptoms.map((symptom, index) => (
+                <div className="bg-blue-50 rounded-2xl p-8">
+                  <h3 className="text-2xl font-bold mb-6 text-gray-900 flex items-center">
+                    <Heart className="w-6 h-6 text-blue-600 mr-3" />
+                    Wellness Guidance
+                  </h3>
+                  <ul className="space-y-4">
+                    {primaryResult.wellnessAdvice.map((advice, index) => (
                       <li key={index} className="flex items-start">
-                        <AlertTriangle className="w-5 h-5 text-yellow-600 mr-3 mt-0.5 flex-shrink-0" />
-                        <span className="text-gray-700">{symptom}</span>
+                        <div className="w-2 h-2 bg-blue-500 rounded-full mr-4 mt-3 flex-shrink-0"></div>
+                        <span className="text-gray-700 text-lg">{advice}</span>
                       </li>
                     ))}
                   </ul>
@@ -607,99 +671,90 @@ export default function ConstitutionTestPage() {
               </div>
             </div>
 
-            {/* Recommended Herbs */}
-            <div className="bg-white rounded-3xl shadow-lg p-8 mb-8">
-              <h3 className="text-2xl font-bold mb-6 text-gray-900 flex items-center">
-                <Leaf className="w-6 h-6 text-green-600 mr-3" />
-                Recommended Herbs for Your Constitution
-              </h3>
-              <div className="grid md:grid-cols-3 gap-6">
-                {primaryResult.recommendedHerbs.map((herb, index) => (
-                  <div key={index} className="bg-green-50 p-6 rounded-2xl">
-                    <h4 className="text-lg font-bold text-green-800 mb-2">{herb.name}</h4>
-                    <p className="text-sm text-green-700 italic mb-3">{herb.chineseName}</p>
-                    <p className="text-gray-700 text-sm mb-3">{herb.benefits}</p>
-                    <div className="bg-white p-2 rounded-lg">
-                      <span className="text-xs text-green-600 font-medium">Recommended Dosage:</span>
-                      <p className="text-xs text-gray-600">{herb.dosage}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Lifestyle & Diet */}
-            <div className="grid md:grid-cols-2 gap-8 mb-8">
-              <div className="bg-white rounded-3xl shadow-lg p-8">
+            {/* Detailed Recommendations */}
+            <div className="grid lg:grid-cols-3 gap-8 mb-12">
+              {/* Supplements */}
+              <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
                 <h3 className="text-2xl font-bold mb-6 text-gray-900 flex items-center">
-                  <Heart className="w-6 h-6 text-red-600 mr-3" />
-                  Lifestyle Recommendations
+                  <Zap className="w-6 h-6 text-purple-600 mr-3" />
+                  Recommended Supplements
                 </h3>
-                <ul className="space-y-3">
+                <div className="space-y-6">
+                  {primaryResult.recommendedSupplements.map((supplement, index) => (
+                    <div key={index} className="bg-purple-50 rounded-xl p-4">
+                      <h4 className="text-lg font-semibold text-purple-800 mb-2">{supplement.name}</h4>
+                      <p className="text-gray-700 text-sm mb-2">{supplement.benefit}</p>
+                      <p className="text-xs text-gray-600"><strong>Best Time:</strong> {supplement.timing}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Lifestyle */}
+              <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+                <h3 className="text-2xl font-bold mb-6 text-gray-900 flex items-center">
+                  <Star className="w-6 h-6 text-orange-600 mr-3" />
+                  Ideal Lifestyle
+                </h3>
+                <ul className="space-y-4">
                   {primaryResult.lifestyle.map((tip, index) => (
                     <li key={index} className="flex items-start">
-                      <ArrowRight className="w-5 h-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0" />
+                      <CheckCircle className="w-5 h-5 text-orange-600 mr-3 mt-1 flex-shrink-0" />
                       <span className="text-gray-700">{tip}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="bg-white rounded-3xl shadow-lg p-8">
-                <h3 className="text-2xl font-bold mb-6 text-gray-900">Dietary Guidelines</h3>
-                <div className="space-y-4">
+              {/* Nutrition */}
+              <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+                <h3 className="text-2xl font-bold mb-6 text-gray-900 flex items-center">
+                  <Heart className="w-6 h-6 text-green-600 mr-3" />
+                  Nutrition Guide
+                </h3>
+                <div className="space-y-6">
                   <div>
-                    <h4 className="font-semibold text-green-800 mb-2">✅ Beneficial Foods</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {primaryResult.foods.beneficial.map((food, index) => (
-                        <span key={index} className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
-                          {food}
-                        </span>
-                      ))}
-                    </div>
+                    <h4 className="font-semibold text-green-600 mb-3">Emphasize:</h4>
+                    <p className="text-gray-700 text-sm leading-relaxed">{primaryResult.nutrition.include.join(", ")}</p>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-red-800 mb-2">❌ Foods to Limit</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {primaryResult.foods.avoid.map((food, index) => (
-                        <span key={index} className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">
-                          {food}
-                        </span>
-                      ))}
-                    </div>
+                    <h4 className="font-semibold text-red-600 mb-3">Moderate:</h4>
+                    <p className="text-gray-700 text-sm leading-relaxed">{primaryResult.nutrition.limit.join(", ")}</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Actions */}
-            <div className="text-center space-y-4">
-              <div className="space-x-4">
-                <button
-                  onClick={resetTest}
-                  className="bg-gray-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-gray-700 transition-colors"
-                >
-                  Retake Test
-                </button>
-                <button className="bg-green-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-green-700 transition-colors">
-                  Find My Herbs
-                </button>
-              </div>
-              
-              {/* Disclaimer */}
-              <div className="mt-8 bg-yellow-50 border border-yellow-200 rounded-2xl p-6">
-                <div className="flex items-start space-x-3">
-                  <Shield className="w-5 h-5 text-yellow-600 mt-0.5" />
-                  <div className="text-left">
-                    <h4 className="font-semibold text-yellow-800 mb-2">Important Disclaimer</h4>
-                    <p className="text-yellow-700 text-sm leading-relaxed">
-                      This constitution analysis is based on Traditional Chinese Medicine theory and is for educational purposes only. 
-                      Results should not replace professional medical diagnosis or treatment. Always consult with qualified healthcare 
-                      practitioners before starting any herbal regimen, especially if you have health conditions or take medications.
-                    </p>
+            {/* Secondary Types */}
+            <div className="bg-white rounded-2xl shadow-lg p-8 mb-12 border border-gray-100">
+              <h3 className="text-2xl font-bold mb-8 text-gray-900 text-center">Your Secondary Constitution Traits</h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                {secondaryResults.map((result, index) => (
+                  <div key={index} className="bg-gray-50 rounded-xl p-6">
+                    <div className="flex items-center mb-4">
+                      <div className={`w-12 h-12 bg-gradient-to-br ${result.color} rounded-full flex items-center justify-center mr-4`}>
+                        <div className="text-white text-sm">{result.icon}</div>
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-semibold text-gray-900">{result.name}</h4>
+                        <p className="text-sm text-gray-600">{result.score}% match</p>
+                      </div>
+                    </div>
+                    <p className="text-gray-700 text-sm">{result.description}</p>
                   </div>
-                </div>
+                ))}
               </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="text-center space-y-4">
+              <button
+                onClick={resetTest}
+                className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-10 py-4 rounded-2xl text-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg transform hover:scale-105"
+              >
+                Take Assessment Again
+              </button>
+              <p className="text-gray-600 text-sm">Share your results with your healthcare provider for personalized guidance</p>
             </div>
           </div>
         </main>
@@ -707,100 +762,182 @@ export default function ConstitutionTestPage() {
     )
   }
 
+  // Welcome Screen
+  if (currentQuestion === -1) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+        <Navigation />
+        <main className="py-12">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <Breadcrumb 
+              items={[
+                { label: 'Home', href: '/' },
+                { label: 'Constitution Assessment', href: '/constitution-test' }
+              ]} 
+            />
+
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full mb-8 shadow-lg">
+                <Brain className="w-10 h-10 text-white" />
+              </div>
+              <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+                Wellness Constitution Assessment
+              </h1>
+              <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-12 leading-relaxed">
+                Discover your unique mind-body pattern with our comprehensive assessment based on Traditional Chinese Medicine principles, 
+                adapted for modern wellness understanding. Get personalized recommendations for optimal health and vitality.
+              </p>
+              
+              <div className="bg-white rounded-3xl shadow-xl p-10 max-w-4xl mx-auto mb-12 border border-gray-100">
+                <h3 className="text-3xl font-bold text-gray-900 mb-8">What You'll Discover</h3>
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Zap className="w-8 h-8 text-white" />
+                    </div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-2">Your Constitution Type</h4>
+                    <p className="text-gray-600 text-sm">Understand your unique mind-body pattern and natural tendencies</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Heart className="w-8 h-8 text-white" />
+                    </div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-2">Personalized Wellness</h4>
+                    <p className="text-gray-600 text-sm">Receive targeted recommendations for your specific constitution</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Star className="w-8 h-8 text-white" />
+                    </div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-2">Lifestyle Guidance</h4>
+                    <p className="text-gray-600 text-sm">Learn the best exercises, foods, and habits for your type</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-gradient-to-r from-orange-400 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Shield className="w-8 h-8 text-white" />
+                    </div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-2">Natural Supplements</h4>
+                    <p className="text-gray-600 text-sm">Discover herbs and supplements that support your constitution</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-indigo-50 rounded-2xl p-8 max-w-2xl mx-auto mb-12 border border-indigo-100">
+                <h3 className="text-xl font-semibold text-indigo-900 mb-4">Assessment Details</h3>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div className="flex items-center">
+                    <CheckCircle className="w-4 h-4 text-indigo-600 mr-2" />
+                    <span className="text-indigo-800">8 comprehensive questions</span>
+                  </div>
+                  <div className="flex items-center">
+                    <CheckCircle className="w-4 h-4 text-indigo-600 mr-2" />
+                    <span className="text-indigo-800">3-5 minutes to complete</span>
+                  </div>
+                  <div className="flex items-center">
+                    <CheckCircle className="w-4 h-4 text-indigo-600 mr-2" />
+                    <span className="text-indigo-800">Evidence-based approach</span>
+                  </div>
+                  <div className="flex items-center">
+                    <CheckCircle className="w-4 h-4 text-indigo-600 mr-2" />
+                    <span className="text-indigo-800">Personalized results</span>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={startTest}
+                className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-12 py-5 rounded-2xl text-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg transform hover:scale-105 inline-flex items-center"
+              >
+                Begin Your Assessment
+                <ArrowRight className="w-6 h-6 ml-3" />
+              </button>
+              
+              <p className="text-gray-500 text-sm mt-6">
+                This assessment is for educational purposes and does not replace professional medical advice
+              </p>
+            </div>
+          </div>
+        </main>
+      </div>
+    )
+  }
+
+  // Question Screen
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <Navigation />
-      
-      <main className="py-8">
+      <main className="py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Breadcrumb 
             items={[
               { label: 'Home', href: '/' },
-              { label: 'Constitution Test', href: '/constitution-test' }
+              { label: 'Constitution Assessment', href: '/constitution-test' }
             ]} 
           />
 
-          {/* Header */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mb-4">
-              <Brain className="w-8 h-8 text-purple-600" />
+          <div className="mb-12">
+            <div className="flex justify-between items-center mb-6">
+              <span className="text-lg text-gray-600 font-medium">
+                Question {currentQuestion + 1} of {questions.length}
+              </span>
+              <span className="text-lg text-gray-600 font-medium">
+                {Math.round(((currentQuestion + 1) / questions.length) * 100)}% Complete
+              </span>
             </div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">AI Constitution Analysis</h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Discover your Traditional Chinese Medicine constitution type and get personalized herb recommendations
-            </p>
-          </div>
-
-          {/* Progress */}
-          <div className="mb-8">
-            <div className="flex justify-between text-sm text-gray-600 mb-2">
-              <span>Question {currentQuestion + 1} of {questions.length}</span>
-              <span>{Math.round(((currentQuestion + 1) / questions.length) * 100)}% Complete</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
+            <div className="w-full bg-gray-200 rounded-full h-3 shadow-inner">
               <div 
-                className="bg-purple-600 h-2 rounded-full transition-all duration-300"
+                className="bg-gradient-to-r from-indigo-500 to-purple-600 h-3 rounded-full transition-all duration-500 ease-out shadow-lg" 
                 style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
               ></div>
             </div>
           </div>
 
-          {/* Question */}
-          <div className="bg-white rounded-3xl shadow-lg p-8 mb-8">
-            <div className="mb-6">
-              <div className="text-sm text-purple-600 font-medium mb-2">
+          <div className="bg-white rounded-3xl shadow-xl p-10 border border-gray-100">
+            <div className="mb-8">
+              <span className="bg-indigo-100 text-indigo-800 text-sm px-4 py-2 rounded-full font-medium">
                 {questions[currentQuestion].category}
-              </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                {questions[currentQuestion].question}
-              </h2>
+              </span>
             </div>
+            
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              {questions[currentQuestion].question}
+            </h2>
+            
+            {questions[currentQuestion].subtitle && (
+              <p className="text-gray-600 mb-8 text-lg leading-relaxed">
+                {questions[currentQuestion].subtitle}
+              </p>
+            )}
 
-            <div className="space-y-4">
+            <div className="space-y-4 mb-10">
               {questions[currentQuestion].options.map((option, index) => (
                 <button
                   key={index}
                   onClick={() => handleAnswer(index)}
-                  className="w-full p-6 text-left bg-gray-50 hover:bg-purple-50 border-2 border-gray-200 hover:border-purple-300 rounded-2xl transition-all duration-200 group"
+                  className="w-full text-left p-6 border-2 border-gray-200 rounded-2xl hover:border-indigo-400 hover:bg-indigo-50 transition-all duration-300 group transform hover:scale-102"
                 >
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-900 group-hover:text-purple-900">{option.text}</span>
-                    <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-purple-600" />
+                  <div className="flex items-center">
+                    <div className="w-6 h-6 border-2 border-gray-300 rounded-full mr-6 flex-shrink-0 group-hover:border-indigo-500 transition-colors">
+                      <div className="w-full h-full rounded-full bg-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity transform scale-50 group-hover:scale-75"></div>
+                    </div>
+                    <span className="text-gray-700 text-lg leading-relaxed group-hover:text-indigo-900 transition-colors">{option.text}</span>
                   </div>
                 </button>
               ))}
             </div>
-          </div>
 
-          {/* Navigation */}
-          {currentQuestion > 0 && (
-            <div className="text-center">
+            <div className="flex justify-between items-center">
               <button
                 onClick={goBack}
-                className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors"
+                disabled={currentQuestion === 0}
+                className="flex items-center px-6 py-3 text-gray-600 hover:text-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
               >
-                Go Back
+                <ArrowLeft className="w-5 h-5 mr-2" />
+                Previous
               </button>
-            </div>
-          )}
-
-          {/* Info */}
-          <div className="text-center mt-8">
-            <div className="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-              <div className="text-center">
-                <Users className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                <h3 className="font-semibold text-gray-900 mb-1">5,000+ Analyzed</h3>
-                <p className="text-sm text-gray-600">Constitutions analyzed monthly</p>
-              </div>
-              <div className="text-center">
-                <Brain className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                <h3 className="font-semibold text-gray-900 mb-1">AI-Powered</h3>
-                <p className="text-sm text-gray-600">Based on 3,000 years of TCM wisdom</p>
-              </div>
-              <div className="text-center">
-                <Shield className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-                <h3 className="font-semibold text-gray-900 mb-1">Privacy First</h3>
-                <p className="text-sm text-gray-600">Your data stays completely private</p>
+              
+              <div className="text-gray-500 self-center">
+                Choose the option that best describes you
               </div>
             </div>
           </div>
@@ -808,4 +945,4 @@ export default function ConstitutionTestPage() {
       </main>
     </div>
   )
-}
+} 

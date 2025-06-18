@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { usePathname } from 'next/navigation'
 import Navigation from '../../components/Navigation'
 import Breadcrumb from '../../components/Breadcrumb'
 import SmartSearch from '../../components/SmartSearch'
@@ -8,6 +9,16 @@ import SmartSearch from '../../components/SmartSearch'
 export default function KnowledgeCenter() {
   const [activeTab, setActiveTab] = useState('faq')
   const [searchTerm, setSearchTerm] = useState('')
+  const pathname = usePathname()
+  const currentLocale = pathname.startsWith('/zh') ? 'zh' : 'en'
+  
+  // 添加语言前缀的函数
+  const addLocalePrefix = (href: string) => {
+    if (currentLocale === 'zh') {
+      return `/zh${href}`
+    }
+    return href
+  }
 
   const faqCategories = [
     {
@@ -332,13 +343,13 @@ export default function KnowledgeCenter() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a 
-                href="/herb-finder"
+                href={addLocalePrefix("/herb-finder")}
                 className="bg-white text-purple-600 hover:bg-gray-50 font-bold py-4 px-8 rounded-2xl text-lg transition-colors"
               >
                 Find Herbs by Symptom
               </a>
               <a 
-                href="/ingredient-checker"
+                href={addLocalePrefix("/ingredient-checker")}
                 className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-purple-600 font-bold py-4 px-8 rounded-2xl text-lg transition-all duration-200"
               >
                 Check Herb Safety

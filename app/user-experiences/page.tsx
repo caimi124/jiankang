@@ -8,6 +8,19 @@ import { Star, ThumbsUp, MessageCircle, Shield, User, Calendar, AlertTriangle } 
 export default function UserExperiencesPage() {
   const [selectedFilter, setSelectedFilter] = useState('all')
   const [sortBy, setSortBy] = useState('recent')
+  const [helpfulClicks, setHelpfulClicks] = useState<{[key: number]: boolean}>({})
+  const [showReviewForm, setShowReviewForm] = useState(false)
+  const [newReview, setNewReview] = useState({
+    name: '',
+    email: '',
+    herb: '',
+    condition: '',
+    rating: 5,
+    experience: '',
+    duration: '',
+    sideEffects: '',
+    wouldRecommend: true
+  })
 
   const userReviews = [
     {
@@ -103,6 +116,31 @@ export default function UserExperiencesPage() {
     { condition: "Joint Health", users: 445, avgRating: 4.4 },
     { condition: "Cognitive Function", users: 378, avgRating: 4.2 }
   ]
+
+  const handleHelpfulClick = (reviewId: number) => {
+    setHelpfulClicks(prev => ({
+      ...prev,
+      [reviewId]: !prev[reviewId]
+    }))
+  }
+
+  const handleSubmitReview = (e: React.FormEvent) => {
+    e.preventDefault()
+    // 这里可以添加提交评论到后端的逻辑
+    alert('Thank you for your review! It will be published after verification.')
+    setShowReviewForm(false)
+    setNewReview({
+      name: '',
+      email: '',
+      herb: '',
+      condition: '',
+      rating: 5,
+      experience: '',
+      duration: '',
+      sideEffects: '',
+      wouldRecommend: true
+    })
+  }
 
   const filteredReviews = userReviews.filter(review => {
     if (selectedFilter === 'all') return true
@@ -288,9 +326,18 @@ export default function UserExperiencesPage() {
                 {/* Actions */}
                 <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                   <div className="flex items-center space-x-4">
-                    <button className="flex items-center space-x-2 text-gray-600 hover:text-green-600">
+                    <button 
+                      onClick={() => handleHelpfulClick(review.id)}
+                      className={`flex items-center space-x-2 transition-colors ${
+                        helpfulClicks[review.id] 
+                          ? 'text-green-600' 
+                          : 'text-gray-600 hover:text-green-600'
+                      }`}
+                    >
                       <ThumbsUp className="w-4 h-4" />
-                      <span className="text-sm">Helpful ({review.helpful})</span>
+                      <span className="text-sm">
+                        Helpful ({review.helpful + (helpfulClicks[review.id] ? 1 : 0)})
+                      </span>
                     </button>
                     <button className="flex items-center space-x-2 text-gray-600 hover:text-green-600">
                       <MessageCircle className="w-4 h-4" />
@@ -312,10 +359,185 @@ export default function UserExperiencesPage() {
             <p className="text-green-100 mb-6 max-w-2xl mx-auto">
               Help others by sharing your herbal supplement journey. Your story could help someone make an informed decision about their health.
             </p>
-            <button className="bg-white text-green-600 px-8 py-3 rounded-xl font-semibold hover:bg-green-50 transition-colors">
+            <button 
+              onClick={() => setShowReviewForm(true)}
+              className="bg-white text-green-600 px-8 py-3 rounded-xl font-semibold hover:bg-green-50 transition-colors"
+            >
               Write a Review
             </button>
           </div>
+
+          {/* Review Form Modal */}
+          {showReviewForm && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+              <div className="bg-white rounded-3xl max-w-2xl w-full max-h-screen overflow-y-auto p-8">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-bold">Share Your Experience</h2>
+                  <button 
+                    onClick={() => setShowReviewForm(false)}
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    ✕
+                  </button>
+                </div>
+                
+                <form onSubmit={handleSubmitReview} className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Your Name *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={newReview.name}
+                        onChange={(e) => setNewReview({...newReview, name: e.target.value})}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500"
+                        placeholder="Enter your name"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Email *
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        value={newReview.email}
+                        onChange={(e) => setNewReview({...newReview, email: e.target.value})}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500"
+                        placeholder="your@email.com"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Herb/Supplement *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={newReview.herb}
+                        onChange={(e) => setNewReview({...newReview, herb: e.target.value})}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500"
+                        placeholder="e.g., Turmeric, Ashwagandha"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Condition Treated *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={newReview.condition}
+                        onChange={(e) => setNewReview({...newReview, condition: e.target.value})}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500"
+                        placeholder="e.g., Anxiety, Joint Pain"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Overall Rating *
+                    </label>
+                    <div className="flex space-x-2">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          type="button"
+                          onClick={() => setNewReview({...newReview, rating: star})}
+                          className="focus:outline-none"
+                        >
+                          <Star
+                            className={`w-8 h-8 ${
+                              star <= newReview.rating
+                                ? 'text-yellow-400 fill-current'
+                                : 'text-gray-300'
+                            }`}
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Your Experience *
+                    </label>
+                    <textarea
+                      required
+                      rows={4}
+                      value={newReview.experience}
+                      onChange={(e) => setNewReview({...newReview, experience: e.target.value})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500"
+                      placeholder="Tell us about your experience with this herb..."
+                    />
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Duration of Use
+                      </label>
+                      <input
+                        type="text"
+                        value={newReview.duration}
+                        onChange={(e) => setNewReview({...newReview, duration: e.target.value})}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500"
+                        placeholder="e.g., 3 months"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Side Effects
+                      </label>
+                      <input
+                        type="text"
+                        value={newReview.sideEffects}
+                        onChange={(e) => setNewReview({...newReview, sideEffects: e.target.value})}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500"
+                        placeholder="None or describe any side effects"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="flex items-center space-x-3">
+                      <input
+                        type="checkbox"
+                        checked={newReview.wouldRecommend}
+                        onChange={(e) => setNewReview({...newReview, wouldRecommend: e.target.checked})}
+                        className="w-5 h-5 text-green-600"
+                      />
+                      <span className="text-sm font-semibold text-gray-700">
+                        I would recommend this herb to others
+                      </span>
+                    </label>
+                  </div>
+
+                  <div className="flex space-x-4">
+                    <button
+                      type="submit"
+                      className="flex-1 bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition-colors"
+                    >
+                      Submit Review
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowReviewForm(false)}
+                      className="flex-1 bg-gray-200 text-gray-800 py-3 rounded-xl font-semibold hover:bg-gray-300 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
 
           {/* Medical Disclaimer */}
           <div className="mt-8 bg-yellow-50 border border-yellow-200 rounded-2xl p-6">

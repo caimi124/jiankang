@@ -100,14 +100,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${notoSansSC.variable}`}>
       <head>
-        {/* 预加载关键字体 */}
-        <link
-          rel="preload"
-          href="/fonts/inter-var.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin=""
-        />
+        {/* 字体通过Google Fonts加载，无需预加载本地字体 */}
         
         {/* DNS 预解析优化 */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
@@ -166,8 +159,8 @@ export default function RootLayout({
         />
         
         {/* 关键资源预加载 */}
-        <link rel="preload" href="/hero-bg.webp" as="image" type="image/webp" />
-        <link rel="modulepreload" href="/js/search.js" />
+        <link rel="preload" href="/hero-bg.svg" as="image" type="image/svg+xml" />
+        <script defer src="/js/search.js"></script>
         
         {/* 添加 theme-color for PWA */}
         <meta name="theme-color" content="#16a34a" />
