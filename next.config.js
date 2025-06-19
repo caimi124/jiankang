@@ -9,7 +9,7 @@ const nextConfig = {
     // Image sizes for different viewports
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     // Domains for external images
-    domains: ['images.unsplash.com', 'via.placeholder.com'],
+    domains: ['images.unsplash.com', 'via.placeholder.com', 'herbscience.shop'],
     // Minimize image size for better loading
     minimumCacheTTL: 31536000, // 1 year
     // Remote patterns for security
@@ -32,27 +32,34 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: '/:path*',
         headers: [
-          // Security headers
           {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on'
           },
           {
-            key: 'X-Frame-Options',
-            value: 'DENY',
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload'
           },
           {
             key: 'X-XSS-Protection',
-            value: '1; mode=block',
+            value: '1; mode=block'
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN'
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff'
           },
           {
             key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
-          },
-        ],
-      },
+            value: 'origin-when-cross-origin'
+          }
+        ]
+      }
     ]
   },
 
@@ -65,10 +72,15 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: '/test',
+        destination: '/constitution-test',
+        permanent: true,
+      },
+      {
         source: '/herbs',
         destination: '/herb-finder',
         permanent: true,
-      },
+      }
     ]
   },
 
@@ -99,6 +111,24 @@ const nextConfig = {
 
   // Enable static optimization
   trailingSlash: false,
+
+  experimental: {
+    optimizeCss: true,
+    turbo: true,
+  },
+
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+
+  reactStrictMode: true,
+  swcMinify: true,
+
+  i18n: {
+    locales: ['en', 'zh'],
+    defaultLocale: 'en',
+    localeDetection: true,
+  },
 }
 
 module.exports = nextConfig 

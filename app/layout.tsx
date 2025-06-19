@@ -2,6 +2,7 @@ import React from 'react'
 import type { Metadata } from 'next'
 import { Inter, Noto_Sans_SC } from 'next/font/google'
 import './globals.css'
+import AccessibilityAnnouncer from '@/components/AccessibilityAnnouncer'
 
 // 优化字体配置 - Inter for Latin text
 const inter = Inter({ 
@@ -24,22 +25,11 @@ const notoSansSC = Noto_Sans_SC({
 
 export const metadata: Metadata = {
   title: {
-    default: 'HerbScience.shop - Evidence-Based Herbal Supplement Guidance',
-    template: '%s | HerbScience.shop'
+    template: '%s | HerbScience.shop',
+    default: 'HerbScience.shop - Your Trusted Source for Traditional Chinese Medicine',
   },
-  description: 'Discover safe and effective herbal supplements with science-backed insights, TCM guidance, and personalized recommendations. Check herb safety, find remedies by symptoms, and make informed decisions.',
-  keywords: [
-    'herbal supplements',
-    'traditional chinese medicine',
-    'TCM',
-    'herb safety checker',
-    'natural remedies',
-    'evidence-based herbs',
-    'supplement interactions',
-    'herbal medicine',
-    'wellness',
-    'natural health'
-  ],
+  description: 'Discover personalized herbal remedies, take our constitution test, and learn about Traditional Chinese Medicine with expert guidance.',
+  keywords: ['Traditional Chinese Medicine', 'Herbal Remedies', 'Constitution Test', 'Natural Health', 'Wellness', 'Herbs', 'TCM'],
   authors: [{ name: 'HerbScience Team' }],
   creator: 'HerbScience.shop',
   publisher: 'HerbScience.shop',
@@ -57,23 +47,20 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://herbscience.shop',
-    title: 'HerbScience.shop - Evidence-Based Herbal Supplement Guidance',
-    description: 'Discover safe and effective herbal supplements with science-backed insights and personalized TCM recommendations.',
     siteName: 'HerbScience.shop',
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'HerbScience.shop - Herbal Supplement Guidance'
-      }
-    ]
+        alt: 'HerbScience.shop - Traditional Chinese Medicine',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'HerbScience.shop - Evidence-Based Herbal Guidance',
-    description: 'Safe, effective herbal supplements with TCM insights',
-    images: ['/twitter-image.jpg']
+    site: '@herbscience',
+    creator: '@herbscience',
   },
   robots: {
     index: true,
@@ -171,7 +158,11 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes, viewport-fit=cover" />
       </head>
       <body className={`${inter.className} antialiased bg-white text-gray-900 font-feature-settings-default`}>
-        {children}
+        <AccessibilityAnnouncer />
+        <main>
+          {children}
+        </main>
+        <div id="portal-root" /> {/* 用于模态框等弹出内容 */}
       </body>
     </html>
   )
