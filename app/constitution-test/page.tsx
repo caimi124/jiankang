@@ -1,9 +1,12 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Navigation from '../../components/Navigation'
 import Breadcrumb from '../../components/Breadcrumb'
-import { CheckCircle, Brain, ArrowLeft, ArrowRight, Star, Heart, Zap, Shield } from 'lucide-react'
+import HerbRecommendations from '../../components/HerbRecommendations'
+import { herbRecommendationEngine } from '../../lib/herbs-recommendation'
+import type { Herb } from '../../lib/herbs-recommendation'
+import { CheckCircle, Brain, ArrowLeft, ArrowRight, Star, Heart, Zap, Shield, Leaf } from 'lucide-react'
 
 interface Question {
   id: number
@@ -50,6 +53,12 @@ export default function ConstitutionTestPage() {
   const [showResults, setShowResults] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
+  const [herbRecommendations, setHerbRecommendations] = useState<{
+    primary: Herb[]
+    secondary: Herb[]
+    all: Herb[]
+  }>({ primary: [], secondary: [], all: [] })
+  const [isLoadingHerbs, setIsLoadingHerbs] = useState(false)
 
   const questions: Question[] = [
     {
@@ -512,7 +521,7 @@ export default function ConstitutionTestPage() {
   const calculateResults = (allAnswers: number[]) => {
     setIsLoading(true)
     
-    setTimeout(() => {
+    setTimeout(async () => {
       const scores = {
         fire: 0,
         earth: 0,
@@ -541,6 +550,13 @@ export default function ConstitutionTestPage() {
         }
       })
 
+      // Get secondary constitution types
+      const secondaryTypes = Object.entries(scores)
+        .filter(([type, score]) => type !== primaryType && score > 5)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 2)
+        .map(([type]) => type)
+
       // Update constitution results with calculated scores
       const updatedResults = constitutionTypes.map(type => ({
         ...type,
@@ -549,6 +565,27 @@ export default function ConstitutionTestPage() {
 
       // Sort by score
       updatedResults.sort((a, b) => b.score - a.score)
+
+      // Get herb recommendations
+      setIsLoadingHerbs(true)
+      try {
+        const recommendations = await herbRecommendationEngine.generatePersonalizedRecommendations(
+          primaryType,
+          secondaryTypes,
+          ['stress', 'immunity', 'energy'], // Common health goals
+          ['high', 'medium'] // Safety preference
+        )
+        
+        setHerbRecommendations({
+          primary: recommendations.primary,
+          secondary: recommendations.secondary,
+          all: recommendations.all
+        })
+      } catch (error) {
+        console.error('Error loading herb recommendations:', error)
+        setHerbRecommendations({ primary: [], secondary: [], all: [] })
+      }
+      setIsLoadingHerbs(false)
 
       setIsLoading(false)
       setShowResults(true)
@@ -744,6 +781,28 @@ export default function ConstitutionTestPage() {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Herb Recommendations */}
+            <div className="mb-12">
+              {isLoadingHerbs ? (
+                <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100 text-center">
+                  <div className="relative mb-6">
+                    <Leaf className="w-16 h-16 text-green-600 mx-auto animate-pulse" />
+                    <div className="absolute inset-0 bg-green-200 rounded-full animate-ping opacity-25"></div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Loading Herb Recommendations</h3>
+                  <p className="text-gray-600">Finding the perfect herbal supplements for your constitution...</p>
+                </div>
+              ) : (
+                <HerbRecommendations 
+                  herbs={herbRecommendations.all}
+                  title="Personalized Herb Recommendations"
+                  subtitle={`Based on your ${primaryResult.name} constitution type`}
+                  showDetailed={true}
+                  maxVisible={6}
+                />
+              )}
             </div>
 
             {/* Action Buttons */}

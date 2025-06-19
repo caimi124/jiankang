@@ -1,0 +1,50 @@
+1,Chenpi radix,Citrus peel,Citrus reticulata Blanco.,Urinary tract and genital disorders,https://www.anna-europa.eu/en/medicines/herbal/chenpi-radix
+2,Uvae ursi folium,Bear-berry Leaf,Arctostaphylos uva-ursi (L.) Spreng.,Urinary tract and genital disorders,https://www.anna-europa.eu/en/medicines/herbal/uvae-ursi-folium
+3,Melted herba,Wild Mint Herbs,Mentha arvensis L.,Pain and inflammation,https://www.anna-europa.eu/en/medicines/herbal/melted-herba
+4,Gentianae radix,Gentian Root,Gentiana lutea L.,Digestive disorders and gastrointestinal disorders,https://www.anna-europa.eu/en/medicines/herbal/gentianae-radix
+5,Calli cortex,Cinnamon Bark,Cinnamomum verum J. Presl,Digestive disorders and gastrointestinal disorders,https://www.anna-europa.eu/en/medicines/herbal/calli-cortex
+6,Arnicae flos,Arnica Flower,Arnica montana L.,Pain and inflammation,https://www.anna-europa.eu/en/medicines/herbal/arnicae-flos
+7,Crataegi fructus cum flore,Hawthorn Fruit and Flower,Crataegus monogyna Jacq.; Crataegus laevigata (Poir.) DC.,Cardiovascular disorders,https://www.anna-europa.eu/en/medicines/herbal/crataegi-fructus-cum-flore
+8,Salicis cortex,Willow Bark,Salix (various species including S. purpurea,Pain and inflammation,https://www.anna-europa.eu/en/medicines/herbal/salicis-cortex
+9,Pruni dulcis radix,Sweet Almond,Prunus dulcis (Mill.) D.A.Webb,Skin disorders and cosmetics,https://www.anna-europa.eu/en/medicines/herbal/pruni-dulcis-radix
+10,Frangulae cortex,Alder Buckthorn Bark,Rhamnus frangula L.,Digestive disorders and gastrointestinal disorders,https://www.anna-europa.eu/en/medicines/herbal/frangulae-cortex
+11,Plantaginis ovatae semen,Psyllium Seed,Plantago ovata Forsk.,Digestive disorders and gastrointestinal disorders,https://www.anna-europa.eu/en/medicines/herbal/plantaginis-ovatae-semen
+12,Hamamelidis folium,Witch Hazel,Hamamelis virginiana L.,Skin disorders and wound healing,https://www.anna-europa.eu/en/medicines/herbal/hamamelidis-folium
+13,Hamamelidis cortex,Witch Hazel Bark,Hamamelis virginiana L.,Skin disorders and wound healing,https://www.anna-europa.eu/en/medicines/herbal/hamamelidis-cortex
+14,Altheae radix,Marshmallow Root,Althaea officinalis L.,Cough and throat disorders,https://www.anna-europa.eu/en/medicines/herbal/altheae-radix
+15,Theae folium,Black Tea,Camellia sinensis (L.) Kuntze,Skin disorders and wound healing,https://www.anna-europa.eu/en/medicines/herbal/theae-folium
+16,Theae folium viride,Green Tea,Camellia sinensis (L.) Kuntze,Metabolic disorders,https://www.anna-europa.eu/en/medicines/herbal/theae-folium-viride
+17,Arnicae herba,Arnica Herb,Arnica chamissonis Less.,Pain and inflammation,https://www.anna-europa.eu/en/medicines/herbal/arnicae-herba
+18,Altheae herba,Marshmallow Herb,Althaea officinalis L.,Cough and throat disorders,https://www.anna-europa.eu/en/medicines/herbal/altheae-herba
+19,Hyperici herba,St. John's Wort,Hypericum perforatum L.,Mental and nervous disorders,https://www.anna-europa.eu/en/medicines/herbal/hyperici-herba
+20,Violae tricoloris herba,Heartsease,Viola tricolor L.,Skin disorders and cosmetics,https://www.anna-europa.eu/en/medicines/herbal/violae-tricoloris-herba
+21,Sambuci flos,Elder Flower,Sambucus canadensis L.,Respiratory disorders,https://www.anna-europa.eu/en/medicines/herbal/sambuci-flos
+22,Passiflorae herba,Passion Flower,Passiflora incarnata L.,Sleep disorders and insomnia,https://www.anna-europa.eu/en/medicines/herbal/passiflorae-herba
+23,Ericae herba,Heather,Calluna vulgaris (L.) Hull,Urinary tract and genital disorders,https://www.anna-europa.eu/en/medicines/herbal/ericae-herba
+24,Urticae radix,Nettle Root,Urtica dioica L.; Urtica urens L.,Urinary tract and genital disorders,https://www.anna-europa.eu/en/medicines/herbal/urticae-radix
+25,Urticae herba,Nettle Herb,Urtica dioica L.; Urtica urens L.,Pain and inflammation,https://www.anna-europa.eu/en/medicines/herbal/urticae-herba
+26,Centaurii herba,Centaury,Centaurium erythraea Rafn.; Centaurium pulchellum (Sw.) Druce,Digestive disorders and gastrointestinal disorders,https://www.anna-europa.eu/en/medicines/herbal/centaurii-herba
+27,Betulae folium,Birch Leaf,Betula pendula Roth; Betula pubescens Ehrh.,Urinary tract and genital disorders,https://www.anna-europa.eu/en/medicines/herbal/betulae-folium
+28,Plantaginis lanceolatae herba,Ribwort Plantain,Plantago lanceolata L.,Cough and throat disorders,https://www.anna-europa.eu/en/medicines/herbal/plantaginis-lanceolatae-herba
+29,Hyperici herba,St. John's Wort,Hypericum perforatum L.,Pain and inflammation,https://www.anna-europa.eu/en/medicines/herbal/hyperici-herba-inflammation
+30,Calendulae flos,Calendula Flower,Calendula officinalis L.,Skin disorders and wound healing,https://www.anna-europa.eu/en/medicines/herbal/calendulae-flos
+31,Salviae officinalis folium,Sage Leaf,Salvia officinalis L.,Digestive disorders and gastrointestinal disorders,https://www.anna-europa.eu/en/medicines/herbal/salviae-officinalis-folium
+32,Cardui mariae fructus,Milk Thistle Fruit,Silybum marianum (L.) Gaertn.,Liver disorders,https://www.anna-europa.eu/en/medicines/herbal/cardui-mariae-fructus
+33,Anisi stellati fructus,Star Anise,Illicium verum Hook.f.,Cough and throat disorders,https://www.anna-europa.eu/en/medicines/herbal/anisi-stellati-fructus
+34,Rosae caninae fructus,Rose Hip,Rosa canina L.; Rosa pendulina L.,Immune disorders,https://www.anna-europa.eu/en/medicines/herbal/rosae-caninae-fructus
+35,Angelicae radix,Angelica Root,Angelica archangelica L.,Digestive disorders and gastrointestinal disorders,https://www.anna-europa.eu/en/medicines/herbal/angelicae-radix
+36,Passiflorae herba,Passion Flower,Passiflora incarnata L.,Mental and nervous disorders,https://www.anna-europa.eu/en/medicines/herbal/passiflorae-herba-nervous
+37,Plantaginis ovatae testa,Psyllium Husk,Plantago ovata Forsk.,Digestive disorders and gastrointestinal disorders,https://www.anna-europa.eu/en/medicines/herbal/plantaginis-ovatae-testa
+38,Hippocastani semen,Horse Chestnut Seed,Aesculus hippocastanum L.,Cardiovascular disorders,https://www.anna-europa.eu/en/medicines/herbal/hippocastani-semen
+39,Echinacea purpurea herba,Purple Coneflower,Echinacea purpurea (L.) Moench,Immune disorders,https://www.anna-europa.eu/en/medicines/herbal/echinacea-purpurea-herba
+40,Matricariae flos,Chamomile Flower,Matricaria chamomilla L.,Digestive disorders and gastrointestinal disorders,https://www.anna-europa.eu/en/medicines/herbal/matricariae-flos
+41,Sennae folium,Senna Leaf,Cassia angustifolia Vahl,Digestive disorders and gastrointestinal disorders,https://www.anna-europa.eu/en/medicines/herbal/sennae-folium
+42,Echinaceae angustifoliae radix,Narrow-leafed Coneflower Root,Echinacea angustifolia DC.,Immune disorders,https://www.anna-europa.eu/en/medicines/herbal/echinaceae-angustifoliae-radix
+43,Echinaceae purpureae radix,Purple Coneflower Root,Echinacea purpurea (L.) Moench,Immune disorders,https://www.anna-europa.eu/en/medicines/herbal/echinaceae-purpureae-radix
+44,Foeniculi dulcis fructus,Fennel Fruit,Foeniculum vulgare Mill. var. dulce (Mill.) Batt. & Trab.,Digestive disorders and gastrointestinal disorders,https://www.anna-europa.eu/en/medicines/herbal/foeniculi-dulcis-fructus
+45,Foeniculi vulgaris fructus,Bitter Fennel Fruit,Foeniculum vulgare Mill. subsp. vulgare,Digestive disorders and gastrointestinal disorders,https://www.anna-europa.eu/en/medicines/herbal/foeniculi-vulgaris-fructus
+46,Valerianae radix,Valerian Root,Valeriana officinalis L.,Sleep disorders and insomnia,https://www.anna-europa.eu/en/medicines/herbal/valerianae-radix
+47,Myrrha,Myrrh,Commiphora molmol Engl. or Commiphora abyssinica (O. Berg) Engl.,Pain and inflammation,https://www.anna-europa.eu/en/medicines/herbal/myrrha
+48,Ginkgo folium,Ginkgo Leaf,Ginkgo biloba L.,Cognitive disorders,https://www.anna-europa.eu/en/medicines/herbal/ginkgo-folium
+49,Melissae folium,Lemon Balm,Melissa officinalis L.,Sleep disorders and insomnia,https://www.anna-europa.eu/en/medicines/herbal/melissae-folium
+50,Sojae oleum raffinatum,Refined Soy Oil,Glycine max (L.) Merr.,Skin disorders and cosmetics,https://www.anna-europa.eu/en/medicines/herbal/sojae-oleum-raffinatum 
