@@ -1,27 +1,12 @@
+# *
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /test
+Disallow: /_next/
+
+# Host
+Host: https://www.herbscience.shop
 
 # Sitemaps
-Sitemap: https://herbscience.shop/sitemap.xml
-
-# Optimize crawling for key pages
-Allow: /herb-finder
-Allow: /ingredient-checker
-Allow: /knowledge-center
-Allow: /constitution-test
-Allow: /dosage-calculator
-Allow: /user-experiences
-Allow: /articles
-
-# Prevent indexing of private or admin areas
-Disallow: /api/
-Disallow: /_next/
-Disallow: /admin/
-Disallow: /private/
-
-# Crawl-delay to be respectful of server resources
-Crawl-delay: 1
-
-# Allow specific bots to access API routes for better indexing
-User-agent: Googlebot
-Allow: /api/sitemap 
+Sitemap: https://www.herbscience.shop/sitemap.xml
