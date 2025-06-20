@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from 'react'
 import Navigation from '../../../components/Navigation'
 import Breadcrumb from '../../../components/Breadcrumb'
+import { HerbCard } from '../../../components/HerbRecommendations'
 import { Search, Filter, Leaf, Shield, Star, ChevronDown, ChevronUp, AlertTriangle, Info } from 'lucide-react'
-import { herbRecommendationEngine } from '../../../lib/herbs-recommendation'
 import type { Herb } from '../../../lib/herbs-recommendation'
 
 export default function HerbFinderPage() {
@@ -16,7 +16,6 @@ export default function HerbFinderPage() {
   const [selectedEfficacy, setSelectedEfficacy] = useState<string>('')
   const [isLoading, setIsLoading] = useState(true)
   const [showFilters, setShowFilters] = useState(false)
-  const [expandedHerb, setExpandedHerb] = useState<string | null>(null)
 
   // 体质类型选项
   const constitutionOptions = [
@@ -60,10 +59,20 @@ export default function HerbFinderPage() {
     const loadHerbs = async () => {
       try {
         setIsLoading(true)
-        const dataService = herbRecommendationEngine['dataService']
-        const allHerbs = await dataService.fetchAllHerbs()
-        setHerbs(allHerbs)
-        setFilteredHerbs(allHerbs)
+        const response = await fetch('/api/herbs/data?limit=100')
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+
+        const data = await response.json()
+        
+        if (data.herbs) {
+          setHerbs(data.herbs)
+          setFilteredHerbs(data.herbs)
+        } else {
+          throw new Error('Failed to fetch herbs data')
+        }
       } catch (error) {
         console.error('加载草药数据失败:', error)
       } finally {
@@ -121,31 +130,7 @@ export default function HerbFinderPage() {
     setSelectedEfficacy('')
   }
 
-  // 获取安全等级颜色
-  const getSafetyColor = (level: string) => {
-    switch (level) {
-      case 'high': return 'text-green-600 bg-green-100'
-      case 'medium': return 'text-yellow-600 bg-yellow-100'
-      case 'low': return 'text-red-600 bg-red-100'
-      default: return 'text-gray-600 bg-gray-100'
-    }
-  }
 
-  // 获取安全等级文本
-  const getSafetyText = (level: string) => {
-    switch (level) {
-      case 'high': return '高安全性'
-      case 'medium': return '中等安全性'
-      case 'low': return '低安全性'
-      default: return '未知'
-    }
-  }
-
-  // 获取体质类型文本
-  const getConstitutionText = (type: string) => {
-    const option = constitutionOptions.find(opt => opt.value === type)
-    return option?.label || type
-  }
 
   if (isLoading) {
     return (
@@ -285,154 +270,14 @@ export default function HerbFinderPage() {
         </div>
 
           {/* 草药列表 */}
-          <div className="grid lg:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredHerbs.map((herb) => (
-              <div key={herb.id} className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow">
-                {/* 草药卡片头部 */}
-                <div className="p-6">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                        {herb.chinese_name || herb.english_name}
-                      </h3>
-                      {herb.chinese_name && herb.english_name && herb.chinese_name !== herb.english_name && (
-                        <p className="text-gray-600 text-lg mb-1">{herb.english_name}</p>
-                      )}
-                      {herb.latin_name && (
-                        <p className="text-gray-500 italic text-sm">{herb.latin_name}</p>
-                      )}
-            </div>
-                    <div className="flex flex-col items-end space-y-2">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${getSafetyColor(herb.safety_level)}`}>
-                        <Shield className="w-3 h-3 inline mr-1" />
-                        {getSafetyText(herb.safety_level)}
-                      </span>
-                      {herb.quality_score && (
-                        <div className="flex items-center">
-                          <Star className="w-4 h-4 text-yellow-500 mr-1" />
-                          <span className="text-sm text-gray-600">{herb.quality_score}</span>
-          </div>
-        )}
-              </div>
-            </div>
-
-                  {/* 描述 */}
-                  <p className="text-gray-700 mb-4 leading-relaxed">
-                    {herb.description || '暂无描述'}
-                  </p>
-
-                  {/* 体质和功效标签 */}
-                  <div className="mb-4">
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {herb.constitution_type && (
-                        <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
-                          {getConstitutionText(herb.constitution_type)}
-                        </span>
-                      )}
-                    </div>
-                    
-                    <div className="flex flex-wrap gap-2">
-                      {herb.efficacy.slice(0, 3).map((eff, index) => (
-                        <span key={index} className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
-                          {eff}
-                        </span>
-                      ))}
-                      {herb.efficacy.length > 3 && (
-                        <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">
-                          +{herb.efficacy.length - 3} 更多
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* 展开/收起按钮 */}
-                  <button
-                    onClick={() => setExpandedHerb(expandedHerb === herb.id ? null : herb.id)}
-                    className="flex items-center text-green-600 hover:text-green-700 font-medium"
-                  >
-                    {expandedHerb === herb.id ? (
-                      <>
-                        <ChevronUp className="w-4 h-4 mr-1" />
-                        收起详情
-                      </>
-                    ) : (
-                      <>
-                        <ChevronDown className="w-4 h-4 mr-1" />
-                        查看详情
-                      </>
-                    )}
-                  </button>
-                </div>
-
-                {/* 展开的详细信息 */}
-                {expandedHerb === herb.id && (
-                  <div className="px-6 pb-6 border-t border-gray-100">
-                    <div className="grid md:grid-cols-2 gap-6 mt-6">
-                      {/* 用法用量 */}
-                      <div>
-                        <h4 className="font-semibold text-gray-900 mb-2 flex items-center">
-                          <Info className="w-4 h-4 mr-2 text-blue-500" />
-                          用法用量
-                        </h4>
-                        <p className="text-gray-700 text-sm leading-relaxed">
-                          {herb.dosage || '请咨询专业医师'}
-                        </p>
-                        {herb.usage_suggestions && (
-                          <p className="text-gray-600 text-sm mt-2">
-                            <strong>建议：</strong> {herb.usage_suggestions}
-                          </p>
-                        )}
-                      </div>
-
-                      {/* 注意事项 */}
-                      <div>
-                        <h4 className="font-semibold text-gray-900 mb-2 flex items-center">
-                          <AlertTriangle className="w-4 h-4 mr-2 text-orange-500" />
-                          注意事项
-                        </h4>
-                        <p className="text-gray-700 text-sm leading-relaxed">
-                          {herb.contraindications || '暂无特殊禁忌'}
-                        </p>
-                      </div>
-                      
-                      {/* 传统用途 */}
-                      {herb.traditional_use && (
-                        <div className="md:col-span-2">
-                          <h4 className="font-semibold text-gray-900 mb-2">传统用途</h4>
-                          <p className="text-gray-700 text-sm leading-relaxed">
-                            {herb.traditional_use}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* 现代应用 */}
-                      {herb.modern_applications && (
-                        <div className="md:col-span-2">
-                          <h4 className="font-semibold text-gray-900 mb-2">现代研究</h4>
-                          <p className="text-gray-700 text-sm leading-relaxed">
-                            {herb.modern_applications}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* 成分构成 */}
-                      {herb.ingredients && herb.ingredients.length > 0 && (
-                        <div className="md:col-span-2">
-                          <h4 className="font-semibold text-gray-900 mb-2">主要成分</h4>
-                          <div className="flex flex-wrap gap-2">
-                            {herb.ingredients.map((ingredient, index) => (
-                              <span key={index} className="px-2 py-1 bg-purple-100 text-purple-700 rounded text-sm">
-                                {ingredient}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-                </div>
-              ))}
+              <HerbCard 
+                key={herb.id} 
+                herb={herb} 
+                showDetailed={true}
+              />
+            ))}
           </div>
 
           {/* 无结果提示 */}
@@ -447,6 +292,31 @@ export default function HerbFinderPage() {
               >
                 清除所有筛选条件
               </button>
+            </div>
+          )}
+
+          {/* 数据库统计 */}
+          {herbs.length > 0 && (
+            <div className="mt-12 bg-gradient-to-r from-green-600 to-emerald-600 rounded-2xl p-8 text-white text-center">
+              <h3 className="text-2xl font-bold mb-4">数据库统计</h3>
+              <div className="grid md:grid-cols-3 gap-6">
+                <div>
+                  <div className="text-3xl font-bold">{herbs.length}</div>
+                  <div className="text-green-100">总草药数量</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-bold">
+                    {herbs.filter(h => h.safety_level === 'high').length}
+                  </div>
+                  <div className="text-green-100">高安全性草药</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-bold">
+                    {new Set(herbs.flatMap(h => h.efficacy)).size}
+                  </div>
+                  <div className="text-green-100">独特功效类型</div>
+                </div>
+              </div>
             </div>
           )}
 

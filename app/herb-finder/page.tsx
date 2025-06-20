@@ -83,8 +83,8 @@ export default function HerbFinderPage() {
 
       const data = await response.json()
       
-      if (data.success) {
-        setHerbs(data.data)
+      if (data.herbs) {
+        setHerbs(data.herbs)
       } else {
         throw new Error(data.error || 'Failed to fetch herbs')
       }
