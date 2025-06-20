@@ -112,23 +112,15 @@ const nextConfig = {
   // Enable static optimization
   trailingSlash: false,
 
-  experimental: {
-    optimizeCss: true,
-    turbo: true,
-  },
+  // experimental: {
+  //   optimizeCss: true,
+  // },
 
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
 
   reactStrictMode: true,
-  swcMinify: true,
-
-  i18n: {
-    locales: ['en', 'zh'],
-    defaultLocale: 'en',
-    localeDetection: true,
-  },
 }
 
 module.exports = nextConfig 

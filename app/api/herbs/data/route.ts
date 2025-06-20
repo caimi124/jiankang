@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { herbsDataService } from '../../../../lib/herbs-recommendation'
 import { z } from 'zod'
 import { rateLimit } from '@/lib/rate-limit'
-import { herbData } from '@/lib/herbs-data-complete'
+import { HERBS_DATABASE } from '@/lib/herbs-data-complete'
 
 const limiter = rateLimit({
   interval: 60 * 1000, // 1 minute
@@ -51,27 +51,28 @@ export async function GET(request: NextRequest) {
 
     const { limit = 100, search, category, safety } = validatedParams.data
 
-    let filteredHerbs = [...herbData]
+    let filteredHerbs = [...HERBS_DATABASE]
 
     // Apply filters
     if (search) {
       const searchLower = search.toLowerCase()
       filteredHerbs = filteredHerbs.filter(herb => 
-        herb.name.toLowerCase().includes(searchLower) ||
+        herb.chinese_name.toLowerCase().includes(searchLower) ||
+        herb.english_name.toLowerCase().includes(searchLower) ||
         herb.description.toLowerCase().includes(searchLower) ||
-        herb.benefits.some(benefit => benefit.toLowerCase().includes(searchLower))
+        herb.efficacy.some((effect: string) => effect.toLowerCase().includes(searchLower))
       )
     }
 
     if (category) {
       filteredHerbs = filteredHerbs.filter(herb => 
-        herb.categories.includes(category)
+        herb.category === category
       )
     }
 
     if (safety) {
       filteredHerbs = filteredHerbs.filter(herb => 
-        herb.safetyRating === safety
+        herb.safety_level === safety
       )
     }
 

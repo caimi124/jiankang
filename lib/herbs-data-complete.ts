@@ -4451,7 +4451,12 @@ export const CONSTITUTION_MAPPING = {
 export function getHerbsForConstitution(constitutionType: string): Herb[] {
   // 如果是英文体质类型，先映射到中医体质
   const mappedType = CONSTITUTION_MAPPING[constitutionType as keyof typeof CONSTITUTION_MAPPING] || constitutionType;
-  return CONSTITUTION_HERB_MAPPING[mappedType as keyof typeof CONSTITUTION_HERB_MAPPING] || [];
+  const herbs = CONSTITUTION_HERB_MAPPING[mappedType as keyof typeof CONSTITUTION_HERB_MAPPING] || [];
+  // 确保类型安全
+  return herbs.map(herb => ({
+    ...herb,
+    safety_level: (['high', 'medium', 'low'].includes(herb.safety_level) ? herb.safety_level : 'medium') as 'high' | 'medium' | 'low'
+  }));
 }
 
 // 根据功效搜索草药
