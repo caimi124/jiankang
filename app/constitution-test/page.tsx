@@ -6,7 +6,7 @@ import Breadcrumb from '../../components/Breadcrumb'
 import HerbRecommendations from '../../components/HerbRecommendations'
 import { herbRecommendationEngine } from '../../lib/herbs-recommendation'
 import type { Herb } from '../../lib/herbs-recommendation'
-import { CheckCircle, Brain, ArrowLeft, ArrowRight, Star, Heart, Zap, Shield, Leaf } from 'lucide-react'
+import { CheckCircle, Brain, ArrowLeft, ArrowRight, Star, Heart, Zap, Shield, Leaf, Mail, Download, Eye, Users, Award, Clock, FileText, Lightbulb } from 'lucide-react'
 
 interface Question {
   id: number
@@ -59,6 +59,10 @@ export default function ConstitutionTestPage() {
     all: Herb[]
   }>({ primary: [], secondary: [], all: [] })
   const [isLoadingHerbs, setIsLoadingHerbs] = useState(false)
+  const [showDemoResults, setShowDemoResults] = useState(false)
+  const [email, setEmail] = useState('')
+  const [showEmailCapture, setShowEmailCapture] = useState(false)
+  const [emailSubmitted, setEmailSubmitted] = useState(false)
 
   const questions: Question[] = [
     {
@@ -503,19 +507,63 @@ export default function ConstitutionTestPage() {
     }
   ]
 
-  const handleAnswer = (optionIndex: number) => {
-    const newAnswers = [...answers]
-    newAnswers[currentQuestion] = optionIndex
-    setAnswers(newAnswers)
-    setSelectedAnswer(null) // Reset selection for next question
+  // Demo result for preview
+  const demoResult = {
+    type: 'fire',
+    name: 'Fire Constitution',
+    subtitle: 'Energetic • Creative • Passionate',
+    description: 'You have a naturally high energy, warm personality, and love being active. Fire types are often creative, enthusiastic leaders who thrive in dynamic environments.',
+    characteristics: [
+      'High natural energy and enthusiasm',
+      'Warm and charismatic personality',
+      'Creative and innovative thinking',
+      'Natural leadership qualities'
+    ],
+    wellnessAdvice: [
+      'Balance intense activity with cooling practices',
+      'Include meditation to calm the mind',
+      'Stay hydrated and avoid overheating',
+      'Practice stress management techniques'
+    ],
+    recommendedSupplements: [
+      { name: 'Schisandra Berry', benefit: 'Calms excess fire energy', timing: 'Evening' },
+      { name: 'White Peony Root', benefit: 'Balances emotional intensity', timing: 'Afternoon' },
+      { name: 'Chrysanthemum', benefit: 'Cooling and calming', timing: 'As needed' }
+    ],
+    lifestyle: [
+      'Regular exercise with cooling elements (swimming, yoga)',
+      'Consistent sleep schedule (fire types often stay up late)',
+      'Mindfulness and meditation practices',
+      'Balanced work-life boundaries'
+    ],
+    nutrition: {
+      include: ['Cooling foods like cucumber, watermelon, green tea', 'Balanced meals with complex carbs', 'Anti-inflammatory herbs'],
+      limit: ['Excessive spicy foods', 'Too much caffeine', 'Alcohol in excess']
+    },
+    score: 78,
+    color: 'from-red-500 to-orange-500',
+    icon: <Zap className="w-8 h-8" />
+  }
 
-    if (currentQuestion < questions.length - 1) {
+  const handleAnswer = (optionIndex: number) => {
+    const newAnswers = [...answers, optionIndex]
+    setAnswers(newAnswers)
+    setSelectedAnswer(optionIndex)
+
       setTimeout(() => {
+      if (currentQuestion < questions.length - 1) {
         setCurrentQuestion(currentQuestion + 1)
-      }, 300) // Small delay for better UX
+        setSelectedAnswer(null)
     } else {
+        setIsLoading(true)
+        setTimeout(() => {
       calculateResults(newAnswers)
+          setIsLoading(false)
+          setShowResults(true)
+          setShowEmailCapture(true) // Show email capture after results
+        }, 3000)
     }
+    }, 600)
   }
 
   const calculateResults = (allAnswers: number[]) => {
@@ -611,6 +659,29 @@ export default function ConstitutionTestPage() {
 
   const startTest = () => {
     setCurrentQuestion(0)
+    setShowDemoResults(false)
+  }
+
+  const showDemo = () => {
+    setShowDemoResults(true)
+  }
+
+  const backToWelcome = () => {
+    setShowDemoResults(false)
+  }
+
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email) return
+    
+    // Here you would typically send the email to your backend
+    console.log('Email submitted:', email)
+    setEmailSubmitted(true)
+    
+    // Simulate API call
+    setTimeout(() => {
+      setShowEmailCapture(false)
+    }, 2000)
   }
 
   if (isLoading) {
@@ -654,6 +725,61 @@ export default function ConstitutionTestPage() {
                 { label: 'Constitution Assessment', href: '/constitution-test' }
               ]} 
             />
+
+            {/* Email Capture Modal */}
+            {showEmailCapture && !emailSubmitted && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl">
+                  <div className="text-center mb-6">
+                    <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Download className="w-8 h-8 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Get Your Complete Report</h3>
+                    <p className="text-gray-600">Download your detailed constitution analysis plus our "Top 10 Herbs for Your Type" guide</p>
+                  </div>
+                  
+                  <form onSubmit={handleEmailSubmit} className="space-y-4">
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email address"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      required
+                    />
+                    <button
+                      type="submit"
+                      className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300"
+                    >
+                      <Mail className="w-5 h-5 inline mr-2" />
+                      Get My Report (Free)
+                    </button>
+                  </form>
+                  
+                  <div className="text-center mt-4">
+                    <button
+                      onClick={() => setShowEmailCapture(false)}
+                      className="text-gray-500 hover:text-gray-700 text-sm"
+                    >
+                      Maybe later
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Success Message */}
+            {emailSubmitted && (
+              <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-8">
+                <div className="flex items-center">
+                  <CheckCircle className="w-6 h-6 text-green-600 mr-3" />
+                  <div>
+                    <h4 className="text-green-800 font-semibold">Report Sent!</h4>
+                    <p className="text-green-700 text-sm">Check your email for your detailed constitution report and herb guide.</p>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Results Header */}
             <div className="text-center mb-16">
@@ -708,6 +834,24 @@ export default function ConstitutionTestPage() {
               </div>
             </div>
 
+            {/* Database Connection CTA */}
+            <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-2xl p-8 mb-12 border border-emerald-200">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-r from-emerald-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Leaf className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Explore Your Recommended Herbs</h3>
+                <p className="text-gray-700 mb-6">Access our comprehensive herb database to learn more about the plants that support your {primaryResult.name.toLowerCase()} constitution.</p>
+                <a
+                  href={`/herb-finder?constitution=${primaryResult.type}`}
+                  className="inline-flex items-center bg-gradient-to-r from-emerald-600 to-green-600 text-white px-8 py-3 rounded-xl font-semibold hover:from-emerald-700 hover:to-green-700 transition-all duration-300 shadow-lg transform hover:scale-105"
+                >
+                  <Leaf className="w-5 h-5 mr-2" />
+                  Browse Herbs for Your Type
+                </a>
+              </div>
+            </div>
+
             {/* Detailed Recommendations */}
             <div className="grid lg:grid-cols-3 gap-8 mb-12">
               {/* Supplements */}
@@ -718,10 +862,16 @@ export default function ConstitutionTestPage() {
                 </h3>
                 <div className="space-y-6">
                   {primaryResult.recommendedSupplements.map((supplement, index) => (
-                    <div key={index} className="bg-purple-50 rounded-xl p-4">
+                    <div key={index} className="bg-purple-50 rounded-xl p-4 hover:shadow-md transition-shadow">
                       <h4 className="text-lg font-semibold text-purple-800 mb-2">{supplement.name}</h4>
                       <p className="text-gray-700 text-sm mb-2">{supplement.benefit}</p>
                       <p className="text-xs text-gray-600"><strong>Best Time:</strong> {supplement.timing}</p>
+                      <a
+                        href={`/herb-finder?search=${supplement.name.toLowerCase()}`}
+                        className="inline-flex items-center text-purple-600 hover:text-purple-800 text-sm font-medium mt-2"
+                      >
+                        Learn More <ArrowRight className="w-3 h-3 ml-1" />
+                      </a>
                     </div>
                   ))}
                 </div>
@@ -807,12 +957,21 @@ export default function ConstitutionTestPage() {
 
             {/* Action Buttons */}
             <div className="text-center space-y-4">
+              <div className="flex flex-wrap justify-center gap-4">
               <button
                 onClick={resetTest}
-                className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-10 py-4 rounded-2xl text-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg transform hover:scale-105"
+                  className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-3 rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg transform hover:scale-105"
               >
                 Take Assessment Again
               </button>
+                <a
+                  href="/herb-finder"
+                  className="bg-gradient-to-r from-emerald-600 to-green-600 text-white px-8 py-3 rounded-xl font-semibold hover:from-emerald-700 hover:to-green-700 transition-all duration-300 shadow-lg transform hover:scale-105 inline-flex items-center"
+                >
+                  <Leaf className="w-5 h-5 mr-2" />
+                  Explore All Herbs
+                </a>
+              </div>
               <p className="text-gray-600 text-sm">Share your results with your healthcare provider for personalized guidance</p>
             </div>
           </div>
@@ -821,7 +980,100 @@ export default function ConstitutionTestPage() {
     )
   }
 
-  // Welcome Screen
+  // Demo Results Screen
+  if (showDemoResults) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+        <Navigation />
+        <main className="py-12">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <Breadcrumb 
+              items={[
+                { label: 'Home', href: '/' },
+                { label: 'Constitution Assessment', href: '/constitution-test' }
+              ]} 
+            />
+
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-8">
+              <div className="flex items-center">
+                <Eye className="w-6 h-6 text-amber-600 mr-3" />
+                <div>
+                  <h4 className="text-amber-800 font-semibold">Sample Result Preview</h4>
+                  <p className="text-amber-700 text-sm">This is an example of what your personalized results will look like.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Demo Result Display */}
+            <div className="bg-white rounded-3xl shadow-xl p-10 mb-12 border border-gray-100">
+              <div className="text-center mb-10">
+                <div className={`w-20 h-20 bg-gradient-to-r ${demoResult.color} rounded-full mx-auto flex items-center justify-center mb-6 shadow-lg`}>
+                  <div className="text-white">{demoResult.icon}</div>
+                </div>
+                <h2 className="text-4xl font-bold text-gray-900 mb-2">{demoResult.name}</h2>
+                <p className="text-xl text-gray-600 mb-6">{demoResult.subtitle}</p>
+                <div className={`w-32 h-32 bg-gradient-to-br ${demoResult.color} rounded-full mx-auto flex items-center justify-center mb-6 shadow-lg`}>
+                  <span className="text-4xl font-bold text-white">{demoResult.score}%</span>
+                </div>
+                <p className="text-gray-700 leading-relaxed text-lg max-w-3xl mx-auto">{demoResult.description}</p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-8 mb-8">
+                <div className="bg-gray-50 rounded-2xl p-6">
+                  <h3 className="text-xl font-bold mb-4 text-gray-900 flex items-center">
+                    <CheckCircle className="w-5 h-5 text-green-600 mr-2" />
+                    Natural Strengths
+                  </h3>
+                  <ul className="space-y-2">
+                    {demoResult.characteristics.slice(0, 3).map((char, index) => (
+                      <li key={index} className="flex items-start">
+                        <div className="w-2 h-2 bg-green-500 rounded-full mr-3 mt-2 flex-shrink-0"></div>
+                        <span className="text-gray-700">{char}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="bg-blue-50 rounded-2xl p-6">
+                  <h3 className="text-xl font-bold mb-4 text-gray-900 flex items-center">
+                    <Heart className="w-5 h-5 text-blue-600 mr-2" />
+                    Wellness Guidance
+                  </h3>
+                  <ul className="space-y-2">
+                    {demoResult.wellnessAdvice.slice(0, 3).map((advice, index) => (
+                      <li key={index} className="flex items-start">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full mr-3 mt-2 flex-shrink-0"></div>
+                        <span className="text-gray-700">{advice}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="text-center">
+                <p className="text-gray-600 mb-6">Your actual results will include detailed supplement recommendations, lifestyle guidance, and personalized herb matches from our database.</p>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <button
+                    onClick={startTest}
+                    className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-3 rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg transform hover:scale-105"
+                  >
+                    Take Real Assessment
+                  </button>
+                  <button
+                    onClick={backToWelcome}
+                    className="border border-gray-300 text-gray-700 px-8 py-3 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300"
+                  >
+                    Back to Overview
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    )
+  }
+
+  // Enhanced Welcome Screen
   if (currentQuestion === -1) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -835,54 +1087,72 @@ export default function ConstitutionTestPage() {
               ]} 
             />
 
+            {/* Hero Section */}
             <div className="text-center mb-16">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full mb-8 shadow-lg">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full mb-8 shadow-lg animate-pulse">
                 <Brain className="w-10 h-10 text-white" />
               </div>
               <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-                Wellness Constitution Assessment
+                🧪 Discover Your Herbal Constitution
               </h1>
-              <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-12 leading-relaxed">
-                Discover your unique mind-body pattern with our comprehensive assessment based on Traditional Chinese Medicine principles, 
-                adapted for modern wellness understanding. Get personalized recommendations for optimal health and vitality.
+              <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-8 leading-relaxed">
+                Answer 8 quick questions to learn your body type according to traditional herbal medicine.<br/>
+                We'll match you with herbs that best suit your needs — scientifically and naturally.
               </p>
-              
-              <div className="bg-white rounded-3xl shadow-xl p-10 max-w-4xl mx-auto mb-12 border border-gray-100">
-                <h3 className="text-3xl font-bold text-gray-900 mb-8">What You'll Discover</h3>
+              <div className="flex flex-wrap justify-center items-center gap-6 text-lg text-gray-700 mb-12">
+                <div className="flex items-center">
+                  <Clock className="w-5 h-5 text-indigo-600 mr-2" />
+                  <span>2 minutes</span>
+                </div>
+                <div className="flex items-center">
+                  <Users className="w-5 h-5 text-indigo-600 mr-2" />
+                  <span>10,000+ completed</span>
+                </div>
+                <div className="flex items-center">
+                  <Award className="w-5 h-5 text-indigo-600 mr-2" />
+                  <span>Science-backed</span>
+                </div>
+              </div>
+            </div>
+
+            {/* What You'll Get */}
+            <div className="bg-white rounded-3xl shadow-xl p-10 max-w-5xl mx-auto mb-12 border border-gray-100">
+              <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">✅ What You'll Discover</h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="text-center group hover:transform hover:scale-105 transition-all duration-300">
+                  <div className="w-16 h-16 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:shadow-lg transition-shadow">
                       <Zap className="w-8 h-8 text-white" />
                     </div>
-                    <h4 className="text-lg font-semibold text-gray-900 mb-2">Your Constitution Type</h4>
-                    <p className="text-gray-600 text-sm">Understand your unique mind-body pattern and natural tendencies</p>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">✅ Personalized Herb Recommendations</h3>
+                  <p className="text-gray-600 text-sm">Discover which herbs work best for your unique constitution</p>
                   </div>
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="text-center group hover:transform hover:scale-105 transition-all duration-300">
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:shadow-lg transition-shadow">
                       <Heart className="w-8 h-8 text-white" />
                     </div>
-                    <h4 className="text-lg font-semibold text-gray-900 mb-2">Personalized Wellness</h4>
-                    <p className="text-gray-600 text-sm">Receive targeted recommendations for your specific constitution</p>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">✅ Know Your Body's Imbalances</h3>
+                  <p className="text-gray-600 text-sm">Understand your natural strengths and areas to support</p>
                   </div>
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Star className="w-8 h-8 text-white" />
+                <div className="text-center group hover:transform hover:scale-105 transition-all duration-300">
+                  <div className="w-16 h-16 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:shadow-lg transition-shadow">
+                    <FileText className="w-8 h-8 text-white" />
                     </div>
-                    <h4 className="text-lg font-semibold text-gray-900 mb-2">Lifestyle Guidance</h4>
-                    <p className="text-gray-600 text-sm">Learn the best exercises, foods, and habits for your type</p>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">✅ Free Constitution Report (PDF Download)</h3>
+                  <p className="text-gray-600 text-sm">Get your complete analysis in a beautiful, shareable format</p>
                   </div>
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-gradient-to-r from-orange-400 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="text-center group hover:transform hover:scale-105 transition-all duration-300">
+                  <div className="w-16 h-16 bg-gradient-to-r from-orange-400 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:shadow-lg transition-shadow">
                       <Shield className="w-8 h-8 text-white" />
                     </div>
-                    <h4 className="text-lg font-semibold text-gray-900 mb-2">Natural Supplements</h4>
-                    <p className="text-gray-600 text-sm">Discover herbs and supplements that support your constitution</p>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">✅ Get Safe, Science-Backed Suggestions</h3>
+                  <p className="text-gray-600 text-sm">for Your Health Goals</p>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-indigo-50 rounded-2xl p-8 max-w-2xl mx-auto mb-12 border border-indigo-100">
-                <h3 className="text-xl font-semibold text-indigo-900 mb-4">Assessment Details</h3>
+            {/* Assessment Details */}
+            <div className="bg-indigo-50 rounded-2xl p-8 max-w-3xl mx-auto mb-12 border border-indigo-100">
+              <h3 className="text-xl font-semibold text-indigo-900 mb-6 text-center">📋 Assessment Details</h3>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div className="flex items-center">
                     <CheckCircle className="w-4 h-4 text-indigo-600 mr-2" />
@@ -898,11 +1168,14 @@ export default function ConstitutionTestPage() {
                   </div>
                   <div className="flex items-center">
                     <CheckCircle className="w-4 h-4 text-indigo-600 mr-2" />
-                    <span className="text-indigo-800">Personalized results</span>
+                  <span className="text-indigo-800">Instant personalized results</span>
                   </div>
                 </div>
               </div>
 
+            {/* Action Buttons */}
+            <div className="text-center space-y-6">
+              <div className="flex flex-wrap justify-center gap-4">
               <button
                 onClick={startTest}
                 className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-12 py-5 rounded-2xl text-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg transform hover:scale-105 inline-flex items-center"
@@ -910,10 +1183,86 @@ export default function ConstitutionTestPage() {
                 Begin Your Assessment
                 <ArrowRight className="w-6 h-6 ml-3" />
               </button>
+                <button
+                  onClick={showDemo}
+                  className="border-2 border-indigo-600 text-indigo-600 px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-indigo-50 transition-all duration-300 inline-flex items-center"
+                >
+                  <Eye className="w-5 h-5 mr-2" />
+                  Show Example Result
+                </button>
+              </div>
               
-              <p className="text-gray-500 text-sm mt-6">
+              <p className="text-gray-500 text-sm">
                 This assessment is for educational purposes and does not replace professional medical advice
               </p>
+            </div>
+
+            {/* SEO Content - What We Analyze */}
+            <div className="mt-20 max-w-4xl mx-auto">
+              <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">What Is Herbal Constitution?</h2>
+              <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 border border-gray-100">
+                <p className="text-gray-700 text-lg leading-relaxed mb-6">
+                  Your constitution, in herbal medicine, reflects your body's balance of energy, moisture, temperature, and stress response. 
+                  Understanding it helps us recommend the best herbs for your body type, based on thousands of years of traditional wisdom 
+                  combined with modern scientific understanding.
+                </p>
+                
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Types of Herbal Constitutions</h3>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="bg-red-50 rounded-xl p-6 border border-red-100">
+                    <h4 className="text-lg font-semibold text-red-800 mb-3 flex items-center">
+                      <Zap className="w-5 h-5 mr-2" />
+                      Fire Type
+                    </h4>
+                    <p className="text-red-700 text-sm">High energy, passionate, creative. May benefit from cooling and calming herbs.</p>
+                  </div>
+                  <div className="bg-yellow-50 rounded-xl p-6 border border-yellow-100">
+                    <h4 className="text-lg font-semibold text-yellow-800 mb-3 flex items-center">
+                      <Heart className="w-5 h-5 mr-2" />
+                      Earth Type
+                    </h4>
+                    <p className="text-yellow-700 text-sm">Stable, nurturing, centered. Benefits from digestive and grounding herbs.</p>
+                  </div>
+                  <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                    <h4 className="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                      <Shield className="w-5 h-5 mr-2" />
+                      Metal Type
+                    </h4>
+                    <p className="text-gray-700 text-sm">Structured, refined, precise. Benefits from respiratory and immune-supporting herbs.</p>
+                  </div>
+                  <div className="bg-blue-50 rounded-xl p-6 border border-blue-100">
+                    <h4 className="text-lg font-semibold text-blue-800 mb-3 flex items-center">
+                      <Star className="w-5 h-5 mr-2" />
+                      Water Type
+                    </h4>
+                    <p className="text-blue-700 text-sm">Deep, introspective, adaptable. Benefits from kidney and adrenal-supporting herbs.</p>
+                  </div>
+                  <div className="bg-green-50 rounded-xl p-6 border border-green-100">
+                    <h4 className="text-lg font-semibold text-green-800 mb-3 flex items-center">
+                      <Leaf className="w-5 h-5 mr-2" />
+                      Wood Type
+                    </h4>
+                    <p className="text-green-700 text-sm">Dynamic, ambitious, visionary. Benefits from liver-supporting and stress-reducing herbs.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-emerald-50 rounded-2xl p-8 border border-emerald-200">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">🌿 Connected to Our Herb Database</h3>
+                <p className="text-gray-700 text-center mb-6">
+                  Your constitution results automatically connect to our comprehensive herb database with over 1,000+ herbs, 
+                  allowing you to explore detailed information about each recommended plant.
+                </p>
+                <div className="flex justify-center">
+                  <a
+                    href="/herb-finder"
+                    className="inline-flex items-center bg-gradient-to-r from-emerald-600 to-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-emerald-700 hover:to-green-700 transition-all duration-300 shadow-lg transform hover:scale-105"
+                  >
+                    <Leaf className="w-5 h-5 mr-2" />
+                    Explore Herb Database
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </main>
@@ -921,7 +1270,7 @@ export default function ConstitutionTestPage() {
     )
   }
 
-  // Question Screen
+  // Question Screen (existing code with minor enhancements)
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <Navigation />
@@ -973,13 +1322,27 @@ export default function ConstitutionTestPage() {
                 <button
                   key={index}
                   onClick={() => handleAnswer(index)}
-                  className="w-full text-left p-6 border-2 border-gray-200 rounded-2xl hover:border-indigo-400 hover:bg-indigo-50 transition-all duration-300 group transform hover:scale-102"
+                  className={`w-full text-left p-6 border-2 rounded-2xl transition-all duration-300 group transform hover:scale-102 ${
+                    selectedAnswer === index 
+                      ? 'border-indigo-500 bg-indigo-50 shadow-lg' 
+                      : 'border-gray-200 hover:border-indigo-400 hover:bg-indigo-50'
+                  }`}
                 >
                   <div className="flex items-center">
-                    <div className="w-6 h-6 border-2 border-gray-300 rounded-full mr-6 flex-shrink-0 group-hover:border-indigo-500 transition-colors">
-                      <div className="w-full h-full rounded-full bg-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity transform scale-50 group-hover:scale-75"></div>
+                    <div className={`w-6 h-6 border-2 rounded-full mr-6 flex-shrink-0 transition-colors ${
+                      selectedAnswer === index
+                        ? 'border-indigo-500 bg-indigo-500'
+                        : 'border-gray-300 group-hover:border-indigo-500'
+                    }`}>
+                      {selectedAnswer === index && (
+                        <div className="w-full h-full rounded-full bg-white transform scale-50"></div>
+                      )}
                     </div>
-                    <span className="text-gray-700 text-lg leading-relaxed group-hover:text-indigo-900 transition-colors">{option.text}</span>
+                    <span className={`text-lg leading-relaxed transition-colors ${
+                      selectedAnswer === index
+                        ? 'text-indigo-900 font-medium'
+                        : 'text-gray-700 group-hover:text-indigo-900'
+                    }`}>{option.text}</span>
                   </div>
                 </button>
               ))}
@@ -995,7 +1358,8 @@ export default function ConstitutionTestPage() {
                 Previous
               </button>
               
-              <div className="text-gray-500 self-center">
+              <div className="text-gray-500 text-center">
+                <Lightbulb className="w-5 h-5 inline mr-2" />
                 Choose the option that best describes you
               </div>
             </div>

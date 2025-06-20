@@ -260,7 +260,7 @@ export default function HerbFinderPage() {
                 </button>
               ))}
             </div>
-          </div>
+        </div>
 
           {/* 搜索和筛选区域 */}
           <div className="bg-white rounded-3xl shadow-xl p-8 mb-12 border border-gray-100">
@@ -366,7 +366,7 @@ export default function HerbFinderPage() {
                 herb={herb} 
                 showDetailed={true}
               />
-            ))}
+              ))}
           </div>
 
           {/* 无结果提示 */}
