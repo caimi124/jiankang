@@ -1,20 +1,37 @@
-// Simplified herb recommendation system for HerbScience.shop
+// Updated herb recommendation system for HerbScience.shop
+// Using complete Notion database with 58 herbs
 
-// Herb interface matching our Notion database structure
+// Import complete herbs database from Notion
+import { HERBS_DATABASE } from './herbs-data-complete';
+
+// Updated Herb interface matching Notion database structure
 export interface Herb {
   id: string;
-  name: string;
-  chineseName: string;
-  description: string;
-  composition: string[];
-  dosage: string;
+  chinese_name: string;
+  english_name: string;
+  latin_name: string;
+  category: string;
+  constitution_type: string;
+  primary_effects: string[];
+  secondary_effects: string[];
   efficacy: string[];
-  usage: string;
-  safetyLevel: 'high' | 'medium' | 'low';
-  precautions: string;
-  tcmConstitution: string;
-  caseStudy?: string;
-  createdDate?: string;
+  dosage: string;
+  safety_level: 'high' | 'medium' | 'low';
+  contraindications: string;
+  description: string;
+  traditional_use: string;
+  modern_applications: string;
+  taste: string;
+  meridians: string[];
+  part_used: string;
+  source: string;
+  growing_regions: string[];
+  price_range: string;
+  availability: string;
+  quality_score: number;
+  popularity_score: number;
+  usage_suggestions: string;
+  ingredients: string[];
 }
 
 // Constitution type mapping for herb recommendations
@@ -56,79 +73,7 @@ export const CONSTITUTION_HERB_MAPPING = {
   }
 };
 
-// Mock herb database for demonstration
-const MOCK_HERBS: Herb[] = [
-  {
-    id: 'ginseng',
-    name: 'Ginseng',
-    chineseName: '人参',
-    description: '补气养血，增强免疫力的传统草药',
-    composition: ['人参皂苷', '多糖', '氨基酸'],
-    dosage: '每日 200-400mg',
-    efficacy: ['免疫支持', '能量提升', '补气养血'],
-    usage: '早餐后服用，避免晚上使用',
-    safetyLevel: 'high',
-    precautions: '孕妇慎用，高血压患者需谨慎',
-    tcmConstitution: '平和质',
-    caseStudy: '多项临床研究显示在提升免疫力方面有显著效果'
-  },
-  {
-    id: 'echinacea',
-    name: 'Echinacea',
-    chineseName: '紫锥花',
-    description: '增强免疫系统，预防感冒',
-    composition: ['多酚类', '烷基酰胺', '多糖'],
-    dosage: '每日 300-500mg',
-    efficacy: ['免疫支持', '抗病毒', '呼吸系统'],
-    usage: '感冒季节服用，连续使用不超过8周',
-    safetyLevel: 'high',
-    precautions: '自身免疫性疾病患者不宜使用',
-    tcmConstitution: '平和质',
-    caseStudy: '研究显示可缩短感冒持续时间'
-  },
-  {
-    id: 'turmeric',
-    name: 'Turmeric',
-    chineseName: '姜黄',
-    description: '强效天然抗炎剂，保护关节健康',
-    composition: ['姜黄素', '挥发油', '姜黄酮'],
-    dosage: '每日 500-1000mg',
-    efficacy: ['抗炎作用', '关节健康', '消化健康'],
-    usage: '餐后服用，与黑胡椒同服增强吸收',
-    safetyLevel: 'high',
-    precautions: '胆结石患者慎用',
-    tcmConstitution: '痰湿质',
-    caseStudy: '大量研究证实其抗炎功效'
-  },
-  {
-    id: 'ashwagandha',
-    name: 'Ashwagandha',
-    chineseName: '南非醉茄',
-    description: '适应原草药，帮助身体应对压力',
-    composition: ['醉茄内酯', '生物碱', '皂苷'],
-    dosage: '每日 300-600mg',
-    efficacy: ['压力与焦虑', '睡眠支持', '情绪管理'],
-    usage: '睡前服用效果最佳',
-    safetyLevel: 'medium',
-    precautions: '孕妇、哺乳期妇女禁用',
-    tcmConstitution: '气虚质',
-    caseStudy: '临床试验显示能显著降低皮质醇水平'
-  },
-  {
-    id: 'milk-thistle',
-    name: 'Milk Thistle',
-    chineseName: '水飞蓟',
-    description: '保护肝脏，促进肝脏解毒功能',
-    composition: ['水飞蓟素', '黄酮类', '脂肪油'],
-    dosage: '每日 200-400mg',
-    efficacy: ['肝脏健康', '解毒支持'],
-    usage: '空腹服用，建议分2-3次服用',
-    safetyLevel: 'high',
-    precautions: '对菊科植物过敏者慎用',
-    tcmConstitution: '湿热质',
-    caseStudy: '多项研究证实对肝脏保护作用'
-  }
-];
+// Use complete herbs database from Notion
 
 // Simplified herbs data service
 export class HerbsDataService {
@@ -136,12 +81,11 @@ export class HerbsDataService {
   private cacheExpiry: number = 5 * 60 * 1000; // 5 minutes
   private lastCacheUpdate: number = 0;
 
-  // Fetch all herbs (mock implementation)
+  // Fetch all herbs from complete database
   async fetchAllHerbs(): Promise<Herb[]> {
     try {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 500));
-      return MOCK_HERBS;
+      // Use the complete database from Notion
+      return HERBS_DATABASE;
     } catch (error) {
       console.error('Error fetching herbs:', error);
       return [];
@@ -167,9 +111,9 @@ export class HerbsDataService {
         let score = 0;
 
         // Constitution match scoring
-        if (mapping.primaryConstitutions.includes(herb.tcmConstitution)) {
+        if (mapping.primaryConstitutions.includes(herb.constitution_type)) {
           score += 10;
-        } else if (mapping.secondaryConstitutions.includes(herb.tcmConstitution)) {
+        } else if (mapping.secondaryConstitutions.includes(herb.constitution_type)) {
           score += 5;
         }
 
@@ -186,12 +130,12 @@ export class HerbsDataService {
         }
 
         // Safety preference
-        if (preferredSafety.includes(herb.safetyLevel)) {
+        if (preferredSafety.includes(herb.safety_level)) {
           score += 2;
         }
 
         // Boost for high safety herbs
-        if (herb.safetyLevel === 'high') {
+        if (herb.safety_level === 'high') {
           score += 1;
         }
 
@@ -232,7 +176,7 @@ export class HerbsDataService {
       const allHerbs = await this.fetchAllHerbs();
       
       return allHerbs
-        .filter(herb => herb.tcmConstitution === constitution)
+        .filter(herb => herb.constitution_type === constitution)
         .slice(0, limit);
     } catch (error) {
       console.error('Error searching herbs by constitution:', error);

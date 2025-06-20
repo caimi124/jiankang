@@ -56,19 +56,19 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
           <div className="flex items-center mb-2">
             <Leaf className="w-5 h-5 text-green-600 mr-2" />
             <h3 className="text-lg font-semibold text-gray-900 line-clamp-1">
-              {herb.chineseName || herb.name}
+              {herb.chinese_name || herb.english_name}
             </h3>
           </div>
-          <p className="text-sm text-gray-600 mb-1">{herb.name}</p>
-          {herb.tcmConstitution && (
+          <p className="text-sm text-gray-600 mb-1">{herb.english_name}</p>
+          {herb.constitution_type && (
             <span className="inline-block px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full">
-              {herb.tcmConstitution}
+              {herb.constitution_type}
             </span>
           )}
         </div>
-        <div className={`flex items-center px-2 py-1 rounded-full text-xs font-medium ${getSafetyColor(herb.safetyLevel)}`}>
-          {getSafetyIcon(herb.safetyLevel)}
-          <span className="ml-1 capitalize">{herb.safetyLevel}</span>
+        <div className={`flex items-center px-2 py-1 rounded-full text-xs font-medium ${getSafetyColor(herb.safety_level)}`}>
+          {getSafetyIcon(herb.safety_level)}
+          <span className="ml-1 capitalize">{herb.safety_level}</span>
         </div>
       </div>
 
@@ -127,11 +127,11 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
       {isExpanded && showDetailed && (
         <div className="mt-4 pt-4 border-t border-gray-100 space-y-4">
           {/* Composition */}
-          {herb.composition && herb.composition.length > 0 && (
+          {herb.ingredients && herb.ingredients.length > 0 && (
             <div>
               <h4 className="font-medium text-gray-900 mb-2">主要成分</h4>
               <div className="flex flex-wrap gap-1">
-                {herb.composition.map((comp, index) => (
+                {herb.ingredients.map((comp: string, index: number) => (
                   <span 
                     key={index}
                     className="px-2 py-1 bg-purple-50 text-purple-700 text-xs rounded-md"
@@ -144,29 +144,29 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
           )}
 
           {/* Usage */}
-          {herb.usage && (
+          {herb.usage_suggestions && (
             <div>
               <h4 className="font-medium text-gray-900 mb-2">使用建议</h4>
-              <p className="text-sm text-gray-700">{herb.usage}</p>
+              <p className="text-sm text-gray-700">{herb.usage_suggestions}</p>
             </div>
           )}
 
           {/* Precautions */}
-          {herb.precautions && (
+          {herb.contraindications && (
             <div>
               <h4 className="font-medium text-gray-900 mb-2 flex items-center">
                 <AlertTriangle className="w-4 h-4 text-orange-500 mr-1" />
                 注意事项
               </h4>
-              <p className="text-sm text-gray-700">{herb.precautions}</p>
+              <p className="text-sm text-gray-700">{herb.contraindications}</p>
             </div>
           )}
 
           {/* Case Study */}
-          {herb.caseStudy && (
+          {herb.modern_applications && (
             <div>
-              <h4 className="font-medium text-gray-900 mb-2">案例分析</h4>
-              <p className="text-sm text-gray-700">{herb.caseStudy}</p>
+              <h4 className="font-medium text-gray-900 mb-2">现代应用</h4>
+              <p className="text-sm text-gray-700">{herb.modern_applications}</p>
             </div>
           )}
         </div>

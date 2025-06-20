@@ -104,8 +104,8 @@ export default function HerbFinderPage() {
     if (filters.search) {
       const searchLower = filters.search.toLowerCase()
       filtered = filtered.filter(herb =>
-        herb.name.toLowerCase().includes(searchLower) ||
-        herb.chineseName.toLowerCase().includes(searchLower) ||
+        herb.chinese_name.toLowerCase().includes(searchLower) ||
+        herb.english_name.toLowerCase().includes(searchLower) ||
         herb.description.toLowerCase().includes(searchLower) ||
         herb.efficacy.some(eff => eff.toLowerCase().includes(searchLower))
       )
@@ -187,7 +187,7 @@ export default function HerbFinderPage() {
                   value={filters.search}
                   onChange={(e) => handleFilterChange('search', e.target.value)}
                 />
-              </div>
+            </div>
 
               {/* Filter Toggle */}
               <div className="flex gap-2">
@@ -206,15 +206,15 @@ export default function HerbFinderPage() {
                 >
                   <RefreshCw className="w-5 h-5" />
                 </button>
-              </div>
-            </div>
-
+                          </div>
+                        </div>
+                        
             {/* Expanded Filters */}
             {showFilters && (
               <div className="mt-6 pt-6 border-t border-gray-200">
                 <div className="grid md:grid-cols-3 gap-4">
                   {/* Constitution Filter */}
-                  <div>
+                        <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Constitution Type
                     </label>
@@ -228,10 +228,10 @@ export default function HerbFinderPage() {
                         <option key={option} value={option}>{option}</option>
                       ))}
                     </select>
-                  </div>
-
+                        </div>
+                        
                   {/* Efficacy Filter */}
-                  <div>
+                        <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Primary Benefit
                     </label>
@@ -245,10 +245,10 @@ export default function HerbFinderPage() {
                         <option key={option} value={option}>{option}</option>
                       ))}
                     </select>
-                  </div>
-
+                        </div>
+                        
                   {/* Safety Filter */}
-                  <div>
+                        <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Safety Level
                     </label>
@@ -262,9 +262,9 @@ export default function HerbFinderPage() {
                         <option key={option.value} value={option.value}>{option.label}</option>
                       ))}
                     </select>
-                  </div>
-                </div>
-
+                        </div>
+                      </div>
+                      
                 {/* Clear Filters */}
                 {hasActiveFilters && (
                   <div className="mt-4 flex justify-end">
@@ -274,12 +274,12 @@ export default function HerbFinderPage() {
                     >
                       <X className="w-4 h-4 mr-1" />
                       Clear All Filters
-                    </button>
+                      </button>
                   </div>
                 )}
               </div>
             )}
-          </div>
+                </div>
 
           {/* Results Header */}
           <div className="flex justify-between items-center mb-8">
@@ -301,14 +301,14 @@ export default function HerbFinderPage() {
               <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-red-900 mb-2">Unable to Load Herbs</h3>
               <p className="text-red-700 mb-4">{error}</p>
-              <button
+            <button 
                 onClick={refreshData}
                 className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-xl transition-colors"
               >
                 Try Again
-              </button>
-            </div>
-          )}
+            </button>
+          </div>
+        )}
 
           {/* No Results */}
           {!error && filteredHerbs.length === 0 && !isLoading && (
@@ -356,7 +356,7 @@ export default function HerbFinderPage() {
                 </div>
                 <div>
                   <div className="text-3xl font-bold">
-                    {herbs.filter(h => h.safetyLevel === 'high').length}
+                    {herbs.filter(h => h.safety_level === 'high').length}
                   </div>
                   <div className="text-green-100">High Safety</div>
                 </div>
@@ -366,10 +366,10 @@ export default function HerbFinderPage() {
                   </div>
                   <div className="text-green-100">Unique Benefits</div>
                 </div>
-              </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
+      </div>
       </main>
     </div>
   )

@@ -1,61 +1,103 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { herbsDataService } from '../../../../lib/herbs-recommendation'
+import { z } from 'zod'
+import { rateLimit } from '@/lib/rate-limit'
+import { herbData } from '@/lib/herbs-data-complete'
+
+const limiter = rateLimit({
+  interval: 60 * 1000, // 1 minute
+  uniqueTokenPerInterval: 500
+})
+
+// Input validation schema
+const QuerySchema = z.object({
+  limit: z.string().transform(Number).pipe(z.number().min(1).max(100)).optional(),
+  search: z.string().min(1).max(100).optional(),
+  category: z.string().min(1).max(50).optional(),
+  safety: z.enum(['high', 'medium', 'low']).optional()
+})
 
 export async function GET(request: NextRequest) {
   try {
+    // Rate limiting
+    try {
+      await limiter.check(5, 'HERBS_API_CACHE') // 5 requests per minute per token
+    } catch {
+      return new NextResponse(JSON.stringify({ error: 'Too many requests' }), {
+        status: 429,
+        headers: {
+          'Content-Type': 'application/json',
+          'Retry-After': '60'
+        }
+      })
+    }
+
     const { searchParams } = new URL(request.url)
-    const efficacy = searchParams.get('efficacy')
-    const constitution = searchParams.get('constitution')
-    const safety = searchParams.get('safety')
-    const limit = parseInt(searchParams.get('limit') || '50')
-
-    if (efficacy) {
-      const herbs = await herbsDataService.searchHerbsByEfficacy([efficacy], limit)
-      return NextResponse.json({
-        success: true,
-        data: herbs,
-        filter: { type: 'efficacy', value: efficacy },
-        count: herbs.length
+    const rawParams = Object.fromEntries(searchParams.entries())
+    
+    // Validate input
+    const validatedParams = QuerySchema.safeParse(rawParams)
+    if (!validatedParams.success) {
+      return new NextResponse(JSON.stringify({ 
+        error: 'Invalid parameters',
+        details: validatedParams.error.errors
+      }), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json'
+        }
       })
     }
 
-    if (constitution) {
-      const herbs = await herbsDataService.searchHerbsByConstitution(constitution, limit)
-      return NextResponse.json({
-        success: true,
-        data: herbs,
-        filter: { type: 'constitution', value: constitution },
-        count: herbs.length
-      })
+    const { limit = 100, search, category, safety } = validatedParams.data
+
+    let filteredHerbs = [...herbData]
+
+    // Apply filters
+    if (search) {
+      const searchLower = search.toLowerCase()
+      filteredHerbs = filteredHerbs.filter(herb => 
+        herb.name.toLowerCase().includes(searchLower) ||
+        herb.description.toLowerCase().includes(searchLower) ||
+        herb.benefits.some(benefit => benefit.toLowerCase().includes(searchLower))
+      )
     }
 
-    // Get all herbs
-    const allHerbs = await herbsDataService.fetchAllHerbs()
-    let filteredHerbs = allHerbs
+    if (category) {
+      filteredHerbs = filteredHerbs.filter(herb => 
+        herb.categories.includes(category)
+      )
+    }
 
     if (safety) {
-      filteredHerbs = allHerbs.filter(herb => herb.safetyLevel === safety)
+      filteredHerbs = filteredHerbs.filter(herb => 
+        herb.safetyRating === safety
+      )
     }
 
-    const paginatedHerbs = filteredHerbs.slice(0, limit)
+    // Limit results
+    filteredHerbs = filteredHerbs.slice(0, limit)
 
-    return NextResponse.json({
-      success: true,
-      data: paginatedHerbs,
-      filter: safety ? { type: 'safety', value: safety } : null,
-      count: paginatedHerbs.length,
-      total: allHerbs.length
+    return new NextResponse(JSON.stringify({
+      herbs: filteredHerbs,
+      total: filteredHerbs.length,
+      limit
+    }), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=30'
+      }
     })
 
   } catch (error) {
-    console.error('Error fetching herbs data:', error)
-    return NextResponse.json(
-      { 
-        error: 'Failed to fetch herbs data',
-        details: error instanceof Error ? error.message : 'Unknown error'
-      },
-      { status: 500 }
-    )
+    console.error('Herbs API Error:', error)
+    return new NextResponse(JSON.stringify({ error: 'Internal server error' }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
   }
 }
 
