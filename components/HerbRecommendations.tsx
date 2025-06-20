@@ -49,22 +49,33 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300">
+    <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl hover:scale-105 transition-all duration-300 group">
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
           <div className="flex items-center mb-2">
-            <Leaf className="w-5 h-5 text-green-600 mr-2" />
-            <h3 className="text-lg font-semibold text-gray-900 line-clamp-1">
+            <Leaf className="w-5 h-5 text-green-600 mr-2 group-hover:text-green-700 transition-colors" />
+            <h3 className="text-lg font-semibold text-gray-900 line-clamp-1 group-hover:text-green-700 transition-colors">
               {herb.chinese_name || herb.english_name}
             </h3>
           </div>
-          <p className="text-sm text-gray-600 mb-1">{herb.english_name}</p>
-          {herb.constitution_type && (
-            <span className="inline-block px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full">
-              {herb.constitution_type}
-            </span>
+          <p className="text-sm text-gray-600 mb-2">{herb.english_name}</p>
+          {herb.latin_name && (
+            <p className="text-xs text-gray-500 italic mb-2">{herb.latin_name}</p>
           )}
+          <div className="flex flex-wrap gap-1 mb-2">
+            {herb.constitution_type && (
+              <span className="inline-block px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full">
+                {herb.constitution_type}
+              </span>
+            )}
+            {herb.quality_score && herb.quality_score > 80 && (
+              <span className="inline-flex items-center px-2 py-1 bg-yellow-50 text-yellow-700 text-xs rounded-full">
+                <Star className="w-3 h-3 mr-1" />
+                Premium
+              </span>
+            )}
+          </div>
         </div>
         <div className={`flex items-center px-2 py-1 rounded-full text-xs font-medium ${getSafetyColor(herb.safety_level)}`}>
           {getSafetyIcon(herb.safety_level)}

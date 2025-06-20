@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import Navigation from '../../components/Navigation'
 import Breadcrumb from '../../components/Breadcrumb'
 import { HerbCard } from '../../components/HerbRecommendations'
+import HerbFinderFAQ from '../../components/HerbFinderFAQ'
 import { 
   Search, 
   Filter, 
@@ -11,7 +12,15 @@ import {
   ChevronDown,
   AlertCircle,
   RefreshCw,
-  X
+  X,
+  Star,
+  Shield,
+  Heart,
+  Brain,
+  Zap,
+  Moon,
+  Users,
+  Target
 } from 'lucide-react'
 import type { Herb } from '../../lib/herbs-recommendation'
 
@@ -20,7 +29,42 @@ interface FilterState {
   efficacy: string
   safety: string
   search: string
+  category: string
 }
+
+// Popular search categories for better UX
+const popularCategories = [
+  { 
+    icon: <Moon className="w-4 h-4" />, 
+    label: 'Sleep & Relaxation', 
+    keywords: ['睡眠支持', '镇静安神', '情绪管理', 'sleep', 'relaxation', 'calm'] 
+  },
+  { 
+    icon: <Zap className="w-4 h-4" />, 
+    label: 'Energy & Vitality', 
+    keywords: ['能量提升', '补气养血', 'energy', 'vitality', 'boost'] 
+  },
+  { 
+    icon: <Shield className="w-4 h-4" />, 
+    label: 'Immune Support', 
+    keywords: ['免疫支持', 'immune', 'support', 'defense'] 
+  },
+  { 
+    icon: <Heart className="w-4 h-4" />, 
+    label: 'Digestive Health', 
+    keywords: ['消化健康', 'digestive', 'stomach', 'gut'] 
+  },
+  { 
+    icon: <Brain className="w-4 h-4" />, 
+    label: 'Mental Clarity', 
+    keywords: ['压力与焦虑', 'mental', 'focus', 'clarity', 'stress', 'anxiety'] 
+  },
+  { 
+    icon: <Users className="w-4 h-4" />, 
+    label: 'Women\'s Health', 
+    keywords: ['女性健康', 'women', 'female', 'hormonal'] 
+  }
+]
 
 export default function HerbFinderPage() {
   const [herbs, setHerbs] = useState<Herb[]>([])
@@ -33,7 +77,8 @@ export default function HerbFinderPage() {
     constitution: '',
     efficacy: '',
     safety: '',
-    search: ''
+    search: '',
+    category: ''
   })
 
   const constitutionOptions = [
@@ -48,9 +93,9 @@ export default function HerbFinderPage() {
   ]
 
   const safetyOptions = [
-    { value: 'high', label: '高安全性' },
-    { value: 'medium', label: '中等安全性' },
-    { value: 'low', label: '需谨慎使用' }
+    { value: 'high', label: 'High Safety' },
+    { value: 'medium', label: 'Moderate Safety' },
+    { value: 'low', label: 'Use with Caution' }
   ]
 
   // 获取草药数据
@@ -68,14 +113,7 @@ export default function HerbFinderPage() {
       setIsLoading(true)
       setError(null)
 
-      // 构建查询参数
-      const params = new URLSearchParams()
-      if (filters.constitution) params.append('constitution', filters.constitution)
-      if (filters.efficacy) params.append('efficacy', filters.efficacy)
-      if (filters.safety) params.append('safety', filters.safety)
-      params.append('limit', '100')
-
-      const response = await fetch(`/api/herbs/data?${params.toString()}`)
+      const response = await fetch('/api/herbs/data?limit=100')
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
@@ -97,19 +135,68 @@ export default function HerbFinderPage() {
     }
   }
 
+  // Enhanced search with multiple fields and fuzzy matching
   const applyFilters = () => {
     let filtered = [...herbs]
 
-    // 文本搜索
+    // Enhanced text search across multiple fields
     if (filters.search) {
       const searchLower = filters.search.toLowerCase()
       filtered = filtered.filter(herb =>
         herb.chinese_name.toLowerCase().includes(searchLower) ||
         herb.english_name.toLowerCase().includes(searchLower) ||
+        herb.latin_name.toLowerCase().includes(searchLower) ||
         herb.description.toLowerCase().includes(searchLower) ||
-        herb.efficacy.some(eff => eff.toLowerCase().includes(searchLower))
+        herb.efficacy.some(eff => eff.toLowerCase().includes(searchLower)) ||
+        herb.primary_effects.some(eff => eff.toLowerCase().includes(searchLower)) ||
+        herb.traditional_use.toLowerCase().includes(searchLower) ||
+        herb.modern_applications.toLowerCase().includes(searchLower) ||
+        herb.ingredients.some(ing => ing.toLowerCase().includes(searchLower))
       )
     }
+
+    // Category-based filtering
+    if (filters.category) {
+      const category = popularCategories.find(cat => cat.label === filters.category)
+      if (category) {
+        filtered = filtered.filter(herb =>
+          category.keywords.some(keyword =>
+            herb.efficacy.some(eff => eff.toLowerCase().includes(keyword.toLowerCase())) ||
+            herb.primary_effects.some(eff => eff.toLowerCase().includes(keyword.toLowerCase())) ||
+            herb.description.toLowerCase().includes(keyword.toLowerCase())
+          )
+        )
+      }
+    }
+
+    // Constitution filter
+    if (filters.constitution) {
+      filtered = filtered.filter(herb => 
+        herb.constitution_type === filters.constitution
+      )
+    }
+
+    // Efficacy filter  
+    if (filters.efficacy) {
+      filtered = filtered.filter(herb =>
+        herb.efficacy.includes(filters.efficacy) ||
+        herb.primary_effects.includes(filters.efficacy)
+      )
+    }
+
+    // Safety filter
+    if (filters.safety) {
+      filtered = filtered.filter(herb => 
+        herb.safety_level === filters.safety
+      )
+    }
+
+    // Sort by quality score and popularity
+    filtered.sort((a, b) => {
+      const scoreA = (a.quality_score || 0) + (a.popularity_score || 0)
+      const scoreB = (b.quality_score || 0) + (b.popularity_score || 0)
+      return scoreB - scoreA
+    })
 
     setFilteredHerbs(filtered)
   }
@@ -118,12 +205,20 @@ export default function HerbFinderPage() {
     setFilters(prev => ({ ...prev, [key]: value }))
   }
 
+  const handleCategorySelect = (categoryLabel: string) => {
+    setFilters(prev => ({ 
+      ...prev, 
+      category: prev.category === categoryLabel ? '' : categoryLabel 
+    }))
+  }
+
   const clearFilters = () => {
     setFilters({
       constitution: '',
       efficacy: '',
       safety: '',
-      search: ''
+      search: '',
+      category: ''
     })
   }
 
@@ -139,8 +234,11 @@ export default function HerbFinderPage() {
         <Navigation />
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
-            <Leaf className="w-16 h-16 text-green-600 mx-auto mb-4 animate-pulse" />
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Loading Herb Database</h2>
+            <div className="relative mb-8">
+              <Leaf className="w-20 h-20 text-green-600 mx-auto mb-4 animate-pulse" />
+              <div className="absolute inset-0 bg-green-200 rounded-full animate-ping opacity-25"></div>
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Loading Herb Database</h2>
             <p className="text-gray-600">Fetching the latest herb information...</p>
           </div>
         </div>
@@ -160,43 +258,69 @@ export default function HerbFinderPage() {
             ]} 
           />
 
-          {/* Header */}
+          {/* Enhanced Header */}
           <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-green-600 to-emerald-600 rounded-full mb-6 shadow-lg">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-green-600 to-emerald-600 rounded-full mb-6 shadow-lg hover:shadow-xl transition-shadow">
               <Leaf className="w-10 h-10 text-white" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Herb Finder
+              Smart Herb Finder
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Explore our comprehensive database of traditional herbs and modern supplements. 
-              Find the perfect natural remedies for your wellness journey.
+              Discover the perfect natural remedies from our comprehensive database of <span className="font-semibold text-green-600">{herbs.length} traditional herbs</span>. 
+              Search by symptoms, health goals, or constitution type.
             </p>
           </div>
 
-          {/* Search and Filter Bar */}
+          {/* Popular Categories */}
+          <div className="mb-8">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <Target className="w-5 h-5 mr-2 text-green-600" />
+              Popular Categories
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              {popularCategories.map((category) => (
+                <button
+                  key={category.label}
+                  onClick={() => handleCategorySelect(category.label)}
+                  className={`flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 ${
+                    filters.category === category.label
+                      ? 'bg-green-600 text-white shadow-lg'
+                      : 'bg-white text-gray-700 hover:bg-green-50 hover:text-green-700 border border-gray-200 hover:border-green-200'
+                  }`}
+                >
+                  {category.icon}
+                  <span className="ml-2">{category.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Enhanced Search and Filter Bar */}
           <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-gray-100">
             <div className="flex flex-col lg:flex-row gap-4">
-              {/* Search Input */}
+              {/* Enhanced Search Input */}
               <div className="flex-1 relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Search herbs by name, benefits, or description..."
-                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  placeholder="Search by name, symptoms, benefits, or ingredients... (e.g., 'sleep', 'anxiety', 'ginseng')"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                   value={filters.search}
                   onChange={(e) => handleFilterChange('search', e.target.value)}
                 />
-            </div>
+              </div>
 
               {/* Filter Toggle */}
               <div className="flex gap-2">
                 <button
                   onClick={() => setShowFilters(!showFilters)}
-                  className="flex items-center px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-xl transition-colors"
+                  className={`flex items-center px-4 py-3 rounded-xl transition-colors ${
+                    showFilters ? 'bg-green-100 text-green-700' : 'bg-gray-100 hover:bg-gray-200'
+                  }`}
                 >
                   <Filter className="w-5 h-5 mr-2" />
-                  Filters
+                  Advanced Filters
                   <ChevronDown className={`w-4 h-4 ml-2 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
                 </button>
                 
@@ -206,15 +330,15 @@ export default function HerbFinderPage() {
                 >
                   <RefreshCw className="w-5 h-5" />
                 </button>
-                          </div>
-                        </div>
+              </div>
+            </div>
                         
             {/* Expanded Filters */}
             {showFilters && (
               <div className="mt-6 pt-6 border-t border-gray-200">
                 <div className="grid md:grid-cols-3 gap-4">
                   {/* Constitution Filter */}
-                        <div>
+                  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Constitution Type
                     </label>
@@ -228,10 +352,10 @@ export default function HerbFinderPage() {
                         <option key={option} value={option}>{option}</option>
                       ))}
                     </select>
-                        </div>
+                  </div>
                         
                   {/* Efficacy Filter */}
-                        <div>
+                  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Primary Benefit
                     </label>
@@ -245,10 +369,10 @@ export default function HerbFinderPage() {
                         <option key={option} value={option}>{option}</option>
                       ))}
                     </select>
-                        </div>
+                  </div>
                         
                   {/* Safety Filter */}
-                        <div>
+                  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Safety Level
                     </label>
@@ -262,8 +386,8 @@ export default function HerbFinderPage() {
                         <option key={option.value} value={option.value}>{option.label}</option>
                       ))}
                     </select>
-                        </div>
-                      </div>
+                  </div>
+                </div>
                       
                 {/* Clear Filters */}
                 {hasActiveFilters && (
@@ -274,22 +398,30 @@ export default function HerbFinderPage() {
                     >
                       <X className="w-4 h-4 mr-1" />
                       Clear All Filters
-                      </button>
+                    </button>
                   </div>
                 )}
               </div>
             )}
-                </div>
+          </div>
 
-          {/* Results Header */}
+          {/* Results Header with Enhanced Info */}
           <div className="flex justify-between items-center mb-8">
             <div>
               <h2 className="text-2xl font-bold text-gray-900">
-                {error ? 'Error Loading Herbs' : `${filteredHerbs.length} Herbs Found`}
+                {error ? 'Error Loading Herbs' : (
+                  <>
+                    <span className="text-green-600">{filteredHerbs.length}</span> Herbs Found
+                  </>
+                )}
               </h2>
               {!error && (
                 <p className="text-gray-600 mt-1">
-                  {hasActiveFilters ? 'Filtered results' : 'Showing all available herbs'}
+                  {hasActiveFilters ? (
+                    <>Filtered from {herbs.length} total herbs • Sorted by quality & popularity</>
+                  ) : (
+                    <>Showing all available herbs • Use filters to find specific remedies</>
+                  )}
                 </p>
               )}
             </div>
@@ -301,38 +433,43 @@ export default function HerbFinderPage() {
               <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-red-900 mb-2">Unable to Load Herbs</h3>
               <p className="text-red-700 mb-4">{error}</p>
-            <button 
+              <button 
                 onClick={refreshData}
                 className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-xl transition-colors"
               >
                 Try Again
-            </button>
-          </div>
-        )}
+              </button>
+            </div>
+          )}
 
-          {/* No Results */}
+          {/* No Results with Suggestions */}
           {!error && filteredHerbs.length === 0 && !isLoading && (
             <div className="bg-white rounded-xl shadow-lg p-12 text-center border border-gray-100">
               <Leaf className="w-16 h-16 text-gray-400 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 mb-2">No Herbs Found</h3>
               <p className="text-gray-600 mb-6">
                 {hasActiveFilters 
-                  ? 'Try adjusting your filters to find more results.'
+                  ? 'Try adjusting your search terms or filters. You can also browse by popular categories above.'
                   : 'No herbs are currently available in the database.'
                 }
               </p>
               {hasActiveFilters && (
-                <button
-                  onClick={clearFilters}
-                  className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl transition-colors"
-                >
-                  Clear Filters
-                </button>
+                <div className="space-y-3">
+                  <button
+                    onClick={clearFilters}
+                    className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl transition-colors"
+                  >
+                    Clear All Filters
+                  </button>
+                  <p className="text-sm text-gray-500">
+                    Or try searching for: "sleep", "energy", "immune", "stress", "digestion"
+                  </p>
+                </div>
               )}
             </div>
           )}
 
-          {/* Herbs Grid */}
+          {/* Enhanced Herbs Grid */}
           {!error && filteredHerbs.length > 0 && (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredHerbs.map((herb) => (
@@ -345,31 +482,61 @@ export default function HerbFinderPage() {
             </div>
           )}
 
-          {/* Database Stats */}
-          {!error && (
+          {/* Enhanced Database Stats */}
+          {!error && herbs.length > 0 && (
             <div className="mt-12 bg-gradient-to-r from-green-600 to-emerald-600 rounded-2xl p-8 text-white text-center">
-              <h3 className="text-2xl font-bold mb-4">Database Statistics</h3>
-              <div className="grid md:grid-cols-3 gap-6">
-                <div>
+              <h3 className="text-2xl font-bold mb-6">Database Statistics</h3>
+              <div className="grid md:grid-cols-4 gap-6">
+                <div className="bg-white/10 rounded-lg p-4">
                   <div className="text-3xl font-bold">{herbs.length}</div>
                   <div className="text-green-100">Total Herbs</div>
                 </div>
-                <div>
+                <div className="bg-white/10 rounded-lg p-4">
                   <div className="text-3xl font-bold">
                     {herbs.filter(h => h.safety_level === 'high').length}
                   </div>
                   <div className="text-green-100">High Safety</div>
                 </div>
-                <div>
+                <div className="bg-white/10 rounded-lg p-4">
                   <div className="text-3xl font-bold">
                     {new Set(herbs.flatMap(h => h.efficacy)).size}
                   </div>
                   <div className="text-green-100">Unique Benefits</div>
                 </div>
+                <div className="bg-white/10 rounded-lg p-4">
+                  <div className="text-3xl font-bold">
+                    {new Set(herbs.map(h => h.constitution_type)).size}
+                  </div>
+                  <div className="text-green-100">Constitution Types</div>
+                </div>
+              </div>
+              
+              {/* Quick Tips */}
+              <div className="mt-6 text-green-100 text-sm">
+                💡 <strong>Pro Tip:</strong> Use the category buttons above for quick health-focused searches, 
+                or try specific symptoms like "sleep problems" or "low energy"
+              </div>
+            </div>
+          )}
+
+          {/* FAQ Section for SEO */}
+          <HerbFinderFAQ language="en" />
+
+          {/* Disclaimer with Better Styling */}
+          <div className="mt-12 bg-amber-50 border border-amber-200 rounded-2xl p-6">
+            <div className="flex items-start">
+              <AlertCircle className="w-6 h-6 text-amber-600 mr-3 mt-1 flex-shrink-0" />
+              <div>
+                <h3 className="font-semibold text-amber-800 mb-2">Important Disclaimer</h3>
+                <p className="text-amber-700 text-sm leading-relaxed">
+                  This information is for educational purposes only and is not intended as medical advice. 
+                  Always consult with qualified healthcare professionals before using any herbal supplements, 
+                  especially if you have medical conditions or take medications.
+                </p>
+              </div>
             </div>
           </div>
-        )}
-      </div>
+        </div>
       </main>
     </div>
   )

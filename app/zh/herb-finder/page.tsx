@@ -4,8 +4,43 @@ import React, { useState, useEffect } from 'react'
 import Navigation from '../../../components/Navigation'
 import Breadcrumb from '../../../components/Breadcrumb'
 import { HerbCard } from '../../../components/HerbRecommendations'
-import { Search, Filter, Leaf, Shield, Star, ChevronDown, ChevronUp, AlertTriangle, Info } from 'lucide-react'
+import HerbFinderFAQ from '../../../components/HerbFinderFAQ'
+import { Search, Filter, Leaf, Shield, Star, ChevronDown, ChevronUp, AlertTriangle, Info, Heart, Brain, Zap, Moon, Users, Target } from 'lucide-react'
 import type { Herb } from '../../../lib/herbs-recommendation'
+
+// 热门分类，改善用户体验
+const popularCategories = [
+  { 
+    icon: <Moon className="w-4 h-4" />, 
+    label: '睡眠放松', 
+    keywords: ['睡眠支持', '镇静安神', '情绪管理'] 
+  },
+  { 
+    icon: <Zap className="w-4 h-4" />, 
+    label: '活力能量', 
+    keywords: ['能量提升', '补气养血'] 
+  },
+  { 
+    icon: <Shield className="w-4 h-4" />, 
+    label: '免疫支持', 
+    keywords: ['免疫支持'] 
+  },
+  { 
+    icon: <Heart className="w-4 h-4" />, 
+    label: '消化健康', 
+    keywords: ['消化健康'] 
+  },
+  { 
+    icon: <Brain className="w-4 h-4" />, 
+    label: '精神清晰', 
+    keywords: ['压力与焦虑'] 
+  },
+  { 
+    icon: <Users className="w-4 h-4" />, 
+    label: '女性健康', 
+    keywords: ['女性健康'] 
+  }
+]
 
 export default function HerbFinderPage() {
   const [herbs, setHerbs] = useState<Herb[]>([])
@@ -14,6 +49,7 @@ export default function HerbFinderPage() {
   const [selectedConstitution, setSelectedConstitution] = useState<string>('')
   const [selectedSafety, setSelectedSafety] = useState<string>('')
   const [selectedEfficacy, setSelectedEfficacy] = useState<string>('')
+  const [selectedCategory, setSelectedCategory] = useState<string>('')
   const [isLoading, setIsLoading] = useState(true)
   const [showFilters, setShowFilters] = useState(false)
 
@@ -87,15 +123,34 @@ export default function HerbFinderPage() {
   useEffect(() => {
     let filtered = [...herbs]
 
-    // 搜索筛选
+    // 增强搜索筛选 - 多字段搜索
     if (searchQuery) {
       const query = searchQuery.toLowerCase()
       filtered = filtered.filter(herb =>
         herb.chinese_name.toLowerCase().includes(query) ||
         herb.english_name.toLowerCase().includes(query) ||
         herb.latin_name.toLowerCase().includes(query) ||
-        herb.description.toLowerCase().includes(query)
+        herb.description.toLowerCase().includes(query) ||
+        herb.efficacy.some(eff => eff.toLowerCase().includes(query)) ||
+        herb.primary_effects.some(eff => eff.toLowerCase().includes(query)) ||
+        herb.traditional_use.toLowerCase().includes(query) ||
+        herb.modern_applications.toLowerCase().includes(query) ||
+        herb.ingredients.some(ing => ing.toLowerCase().includes(query))
       )
+    }
+
+    // 分类筛选
+    if (selectedCategory) {
+      const category = popularCategories.find(cat => cat.label === selectedCategory)
+      if (category) {
+        filtered = filtered.filter(herb =>
+          category.keywords.some(keyword =>
+            herb.efficacy.some(eff => eff.includes(keyword)) ||
+            herb.primary_effects.some(eff => eff.includes(keyword)) ||
+            herb.description.includes(keyword)
+          )
+        )
+      }
     }
 
     // 体质筛选
@@ -116,11 +171,20 @@ export default function HerbFinderPage() {
       )
     }
 
-    // 按质量评分排序
-    filtered.sort((a, b) => (b.quality_score || 0) - (a.quality_score || 0))
+    // 按质量评分和受欢迎程度排序
+    filtered.sort((a, b) => {
+      const scoreA = (a.quality_score || 0) + (a.popularity_score || 0)
+      const scoreB = (b.quality_score || 0) + (b.popularity_score || 0)
+      return scoreB - scoreA
+    })
 
     setFilteredHerbs(filtered)
-  }, [herbs, searchQuery, selectedConstitution, selectedSafety, selectedEfficacy])
+  }, [herbs, searchQuery, selectedConstitution, selectedSafety, selectedEfficacy, selectedCategory])
+
+  // 分类选择处理函数
+  const handleCategorySelect = (categoryLabel: string) => {
+    setSelectedCategory(prev => prev === categoryLabel ? '' : categoryLabel)
+  }
 
   // 清除所有筛选器
   const clearFilters = () => {
@@ -128,6 +192,7 @@ export default function HerbFinderPage() {
     setSelectedConstitution('')
     setSelectedSafety('')
     setSelectedEfficacy('')
+    setSelectedCategory('')
   }
 
 
@@ -164,23 +229,47 @@ export default function HerbFinderPage() {
         
         {/* 页面标题 */}
         <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-green-600 to-emerald-600 rounded-full mb-6 shadow-lg">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-green-600 to-emerald-600 rounded-full mb-6 shadow-lg hover:shadow-xl transition-shadow">
               <Search className="w-10 h-10 text-white" />
             </div>
             <h1 className="text-5xl font-bold text-gray-900 mb-4">智能草药查找器</h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              探索我们完整的草药数据库，包含{herbs.length}种传统中草药，根据体质、功效和安全性进行个性化推荐
+              探索我们完整的草药数据库，包含 <span className="font-semibold text-green-600">{herbs.length} 种</span> 传统中草药，根据症状、健康目标和体质类型进行个性化推荐
           </p>
         </div>
 
+          {/* 热门分类 */}
+          <div className="mb-8">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <Target className="w-5 h-5 mr-2 text-green-600" />
+              热门分类
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              {popularCategories.map((category) => (
+                <button
+                  key={category.label}
+                  onClick={() => handleCategorySelect(category.label)}
+                  className={`flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 ${
+                    selectedCategory === category.label
+                      ? 'bg-green-600 text-white shadow-lg'
+                      : 'bg-white text-gray-700 hover:bg-green-50 hover:text-green-700 border border-gray-200 hover:border-green-200'
+                  }`}
+                >
+                  {category.icon}
+                  <span className="ml-2">{category.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* 搜索和筛选区域 */}
           <div className="bg-white rounded-3xl shadow-xl p-8 mb-12 border border-gray-100">
-            {/* 搜索框 */}
+            {/* 增强搜索框 */}
             <div className="relative mb-6">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="搜索草药名称、功效或描述..."
+                placeholder="搜索草药名称、症状、功效或成分... (如: 失眠、焦虑、人参)"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-2xl focus:border-green-500 focus:outline-none text-lg"
@@ -319,6 +408,9 @@ export default function HerbFinderPage() {
               </div>
             </div>
           )}
+
+          {/* FAQ部分，增强SEO */}
+          <HerbFinderFAQ language="zh" />
 
           {/* 免责声明 */}
           <div className="mt-16 bg-amber-50 border border-amber-200 rounded-2xl p-6">
