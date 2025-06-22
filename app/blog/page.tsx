@@ -45,60 +45,116 @@ export default function BlogPage() {
   ]
 
   const articles = [
+    // High-traffic SEO optimized articles
     {
       id: 3,
-      title: "Winter Immunity: Traditional Chinese Medicine Approaches to Cold Prevention",
-      excerpt: "Learn time-tested TCM strategies and herb combinations to strengthen your immune system during cold season.",
-      category: "traditional",
-      author: "Lisa Zhang",
+      title: "Best Herbs for Anxiety: Natural Alternatives to Prescription Medications",
+      excerpt: "Compare the effectiveness of ashwagandha, valerian, and passionflower vs. prescription anti-anxiety drugs. Evidence-based guide with dosages.",
+      category: "research",
+      author: "Dr. Sarah Chen",
       date: "2024-01-10",
-      readTime: "6 min read",
-      image: "❄️",
-      tags: ["immunity", "winter", "TCM", "prevention"]
+      readTime: "8 min read",
+      image: "🧠",
+      tags: ["anxiety", "herbs vs drugs", "ashwagandha", "prescription alternatives"]
     },
     {
       id: 4,
-      title: "Adaptogens Explained: Scientific Evidence Behind Stress-Fighting Herbs",
-      excerpt: "A comprehensive review of adaptogenic herbs like ashwagandha, rhodiola, and holy basil, with research-backed benefits.",
-      category: "research",
-      author: "Dr. Sarah Chen",
+      title: "Is Turmeric Safe During Pregnancy? Complete Safety Guide",
+      excerpt: "Everything expecting mothers need to know about turmeric and curcumin supplementation, including trimester-specific recommendations.",
+      category: "safety",
+      author: "Dr. Michael Rodriguez",
       date: "2024-01-08",
-      readTime: "8 min read",
-      image: "🌿",
-      tags: ["adaptogens", "stress", "cortisol", "research"]
+      readTime: "6 min read",
+      image: "🤰",
+      tags: ["turmeric pregnancy", "curcumin safety", "pregnancy herbs", "expecting mothers"]
     },
     {
       id: 5,
-      title: "Sleep Naturally: Herb Combinations That Actually Work",
-      excerpt: "Evidence-based guide to herbal sleep aids, including dosing, timing, and which combinations are most effective.",
+      title: "Best Herbs for Sleep: What Actually Works for Insomnia",
+      excerpt: "Scientific comparison of valerian, chamomile, passionflower, and melatonin. Which sleep herbs have the strongest evidence?",
       category: "lifestyle",
-      author: "Dr. Michael Rodriguez",
-      date: "2024-01-05",
-      readTime: "6 min read",
+      author: "Dr. Sarah Chen",
+      date: "2024-01-06",
+      readTime: "7 min read",
       image: "🌙",
-      tags: ["sleep", "insomnia", "valerian", "melatonin"]
+      tags: ["herbs for sleep", "insomnia", "valerian vs melatonin", "natural sleep aids"]
     },
     {
       id: 6,
-      title: "FDA Updates on Herbal Supplements: What Consumers Need to Know",
-      excerpt: "Recent regulatory changes affecting herbal supplement labeling, quality standards, and consumer protections.",
-      category: "safety",
-      author: "Dr. Sarah Chen",
-      date: "2024-01-03",
+      title: "Ginseng vs. Coffee: Which is Better for Energy and Focus?",
+      excerpt: "Head-to-head comparison of ginseng and caffeine for mental energy, with pros, cons, and ideal use cases for each.",
+      category: "lifestyle",
+      author: "Dr. Michael Rodriguez",
+      date: "2024-01-04",
       readTime: "5 min read",
-      image: "🏛️",
-      tags: ["FDA", "regulation", "quality", "labeling"]
+      image: "⚡",
+      tags: ["ginseng vs coffee", "natural energy", "focus supplements", "caffeine alternatives"]
     },
     {
       id: 7,
-      title: "Digestive Health: Eastern and Western Approaches to Gut Wellness",
-      excerpt: "Comparing traditional digestive remedies with modern probiotics and their combined benefits for gut health.",
+      title: "Herbs for Women's Health: Hormonal Balance and Menstrual Support",
+      excerpt: "Evidence-based guide to chasteberry, evening primrose, and other herbs for PMS, irregular periods, and hormone balance.",
+      category: "lifestyle",
+      author: "Dr. Lisa Zhang",
+      date: "2024-01-02",
+      readTime: "9 min read",
+      image: "🌸",
+      tags: ["women's health", "hormonal balance", "menstrual herbs", "PMS relief"]
+    },
+    {
+      id: 8,
+      title: "Herbs for Brain Health: Memory, Focus, and Cognitive Protection",
+      excerpt: "Complete guide to nootropic herbs: ginkgo, bacopa, lion's mane, and rhodiola for memory enhancement and brain protection.",
+      category: "research",
+      author: "Dr. Sarah Chen",
+      date: "2023-12-30",
+      readTime: "10 min read",
+      image: "🧬",
+      tags: ["brain health", "memory herbs", "cognitive enhancement", "nootropics"]
+    },
+    {
+      id: 9,
+      title: "Are Herbal Supplements FDA Approved? Regulation Guide 2024",
+      excerpt: "Understanding supplement regulations, what FDA approval means for herbs, and how to choose quality products.",
+      category: "safety",
+      author: "Dr. Michael Rodriguez",
+      date: "2023-12-28",
+      readTime: "6 min read",
+      image: "🏛️",
+      tags: ["FDA approval", "supplement regulation", "quality standards", "herb safety"]
+    },
+    {
+      id: 10,
+      title: "Herbs for Immunity: Boost Your Immune System Naturally",
+      excerpt: "Research-backed immune herbs: echinacea, elderberry, astragalus, and medicinal mushrooms. When and how to use them effectively.",
       category: "traditional",
-      author: "Lisa Zhang",
-      date: "2024-01-01",
+      author: "Dr. Lisa Zhang",
+      date: "2023-12-26",
+      readTime: "8 min read",
+      image: "🛡️",
+      tags: ["immune herbs", "echinacea", "elderberry", "immune support"]
+    },
+    {
+      id: 11,
+      title: "Herbs vs. Prescription Drugs: Safety, Effectiveness, and Cost Comparison",
+      excerpt: "Honest comparison of herbal medicine vs. pharmaceutical drugs for common conditions, including benefits, risks, and costs.",
+      category: "research",
+      author: "Dr. Sarah Chen",
+      date: "2023-12-24",
+      readTime: "12 min read",
+      image: "⚖️",
+      tags: ["herbs vs drugs", "natural vs pharmaceutical", "treatment comparison", "healthcare costs"]
+    },
+    {
+      id: 12,
+      title: "Digestive Health Herbs: Natural Remedies for Gut Issues",
+      excerpt: "Traditional and modern herbs for IBS, bloating, acid reflux, and digestive wellness. Evidence-based dosing and combinations.",
+      category: "traditional",
+      author: "Dr. Lisa Zhang",
+      date: "2023-12-22",
       readTime: "7 min read",
       image: "🫶",
-      tags: ["digestion", "gut health", "probiotics", "TCM"]
+      tags: ["digestive herbs", "gut health", "IBS herbs", "stomach remedies"]
     }
   ]
 
