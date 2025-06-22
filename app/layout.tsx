@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Inter, Noto_Sans_SC } from 'next/font/google'
 import './globals.css'
 import AccessibilityAnnouncer from '@/components/AccessibilityAnnouncer'
+import GoogleAnalytics, { GoogleTagManagerNoScript } from '@/components/GoogleAnalytics'
 
 // 优化字体配置 - Inter for Latin text
 const inter = Inter({ 
@@ -156,8 +157,14 @@ export default function RootLayout({
         
         {/* 改进的视窗配置 */}
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes, viewport-fit=cover" />
+        
+        {/* Google Analytics and Tag Manager */}
+        <GoogleAnalytics />
       </head>
       <body className={`${inter.className} antialiased bg-white text-gray-900 font-feature-settings-default`}>
+        {/* Google Tag Manager (noscript) */}
+        <GoogleTagManagerNoScript />
+        
         <AccessibilityAnnouncer />
         <main>
           {children}

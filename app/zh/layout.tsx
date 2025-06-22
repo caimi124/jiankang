@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import '../globals.css'
+import GoogleAnalytics, { GoogleTagManagerNoScript } from '@/components/GoogleAnalytics'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -33,7 +34,14 @@ export default function ZhRootLayout({
 }) {
   return (
     <html lang="zh" dir="ltr">
+      <head>
+        {/* Google Analytics and Tag Manager */}
+        <GoogleAnalytics />
+      </head>
       <body className={inter.className}>
+        {/* Google Tag Manager (noscript) */}
+        <GoogleTagManagerNoScript />
+        
         {children}
       </body>
     </html>

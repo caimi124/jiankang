@@ -11,6 +11,7 @@
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "test-sitemap": "node test-sitemap.js",
+    "test-analytics": "node test-google-analytics.js",
     "notion": "node notion-herb-updater.js",
     "create-herbs": "node create-all-herbs.js",
     "manage-database": "node notion-database-manager.js",
