@@ -10,22 +10,32 @@ module.exports = {
   exclude: [
     '/test',
     '/api/*',
-    '/_*'
+    '/_*',
+    '/zh/test'
   ],
   
   // 添加额外的路径或自定义页面
-  additionalPaths: async (config) => [
-    await config.transform(config, '/knowledge-center'),
-    await config.transform(config, '/zh/knowledge-center'),
-    await config.transform(config, '/constitution-test'),
-    await config.transform(config, '/zh/constitution-test'),
-    await config.transform(config, '/herb-finder'),
-    await config.transform(config, '/zh/herb-finder'),
-    await config.transform(config, '/ingredient-checker'),
-    await config.transform(config, '/zh/ingredient-checker'),
-    await config.transform(config, '/dosage-calculator'),
-    await config.transform(config, '/zh/dosage-calculator'),
-  ],
+  additionalPaths: async (config) => {
+    const extraPaths = [
+      // 核心功能页面
+      await config.transform(config, '/knowledge-center'),
+      await config.transform(config, '/zh/knowledge-center'),
+      await config.transform(config, '/constitution-test'),
+      await config.transform(config, '/zh/constitution-test'),
+      await config.transform(config, '/herb-finder'),
+      await config.transform(config, '/zh/herb-finder'),
+      await config.transform(config, '/ingredient-checker'),
+      await config.transform(config, '/zh/ingredient-checker'),
+      await config.transform(config, '/dosage-calculator'),
+      await config.transform(config, '/zh/dosage-calculator'),
+      
+      // 草药详情页面
+      await config.transform(config, '/herbs/ginseng'),
+      await config.transform(config, '/herbs/ginger'),
+    ];
+
+    return extraPaths;
+  },
 
   // 为不同类型的页面设置不同的优先级
   transform: async (config, path) => {
@@ -35,6 +45,16 @@ module.exports = {
         loc: path,
         changefreq: 'daily',
         priority: 1.0,
+        lastmod: new Date().toISOString(),
+      }
+    }
+
+    // 草药详情页面高优先级
+    if (path.includes('/herbs/')) {
+      return {
+        loc: path,
+        changefreq: 'weekly',
+        priority: 0.9,
         lastmod: new Date().toISOString(),
       }
     }
@@ -63,11 +83,10 @@ module.exports = {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/test', '/_next/']
+        disallow: ['/api/', '/test', '/_next/', '/zh/test']
       }
     ],
-    additionalSitemaps: [
-      'https://www.herbscience.shop/sitemap.xml'
-    ]
+    // 修复：只引用主sitemap，避免循环
+    additionalSitemaps: []
   }
 } 

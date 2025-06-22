@@ -290,13 +290,13 @@ export default function HerbDetailPage() {
       
       {/* Breadcrumb */}
       <div className="container mx-auto px-4 py-4">
-        <Breadcrumb 
-          items={[
+      <Breadcrumb 
+        items={[
             { label: 'Home', href: '/' },
             { label: 'Herb Finder', href: '/herb-finder' },
             { label: herbData.name, href: `/herbs/${slug}` }
-          ]} 
-        />
+        ]} 
+      />
       </div>
 
       {/* Hero Section */}
@@ -332,7 +332,7 @@ export default function HerbDetailPage() {
               <p className="text-gray-700 text-lg leading-relaxed mb-6">
                 {herbData.overview}
               </p>
-
+              
               {/* Quick Benefits */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {herbData.benefits.slice(0, 4).map((benefit, index) => (
@@ -342,30 +342,30 @@ export default function HerbDetailPage() {
                   </div>
                 ))}
               </div>
-            </div>
-
+              </div>
+              
             {/* Action Panel */}
             <div className="lg:w-80 w-full">
               <div className="bg-gradient-to-br from-green-500 to-blue-600 text-white p-6 rounded-xl mb-4">
                 <h3 className="text-xl font-semibold mb-4">Quick Actions</h3>
                 <div className="space-y-3">
-                  <button 
-                    onClick={() => setBookmarked(!bookmarked)}
+                <button 
+                  onClick={() => setBookmarked(!bookmarked)}
                     className="w-full flex items-center justify-center gap-2 bg-white bg-opacity-20 hover:bg-opacity-30 py-3 rounded-lg transition-colors"
                   >
                     <Bookmark className={`w-4 h-4 ${bookmarked ? 'fill-current' : ''}`} />
                     {bookmarked ? 'Bookmarked' : 'Bookmark'}
-                  </button>
+                </button>
                   <button className="w-full flex items-center justify-center gap-2 bg-white bg-opacity-20 hover:bg-opacity-30 py-3 rounded-lg transition-colors">
                     <Share2 className="w-4 h-4" />
                     Share Herb
-                  </button>
+                </button>
                   <button className="w-full flex items-center justify-center gap-2 bg-white bg-opacity-20 hover:bg-opacity-30 py-3 rounded-lg transition-colors">
                     <Download className="w-4 h-4" />
                     Download Guide
-                  </button>
-                </div>
+                </button>
               </div>
+            </div>
 
               {/* Quick Stats */}
               <div className="bg-white border border-gray-200 rounded-xl p-4">
@@ -374,15 +374,15 @@ export default function HerbDetailPage() {
                   <div className="flex justify-between">
                     <span className="text-gray-600">Evidence Level</span>
                     <span className="font-medium">{herbData.evidence_level}</span>
-                  </div>
+                </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Category</span>
                     <span className="font-medium">{herbData.category}</span>
-                  </div>
+                </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Total Benefits</span>
                     <span className="font-medium">{herbData.benefits.length}</span>
-                  </div>
+                </div>
                 </div>
               </div>
             </div>
@@ -411,8 +411,8 @@ export default function HerbDetailPage() {
           {/* Tab Content */}
           <div className="p-8">
             {/* Overview Tab */}
-            {activeTab === 'overview' && (
-              <div className="space-y-8">
+              {activeTab === 'overview' && (
+                <div className="space-y-8">
                 {/* Top Health Benefits */}
                 <section>
                   <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
@@ -473,38 +473,38 @@ export default function HerbDetailPage() {
                     Who Should Consider {herbData.name}?
                   </h2>
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div>
+                  <div>
                       <h3 className="text-lg font-semibold text-green-700 mb-3 flex items-center gap-2">
                         <CheckCircle className="w-5 h-5" />
                         Suitable For:
                       </h3>
                       <ul className="space-y-2">
-                        {herbData.suitable_for.map((item, index) => (
+                          {herbData.suitable_for.map((item, index) => (
                           <li key={index} className="flex items-start gap-2">
                             <div className="w-2 h-2 bg-green-600 rounded-full mt-2 flex-shrink-0"></div>
                             <span className="text-gray-700">{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
                       <h3 className="text-lg font-semibold text-red-700 mb-3 flex items-center gap-2">
                         <XCircle className="w-5 h-5" />
                         Not Recommended For:
                       </h3>
                       <ul className="space-y-2">
-                        {herbData.not_suitable_for.map((item, index) => (
+                          {herbData.not_suitable_for.map((item, index) => (
                           <li key={index} className="flex items-start gap-2">
                             <div className="w-2 h-2 bg-red-600 rounded-full mt-2 flex-shrink-0"></div>
                             <span className="text-gray-700">{item}</span>
-                          </li>
-                        ))}
-                      </ul>
+                            </li>
+                          ))}
+                        </ul>
                     </div>
                   </div>
                 </section>
-              </div>
-            )}
+                </div>
+              )}
 
             {/* Usage & Dosage Tab */}
             {activeTab === 'usage' && (
@@ -524,7 +524,7 @@ export default function HerbDetailPage() {
                         </tr>
                       </thead>
                       <tbody>
-                        {herbData.dosage_forms.map((form, index) => (
+                    {herbData.dosage_forms.map((form, index) => (
                           <tr key={index} className="hover:bg-gray-50">
                             <td className="border border-gray-200 px-6 py-4 font-medium text-gray-900">{form.form}</td>
                             <td className="border border-gray-200 px-6 py-4 text-gray-700">{form.dosage}</td>
@@ -537,26 +537,26 @@ export default function HerbDetailPage() {
                   <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
                     <div className="flex items-start gap-3">
                       <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
-                      <div>
+                          <div>
                         <p className="text-sm text-green-800 font-medium">Recommended Cycle</p>
                         <p className="text-sm text-green-700 mt-1">
                           Take in cycles: 3 weeks on, 1 week off. Avoid taking late at night.
                         </p>
                       </div>
-                    </div>
+                  </div>
                   </div>
                 </section>
-              </div>
-            )}
+                </div>
+              )}
 
             {/* Scientific Evidence Tab */}
             {activeTab === 'science' && (
-              <div className="space-y-8">
+                <div className="space-y-8">
                 <section>
                   <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
                     <FlaskConical className="w-6 h-6 text-green-600" />
                     Scientific Evidence Snapshot
-                  </h2>
+                    </h2>
                   <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
                     <div className="flex items-start gap-3 mb-4">
                       <Award className={`w-6 h-6 mt-1 ${getEvidenceColor(herbData.evidence_level).includes('green') ? 'text-green-600' : 
@@ -572,8 +572,8 @@ export default function HerbDetailPage() {
                     </div>
                   </div>
                 </section>
-              </div>
-            )}
+                </div>
+              )}
 
             {/* Safety & Interactions Tab */}
             {activeTab === 'safety' && (
@@ -593,9 +593,9 @@ export default function HerbDetailPage() {
                         {herbData.safety_warnings.map((warning, index) => (
                           <div key={index} className="p-3 bg-orange-50 rounded-lg border border-orange-200">
                             <p className="text-orange-800 text-sm">{warning}</p>
-                          </div>
+                    </div>
                         ))}
-                      </div>
+                  </div>
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-red-700 mb-4 flex items-center gap-2">
@@ -608,15 +608,15 @@ export default function HerbDetailPage() {
                             <p className="text-red-800 text-sm">{interaction}</p>
                           </div>
                         ))}
-                      </div>
+                    </div>
                     </div>
                   </div>
                 </section>
-              </div>
-            )}
+                </div>
+              )}
 
             {/* TCM Constitution Tab */}
-            {activeTab === 'constitution' && (
+              {activeTab === 'constitution' && (
               <div className="space-y-8">
                 <section>
                   <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
@@ -624,17 +624,17 @@ export default function HerbDetailPage() {
                     Body Constitution Match (Traditional Typing)
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {herbData.constitution_match.map((match, index) => (
+                      {herbData.constitution_match.map((match, index) => (
                       <div key={index} className="p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
                         <div className="flex items-center gap-3 mb-2">
                           {getConstitutionIcon(match.suitable)}
                           <h3 className="font-semibold text-gray-900">{match.type}</h3>
                         </div>
                         <p className="text-gray-600 text-sm">{match.description}</p>
-                      </div>
-                    ))}
+                        </div>
+                      ))}
                   </div>
-                  
+
                   {/* Pairs Well With */}
                   <div className="mt-8">
                     <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
@@ -650,29 +650,29 @@ export default function HerbDetailPage() {
                     </div>
                   </div>
                 </section>
-              </div>
-            )}
+                </div>
+              )}
 
             {/* User Stories Tab */}
-            {activeTab === 'reviews' && (
-              <div className="space-y-8">
+              {activeTab === 'reviews' && (
+                <div className="space-y-8">
                 <section>
                   <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
                     <Users className="w-6 h-6 text-green-600" />
                     Real User Stories
-                  </h2>
-                  <div className="space-y-6">
-                    {herbData.user_stories.map((story, index) => (
+                    </h2>
+                    <div className="space-y-6">
+                      {herbData.user_stories.map((story, index) => (
                       <div key={index} className="bg-blue-50 rounded-xl p-6 border border-blue-200">
                         <blockquote className="text-gray-700 text-lg italic leading-relaxed mb-4">
-                          "{story.quote}"
-                        </blockquote>
+                            "{story.quote}"
+                          </blockquote>
                         <div className="flex items-center gap-2 text-blue-800">
                           <span className="font-semibold">— {story.author}</span>
                           <span className="text-blue-600">{story.location}</span>
                         </div>
-                      </div>
-                    ))}
+                        </div>
+                      ))}
                   </div>
                 </section>
 
@@ -683,14 +683,14 @@ export default function HerbDetailPage() {
                     Common Questions (FAQ)
                   </h2>
                   <div className="space-y-4">
-                    {herbData.faqs.map((faq, index) => (
+                      {herbData.faqs.map((faq, index) => (
                       <div key={index} className="bg-white rounded-lg border border-gray-200 shadow-sm">
                         <div className="p-4">
                           <h3 className="font-semibold text-gray-900 mb-2">{faq.question}</h3>
                           <p className="text-gray-700">{faq.answer}</p>
                         </div>
-                      </div>
-                    ))}
+                        </div>
+                      ))}
                   </div>
                 </section>
               </div>

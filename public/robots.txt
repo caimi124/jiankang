@@ -4,6 +4,7 @@ Allow: /
 Disallow: /api/
 Disallow: /test
 Disallow: /_next/
+Disallow: /zh/test
 
 # Host
 Host: https://www.herbscience.shop
