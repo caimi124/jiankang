@@ -32,6 +32,7 @@ module.exports = {
       // 草药详情页面
       await config.transform(config, '/herbs/ginseng'),
       await config.transform(config, '/herbs/ginger'),
+      await config.transform(config, '/herbs/turmeric'),
     ];
 
     return extraPaths;
