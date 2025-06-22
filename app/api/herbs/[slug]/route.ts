@@ -1,0 +1,364 @@
+import { NextResponse } from 'next/server';
+
+// 草药数据类型定义
+interface HerbData {
+  id: string;
+  name: string;
+  latin_name: string;
+  slug: string;
+  overview: string;
+  benefits: string[];
+  active_compounds: string;
+  traditional_uses: string;
+  suitable_for: string[];
+  not_suitable_for: string[];
+  dosage_forms: {
+    form: string;
+    dosage: string;
+    usage: string;
+  }[];
+  safety_warnings: string[];
+  interactions: string[];
+  scientific_evidence: string;
+  constitution_match: {
+    type: string;
+    suitable: 'yes' | 'warning' | 'no';
+    description: string;
+  }[];
+  pairs_well_with: string[];
+  user_stories: {
+    quote: string;
+    author: string;
+    location: string;
+  }[];
+  faqs: {
+    question: string;
+    answer: string;
+  }[];
+  seo_keywords: string[];
+  evidence_level: 'Strong' | 'Moderate' | 'Limited';
+  category: string;
+  properties: string[];
+}
+
+// 草药数据库 - 基于用户提供的Ginseng模板
+const herbDatabase: Record<string, HerbData> = {
+  'ginseng': {
+    id: 'ginseng',
+    name: 'Ginseng',
+    latin_name: 'Panax ginseng',
+    slug: 'ginseng',
+    overview: 'Ginseng (Panax ginseng) is one of the most revered herbs in traditional Chinese and Korean medicine. Known as an adaptogen, it helps the body manage stress, fight fatigue, and restore balance. Today, Ginseng remains a popular herbal remedy for boosting energy, focus, and immunity.',
+    benefits: [
+      'Fights fatigue and increases energy naturally',
+      'Enhances memory, focus, and mental clarity',
+      'Strengthens the immune system',
+      'Improves circulation and blood sugar balance',
+      'Supports recovery after illness or surgery'
+    ],
+    active_compounds: 'The main active compounds in Panax ginseng are ginsenosides, which have antioxidant, anti-inflammatory, and neuroprotective effects. They work by enhancing mitochondrial energy production, regulating the stress-response (HPA axis), and supporting nitric oxide production (beneficial for blood flow).',
+    traditional_uses: 'In Traditional Chinese Medicine (TCM), Ginseng is considered a "superior tonic" used to tonify Qi (vital energy), calm the mind (Shen) and enhance focus, rebuild strength after chronic illness, and nourish the lungs and heart.',
+    suitable_for: [
+      'People with low energy, brain fog, or chronic fatigue',
+      'Professionals under high mental stress',
+      'Individuals recovering from illness or surgery',
+      'Older adults seeking cognitive and physical support'
+    ],
+    not_suitable_for: [
+      'People with uncontrolled high blood pressure',
+      'Those with insomnia or sleep disorders',
+      'Pregnant women',
+      'Children under 12 years old'
+    ],
+    dosage_forms: [
+      {
+        form: 'Capsule',
+        dosage: '200–400 mg/day',
+        usage: 'Standardized to 5% ginsenosides, take with food'
+      },
+      {
+        form: 'Tea',
+        dosage: '1–2g dried root',
+        usage: 'Boiled 10–15 minutes, drink 1-2 cups daily'
+      },
+      {
+        form: 'Tincture',
+        dosage: '30–50 drops',
+        usage: 'In water, 1–2 times per day'
+      },
+      {
+        form: 'Wellness Soup',
+        dosage: '5-10g root',
+        usage: 'Simmer with lotus seeds and dates for recovery boost'
+      }
+    ],
+    safety_warnings: [
+      'May interact with blood pressure, blood sugar, or anticoagulant medications',
+      'Avoid during fever or acute inflammation',
+      'Monitor for insomnia, restlessness, or fast heartbeat if overdosed',
+      'Take in cycles: 3 weeks on, 1 week off'
+    ],
+    interactions: [
+      'Blood pressure medications',
+      'Diabetes medications (may affect blood sugar)',
+      'Blood thinners (warfarin)',
+      'MAO inhibitors',
+      'Stimulant medications'
+    ],
+    scientific_evidence: 'A 2022 randomized trial found Ginseng reduced fatigue by 28% among adults with chronic tiredness. Several studies show improved cognitive performance in aging adults. Ginsenosides shown to reduce inflammation markers in lab and animal studies.',
+    constitution_match: [
+      {
+        type: 'Qi Deficient',
+        suitable: 'yes',
+        description: 'Ideal for pale face, tiredness, and low voice'
+      },
+      {
+        type: 'Yang Deficient',
+        suitable: 'warning',
+        description: 'May benefit, consider warming version'
+      },
+      {
+        type: 'Yin Deficient',
+        suitable: 'no',
+        description: 'Not ideal; may cause dryness'
+      },
+      {
+        type: 'Heat Excess',
+        suitable: 'no',
+        description: 'Avoid if experiencing fever or irritability'
+      }
+    ],
+    pairs_well_with: [
+      'Rhodiola Rosea – for stress resistance',
+      'Ginger – boosts circulation and warmth',
+      'Cordyceps – enhances stamina in recovery',
+      'Astragalus – immune and energy support'
+    ],
+    user_stories: [
+      {
+        quote: 'I started taking Ginseng after recovering from a viral infection. Within two weeks, my energy was back and I felt mentally sharper.',
+        author: 'Michael B., 42',
+        location: 'Seattle'
+      },
+      {
+        quote: 'I replaced my second coffee with Ginseng tea. No jitters, just clean energy.',
+        author: 'Sarah L., 29',
+        location: 'London'
+      }
+    ],
+    faqs: [
+      {
+        question: 'Is Ginseng a stimulant like caffeine?',
+        answer: 'No. Ginseng improves energy through hormonal and cellular support, without overstimulation.'
+      },
+      {
+        question: 'Can I take Ginseng every day?',
+        answer: 'Yes, in short cycles (e.g., 3 weeks on, 1 week off). Long-term continuous use is not recommended.'
+      },
+      {
+        question: 'Can I take Ginseng with medication?',
+        answer: 'If you are on diabetes, blood pressure, or blood-thinning medications, consult a doctor first.'
+      }
+    ],
+    seo_keywords: ['ginseng supplement', 'ginseng for energy', 'ginsenosides', 'panax ginseng', 'adaptogen', 'ginseng benefits'],
+    evidence_level: 'Strong',
+    category: 'Adaptogen',
+    properties: ['Energizing', 'Immune Support', 'Cognitive Enhancement', 'Stress Adaptation']
+  },
+  'ginger': {
+    id: 'ginger',
+    name: 'Ginger',
+    latin_name: 'Zingiber officinale',
+    slug: 'ginger',
+    overview: 'Ginger (Zingiber officinale) is a widely used natural root known for its warming properties and digestive support. Traditionally valued in Chinese medicine and many cultures worldwide, ginger helps relieve nausea, soothe digestive discomfort, and ease cold-related symptoms. Modern research confirms many of these benefits, making ginger a popular herbal remedy globally.',
+    benefits: [
+      'Relieves nausea from motion sickness, pregnancy, or chemotherapy',
+      'Supports healthy digestion and reduces bloating',
+      'Provides warming relief for cold symptoms like chills and cough',
+      'Offers natural anti-inflammatory and antioxidant effects',
+      'May reduce muscle soreness and improve joint comfort'
+    ],
+    active_compounds: 'Ginger contains bioactive compounds called gingerols and shogaols, which contribute to its spicy flavor and therapeutic properties. These compounds stimulate digestion by increasing gastric juices and bile, inhibit inflammatory pathways to reduce pain and swelling, and relax intestinal muscles to relieve cramps and nausea.',
+    traditional_uses: 'In Traditional Chinese Medicine (TCM), ginger is considered pungent and slightly warm, targeting the Lung, Spleen, and Stomach meridians. It is traditionally used to disperse cold and alleviate chills and body aches, warm the digestive system and stop vomiting, calm cough and reduce phlegm caused by cold conditions, and detoxify mild seafood poisoning.',
+    suitable_for: [
+      'Those experiencing nausea or digestive discomfort',
+      'People with cold symptoms such as chills, cough, or congestion',
+      'Individuals seeking natural anti-inflammatory support',
+      'Athletes and active people needing muscle recovery aid'
+    ],
+    not_suitable_for: [
+      'People with conditions related to heat or Yin deficiency',
+      'Those with symptoms like night sweats or irritability',
+      'Individuals prone to acid reflux or stomach ulcers (excessive use)',
+      'Those on blood-thinning medications (consult healthcare provider)'
+    ],
+    dosage_forms: [
+      {
+        form: 'Fresh Root',
+        dosage: '3–10g sliced',
+        usage: 'Boiled in water as tea 2–3x daily'
+      },
+      {
+        form: 'Powder/Capsule',
+        dosage: '250–1000mg daily',
+        usage: 'In divided doses with meals'
+      },
+      {
+        form: 'Juice',
+        dosage: 'Fresh squeezed',
+        usage: 'Diluted in water, small amounts daily'
+      },
+      {
+        form: 'Herbal Blends',
+        dosage: 'As directed',
+        usage: 'Combined with dates, honey, or black tea'
+      }
+    ],
+    safety_warnings: [
+      'May increase bleeding risk if combined with blood thinners',
+      'Avoid excessive use if prone to acid reflux or stomach ulcers',
+      'Not recommended for individuals with heat-related syndromes or Yin deficiency',
+      'Pregnant women should consult healthcare providers before regular use'
+    ],
+    interactions: [
+      'Blood-thinning medications (warfarin)',
+      'Antiplatelet drugs',
+      'Diabetes medications (may affect blood sugar)',
+      'Blood pressure medications'
+    ],
+    scientific_evidence: 'Clinical studies support ginger\'s effectiveness in reducing nausea, improving digestion, and lowering inflammation. It has been shown to alleviate motion sickness, morning sickness in pregnancy, and muscle pain in athletes. Multiple studies confirm its anti-inflammatory and antioxidant properties.',
+    constitution_match: [
+      {
+        type: 'Cold Constitution',
+        suitable: 'yes',
+        description: 'Ideal for those with chills, cold hands/feet, and digestive coldness'
+      },
+      {
+        type: 'Phlegm-Damp',
+        suitable: 'yes',
+        description: 'Helps transform dampness and improve digestion'
+      },
+      {
+        type: 'Yin Deficient',
+        suitable: 'warning',
+        description: 'Use cautiously; may increase heat symptoms'
+      },
+      {
+        type: 'Heat Constitution',
+        suitable: 'no',
+        description: 'Avoid if experiencing fever, night sweats, or irritability'
+      }
+    ],
+    pairs_well_with: [
+      'Ginseng – for enhanced warming and energy support',
+      'Honey – to soothe the throat and balance spice',
+      'Lemon – to support digestion and add vitamin C',
+      'Jujube dates – for gentle nourishment and sweetness'
+    ],
+    user_stories: [
+      {
+        quote: 'During pregnancy, ginger tea was a lifesaver for my morning sickness — natural and gentle.',
+        author: 'Emily R.',
+        location: 'New York'
+      },
+      {
+        quote: 'After workouts, ginger supplements help reduce my muscle soreness without side effects.',
+        author: 'Jason M.',
+        location: 'Toronto'
+      }
+    ],
+    faqs: [
+      {
+        question: 'Can I drink ginger tea daily?',
+        answer: 'Yes, moderate daily consumption is generally safe and beneficial for most people.'
+      },
+      {
+        question: 'Does ginger help with colds?',
+        answer: 'Ginger\'s warming properties can help relieve chills and cough associated with colds.'
+      },
+      {
+        question: 'Can ginger interact with medications?',
+        answer: 'Ginger may increase bleeding risk with blood thinners. Consult your doctor if unsure.'
+      },
+      {
+        question: 'Is ginger safe during pregnancy?',
+        answer: 'Small amounts are generally safe, but pregnant women should consult healthcare providers before regular use.'
+      }
+    ],
+    seo_keywords: ['ginger benefits', 'ginger for nausea', 'natural cold remedy', 'ginger anti-inflammatory', 'how to use ginger'],
+    evidence_level: 'Strong',
+    category: 'Digestive & Warming',
+    properties: ['Warming', 'Digestive Support', 'Anti-nausea', 'Anti-inflammatory']
+  }
+};
+
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  try {
+    const { slug } = await params;
+    
+    // 在真实应用中，这里会从数据库或Notion API获取数据
+    const herbData = herbDatabase[slug];
+    
+    if (!herbData) {
+      return NextResponse.json(
+        { error: 'Herb not found' },
+        { status: 404 }
+      );
+    }
+    
+    // 返回草药数据
+    return NextResponse.json({
+      success: true,
+      data: herbData
+    });
+    
+  } catch (error) {
+    console.error('Error fetching herb data:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+
+// 用于获取所有草药列表的端点
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    const { action } = body;
+    
+    if (action === 'list_all') {
+      // 返回所有草药的简要信息
+      const herbList = Object.values(herbDatabase).map(herb => ({
+        id: herb.id,
+        name: herb.name,
+        latin_name: herb.latin_name,
+        slug: herb.slug,
+        category: herb.category,
+        evidence_level: herb.evidence_level,
+        properties: herb.properties,
+        overview: herb.overview.substring(0, 200) + '...'
+      }));
+      
+      return NextResponse.json({
+        success: true,
+        data: herbList
+      });
+    }
+    
+    return NextResponse.json(
+      { error: 'Invalid action' },
+      { status: 400 }
+    );
+    
+  } catch (error) {
+    console.error('Error processing request:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+} 
