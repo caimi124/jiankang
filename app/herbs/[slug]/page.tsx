@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
+import Link from 'next/link'
 import Navigation from '../../../components/Navigation'
 import Breadcrumb from '../../../components/Breadcrumb'
 import { LoadingSpinner } from '../../../components/LoadingSpinner'
@@ -226,7 +227,7 @@ export default function HerbDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
         <Navigation />
         <div className="flex items-center justify-center min-h-[60vh]">
           <LoadingSpinner />
@@ -237,624 +238,488 @@ export default function HerbDetailPage() {
 
   if (!herbData) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
         <Navigation />
-        <div className="max-w-4xl mx-auto px-6 py-16 text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Herb Not Found</h1>
-          <p className="text-gray-600 mb-8">The herb you're looking for doesn't exist in our database.</p>
-          <a href="/herb-finder" className="bg-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-700 transition-colors">
-            Browse All Herbs
-          </a>
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">Herb Not Found</h1>
+            <p className="text-gray-600 mb-6">The herb you&apos;re looking for doesn&apos;t exist.</p>
+            <Link 
+              href="/herb-finder"
+              className="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+            >
+              <ArrowRight className="w-4 h-4 mr-2" />
+              Back to Herb Finder
+            </Link>
+          </div>
         </div>
       </div>
     )
   }
 
+  const tabs = [
+    { id: 'overview', label: 'Overview', icon: <Leaf className="w-4 h-4" /> },
+    { id: 'usage', label: 'Usage & Dosage', icon: <Pill className="w-4 h-4" /> },
+    { id: 'science', label: 'Scientific Evidence', icon: <FlaskConical className="w-4 h-4" /> },
+    { id: 'safety', label: 'Safety & Interactions', icon: <Shield className="w-4 h-4" /> },
+    { id: 'constitution', label: 'TCM Constitution', icon: <Target className="w-4 h-4" /> },
+    { id: 'reviews', label: 'User Stories', icon: <Users className="w-4 h-4" /> }
+  ]
+
   const getConstitutionIcon = (suitable: string) => {
     switch (suitable) {
-      case 'yes': return <CheckCircle className="w-5 h-5 text-green-500" />
-      case 'warning': return <AlertCircle className="w-5 h-5 text-yellow-500" />
-      case 'no': return <XCircle className="w-5 h-5 text-red-500" />
-      default: return null
+      case 'yes': return <CheckCircle className="w-5 h-5 text-green-600" />
+      case 'warning': return <AlertCircle className="w-5 h-5 text-yellow-600" />
+      case 'no': return <XCircle className="w-5 h-5 text-red-600" />
+      default: return <AlertCircle className="w-5 h-5 text-gray-600" />
     }
   }
 
   const getEvidenceColor = (level: string) => {
     switch (level) {
-      case 'Strong': return 'bg-green-100 text-green-800'
-      case 'Moderate': return 'bg-yellow-100 text-yellow-800'
-      case 'Limited': return 'bg-gray-100 text-gray-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'Strong': return 'bg-green-100 text-green-800 border-green-200'
+      case 'Moderate': return 'bg-yellow-100 text-yellow-800 border-yellow-200'
+      case 'Limited': return 'bg-gray-100 text-gray-800 border-gray-200'
+      default: return 'bg-gray-100 text-gray-800 border-gray-200'
     }
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* SEO Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Article",
-            "headline": `${herbData.name} Benefits: Energy, Focus, and Immunity`,
-            "description": `Discover how ${herbData.name} (${herbData.latin_name}) helps fight fatigue and boosts focus. Science-backed herb for energy and immune support.`,
-            "author": {
-              "@type": "Organization",
-              "name": "HerbScience"
-            },
-            "publisher": {
-              "@type": "Organization",
-              "name": "HerbScience",
-              "logo": {
-                "@type": "ImageObject",
-                "url": "https://www.herbscience.shop/logo.png"
-              }
-            },
-            "dateModified": new Date().toISOString(),
-            "mainEntityOfPage": `https://www.herbscience.shop/herbs/${herbData.slug}`
-          })
-        }}
-      />
-
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
       <Navigation />
       
       {/* Breadcrumb */}
-      <Breadcrumb 
-        items={[
-          { label: 'Herb Database', href: '/herb-finder' },
-          { label: herbData.name }
-        ]} 
-      />
+      <div className="container mx-auto px-4 py-4">
+        <Breadcrumb 
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Herb Finder', href: '/herb-finder' },
+            { label: herbData.name, href: `/herbs/${slug}` }
+          ]} 
+        />
+      </div>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-green-600 to-emerald-700 text-white py-16 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-8 items-center">
-            <div className="lg:col-span-2">
-              <div className="flex items-center mb-4">
-                <Leaf className="w-8 h-8 mr-3" />
-                <span className="text-green-200 font-medium">{herbData.category}</span>
-                <span className={`ml-4 px-3 py-1 rounded-full text-sm font-medium ${getEvidenceColor(herbData.evidence_level)} text-black`}>
+      <div className="container mx-auto px-4 py-8">
+        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
+          <div className="flex flex-col lg:flex-row items-start gap-8">
+            {/* Main Info */}
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-3 bg-green-100 rounded-xl">
+                  <Leaf className="w-8 h-8 text-green-600" />
+                </div>
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-900">{herbData.name}</h1>
+                  <p className="text-gray-600 italic">{herbData.latin_name}</p>
+                </div>
+              </div>
+              
+              <div className="flex flex-wrap gap-2 mb-6">
+                <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getEvidenceColor(herbData.evidence_level)}`}>
                   {herbData.evidence_level} Evidence
                 </span>
-              </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                {herbData.name}
-              </h1>
-              <p className="text-xl text-green-100 mb-2 italic">
-                {herbData.latin_name}
-              </p>
-              <p className="text-lg opacity-90 mb-6 leading-relaxed">
-                {herbData.overview}
-              </p>
-              
-              <div className="flex flex-wrap gap-2 mb-8">
-                {herbData.properties.map((property, index) => (
-                  <span key={index} className="bg-white/20 text-white px-3 py-1 rounded-full text-sm">
-                    {property}
+                <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                  {herbData.category}
+                </span>
+                {herbData.properties.map((prop, index) => (
+                  <span key={index} className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">
+                    {prop}
                   </span>
                 ))}
               </div>
-              
-              <div className="flex flex-wrap gap-4">
-                <button 
-                  onClick={() => setBookmarked(!bookmarked)}
-                  className={`flex items-center px-6 py-3 rounded-xl font-semibold transition-all ${
-                    bookmarked 
-                      ? 'bg-white text-green-600' 
-                      : 'bg-white/20 text-white hover:bg-white/30'
-                  }`}
-                >
-                  <Bookmark className={`w-5 h-5 mr-2 ${bookmarked ? 'fill-current' : ''}`} />
-                  {bookmarked ? 'Saved' : 'Save Herb'}
-                </button>
-                <button className="flex items-center px-6 py-3 bg-white/20 text-white rounded-xl font-semibold hover:bg-white/30 transition-all">
-                  <Share2 className="w-5 h-5 mr-2" />
-                  Share
-                </button>
-                <button className="flex items-center px-6 py-3 bg-white/20 text-white rounded-xl font-semibold hover:bg-white/30 transition-all">
-                  <Download className="w-5 h-5 mr-2" />
-                  Download PDF
-                </button>
+
+              <p className="text-gray-700 text-lg leading-relaxed mb-6">
+                {herbData.overview}
+              </p>
+
+              {/* Quick Benefits */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {herbData.benefits.slice(0, 4).map((benefit, index) => (
+                  <div key={index} className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                    <span className="text-gray-800">{benefit}</span>
+                  </div>
+                ))}
               </div>
             </div>
 
-            <div className="bg-white/10 p-8 rounded-3xl backdrop-blur-sm">
-              <h3 className="text-xl font-bold mb-6 text-center">Quick Facts</h3>
-              <div className="space-y-4">
-                <div className="flex items-center">
-                  <Brain className="w-6 h-6 mr-3 text-green-200" />
-                  <span>Cognitive Enhancement</span>
-                </div>
-                <div className="flex items-center">
-                  <Zap className="w-6 h-6 mr-3 text-green-200" />
-                  <span>Energy Boost</span>
-                </div>
-                <div className="flex items-center">
-                  <Shield className="w-6 h-6 mr-3 text-green-200" />
-                  <span>Immune Support</span>
-                </div>
-                <div className="flex items-center">
-                  <Heart className="w-6 h-6 mr-3 text-green-200" />
-                  <span>Cardiovascular Health</span>
-                </div>
-              </div>
-              
-              <div className="mt-6 pt-6 border-t border-white/20">
-                <p className="text-sm text-green-100 mb-4">Take your constitution test to see if this herb is right for you</p>
-                <a 
-                  href="/constitution-test"
-                  className="block bg-white text-green-600 px-6 py-3 rounded-xl font-bold text-center hover:bg-gray-100 transition-colors"
-                >
-                  Take Constitution Test
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Content Navigation */}
-      <section className="bg-white shadow-sm sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex overflow-x-auto space-x-8 py-4">
-            {[
-              { id: 'overview', label: '📖 Overview' },
-              { id: 'benefits', label: '⭐ Benefits' },
-              { id: 'dosage', label: '💊 How to Use' },
-              { id: 'safety', label: '🛡️ Safety' },
-              { id: 'science', label: '🔬 Research' },
-              { id: 'constitution', label: '👤 Constitution' },
-              { id: 'reviews', label: '💬 Reviews' }
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`whitespace-nowrap px-4 py-2 rounded-lg font-medium transition-colors ${
-                  activeTab === tab.id
-                    ? 'bg-green-100 text-green-700'
-                    : 'text-gray-600 hover:text-green-600 hover:bg-gray-50'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Main Content */}
-      <section className="py-16 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-12">
-            <div className="lg:col-span-2 space-y-12">
-              
-              {/* Overview Section */}
-              {activeTab === 'overview' && (
-                <div className="space-y-8">
-                  <div className="bg-white p-8 rounded-3xl shadow-lg">
-                    <h2 className="text-2xl font-bold mb-6 flex items-center">
-                      <BookOpen className="w-6 h-6 mr-3 text-green-600" />
-                      What is {herbData.name}?
-                    </h2>
-                    <p className="text-gray-700 leading-relaxed mb-6">
-                      {herbData.overview}
-                    </p>
-                    
-                    <div className="bg-blue-50 p-6 rounded-2xl border border-blue-200">
-                      <div className="flex items-start">
-                        <FlaskConical className="w-6 h-6 text-blue-600 mr-3 mt-1" />
-                        <div>
-                          <h3 className="font-bold text-blue-900 mb-2">🧪 How It Works (Active Compounds)</h3>
-                          <p className="text-blue-800 text-sm">
-                            {herbData.active_compounds}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-white p-8 rounded-3xl shadow-lg">
-                    <h2 className="text-2xl font-bold mb-6 flex items-center">
-                      <Leaf className="w-6 h-6 mr-3 text-green-600" />
-                      📜 Traditional Chinese Medicine Uses
-                    </h2>
-                    <p className="text-gray-700 leading-relaxed mb-4">
-                      {herbData.traditional_uses}
-                    </p>
-                    <div className="bg-yellow-50 p-4 rounded-xl border border-yellow-200">
-                      <p className="text-yellow-800 text-sm">
-                        ⚠️ <em>These uses are part of traditional Chinese medicine and are not evaluated by the FDA.</em>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Benefits Section */}
-              {activeTab === 'benefits' && (
-                <div className="bg-white p-8 rounded-3xl shadow-lg">
-                  <h2 className="text-2xl font-bold mb-8 flex items-center">
-                    <Star className="w-6 h-6 mr-3 text-green-600" />
-                    ✅ Top Health Benefits
-                  </h2>
-                  <div className="grid md:grid-cols-1 gap-4 mb-8">
-                    {herbData.benefits.map((benefit, index) => (
-                      <div key={index} className="flex items-start p-4 bg-green-50 rounded-xl">
-                        <span className="text-green-600 mr-3 mt-1 font-bold">💪</span>
-                        <span className="text-gray-800">{benefit}</span>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-2xl border border-blue-200 mb-8">
-                    <div className="flex items-start">
-                      <FlaskConical className="w-6 h-6 text-blue-600 mr-3 mt-1" />
-                      <div>
-                        <h3 className="font-bold text-blue-900 mb-2">🔬 Clinical trials have shown Ginseng can improve physical performance and cognitive function, especially under stress or fatigue.</h3>
-                        <p className="text-blue-800 text-sm">
-                          {herbData.scientific_evidence}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="text-xl font-bold mb-6">👤 Who Should Consider {herbData.name}?</h3>
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <h4 className="font-semibold text-green-600 mb-4 flex items-center">
-                          <CheckCircle className="w-5 h-5 mr-2" />
-                          ✅ Good For
-                        </h4>
-                        <ul className="space-y-3">
-                          {herbData.suitable_for.map((item, index) => (
-                            <li key={index} className="text-gray-700 text-sm flex items-start">
-                              <span className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-red-600 mb-4 flex items-center">
-                          <XCircle className="w-5 h-5 mr-2" />
-                          ❗ Not Recommended For
-                        </h4>
-                        <ul className="space-y-3">
-                          {herbData.not_suitable_for.map((item, index) => (
-                            <li key={index} className="text-gray-700 text-sm flex items-start">
-                              <span className="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Dosage Section */}
-              {activeTab === 'dosage' && (
-                <div className="bg-white p-8 rounded-3xl shadow-lg">
-                  <h2 className="text-2xl font-bold mb-8 flex items-center">
-                    <Pill className="w-6 h-6 mr-3 text-green-600" />
-                    💊 How to Use & Dosage
-                  </h2>
-                  
-                  <div className="grid md:grid-cols-2 gap-6 mb-8">
-                    {herbData.dosage_forms.map((form, index) => (
-                      <div key={index} className="bg-gray-50 p-6 rounded-2xl">
-                        <h3 className="font-bold text-lg mb-3">{form.form}</h3>
-                        <div className="space-y-2">
-                          <div>
-                            <span className="font-medium text-green-600">Recommended Use:</span>
-                            <div className="ml-2 text-gray-700 mt-1">{form.usage}</div>
-                          </div>
-                          <div className="bg-white p-3 rounded-lg mt-3">
-                            <span className="font-medium text-purple-600">Dosage:</span>
-                            <span className="ml-2 text-gray-700 font-semibold">{form.dosage}</span>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="bg-green-50 p-6 rounded-2xl border border-green-200">
-                    <h3 className="font-bold text-green-900 mb-3 flex items-center">
-                      <Clock className="w-5 h-5 mr-2" />
-                      ✅ Best Practices
-                    </h3>
-                    <ul className="text-green-800 text-sm space-y-2">
-                      <li>✅ Take in cycles: 3 weeks on, 1 week off. Avoid taking late at night.</li>
-                      <li>✅ Start with the lowest recommended dose</li>
-                      <li>✅ Keep a health diary to track effects</li>
-                      <li>✅ Buy from reputable, third-party tested sources</li>
-                      <li>✅ Give herbs adequate time to work (usually 2-8 weeks)</li>
-                    </ul>
-                  </div>
-                </div>
-              )}
-
-              {/* Safety Section */}
-              {activeTab === 'safety' && (
-                <div className="space-y-8">
-                  <div className="bg-white p-8 rounded-3xl shadow-lg">
-                    <h2 className="text-2xl font-bold mb-8 flex items-center">
-                      <AlertTriangle className="w-6 h-6 mr-3 text-red-600" />
-                      ⚠️ Safety & Interactions
-                    </h2>
-                    
-                    <div className="grid md:grid-cols-1 gap-8">
-                      <div>
-                        <h3 className="font-bold text-red-600 mb-4 flex items-center">
-                          <AlertTriangle className="w-5 h-5 mr-2" />
-                          Important Warnings
-                        </h3>
-                        <ul className="space-y-3">
-                          {herbData.safety_warnings.map((warning, index) => (
-                            <li key={index} className="text-gray-700 text-sm flex items-start p-3 bg-red-50 rounded-lg">
-                              <span className="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                              {warning}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      
-                      <div>
-                        <h3 className="font-bold text-orange-600 mb-4 flex items-center">
-                          <Pill className="w-5 h-5 mr-2" />
-                          Drug Interactions
-                        </h3>
-                        <ul className="space-y-3">
-                          {herbData.interactions.map((interaction, index) => (
-                            <li key={index} className="text-gray-700 text-sm flex items-start p-3 bg-orange-50 rounded-lg">
-                              <span className="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                              {interaction}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-
-                    <div className="mt-8 bg-red-50 p-6 rounded-2xl border border-red-200">
-                      <h3 className="font-bold text-red-900 mb-3">🚨 Always Consult Healthcare Providers</h3>
-                      <p className="text-red-800 text-sm">
-                        Before starting any herbal supplement, especially if you have chronic conditions, take medications, 
-                        or are pregnant/nursing. This information is for educational purposes only and is not medical advice.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Research Section */}
-              {activeTab === 'science' && (
-                <div className="bg-white p-8 rounded-3xl shadow-lg">
-                  <h2 className="text-2xl font-bold mb-8 flex items-center">
-                    <FlaskConical className="w-6 h-6 mr-3 text-blue-600" />
-                    🧪 Scientific Evidence Snapshot
-                  </h2>
-                  
-                  <div className="bg-blue-50 p-6 rounded-2xl border border-blue-200 mb-8">
-                    <h3 className="font-bold text-blue-900 mb-4">Recent Research Findings</h3>
-                    <p className="text-blue-800 leading-relaxed">
-                      {herbData.scientific_evidence}
-                    </p>
-                    <div className="mt-4 text-xs text-blue-600">
-                      📚 <em>Sources: PubMed, Journal of Ginseng Research</em>
-                    </div>
-                  </div>
-
-                  <div className="grid md:grid-cols-3 gap-6">
-                    <div className="text-center p-6 bg-green-50 rounded-2xl">
-                      <div className="text-3xl mb-3">🏆</div>
-                      <h4 className="font-bold mb-2">Gold Standard</h4>
-                      <p className="text-sm text-gray-600">Randomized controlled trials (RCTs)</p>
-                    </div>
-                    <div className="text-center p-6 bg-yellow-50 rounded-2xl">
-                      <div className="text-3xl mb-3">🥈</div>
-                      <h4 className="font-bold mb-2">Good Evidence</h4>
-                      <p className="text-sm text-gray-600">Cohort studies, case-control studies</p>
-                    </div>
-                    <div className="text-center p-6 bg-gray-50 rounded-2xl">
-                      <div className="text-3xl mb-3">🥉</div>
-                      <h4 className="font-bold mb-2">Preliminary</h4>
-                      <p className="text-sm text-gray-600">Laboratory studies, animal studies</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Constitution Section */}
-              {activeTab === 'constitution' && (
-                <div className="bg-white p-8 rounded-3xl shadow-lg">
-                  <h2 className="text-2xl font-bold mb-8 flex items-center">
-                    <Users className="w-6 h-6 mr-3 text-purple-600" />
-                    🫀 Body Constitution Match (Traditional Typing)
-                  </h2>
-                  
-                  <div className="mb-8">
-                    <div className="space-y-4">
-                      {herbData.constitution_match.map((match, index) => (
-                        <div key={index} className="flex items-center p-4 bg-gray-50 rounded-xl">
-                          {getConstitutionIcon(match.suitable)}
-                          <div className="ml-4">
-                            <div className="font-semibold">{match.type}</div>
-                            <div className="text-sm text-gray-600">{match.description}</div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="bg-purple-50 p-6 rounded-2xl border border-purple-200 mb-8">
-                    <h3 className="font-bold text-purple-900 mb-3">Find Your Constitution</h3>
-                    <p className="text-purple-800 text-sm mb-4">
-                      Take our comprehensive constitution assessment to discover which herbs are best suited for your unique body type and health needs.
-                    </p>
-                    <a 
-                      href="/constitution-test"
-                      className="inline-flex items-center bg-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-purple-700 transition-colors"
-                    >
-                      Take Constitution Test
-                      <ArrowRight className="w-5 h-5 ml-2" />
-                    </a>
-                  </div>
-
-                  <div>
-                    <h3 className="font-bold mb-4">🤝 Pairs Well With:</h3>
-                    <div className="grid md:grid-cols-1 gap-4">
-                      {herbData.pairs_well_with.map((herb, index) => (
-                        <div key={index} className="flex items-center p-4 bg-green-50 rounded-xl">
-                          <Leaf className="w-5 h-5 text-green-600 mr-3" />
-                          <span className="text-gray-800">{herb}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Reviews Section */}
-              {activeTab === 'reviews' && (
-                <div className="space-y-8">
-                  <div className="bg-white p-8 rounded-3xl shadow-lg">
-                    <h2 className="text-2xl font-bold mb-8 flex items-center">
-                      <Users className="w-6 h-6 mr-3 text-green-600" />
-                      🧑‍⚕️ Real User Story
-                    </h2>
-                    
-                    <div className="space-y-6">
-                      {herbData.user_stories.map((story, index) => (
-                        <div key={index} className="bg-gray-50 p-6 rounded-2xl">
-                          <div className="flex items-start mb-4">
-                            <div className="flex text-yellow-400 mr-3">
-                              {[...Array(5)].map((_, i) => (
-                                <Star key={i} className="w-5 h-5 fill-current" />
-                              ))}
-                            </div>
-                          </div>
-                          <blockquote className="text-gray-800 italic mb-4">
-                            "{story.quote}"
-                          </blockquote>
-                          <div className="text-sm text-gray-600">
-                            — <strong>{story.author}</strong>, {story.location}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="bg-white p-8 rounded-3xl shadow-lg">
-                    <h2 className="text-2xl font-bold mb-8">❓ Common Questions (FAQ)</h2>
-                    <div className="space-y-6">
-                      {herbData.faqs.map((faq, index) => (
-                        <div key={index} className="border-b border-gray-200 pb-6 last:border-b-0">
-                          <h3 className="font-semibold text-lg mb-3 text-gray-900">**Q: {faq.question}**</h3>
-                          <p className="text-gray-700 leading-relaxed">A: {faq.answer}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Sidebar */}
-            <div className="space-y-8">
-              {/* Quick Actions */}
-              <div className="bg-white p-6 rounded-3xl shadow-lg">
-                <h3 className="font-bold mb-4">🚀 Quick Actions</h3>
+            {/* Action Panel */}
+            <div className="lg:w-80 w-full">
+              <div className="bg-gradient-to-br from-green-500 to-blue-600 text-white p-6 rounded-xl mb-4">
+                <h3 className="text-xl font-semibold mb-4">Quick Actions</h3>
                 <div className="space-y-3">
-                  <a 
-                    href="/ingredient-checker"
-                    className="block bg-blue-600 text-white px-4 py-3 rounded-xl font-semibold text-center hover:bg-blue-700 transition-colors"
+                  <button 
+                    onClick={() => setBookmarked(!bookmarked)}
+                    className="w-full flex items-center justify-center gap-2 bg-white bg-opacity-20 hover:bg-opacity-30 py-3 rounded-lg transition-colors"
                   >
-                    🛡️ Check Safety
-                  </a>
-                  <a 
-                    href="/dosage-calculator"
-                    className="block bg-green-600 text-white px-4 py-3 rounded-xl font-semibold text-center hover:bg-green-700 transition-colors"
-                  >
-                    📏 Calculate Dosage
-                  </a>
-                  <a 
-                    href="/herb-finder"
-                    className="block bg-purple-600 text-white px-4 py-3 rounded-xl font-semibold text-center hover:bg-purple-700 transition-colors"
-                  >
-                    🔍 Find Similar Herbs
-                  </a>
-                </div>
-              </div>
-
-              {/* Newsletter Signup */}
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-3xl border border-green-200">
-                <div className="text-center">
-                  <Mail className="w-8 h-8 text-green-600 mx-auto mb-3" />
-                  <h3 className="font-bold mb-2">📧 Stay Updated</h3>
-                  <p className="text-sm text-gray-600 mb-4">
-                    Get the latest research on {herbData.name} and other herbs
-                  </p>
-                  <input 
-                    type="email" 
-                    placeholder="Your email"
-                    className="w-full px-4 py-2 rounded-xl border border-gray-200 mb-3 focus:border-green-500 focus:ring-2 focus:ring-green-200"
-                  />
-                  <button className="w-full bg-green-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-green-700 transition-colors">
-                    Subscribe
+                    <Bookmark className={`w-4 h-4 ${bookmarked ? 'fill-current' : ''}`} />
+                    {bookmarked ? 'Bookmarked' : 'Bookmark'}
+                  </button>
+                  <button className="w-full flex items-center justify-center gap-2 bg-white bg-opacity-20 hover:bg-opacity-30 py-3 rounded-lg transition-colors">
+                    <Share2 className="w-4 h-4" />
+                    Share Herb
+                  </button>
+                  <button className="w-full flex items-center justify-center gap-2 bg-white bg-opacity-20 hover:bg-opacity-30 py-3 rounded-lg transition-colors">
+                    <Download className="w-4 h-4" />
+                    Download Guide
                   </button>
                 </div>
               </div>
 
-              {/* Related Herbs */}
-              <div className="bg-white p-6 rounded-3xl shadow-lg">
-                <h3 className="font-bold mb-4">🌿 Similar Herbs</h3>
-                <div className="space-y-3">
-                  <a href="/herbs/rhodiola" className="block p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-                    <div className="font-medium">Rhodiola Rosea</div>
-                    <div className="text-sm text-gray-600">Stress adaptation</div>
-                  </a>
-                  <a href="/herbs/ashwagandha" className="block p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-                    <div className="font-medium">Ashwagandha</div>
-                    <div className="text-sm text-gray-600">Energy & stress relief</div>
-                  </a>
-                  <a href="/herbs/cordyceps" className="block p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-                    <div className="font-medium">Cordyceps</div>
-                    <div className="text-sm text-gray-600">Athletic performance</div>
-                  </a>
+              {/* Quick Stats */}
+              <div className="bg-white border border-gray-200 rounded-xl p-4">
+                <h4 className="font-semibold text-gray-900 mb-3">Quick Stats</h4>
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Evidence Level</span>
+                    <span className="font-medium">{herbData.evidence_level}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Category</span>
+                    <span className="font-medium">{herbData.category}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Total Benefits</span>
+                    <span className="font-medium">{herbData.benefits.length}</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
 
-      {/* CTA Section */}
-      <section className="py-16 px-6 bg-gradient-to-r from-green-600 to-emerald-700 text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">🌿 Ready to Start Your Herbal Journey?</h2>
-          <p className="text-xl mb-8 opacity-90">
-            Discover personalized herb recommendations based on your unique constitution
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a 
-              href="/constitution-test"
-              className="bg-white text-green-600 hover:bg-gray-50 font-bold py-4 px-8 rounded-2xl text-lg transition-colors"
-            >
-              Take Constitution Test
-            </a>
-            <a 
-              href="/herb-finder"
-              className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-green-600 font-bold py-4 px-8 rounded-2xl text-lg transition-all duration-200"
-            >
-              Browse All Herbs
-            </a>
+        {/* Navigation Tabs */}
+        <div className="bg-white rounded-xl shadow-lg mb-8">
+          <div className="flex flex-wrap border-b border-gray-200">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-2 px-6 py-4 font-medium transition-colors ${
+                  activeTab === tab.id
+                    ? 'text-green-600 border-b-2 border-green-600 bg-green-50'
+                    : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+                }`}
+              >
+                {tab.icon}
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Tab Content */}
+          <div className="p-8">
+            {/* Overview Tab */}
+            {activeTab === 'overview' && (
+              <div className="space-y-8">
+                {/* Top Health Benefits */}
+                <section>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                    <Zap className="w-6 h-6 text-green-600" />
+                    Top Health Benefits
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {herbData.benefits.map((benefit, index) => (
+                      <div key={index} className="flex items-start gap-3 p-4 bg-green-50 rounded-lg border border-green-100">
+                        <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-800">{benefit}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <div className="flex items-start gap-3">
+                      <FlaskConical className="w-5 h-5 text-blue-600 mt-0.5" />
+                      <div>
+                        <p className="text-sm text-blue-800 font-medium">Scientific Note</p>
+                        <p className="text-sm text-blue-700 mt-1">
+                          Clinical trials have shown {herbData.name} can improve physical performance and cognitive function, especially under stress or fatigue.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                {/* How It Works */}
+                <section>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                    <Beaker className="w-6 h-6 text-green-600" />
+                    How It Works (Active Compounds)
+                  </h2>
+                  <div className="bg-gray-50 rounded-xl p-6">
+                    <p className="text-gray-700 leading-relaxed">{herbData.active_compounds}</p>
+                  </div>
+                </section>
+
+                {/* Traditional Uses */}
+                <section>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                    <BookOpen className="w-6 h-6 text-green-600" />
+                    Traditional Uses in Chinese Medicine
+                  </h2>
+                  <div className="bg-amber-50 rounded-xl p-6 border border-amber-200">
+                    <p className="text-gray-700 leading-relaxed mb-4">{herbData.traditional_uses}</p>
+                    <div className="text-sm text-amber-800 bg-amber-100 rounded-lg p-3">
+                      <AlertTriangle className="w-4 h-4 inline mr-2" />
+                      These uses are part of traditional Chinese medicine and are not evaluated by the FDA.
+                    </div>
+                  </div>
+                </section>
+
+                {/* Who Should Consider */}
+                <section>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                    <Users className="w-6 h-6 text-green-600" />
+                    Who Should Consider {herbData.name}?
+                  </h2>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                      <h3 className="text-lg font-semibold text-green-700 mb-3 flex items-center gap-2">
+                        <CheckCircle className="w-5 h-5" />
+                        Suitable For:
+                      </h3>
+                      <ul className="space-y-2">
+                        {herbData.suitable_for.map((item, index) => (
+                          <li key={index} className="flex items-start gap-2">
+                            <div className="w-2 h-2 bg-green-600 rounded-full mt-2 flex-shrink-0"></div>
+                            <span className="text-gray-700">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-red-700 mb-3 flex items-center gap-2">
+                        <XCircle className="w-5 h-5" />
+                        Not Recommended For:
+                      </h3>
+                      <ul className="space-y-2">
+                        {herbData.not_suitable_for.map((item, index) => (
+                          <li key={index} className="flex items-start gap-2">
+                            <div className="w-2 h-2 bg-red-600 rounded-full mt-2 flex-shrink-0"></div>
+                            <span className="text-gray-700">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            )}
+
+            {/* Usage & Dosage Tab */}
+            {activeTab === 'usage' && (
+              <div className="space-y-8">
+                <section>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                    <Pill className="w-6 h-6 text-green-600" />
+                    How to Use & Dosage
+                  </h2>
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse bg-white rounded-lg shadow-sm">
+                      <thead>
+                        <tr className="bg-gray-50">
+                          <th className="border border-gray-200 px-6 py-4 text-left font-semibold text-gray-900">Form</th>
+                          <th className="border border-gray-200 px-6 py-4 text-left font-semibold text-gray-900">Recommended Use</th>
+                          <th className="border border-gray-200 px-6 py-4 text-left font-semibold text-gray-900">Instructions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {herbData.dosage_forms.map((form, index) => (
+                          <tr key={index} className="hover:bg-gray-50">
+                            <td className="border border-gray-200 px-6 py-4 font-medium text-gray-900">{form.form}</td>
+                            <td className="border border-gray-200 px-6 py-4 text-gray-700">{form.dosage}</td>
+                            <td className="border border-gray-200 px-6 py-4 text-gray-700">{form.usage}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
+                    <div className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
+                      <div>
+                        <p className="text-sm text-green-800 font-medium">Recommended Cycle</p>
+                        <p className="text-sm text-green-700 mt-1">
+                          Take in cycles: 3 weeks on, 1 week off. Avoid taking late at night.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            )}
+
+            {/* Scientific Evidence Tab */}
+            {activeTab === 'science' && (
+              <div className="space-y-8">
+                <section>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                    <FlaskConical className="w-6 h-6 text-green-600" />
+                    Scientific Evidence Snapshot
+                  </h2>
+                  <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
+                    <div className="flex items-start gap-3 mb-4">
+                      <Award className={`w-6 h-6 mt-1 ${getEvidenceColor(herbData.evidence_level).includes('green') ? 'text-green-600' : 
+                        getEvidenceColor(herbData.evidence_level).includes('yellow') ? 'text-yellow-600' : 'text-gray-600'}`} />
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900">Evidence Level: {herbData.evidence_level}</h3>
+                        <p className="text-gray-700 mt-2 leading-relaxed">{herbData.scientific_evidence}</p>
+                      </div>
+                    </div>
+                    <div className="text-sm text-blue-800 bg-blue-100 rounded-lg p-3 mt-4">
+                      <BookOpen className="w-4 h-4 inline mr-2" />
+                      Sources: PubMed, Journal of Ginseng Research
+                    </div>
+                  </div>
+                </section>
+              </div>
+            )}
+
+            {/* Safety & Interactions Tab */}
+            {activeTab === 'safety' && (
+              <div className="space-y-8">
+                <section>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                    <Shield className="w-6 h-6 text-green-600" />
+                    Safety & Interactions
+                  </h2>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                      <h3 className="text-lg font-semibold text-orange-700 mb-4 flex items-center gap-2">
+                        <AlertTriangle className="w-5 h-5" />
+                        Safety Warnings
+                      </h3>
+                      <div className="space-y-3">
+                        {herbData.safety_warnings.map((warning, index) => (
+                          <div key={index} className="p-3 bg-orange-50 rounded-lg border border-orange-200">
+                            <p className="text-orange-800 text-sm">{warning}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-red-700 mb-4 flex items-center gap-2">
+                        <AlertCircle className="w-5 h-5" />
+                        Drug Interactions
+                      </h3>
+                      <div className="space-y-3">
+                        {herbData.interactions.map((interaction, index) => (
+                          <div key={index} className="p-3 bg-red-50 rounded-lg border border-red-200">
+                            <p className="text-red-800 text-sm">{interaction}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            )}
+
+            {/* TCM Constitution Tab */}
+            {activeTab === 'constitution' && (
+              <div className="space-y-8">
+                <section>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                    <Target className="w-6 h-6 text-green-600" />
+                    Body Constitution Match (Traditional Typing)
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {herbData.constitution_match.map((match, index) => (
+                      <div key={index} className="p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div className="flex items-center gap-3 mb-2">
+                          {getConstitutionIcon(match.suitable)}
+                          <h3 className="font-semibold text-gray-900">{match.type}</h3>
+                        </div>
+                        <p className="text-gray-600 text-sm">{match.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Pairs Well With */}
+                  <div className="mt-8">
+                    <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                      <Heart className="w-5 h-5 text-green-600" />
+                      Pairs Well With:
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {herbData.pairs_well_with.map((pair, index) => (
+                        <div key={index} className="p-3 bg-green-50 rounded-lg border border-green-200">
+                          <p className="text-green-800 text-sm">{pair}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+              </div>
+            )}
+
+            {/* User Stories Tab */}
+            {activeTab === 'reviews' && (
+              <div className="space-y-8">
+                <section>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                    <Users className="w-6 h-6 text-green-600" />
+                    Real User Stories
+                  </h2>
+                  <div className="space-y-6">
+                    {herbData.user_stories.map((story, index) => (
+                      <div key={index} className="bg-blue-50 rounded-xl p-6 border border-blue-200">
+                        <blockquote className="text-gray-700 text-lg italic leading-relaxed mb-4">
+                          "{story.quote}"
+                        </blockquote>
+                        <div className="flex items-center gap-2 text-blue-800">
+                          <span className="font-semibold">— {story.author}</span>
+                          <span className="text-blue-600">{story.location}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                {/* FAQ Section */}
+                <section>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                    <BookOpen className="w-6 h-6 text-green-600" />
+                    Common Questions (FAQ)
+                  </h2>
+                  <div className="space-y-4">
+                    {herbData.faqs.map((faq, index) => (
+                      <div key={index} className="bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div className="p-4">
+                          <h3 className="font-semibold text-gray-900 mb-2">{faq.question}</h3>
+                          <p className="text-gray-700">{faq.answer}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              </div>
+            )}
           </div>
         </div>
-      </section>
+
+        {/* Related Herbs */}
+        <div className="bg-white rounded-xl shadow-lg p-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+            <Leaf className="w-6 h-6 text-green-600" />
+            Related Herbs You Might Like
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Link href="/herbs/rhodiola/" className="p-4 bg-green-50 rounded-lg border border-green-200 hover:shadow-md transition-shadow">
+              <h3 className="font-semibold text-green-800 mb-2">Rhodiola Rosea</h3>
+              <p className="text-green-700 text-sm">Another powerful adaptogen for stress and energy</p>
+            </Link>
+            <Link href="/herbs/ashwagandha/" className="p-4 bg-green-50 rounded-lg border border-green-200 hover:shadow-md transition-shadow">
+              <h3 className="font-semibold text-green-800 mb-2">Ashwagandha</h3>
+              <p className="text-green-700 text-sm">Calming adaptogen for stress and sleep</p>
+            </Link>
+            <Link href="/herbs/cordyceps/" className="p-4 bg-green-50 rounded-lg border border-green-200 hover:shadow-md transition-shadow">
+              <h3 className="font-semibold text-green-800 mb-2">Cordyceps</h3>
+              <p className="text-green-700 text-sm">Energy and athletic performance enhancement</p>
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

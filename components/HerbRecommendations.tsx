@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import Link from 'next/link'
 import { Herb } from '../lib/herbs-recommendation'
 import { 
   Leaf, 
@@ -11,7 +12,9 @@ import {
   ChevronUp,
   Star,
   Heart,
-  CheckCircle
+  CheckCircle,
+  ArrowRight,
+  Eye
 } from 'lucide-react'
 
 interface HerbRecommendationsProps {
@@ -48,8 +51,27 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
     }
   }
 
+  // 生成草药的slug用于URL
+  const generateSlug = (chineseName: string, englishName: string) => {
+    // 优先使用英文名生成slug
+    if (englishName) {
+      return englishName.toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w\-]+/g, '')
+        .replace(/\-\-+/g, '-')
+        .replace(/^-+/, '')
+        .replace(/-+$/, '')
+    }
+    // 如果没有英文名，使用中文名的拼音或直接转换
+    return chineseName.toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w\-]+/g, '')
+  }
+
+  const herbSlug = generateSlug(herb.chinese_name, herb.english_name)
+
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl hover:scale-105 transition-all duration-300 group">
+    <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 group">
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
@@ -116,23 +138,34 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
         )}
       </div>
 
-      {/* Expand/Collapse Button */}
-      {showDetailed && (
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="flex items-center justify-center w-full py-2 text-sm text-indigo-600 hover:text-indigo-800 transition-colors"
+      {/* Action Buttons */}
+      <div className="flex gap-2 mb-4">
+        <Link 
+          href={`/herbs/${herbSlug}`}
+          className="flex-1 flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition-colors text-sm font-medium"
         >
-          {isExpanded ? (
-            <>
-              Show Less <ChevronUp className="w-4 h-4 ml-1" />
-            </>
-          ) : (
-            <>
-              Show More <ChevronDown className="w-4 h-4 ml-1" />
-            </>
-          )}
-        </button>
-      )}
+          <Eye className="w-4 h-4" />
+          查看详情
+        </Link>
+        {showDetailed && (
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="flex items-center justify-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-3 rounded-lg transition-colors text-sm"
+          >
+            {isExpanded ? (
+              <>
+                <ChevronUp className="w-4 h-4" />
+                收起
+              </>
+            ) : (
+              <>
+                <ChevronDown className="w-4 h-4" />
+                更多
+              </>
+            )}
+          </button>
+        )}
+      </div>
 
       {/* Expanded Details */}
       {isExpanded && showDetailed && (
@@ -198,50 +231,41 @@ export default function HerbRecommendations({
 
   if (!herbs || herbs.length === 0) {
     return (
-      <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100 text-center">
+      <div className="text-center py-12">
         <Leaf className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">No Recommendations Available</h3>
-        <p className="text-gray-600">We're working on getting personalized herb recommendations for you.</p>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">No herbs found</h3>
+        <p className="text-gray-600">Try adjusting your search or filters</p>
       </div>
     )
   }
 
   return (
-    <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl shadow-lg p-8 border border-green-100">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full mb-4">
-          <Leaf className="w-8 h-8 text-white" />
-        </div>
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
+      <div className="text-center">
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">{title}</h2>
         {subtitle && (
-          <p className="text-gray-600 text-lg">{subtitle}</p>
+          <p className="text-gray-600">{subtitle}</p>
         )}
-        <div className="flex items-center justify-center mt-4">
-          <Star className="w-5 h-5 text-yellow-500 mr-2" />
-          <span className="text-sm text-gray-700">
-            {herbs.length} personalized recommendations based on your constitution
-          </span>
-        </div>
       </div>
 
       {/* Herbs Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {visibleHerbs.map((herb, index) => (
           <HerbCard 
-            key={herb.id || index} 
+            key={`${herb.chinese_name}-${index}`} 
             herb={herb} 
             showDetailed={showDetailed}
           />
         ))}
       </div>
 
-      {/* Show More/Less Button */}
+      {/* Show More Button */}
       {herbs.length > maxVisible && (
         <div className="text-center">
           <button
             onClick={() => setShowAll(!showAll)}
-            className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-medium transition-colors inline-flex items-center"
+            className="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
           >
             {showAll ? (
               <>
@@ -249,24 +273,12 @@ export default function HerbRecommendations({
               </>
             ) : (
               <>
-                Show {herbs.length - maxVisible} More <ChevronDown className="w-4 h-4 ml-2" />
+                Show All {herbs.length} Herbs <ChevronDown className="w-4 h-4 ml-2" />
               </>
             )}
           </button>
         </div>
       )}
-
-      {/* Disclaimer */}
-      <div className="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
-        <div className="flex items-start">
-          <AlertTriangle className="w-5 h-5 text-yellow-600 mr-3 mt-0.5 flex-shrink-0" />
-          <div>
-            <p className="text-sm text-yellow-800">
-              <strong>Medical Disclaimer:</strong> These recommendations are for educational purposes only and are not intended to replace professional medical advice. Please consult with a qualified healthcare provider before starting any new herbal regimen, especially if you have existing health conditions or are taking medications.
-            </p>
-          </div>
-        </div>
-      </div>
     </div>
   )
 } 

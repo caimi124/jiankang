@@ -8,106 +8,143 @@ const notion = new Client({
 // 数据库 ID
 const databaseId = '2156f14b-923c-802c-8d48-d84247b6681a';
 
-// Ginger 数据
+// 完整的生姜数据 - 基于用户提供的详细模板
 const gingerData = {
-  草药名称: 'Ginger (生姜)',
-  中文名: '生姜',
-  功效分类: ['消化健康', '呼吸系统', '抗炎作用', '止咳化痰'],
-  成分构成: ['姜辣素', '挥发油', '有机酸'],
-  安全性等级: '低风险',
-  推荐剂量: '3-10g 鲜品煎汤，250-1000mg 胶囊',
-  使用建议: '适用于恶心呕吐、消化不良、感冒发热者；不适用于热性体质、阴虚火旺者',
-  注意事项: '孕妇慎用，服用抗凝血药物者注意，胃溃疡患者勿过量',
-  中医体质匹配: '阳虚体质',
-  简要描述: 'Ginger (Zingiber officinale) is a widely used natural root known for its warming properties and digestive support.',
+  // 基本信息
+  name: 'Ginger',
+  chinese_name: '生姜',
+  latin_name: 'Zingiber officinale', 
+  slug: 'ginger',
+  category: 'Digestive & Warming',
+  evidence_level: 'Strong',
+  safety_level: 'high',
   
-  // 详细内容
-  概述: 'Ginger (Zingiber officinale) is a widely used natural root known for its warming properties and digestive support. Traditionally valued in Chinese medicine and many cultures worldwide, ginger helps relieve nausea, soothe digestive discomfort, and ease cold-related symptoms. Modern research confirms many of these benefits, making ginger a popular herbal remedy globally.',
+  // SEO和基本描述
+  overview: 'Ginger (Zingiber officinale) is a widely used natural root known for its warming properties and digestive support. Traditionally valued in Chinese medicine and many cultures worldwide, ginger helps relieve nausea, soothe digestive discomfort, and ease cold-related symptoms. Modern research confirms many of these benefits, making ginger a popular herbal remedy globally.',
   
-  主要功效: [
+  // 主要功效
+  primary_benefits: [
     'Relieves nausea from motion sickness, pregnancy, or chemotherapy',
     'Supports healthy digestion and reduces bloating',
     'Provides warming relief for cold symptoms like chills and cough',
     'Offers natural anti-inflammatory and antioxidant effects',
     'May reduce muscle soreness and improve joint comfort'
-  ].join('\n'),
+  ],
   
-  活性成分: 'Ginger contains bioactive compounds called gingerols and shogaols, which contribute to its spicy flavor and therapeutic properties. These compounds stimulate digestion by increasing gastric juices and bile, inhibit inflammatory pathways to reduce pain and swelling, and relax intestinal muscles to relieve cramps and nausea.',
+  // 活性成分详解
+  active_compounds: 'Ginger contains bioactive compounds called gingerols and shogaols, which contribute to its spicy flavor and therapeutic properties. These compounds stimulate digestion by increasing gastric juices and bile, inhibit inflammatory pathways to reduce pain and swelling, and relax intestinal muscles to relieve cramps and nausea.',
   
-  传统用法: 'In Traditional Chinese Medicine (TCM), ginger is considered pungent and slightly warm, targeting the Lung, Spleen, and Stomach meridians. It is traditionally used to disperse cold and alleviate chills and body aches, warm the digestive system and stop vomiting, calm cough and reduce phlegm caused by cold conditions, and detoxify mild seafood poisoning.',
+  // 传统用法
+  traditional_uses: 'In Traditional Chinese Medicine (TCM), ginger is considered pungent and slightly warm, targeting the Lung, Spleen, and Stomach meridians. It is traditionally used to disperse cold and alleviate chills and body aches, warm the digestive system and stop vomiting, calm cough and reduce phlegm caused by cold conditions, and detoxify mild seafood poisoning.',
   
-  适用人群: [
+  // 适用人群
+  suitable_for: [
     'Those experiencing nausea or digestive discomfort',
     'People with cold symptoms such as chills, cough, or congestion',
     'Individuals seeking natural anti-inflammatory support',
     'Athletes and active people needing muscle recovery aid'
-  ].join('\n'),
+  ],
   
-  禁忌人群: [
+  // 不适用人群
+  not_suitable_for: [
     'People with conditions related to heat or Yin deficiency',
     'Those with symptoms like night sweats or irritability',
     'Individuals prone to acid reflux or stomach ulcers (excessive use)',
     'Those on blood-thinning medications (consult healthcare provider)'
-  ].join('\n'),
+  ],
   
-  用法用量: [
-    'Fresh Root: 3–10g sliced, boiled in water as tea 2–3x daily',
-    'Powder/Capsule: 250–1000mg daily in divided doses with meals',
-    'Juice: Fresh squeezed, diluted in water, small amounts daily',
-    'Herbal Blends: As directed, combined with dates, honey, or black tea'
-  ].join('\n'),
+  // 用法用量
+  dosage_info: {
+    fresh_root: '3–10g sliced, boiled in water as tea 2–3x daily',
+    powder_capsule: '250–1000mg daily in divided doses with meals',
+    juice: 'Fresh squeezed, diluted in water, small amounts daily',
+    herbal_blends: 'As directed, combined with dates, honey, or black tea'
+  },
   
-  安全警告: [
+  // 安全警告
+  safety_warnings: [
     'May increase bleeding risk if combined with blood thinners',
     'Avoid excessive use if prone to acid reflux or stomach ulcers',
     'Not recommended for individuals with heat-related syndromes or Yin deficiency',
     'Pregnant women should consult healthcare providers before regular use'
-  ].join('\n'),
+  ],
   
-  药物相互作用: [
+  // 药物相互作用
+  drug_interactions: [
     'Blood-thinning medications (warfarin)',
     'Antiplatelet drugs',
     'Diabetes medications (may affect blood sugar)',
     'Blood pressure medications'
-  ].join('\n'),
+  ],
   
-  科学证据: 'Clinical studies support ginger\'s effectiveness in reducing nausea, improving digestion, and lowering inflammation. It has been shown to alleviate motion sickness, morning sickness in pregnancy, and muscle pain in athletes. Multiple studies confirm its anti-inflammatory and antioxidant properties.',
+  // 科学证据
+  scientific_evidence: 'Clinical studies support ginger\'s effectiveness in reducing nausea, improving digestion, and lowering inflammation. It has been shown to alleviate motion sickness, morning sickness in pregnancy, and muscle pain in athletes. Multiple studies confirm its anti-inflammatory and antioxidant properties.',
   
-  体质匹配: [
-    'Cold Constitution: YES - Ideal for those with chills, cold hands/feet, and digestive coldness',
-    'Phlegm-Damp: YES - Helps transform dampness and improve digestion',
-    'Yin Deficient: WARNING - Use cautiously; may increase heat symptoms',
-    'Heat Constitution: NO - Avoid if experiencing fever, night sweats, or irritability'
-  ].join('\n'),
+  // 中医体质匹配
+  constitution_match: {
+    cold_constitution: 'Ideal for those with chills, cold hands/feet, and digestive coldness',
+    phlegm_damp: 'Helps transform dampness and improve digestion',
+    yin_deficient: 'Use cautiously; may increase heat symptoms',
+    heat_constitution: 'Avoid if experiencing fever, night sweats, or irritability'
+  },
   
-  搭配建议: [
+  // 搭配建议
+  pairs_well_with: [
     'Ginseng – for enhanced warming and energy support',
     'Honey – to soothe the throat and balance spice',
     'Lemon – to support digestion and add vitamin C',
     'Jujube dates – for gentle nourishment and sweetness'
-  ].join('\n'),
+  ],
   
-  用户评价: [
-    '"During pregnancy, ginger tea was a lifesaver for my morning sickness — natural and gentle." — Emily R., New York',
-    '"After workouts, ginger supplements help reduce my muscle soreness without side effects." — Jason M., Toronto'
-  ].join('\n'),
+  // 用户评价
+  user_testimonials: [
+    {
+      quote: 'During pregnancy, ginger tea was a lifesaver for my morning sickness — natural and gentle.',
+      author: 'Emily R., New York'
+    },
+    {
+      quote: 'After workouts, ginger supplements help reduce my muscle soreness without side effects.',
+      author: 'Jason M., Toronto'
+    }
+  ],
   
-  常见问题: [
-    'Q: Can I drink ginger tea daily?\nA: Yes, moderate daily consumption is generally safe and beneficial for most people.',
-    'Q: Does ginger help with colds?\nA: Ginger\'s warming properties can help relieve chills and cough associated with colds.',
-    'Q: Can ginger interact with medications?\nA: Ginger may increase bleeding risk with blood thinners. Consult your doctor if unsure.',
-    'Q: Is ginger safe during pregnancy?\nA: Small amounts are generally safe, but pregnant women should consult healthcare providers before regular use.'
-  ].join('\n\n'),
+  // 常见问题
+  faqs: [
+    {
+      question: 'Can I drink ginger tea daily?',
+      answer: 'Yes, moderate daily consumption is generally safe and beneficial for most people.'
+    },
+    {
+      question: 'Does ginger help with colds?',
+      answer: 'Ginger\'s warming properties can help relieve chills and cough associated with colds.'
+    },
+    {
+      question: 'Can ginger interact with medications?',
+      answer: 'Ginger may increase bleeding risk with blood thinners. Consult your doctor if unsure.'
+    },
+    {
+      question: 'Is ginger safe during pregnancy?',
+      answer: 'Small amounts are generally safe, but pregnant women should consult healthcare providers before regular use.'
+    }
+  ],
   
-  SEO关键词: 'ginger benefits, ginger for nausea, natural cold remedy, ginger anti-inflammatory, how to use ginger',
-  证据等级: 'Strong',
-  分类: 'Digestive & Warming',
-  特性: 'Warming, Digestive Support, Anti-nausea, Anti-inflammatory'
+  // SEO相关
+  seo_keywords: ['ginger benefits', 'ginger for nausea', 'natural cold remedy', 'ginger anti-inflammatory', 'how to use ginger'],
+  meta_title: 'Ginger Benefits: Natural Digestive Support & Cold Relief | HerbScience',
+  meta_description: 'Discover the powerful benefits of Ginger (Zingiber officinale) for nausea relief, digestion, and cold symptoms. Science-backed natural remedy.',
+  
+  // 分类属性
+  properties: ['Warming', 'Digestive Support', 'Anti-nausea', 'Anti-inflammatory'],
+  
+  // 元数据
+  last_updated: new Date().toISOString(),
+  content_status: 'Complete'
 };
 
 async function syncGingerToNotion() {
   try {
-    console.log('🚀 开始同步 Ginger 数据到 Notion...');
+    console.log('🌿 Creating Ginger herb page in Notion...');
+    console.log(`📝 Using database: ${databaseId}`);
 
     // 创建页面
     const response = await notion.pages.create({
@@ -119,7 +156,7 @@ async function syncGingerToNotion() {
           title: [
             {
               text: {
-                content: gingerData.草药名称,
+                content: `${gingerData.name} (${gingerData.chinese_name})`,
               },
             },
           ],
@@ -128,27 +165,29 @@ async function syncGingerToNotion() {
           rich_text: [
             {
               text: {
-                content: gingerData.中文名,
+                content: gingerData.chinese_name,
               },
             },
           ],
         },
         '功效分类': {
-          multi_select: gingerData.功效分类.map(category => ({ name: category })),
-        },
-        '成分构成': {
-          multi_select: gingerData.成分构成.map(component => ({ name: component })),
+          multi_select: [
+            { name: '消化健康' },
+            { name: '呼吸系统' },
+            { name: '抗炎作用' },
+            { name: '止咳化痰' }
+          ],
         },
         '安全性等级': {
           select: {
-            name: gingerData.安全性等级,
+            name: '安全',
           },
         },
         '推荐剂量': {
           rich_text: [
             {
               text: {
-                content: gingerData.推荐剂量,
+                content: JSON.stringify(gingerData.dosage_info, null, 2),
               },
             },
           ],
@@ -157,7 +196,7 @@ async function syncGingerToNotion() {
           rich_text: [
             {
               text: {
-                content: gingerData.使用建议,
+                content: `${gingerData.overview}\n\n主要功效:\n• ${gingerData.primary_benefits.join('\n• ')}\n\n传统用途:\n${gingerData.traditional_uses}\n\nSEO关键词: ${gingerData.seo_keywords.join(', ')}`,
               },
             },
           ],
@@ -166,28 +205,14 @@ async function syncGingerToNotion() {
           rich_text: [
             {
               text: {
-                content: gingerData.注意事项,
+                content: `安全警告:\n• ${gingerData.safety_warnings.join('\n• ')}\n\n药物相互作用:\n• ${gingerData.drug_interactions.join('\n• ')}`,
               },
             },
           ],
         },
         '中医体质匹配': {
           select: {
-            name: gingerData.中医体质匹配,
-          },
-        },
-        '简要描述': {
-          rich_text: [
-            {
-              text: {
-                content: gingerData.简要描述,
-              },
-            },
-          ],
-        },
-        '日期': {
-          date: {
-            start: new Date().toISOString().split('T')[0],
+            name: '阳虚体质',
           },
         },
       },
@@ -200,21 +225,7 @@ async function syncGingerToNotion() {
               {
                 type: 'text',
                 text: {
-                  content: '🌿 Ginger (生姜) 详细信息',
-                },
-              },
-            ],
-          },
-        },
-        {
-          object: 'block',
-          type: 'heading_2',
-          heading_2: {
-            rich_text: [
-              {
-                type: 'text',
-                text: {
-                  content: '🧠 概述',
+                  content: `🌿 ${gingerData.name} (${gingerData.chinese_name}) - 详细信息`,
                 },
               },
             ],
@@ -228,7 +239,10 @@ async function syncGingerToNotion() {
               {
                 type: 'text',
                 text: {
-                  content: gingerData.概述,
+                  content: gingerData.latin_name,
+                },
+                annotations: {
+                  italic: true,
                 },
               },
             ],
@@ -242,7 +256,7 @@ async function syncGingerToNotion() {
               {
                 type: 'text',
                 text: {
-                  content: '✅ 主要功效',
+                  content: '📖 Overview',
                 },
               },
             ],
@@ -256,7 +270,7 @@ async function syncGingerToNotion() {
               {
                 type: 'text',
                 text: {
-                  content: gingerData.主要功效,
+                  content: gingerData.overview,
                 },
               },
             ],
@@ -270,7 +284,33 @@ async function syncGingerToNotion() {
               {
                 type: 'text',
                 text: {
-                  content: '🌿 活性成分',
+                  content: '✅ Top Health Benefits',
+                },
+              },
+            ],
+          },
+        },
+        {
+          object: 'block',
+          type: 'bulleted_list_item',
+          bulleted_list_item: {
+            rich_text: gingerData.primary_benefits.map(benefit => ({
+              type: 'text',
+              text: {
+                content: benefit
+              }
+            }))
+          }
+        },
+        {
+          object: 'block',
+          type: 'heading_2',
+          heading_2: {
+            rich_text: [
+              {
+                type: 'text',
+                text: {
+                  content: '🌿 How It Works (Active Compounds)',
                 },
               },
             ],
@@ -284,7 +324,7 @@ async function syncGingerToNotion() {
               {
                 type: 'text',
                 text: {
-                  content: gingerData.活性成分,
+                  content: gingerData.active_compounds,
                 },
               },
             ],
@@ -298,7 +338,7 @@ async function syncGingerToNotion() {
               {
                 type: 'text',
                 text: {
-                  content: '📜 传统中医用法',
+                  content: '📜 Traditional Uses in Chinese Medicine',
                 },
               },
             ],
@@ -312,7 +352,7 @@ async function syncGingerToNotion() {
               {
                 type: 'text',
                 text: {
-                  content: gingerData.传统用法,
+                  content: gingerData.traditional_uses,
                 },
               },
             ],
@@ -326,7 +366,77 @@ async function syncGingerToNotion() {
               {
                 type: 'text',
                 text: {
-                  content: '👤 适用人群',
+                  content: '👤 Who Should Consider Ginger?',
+                },
+              },
+            ],
+          },
+        },
+        {
+          object: 'block',
+          type: 'heading_3',
+          heading_3: {
+            rich_text: [
+              {
+                type: 'text',
+                text: {
+                  content: '✅ Suitable For:',
+                },
+              },
+            ],
+          },
+        },
+        ...gingerData.suitable_for.map(item => ({
+          object: 'block',
+          type: 'bulleted_list_item',
+          bulleted_list_item: {
+            rich_text: [
+              {
+                type: 'text',
+                text: {
+                  content: item,
+                },
+              },
+            ],
+          },
+        })),
+        {
+          object: 'block',
+          type: 'heading_3',
+          heading_3: {
+            rich_text: [
+              {
+                type: 'text',
+                text: {
+                  content: '❌ Not Recommended For:',
+                },
+              },
+            ],
+          },
+        },
+        ...gingerData.not_suitable_for.map(item => ({
+          object: 'block',
+          type: 'bulleted_list_item',
+          bulleted_list_item: {
+            rich_text: [
+              {
+                type: 'text',
+                text: {
+                  content: item,
+                },
+              },
+            ],
+          },
+        })),
+        {
+          object: 'block',
+          type: 'heading_2',
+          heading_2: {
+            rich_text: [
+              {
+                type: 'text',
+                text: {
+                  content: '💊 How to Use & Dosage',
                 },
               },
             ],
@@ -340,7 +450,7 @@ async function syncGingerToNotion() {
               {
                 type: 'text',
                 text: {
-                  content: gingerData.适用人群,
+                  content: `Fresh Root: ${gingerData.dosage_info.fresh_root}\nPowder/Capsule: ${gingerData.dosage_info.powder_capsule}\nJuice: ${gingerData.dosage_info.juice}\nHerbal Blends: ${gingerData.dosage_info.herbal_blends}`,
                 },
               },
             ],
@@ -354,7 +464,77 @@ async function syncGingerToNotion() {
               {
                 type: 'text',
                 text: {
-                  content: '💊 用法用量',
+                  content: '⚠️ Safety & Interactions',
+                },
+              },
+            ],
+          },
+        },
+        {
+          object: 'block',
+          type: 'heading_3',
+          heading_3: {
+            rich_text: [
+              {
+                type: 'text',
+                text: {
+                  content: 'Safety Warnings:',
+                },
+              },
+            ],
+          },
+        },
+        ...gingerData.safety_warnings.map(warning => ({
+          object: 'block',
+          type: 'bulleted_list_item',
+          bulleted_list_item: {
+            rich_text: [
+              {
+                type: 'text',
+                text: {
+                  content: warning,
+                },
+              },
+            ],
+          },
+        })),
+        {
+          object: 'block',
+          type: 'heading_3',
+          heading_3: {
+            rich_text: [
+              {
+                type: 'text',
+                text: {
+                  content: 'Drug Interactions:',
+                },
+              },
+            ],
+          },
+        },
+        ...gingerData.drug_interactions.map(interaction => ({
+          object: 'block',
+          type: 'bulleted_list_item',
+          bulleted_list_item: {
+            rich_text: [
+              {
+                type: 'text',
+                text: {
+                  content: interaction,
+                },
+              },
+            ],
+          },
+        })),
+        {
+          object: 'block',
+          type: 'heading_2',
+          heading_2: {
+            rich_text: [
+              {
+                type: 'text',
+                text: {
+                  content: '🧪 Scientific Evidence Snapshot',
                 },
               },
             ],
@@ -368,7 +548,7 @@ async function syncGingerToNotion() {
               {
                 type: 'text',
                 text: {
-                  content: gingerData.用法用量,
+                  content: gingerData.scientific_evidence,
                 },
               },
             ],
@@ -382,54 +562,26 @@ async function syncGingerToNotion() {
               {
                 type: 'text',
                 text: {
-                  content: '⚠️ 安全警告',
+                  content: '🧑‍⚕️ Real User Stories',
                 },
               },
             ],
           },
         },
-        {
+        ...gingerData.user_testimonials.map(story => ({
           object: 'block',
-          type: 'paragraph',
-          paragraph: {
+          type: 'quote',
+          quote: {
             rich_text: [
               {
                 type: 'text',
                 text: {
-                  content: gingerData.安全警告,
+                  content: `"${story.quote}" — ${story.author}`,
                 },
               },
             ],
           },
-        },
-        {
-          object: 'block',
-          type: 'heading_2',
-          heading_2: {
-            rich_text: [
-              {
-                type: 'text',
-                text: {
-                  content: '🧪 科学证据',
-                },
-              },
-            ],
-          },
-        },
-        {
-          object: 'block',
-          type: 'paragraph',
-          paragraph: {
-            rich_text: [
-              {
-                type: 'text',
-                text: {
-                  content: gingerData.科学证据,
-                },
-              },
-            ],
-          },
-        },
+        })),
         {
           object: 'block',
           type: 'heading_2',
@@ -438,54 +590,42 @@ async function syncGingerToNotion() {
               {
                 type: 'text',
                 text: {
-                  content: '🏥 体质匹配',
+                  content: '❓ Common Questions (FAQ)',
                 },
               },
             ],
           },
         },
-        {
-          object: 'block',
-          type: 'paragraph',
-          paragraph: {
-            rich_text: [
-              {
-                type: 'text',
-                text: {
-                  content: gingerData.体质匹配,
+        ...gingerData.faqs.map(faq => ([
+          {
+            object: 'block',
+            type: 'heading_3',
+            heading_3: {
+              rich_text: [
+                {
+                  type: 'text',
+                  text: {
+                    content: `Q: ${faq.question}`,
+                  },
                 },
-              },
-            ],
+              ],
+            },
           },
-        },
-        {
-          object: 'block',
-          type: 'heading_2',
-          heading_2: {
-            rich_text: [
-              {
-                type: 'text',
-                text: {
-                  content: '🤝 搭配建议',
+          {
+            object: 'block',
+            type: 'paragraph',
+            paragraph: {
+              rich_text: [
+                {
+                  type: 'text',
+                  text: {
+                    content: `A: ${faq.answer}`,
+                  },
                 },
-              },
-            ],
+              ],
+            },
           },
-        },
-        {
-          object: 'block',
-          type: 'paragraph',
-          paragraph: {
-            rich_text: [
-              {
-                type: 'text',
-                text: {
-                  content: gingerData.搭配建议,
-                },
-              },
-            ],
-          },
-        },
+        ])).flat(),
         {
           object: 'block',
           type: 'heading_2',
@@ -494,7 +634,7 @@ async function syncGingerToNotion() {
               {
                 type: 'text',
                 text: {
-                  content: '🧑‍⚕️ 用户评价',
+                  content: '🔗 SEO Information',
                 },
               },
             ],
@@ -508,50 +648,25 @@ async function syncGingerToNotion() {
               {
                 type: 'text',
                 text: {
-                  content: gingerData.用户评价,
+                  content: `Meta Title: ${gingerData.meta_title}\nMeta Description: ${gingerData.meta_description}\nKeywords: ${gingerData.seo_keywords.join(', ')}`,
                 },
               },
             ],
           },
         },
-        {
-          object: 'block',
-          type: 'heading_2',
-          heading_2: {
-            rich_text: [
-              {
-                type: 'text',
-                text: {
-                  content: '❓ 常见问题',
-                },
-              },
-            ],
-          },
-        },
-        {
-          object: 'block',
-          type: 'paragraph',
-          paragraph: {
-            rich_text: [
-              {
-                type: 'text',
-                text: {
-                  content: gingerData.常见问题,
-                },
-              },
-            ],
-          },
-        }
       ],
     });
 
-    console.log('✅ Ginger 数据同步成功!');
-    console.log(`📄 页面 ID: ${response.id}`);
-    console.log(`🔗 页面 URL: ${response.url}`);
+    console.log('✅ Ginger herb page created successfully!');
+    console.log(`📄 Page ID: ${response.id}`);
+    console.log(`🔗 Page URL: ${response.url}`);
     
     return response;
   } catch (error) {
-    console.error('❌ 同步失败:', error);
+    console.error('❌ Error creating Ginger page:', error.message);
+    if (error.body) {
+      console.error('Error details:', JSON.stringify(error.body, null, 2));
+    }
     throw error;
   }
 }
@@ -560,13 +675,13 @@ async function syncGingerToNotion() {
 if (require.main === module) {
   syncGingerToNotion()
     .then(() => {
-      console.log('🎉 同步完成！');
+      console.log('🎉 Ginger sync completed successfully!');
       process.exit(0);
     })
     .catch((error) => {
-      console.error('💥 同步过程中出错:', error);
+      console.error('💥 Sync failed:', error);
       process.exit(1);
     });
 }
 
-module.exports = { syncGingerToNotion }; 
+module.exports = { syncGingerToNotion, gingerData }; 

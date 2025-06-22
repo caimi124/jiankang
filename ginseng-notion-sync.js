@@ -4,14 +4,21 @@ const notion = new Client({
   auth: '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'
 });
 
+// 完整的人参数据 - 基于用户提供的详细模板
 const ginsengData = {
+  // 基本信息
   name: 'Ginseng',
   chinese_name: '人参',
   latin_name: 'Panax ginseng',
+  slug: 'ginseng',
   category: 'Adaptogen',
   evidence_level: 'Strong',
-  safety_rating: 'Generally Safe',
+  safety_level: 'medium',
+  
+  // SEO和基本描述
   overview: 'Ginseng (Panax ginseng) is one of the most revered herbs in traditional Chinese and Korean medicine. Known as an adaptogen, it helps the body manage stress, fight fatigue, and restore balance. Today, Ginseng remains a popular herbal remedy for boosting energy, focus, and immunity.',
+  
+  // 主要功效
   primary_benefits: [
     'Fights fatigue and increases energy naturally',
     'Enhances memory, focus, and mental clarity',
@@ -19,20 +26,46 @@ const ginsengData = {
     'Improves circulation and blood sugar balance',
     'Supports recovery after illness or surgery'
   ],
+  
+  // 活性成分详解
   active_compounds: 'The main active compounds in Panax ginseng are ginsenosides, which have antioxidant, anti-inflammatory, and neuroprotective effects. They work by enhancing mitochondrial energy production, regulating the stress-response (HPA axis), and supporting nitric oxide production (beneficial for blood flow).',
+  
+  // 传统用法
   traditional_uses: 'In Traditional Chinese Medicine (TCM), Ginseng is considered a "superior tonic" used to tonify Qi (vital energy), calm the mind (Shen) and enhance focus, rebuild strength after chronic illness, and nourish the lungs and heart.',
+  
+  // 适用人群
+  suitable_for: [
+    'People with low energy, brain fog, or chronic fatigue',
+    'Professionals under high mental stress',
+    'Individuals recovering from illness or surgery',
+    'Older adults seeking cognitive and physical support'
+  ],
+  
+  // 不适用人群
+  not_suitable_for: [
+    'People with uncontrolled high blood pressure',
+    'Those with insomnia or sleep disorders',
+    'Pregnant women',
+    'Children under 12 years old'
+  ],
+  
+  // 用法用量
   dosage_info: {
     capsule: '200–400 mg/day (standardized to 5% ginsenosides, take with food)',
     tea: '1–2g dried root, boiled 10–15 minutes, drink 1-2 cups daily',
     tincture: '30–50 drops in water, 1–2 times per day',
     soup: '5-10g root, simmer with lotus seeds and dates for recovery boost'
   },
+  
+  // 安全警告
   safety_warnings: [
     'May interact with blood pressure, blood sugar, or anticoagulant medications',
     'Avoid during fever or acute inflammation',
     'Monitor for insomnia, restlessness, or fast heartbeat if overdosed',
     'Take in cycles: 3 weeks on, 1 week off'
   ],
+  
+  // 药物相互作用
   drug_interactions: [
     'Blood pressure medications',
     'Diabetes medications (may affect blood sugar)',
@@ -40,19 +73,27 @@ const ginsengData = {
     'MAO inhibitors',
     'Stimulant medications'
   ],
+  
+  // 科学证据
   scientific_evidence: 'A 2022 randomized trial found Ginseng reduced fatigue by 28% among adults with chronic tiredness. Several studies show improved cognitive performance in aging adults. Ginsenosides shown to reduce inflammation markers in lab and animal studies. Sources: PubMed, Journal of Ginseng Research.',
+  
+  // 中医体质匹配
   constitution_match: {
     qi_deficient: 'Ideal for pale face, tiredness, and low voice',
     yang_deficient: 'May benefit, consider warming version',
     yin_deficient: 'Not ideal; may cause dryness',
     heat_excess: 'Avoid if experiencing fever or irritability'
   },
+  
+  // 搭配建议
   pairs_well_with: [
     'Rhodiola Rosea – for stress resistance',
     'Ginger – boosts circulation and warmth',
     'Cordyceps – enhances stamina in recovery',
     'Astragalus – immune and energy support'
   ],
+  
+  // 用户评价
   user_testimonials: [
     {
       quote: 'I started taking Ginseng after recovering from a viral infection. Within two weeks, my energy was back and I felt mentally sharper.',
@@ -63,6 +104,8 @@ const ginsengData = {
       author: 'Sarah L., 29, London'
     }
   ],
+  
+  // 常见问题
   faqs: [
     {
       question: 'Is Ginseng a stimulant like caffeine?',
@@ -77,10 +120,16 @@ const ginsengData = {
       answer: 'If you are on diabetes, blood pressure, or blood-thinning medications, consult a doctor first.'
     }
   ],
+  
+  // SEO相关
   seo_keywords: ['ginseng supplement', 'ginseng for energy', 'ginsenosides', 'panax ginseng', 'adaptogen', 'ginseng benefits'],
   meta_title: 'Ginseng Benefits: Energy, Focus, and Immunity | HerbScience',
   meta_description: 'Discover how Ginseng (Panax ginseng) helps fight fatigue and boosts focus. Science-backed herb for energy and immune support.',
+  
+  // 分类属性
   properties: ['Energizing', 'Immune Support', 'Cognitive Enhancement', 'Stress Adaptation'],
+  
+  // 元数据
   last_updated: new Date().toISOString(),
   content_status: 'Complete'
 };
@@ -121,12 +170,14 @@ async function createGinsengInNotion() {
         '功效分类': {
           multi_select: [
             { name: '补气养血' },
-            { name: '镇静安神' }
+            { name: '镇静安神' },
+            { name: '免疫支持' },
+            { name: '认知增强' }
           ]
         },
         '安全性等级': {
           select: {
-            name: '安全'
+            name: '中等安全'
           }
         },
         '推荐剂量': {
@@ -155,6 +206,11 @@ async function createGinsengInNotion() {
               }
             }
           ]
+        },
+        '中医体质匹配': {
+          select: {
+            name: '气虚质'
+          }
         }
       },
       children: [
@@ -165,7 +221,7 @@ async function createGinsengInNotion() {
             rich_text: [{
               type: 'text',
               text: {
-                content: `🌿 ${ginsengData.name} (${ginsengData.chinese_name})`
+                content: `🌿 ${ginsengData.name} (${ginsengData.chinese_name}) - 详细信息`
               }
             }]
           }
@@ -221,18 +277,18 @@ async function createGinsengInNotion() {
             }]
           }
         },
-        ...ginsengData.primary_benefits.map(benefit => ({
+        {
           object: 'block',
           type: 'bulleted_list_item',
           bulleted_list_item: {
-            rich_text: [{
+            rich_text: ginsengData.primary_benefits.map(benefit => ({
               type: 'text',
               text: {
                 content: benefit
               }
-            }]
+            }))
           }
-        })),
+        },
         {
           object: 'block',
           type: 'heading_2',
@@ -240,7 +296,7 @@ async function createGinsengInNotion() {
             rich_text: [{
               type: 'text',
               text: {
-                content: '🧪 Active Compounds'
+                content: '🌿 How It Works (Active Compounds)'
               }
             }]
           }
@@ -264,7 +320,7 @@ async function createGinsengInNotion() {
             rich_text: [{
               type: 'text',
               text: {
-                content: '📜 Traditional Chinese Medicine Uses'
+                content: '📜 Traditional Uses in Chinese Medicine'
               }
             }]
           }
@@ -288,7 +344,67 @@ async function createGinsengInNotion() {
             rich_text: [{
               type: 'text',
               text: {
-                content: '💊 Dosage & Usage'
+                content: '👤 Who Should Consider Ginseng?'
+              }
+            }]
+          }
+        },
+        {
+          object: 'block',
+          type: 'heading_3',
+          heading_3: {
+            rich_text: [{
+              type: 'text',
+              text: {
+                content: '✅ Suitable For:'
+              }
+            }]
+          }
+        },
+        ...ginsengData.suitable_for.map(item => ({
+          object: 'block',
+          type: 'bulleted_list_item',
+          bulleted_list_item: {
+            rich_text: [{
+              type: 'text',
+              text: {
+                content: item
+              }
+            }]
+          }
+        })),
+        {
+          object: 'block',
+          type: 'heading_3',
+          heading_3: {
+            rich_text: [{
+              type: 'text',
+              text: {
+                content: '❌ Not Recommended For:'
+              }
+            }]
+          }
+        },
+        ...ginsengData.not_suitable_for.map(item => ({
+          object: 'block',
+          type: 'bulleted_list_item',
+          bulleted_list_item: {
+            rich_text: [{
+              type: 'text',
+              text: {
+                content: item
+              }
+            }]
+          }
+        })),
+        {
+          object: 'block',
+          type: 'heading_2',
+          heading_2: {
+            rich_text: [{
+              type: 'text',
+              text: {
+                content: '💊 How to Use & Dosage'
               }
             }]
           }
@@ -300,7 +416,7 @@ async function createGinsengInNotion() {
             rich_text: [{
               type: 'text',
               text: {
-                content: `Capsule: ${ginsengData.dosage_info.capsule}\nTea: ${ginsengData.dosage_info.tea}\nTincture: ${ginsengData.dosage_info.tincture}\nSoup: ${ginsengData.dosage_info.soup}`
+                content: `Capsule: ${ginsengData.dosage_info.capsule}\nTea: ${ginsengData.dosage_info.tea}\nTincture: ${ginsengData.dosage_info.tincture}\nWellness Soup: ${ginsengData.dosage_info.soup}`
               }
             }]
           }
@@ -312,7 +428,19 @@ async function createGinsengInNotion() {
             rich_text: [{
               type: 'text',
               text: {
-                content: '⚠️ Safety Information'
+                content: '⚠️ Safety & Interactions'
+              }
+            }]
+          }
+        },
+        {
+          object: 'block',
+          type: 'heading_3',
+          heading_3: {
+            rich_text: [{
+              type: 'text',
+              text: {
+                content: 'Safety Warnings:'
               }
             }]
           }
@@ -331,12 +459,36 @@ async function createGinsengInNotion() {
         })),
         {
           object: 'block',
+          type: 'heading_3',
+          heading_3: {
+            rich_text: [{
+              type: 'text',
+              text: {
+                content: 'Drug Interactions:'
+              }
+            }]
+          }
+        },
+        ...ginsengData.drug_interactions.map(interaction => ({
+          object: 'block',
+          type: 'bulleted_list_item',
+          bulleted_list_item: {
+            rich_text: [{
+              type: 'text',
+              text: {
+                content: interaction
+              }
+            }]
+          }
+        })),
+        {
+          object: 'block',
           type: 'heading_2',
           heading_2: {
             rich_text: [{
               type: 'text',
               text: {
-                content: '🔬 Scientific Evidence'
+                content: '🧪 Scientific Evidence Snapshot'
               }
             }]
           }
@@ -360,67 +512,19 @@ async function createGinsengInNotion() {
             rich_text: [{
               type: 'text',
               text: {
-                content: '🫀 Constitution Match'
+                content: '🧑‍⚕️ Real User Stories'
               }
             }]
           }
         },
-        {
-          object: 'block',
-          type: 'paragraph',
-          paragraph: {
-            rich_text: [{
-              type: 'text',
-              text: {
-                content: `Qi Deficient: ${ginsengData.constitution_match.qi_deficient}\nYang Deficient: ${ginsengData.constitution_match.yang_deficient}\nYin Deficient: ${ginsengData.constitution_match.yin_deficient}\nHeat Excess: ${ginsengData.constitution_match.heat_excess}`
-              }
-            }]
-          }
-        },
-        {
-          object: 'block',
-          type: 'heading_2',
-          heading_2: {
-            rich_text: [{
-              type: 'text',
-              text: {
-                content: '🤝 Pairs Well With'
-              }
-            }]
-          }
-        },
-        ...ginsengData.pairs_well_with.map(herb => ({
-          object: 'block',
-          type: 'bulleted_list_item',
-          bulleted_list_item: {
-            rich_text: [{
-              type: 'text',
-              text: {
-                content: herb
-              }
-            }]
-          }
-        })),
-        {
-          object: 'block',
-          type: 'heading_2',
-          heading_2: {
-            rich_text: [{
-              type: 'text',
-              text: {
-                content: '💬 User Testimonials'
-              }
-            }]
-          }
-        },
-        ...ginsengData.user_testimonials.map(testimonial => ({
+        ...ginsengData.user_testimonials.map(story => ({
           object: 'block',
           type: 'quote',
           quote: {
             rich_text: [{
               type: 'text',
               text: {
-                content: `"${testimonial.quote}" — ${testimonial.author}`
+                content: `"${story.quote}" — ${story.author}`
               }
             }]
           }
@@ -432,28 +536,37 @@ async function createGinsengInNotion() {
             rich_text: [{
               type: 'text',
               text: {
-                content: '❓ Frequently Asked Questions'
+                content: '❓ Common Questions (FAQ)'
               }
             }]
           }
         },
-        ...ginsengData.faqs.map(faq => ({
-          object: 'block',
-          type: 'paragraph',
-          paragraph: {
-            rich_text: [{
-              type: 'text',
-              text: {
-                content: `Q: ${faq.question}\nA: ${faq.answer}\n`
-              }
-            }]
+        ...ginsengData.faqs.map(faq => ([
+          {
+            object: 'block',
+            type: 'heading_3',
+            heading_3: {
+              rich_text: [{
+                type: 'text',
+                text: {
+                  content: `Q: ${faq.question}`
+                }
+              }]
+            }
+          },
+          {
+            object: 'block',
+            type: 'paragraph',
+            paragraph: {
+              rich_text: [{
+                type: 'text',
+                text: {
+                  content: `A: ${faq.answer}`
+                }
+              }]
+            }
           }
-        })),
-        {
-          object: 'block',
-          type: 'divider',
-          divider: {}
-        },
+        ])).flat(),
         {
           object: 'block',
           type: 'heading_2',
@@ -461,7 +574,7 @@ async function createGinsengInNotion() {
             rich_text: [{
               type: 'text',
               text: {
-                content: '🎯 SEO Optimization'
+                content: '🔗 SEO Information'
               }
             }]
           }
@@ -473,38 +586,39 @@ async function createGinsengInNotion() {
             rich_text: [{
               type: 'text',
               text: {
-                content: `Meta Title: ${ginsengData.meta_title}\n\nMeta Description: ${ginsengData.meta_description}\n\nKeywords: ${ginsengData.seo_keywords.join(', ')}`
+                content: `Meta Title: ${ginsengData.meta_title}\nMeta Description: ${ginsengData.meta_description}\nKeywords: ${ginsengData.seo_keywords.join(', ')}`
               }
             }]
           }
         }
       ]
     });
-    
-    console.log('🎉 Ginseng page created successfully!');
+
+    console.log('✅ Ginseng herb page created successfully!');
     console.log(`📄 Page ID: ${response.id}`);
-    console.log(`🔗 Page URL: https://notion.so/${response.id.replace(/-/g, '')}`);
+    console.log(`🔗 Page URL: ${response.url}`);
     
     return response;
-    
   } catch (error) {
-    console.error('❌ Error creating Ginseng page:', error);
-    
-    if (error.code === 'unauthorized') {
-      console.log('🔑 Please check if the Notion API key is correct');
-    } else if (error.code === 'object_not_found') {
-      console.log('📊 Please check database permissions');
-    } else {
-      console.log('Error details:', error.message);
+    console.error('❌ Error creating Ginseng page:', error.message);
+    if (error.body) {
+      console.error('Error details:', JSON.stringify(error.body, null, 2));
     }
+    throw error;
   }
 }
 
 // Run the script
-createGinsengInNotion()
-  .then(() => {
-    console.log('✅ Script completed successfully');
-  })
-  .catch(error => {
-    console.error('❌ Script failed:', error);
-  });
+if (require.main === module) {
+  createGinsengInNotion()
+    .then(() => {
+      console.log('🎉 Ginseng sync completed successfully!');
+      process.exit(0);
+    })
+    .catch((error) => {
+      console.error('💥 Sync failed:', error);
+      process.exit(1);
+    });
+}
+
+module.exports = { createGinsengInNotion, ginsengData };
