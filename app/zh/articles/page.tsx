@@ -1,5 +1,4 @@
 import React from 'react'
-import { Metadata } from 'next'
 import Navigation from '../../../components/Navigation'
 import Breadcrumb from '../../../components/Breadcrumb'
 
