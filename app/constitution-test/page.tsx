@@ -1,3 +1,5 @@
+// Constitution Test System - Updated: 2025-01-19 18:35:00
+// Force deployment: This should show 20 questions in Chinese, not 8 questions in English
 'use client'
 
 import React, { useState } from 'react'
