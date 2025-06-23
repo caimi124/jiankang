@@ -4,6 +4,8 @@ import { Inter, Noto_Sans_SC } from 'next/font/google'
 import './globals.css'
 import AccessibilityAnnouncer from '@/components/AccessibilityAnnouncer'
 import GoogleAnalytics, { GoogleTagManagerNoScript } from '@/components/GoogleAnalytics'
+import PerformanceMonitor from '@/components/PerformanceMonitor'
+import HeatmapAnalytics from '@/components/HeatmapAnalytics'
 
 // 优化字体配置 - Inter for Latin text
 const inter = Inter({ 
@@ -166,6 +168,8 @@ export default function RootLayout({
         <GoogleTagManagerNoScript />
         
         <AccessibilityAnnouncer />
+        <PerformanceMonitor />
+        <HeatmapAnalytics />
         <main>
           {children}
         </main>

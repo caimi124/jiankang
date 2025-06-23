@@ -28,6 +28,18 @@ const nextConfig = {
   // Power pack optimization
   poweredByHeader: false,
 
+  // 实验性性能优化
+  experimental: {
+    // CSS 优化
+    optimizeCss: true,
+    // 预构建优化
+    optimizePackageImports: ['lucide-react'],
+    // 优化字体加载
+    optimizeServerReact: true,
+    // 减少 JavaScript bundle
+    serverMinification: true,
+  },
+
   // Headers for security and performance
   async headers() {
     return [
@@ -57,6 +69,21 @@ const nextConfig = {
           {
             key: 'Referrer-Policy',
             value: 'origin-when-cross-origin'
+          },
+          // 性能优化 headers
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          }
+        ]
+      },
+      // 静态资源缓存优化
+      {
+        source: '/(.*)\\.(js|css|woff|woff2|ico|png|jpg|jpeg|gif|svg|webp|avif)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
           }
         ]
       }
@@ -91,6 +118,11 @@ const nextConfig = {
         source: '/search',
         destination: '/api/search',
       },
+      // API 优化重写
+      {
+        source: '/api/v2/:path*',
+        destination: '/api/:path*',
+      }
     ]
   },
 
@@ -112,12 +144,44 @@ const nextConfig = {
   // Enable static optimization
   trailingSlash: false,
 
-  // experimental: {
-  //   optimizeCss: true,
-  // },
-
+  // 编译器优化
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
+    // SWC 优化
+    styledComponents: false,
+  },
+
+  // Bundle 分析优化
+  webpack: (config, { dev, isServer, webpack }) => {
+    // 生产环境 bundle 优化
+    if (!dev && !isServer) {
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+            priority: 10,
+          },
+          common: {
+            name: 'common',
+            minChunks: 2,
+            chunks: 'all',
+            priority: 5,
+            reuseExistingChunk: true,
+          },
+        },
+      }
+    }
+
+    // 模块解析优化
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': require('path').resolve(__dirname),
+    }
+
+    return config
   },
 
   reactStrictMode: true,

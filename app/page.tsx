@@ -7,11 +7,16 @@ import SmartSearch from '../components/SmartSearch'
 import TrustIndicators from '../components/TrustIndicators'
 import PersonalizedRecommendations from '../components/PersonalizedRecommendations'
 import { getTranslation } from '../lib/i18n'
+import { useABTest } from '../lib/ab-testing'
 
 export default function Home() {
   const pathname = usePathname()
   const currentLocale = pathname.startsWith('/zh') ? 'zh' : 'en'
   const t = getTranslation(currentLocale)
+  
+  // A/B 测试 Hook
+  const { variant: ctaVariant, trackConversion } = useABTest('hero-cta-buttons')
+  const { variant: valuePropositionVariant } = useABTest('value-proposition')
   
   // 添加语言前缀的函数
   const addLocalePrefix = (href: string) => {
@@ -20,6 +25,46 @@ export default function Home() {
     }
     return href
   }
+
+  // CTA 按钮配置根据A/B测试变体
+  const getCtaConfig = () => {
+    switch (ctaVariant) {
+      case 'variant-a':
+        return {
+          primary: { text: '🎯 Discover Your Perfect Herbs', emoji: '→' },
+          secondary: { text: '🔍 Search Our Database', emoji: '→' }
+        }
+      case 'variant-b':
+        return {
+          primary: { text: '⚡ Get Instant Herb Guidance', emoji: '💫' },
+          secondary: { text: '🛡️ Check Safety First', emoji: '→' }
+        }
+      default:
+        return {
+          primary: { text: '🎯 Start Your Herb Journey', emoji: '→' },
+          secondary: { text: '🔍 Explore Herb Database', emoji: '→' }
+        }
+    }
+  }
+
+  // 价值主张根据A/B测试变体
+  const getValueProposition = () => {
+    switch (valuePropositionVariant) {
+      case 'variant-a':
+        return {
+          title: 'Your Safe Path to Herbal Wellness',
+          subtitle: 'Safety-First Approach to Traditional Medicine'
+        }
+      default:
+        return {
+          title: 'Your Herbal Companion',
+          subtitle: 'Backed by Science'
+        }
+    }
+  }
+
+  const ctaConfig = getCtaConfig()
+  const valueProps = getValueProposition()
   return (
     <main className="min-h-screen bg-white">
       {/* Unified Header Component */}
@@ -45,9 +90,9 @@ export default function Home() {
             </div>
             
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              Your Herbal Companion
+              {valueProps.title}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600 block">
-                Backed by Science
+                {valueProps.subtitle}
               </span>
             </h1>
             
@@ -66,18 +111,26 @@ export default function Home() {
               />
             </div>
 
-            {/* Enhanced Action Buttons */}
+            {/* Enhanced Action Buttons with A/B Testing */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Link href={addLocalePrefix("/constitution-test")} className="group bg-green-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-green-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+              <Link 
+                href={addLocalePrefix("/constitution-test")} 
+                className="group bg-green-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-green-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                onClick={() => trackConversion('hero_primary_cta')}
+              >
                 <span className="flex items-center justify-center">
-                  🎯 Start Your Herb Journey
-                  <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                  {ctaConfig.primary.text}
+                  <span className="ml-2 group-hover:translate-x-1 transition-transform">{ctaConfig.primary.emoji}</span>
                 </span>
               </Link>
-              <Link href={addLocalePrefix("/herb-finder")} className="group border-2 border-green-600 text-green-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-green-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+              <Link 
+                href={addLocalePrefix("/herb-finder")} 
+                className="group border-2 border-green-600 text-green-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-green-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                onClick={() => trackConversion('hero_secondary_cta')}
+              >
                 <span className="flex items-center justify-center">
-                  🔍 Explore Herb Database
-                  <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                  {ctaConfig.secondary.text}
+                  <span className="ml-2 group-hover:translate-x-1 transition-transform">{ctaConfig.secondary.emoji}</span>
                 </span>
               </Link>
             </div>

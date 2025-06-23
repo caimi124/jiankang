@@ -76,12 +76,25 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 // 生成静态参数
 export async function generateStaticParams() {
-  // 返回已知的草药slugs
-  return [
-    { slug: 'ginseng' },
-    { slug: 'ginger' },
-    { slug: 'turmeric' }
-  ]
+  // 返回所有草药slugs，基于HERBS_DATABASE
+  try {
+    // 从完整数据库生成slug列表
+    const herbs = await import('../../../lib/herbs-data-complete')
+    return herbs.HERBS_DATABASE.map(herb => ({
+      slug: herb.english_name.toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w\-]/g, '')
+        .replace(/--+/g, '-')
+        .trim()
+    })).slice(0, 20) // 限制静态生成数量，其他动态生成
+  } catch (error) {
+    // 备用方案
+    return [
+      { slug: 'ginseng' },
+      { slug: 'ginger' },
+      { slug: 'turmeric' }
+    ]
+  }
 }
 
 // 服务器端组件

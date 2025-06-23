@@ -17,7 +17,13 @@
     "manage-database": "node notion-database-manager.js",
     "export-data": "node -e \"const {NotionDatabaseManager} = require('./notion-database-manager.js'); new NotionDatabaseManager().exportToCSV()\"",
     "stats": "node -e \"const {NotionDatabaseManager} = require('./notion-database-manager.js'); new NotionDatabaseManager().getStatsByCategory()\"",
-    "test-website": "npm run build && npm run start"
+    "test-website": "npm run build && npm run start",
+    "check-seo": "node scripts/submit-to-google.js",
+    "performance-audit": "npm run build && npm run check-seo",
+    "sync-blog": "node scripts/sync-turmeric-blog-to-notion.js",
+    "sync-blog-watch": "node scripts/real-time-blog-sync.js start",
+    "sync-blog-status": "node scripts/real-time-blog-sync.js status",
+    "sync-blog-manual": "node scripts/real-time-blog-sync.js sync"
   },
   "dependencies": {
     "@notionhq/client": "^2.3.0",
@@ -25,6 +31,7 @@
     "autoprefixer": "^10.4.21",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "critters": "^0.0.23",
     "dotenv": "^16.5.0",
     "lru-cache": "^11.1.0",
     "lucide-react": "^0.516.0",

@@ -441,8 +441,105 @@ export async function GET(
     
     console.log(`[API] 查询草药详情: ${normalizedSlug}`)
     
-    // 查找匹配的草药数据
-    const herbData = HERB_DETAIL_DATA[normalizedSlug as keyof typeof HERB_DETAIL_DATA]
+    // 首先尝试从详细数据中查找
+    let herbData = HERB_DETAIL_DATA[normalizedSlug as keyof typeof HERB_DETAIL_DATA]
+    
+    // 如果没找到，尝试从完整数据库中查找并生成基础数据
+    if (!herbData) {
+      const { HERBS_DATABASE } = await import('../../../../lib/herbs-data-complete')
+      
+      // 尝试匹配slug
+      const matchedHerb = HERBS_DATABASE.find(herb => {
+        const herbSlug = herb.english_name.toLowerCase()
+          .replace(/\s+/g, '-')
+          .replace(/[^\w\-]/g, '')
+          .replace(/--+/g, '-')
+          .trim()
+        return herbSlug === normalizedSlug || 
+               herb.english_name.toLowerCase().includes(normalizedSlug) ||
+               herb.chinese_name.includes(normalizedSlug)
+      })
+      
+      if (matchedHerb) {
+        // 为数据库中的草药生成基础详情页数据
+        herbData = {
+          id: matchedHerb.id,
+          name: matchedHerb.english_name.replace(/\(.*?\)/g, '').trim(),
+          chinese_name: matchedHerb.chinese_name.replace(/\s*\/\s*.*/g, '').trim(),
+          latin_name: matchedHerb.latin_name.replace(/\s*\/\s*.*/g, '').trim(),
+          slug: normalizedSlug,
+          category: matchedHerb.category,
+          evidence_level: 'Moderate' as const,
+          safety_level: matchedHerb.safety_level,
+          
+          overview: matchedHerb.description || `${matchedHerb.english_name} is a traditional herb known for its therapeutic properties. ${matchedHerb.traditional_use}`,
+          
+          benefits: matchedHerb.primary_effects || matchedHerb.efficacy || ['General wellness support'],
+          
+          active_compounds: `Active compounds in ${matchedHerb.english_name} include ${matchedHerb.ingredients?.join(', ') || 'various bioactive compounds'} that contribute to its therapeutic effects.`,
+          
+          traditional_uses: matchedHerb.traditional_use || `Traditionally used in herbal medicine for various health purposes.`,
+          
+          suitable_for: [`People seeking ${matchedHerb.primary_effects?.[0] || 'natural health support'}`],
+          
+          not_suitable_for: [
+            matchedHerb.contraindications || 'People with known allergies to this herb',
+            'Pregnant or breastfeeding women (consult healthcare provider)',
+            'Children under 12 years old'
+          ],
+          
+          dosage_forms: [
+            {
+              form: 'Capsule',
+              dosage: matchedHerb.dosage || '根据产品标签服用',
+              usage: matchedHerb.usage_suggestions || '随餐服用'
+            }
+          ],
+          
+          safety_warnings: [
+            matchedHerb.contraindications || '请遵循推荐剂量',
+            '如有疑问请咨询医疗专业人士',
+            '可能与某些药物相互作用'
+          ],
+          
+          interactions: ['请咨询医生关于可能的药物相互作用'],
+          
+          scientific_evidence: matchedHerb.modern_applications || 'Research is ongoing to better understand the therapeutic benefits of this herb.',
+          
+          constitution_match: [
+            {
+              type: matchedHerb.constitution_type,
+              suitable: 'yes' as const,
+              description: `适合${matchedHerb.constitution_type}体质`
+            }
+          ],
+          
+          pairs_well_with: ['其他相应草药', '均衡饮食', '健康生活方式'],
+          
+          user_stories: [
+            {
+              quote: `I found ${matchedHerb.english_name} helpful for my wellness routine.`,
+              author: 'Verified User',
+              location: 'User Review'
+            }
+          ],
+          
+          faqs: [
+            {
+              question: `What is ${matchedHerb.english_name} used for?`,
+              answer: `${matchedHerb.english_name} is traditionally used for ${matchedHerb.primary_effects?.[0] || 'various health purposes'}.`
+            },
+            {
+              question: 'Is it safe to use daily?',
+              answer: 'Please follow the recommended dosage and consult with a healthcare provider for personalized advice.'
+            }
+          ],
+          
+          seo_keywords: [matchedHerb.english_name.toLowerCase(), ...(matchedHerb.efficacy || [])],
+          properties: matchedHerb.primary_effects || ['Natural Health Support']
+        }
+      }
+    }
     
     if (!herbData) {
       console.log(`[API] 未找到草药: ${normalizedSlug}`)

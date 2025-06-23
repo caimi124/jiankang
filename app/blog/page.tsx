@@ -20,6 +20,19 @@ export default function BlogPage() {
   const featuredArticles = [
     {
       id: 1,
+      title: "Turmeric Made Simple: How to Use It Today for Real Gut Relief and Pain Reduction",
+      excerpt: "Feeling bloated, achy, or tired? Discover how turmeric can help calm your gut, reduce inflammation, and boost your energy.",
+      category: "lifestyle",
+      author: "HerbScience Team", 
+      date: "2025-01-19",
+      readTime: "8 min read",
+      image: "🌿",
+      featured: true,
+      slug: "turmeric-gut-relief-guide",
+      tags: ["turmeric benefits", "gut health", "natural pain relief", "inflammation"]
+    },
+    {
+      id: 2,
       title: "Breakthrough Research: Turmeric and Curcumin Show Promise in Alzheimer's Prevention",
       excerpt: "New clinical trials demonstrate significant cognitive benefits from standardized curcumin supplementation in adults over 50.",
       category: "research",
@@ -31,7 +44,7 @@ export default function BlogPage() {
       tags: ["turmeric", "alzheimer's", "cognitive health", "clinical trial"]
     },
     {
-      id: 2,
+      id: 3,
       title: "Hidden Dangers: 5 Popular Herb-Medication Combinations to Avoid",
       excerpt: "Essential safety information about dangerous interactions between common herbal supplements and prescription medications.",
       category: "safety",
@@ -55,6 +68,7 @@ export default function BlogPage() {
       date: "2024-01-10",
       readTime: "8 min read",
       image: "🧠",
+      slug: "herbs-for-anxiety-natural-alternatives",
       tags: ["anxiety", "herbs vs drugs", "ashwagandha", "prescription alternatives"]
     },
     {
