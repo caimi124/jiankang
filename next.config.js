@@ -1,3 +1,4 @@
+// Next.js Configuration - Force Deployment Update: 2025-01-19 18:52:00
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Image Optimization
