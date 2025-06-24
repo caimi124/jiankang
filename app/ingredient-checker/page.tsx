@@ -5,7 +5,19 @@ import { Metadata } from 'next'
 import Navigation from '../../components/Navigation'
 import Breadcrumb from '../../components/Breadcrumb'
 import IngredientCheckerFAQ from '../../components/IngredientCheckerFAQ'
-import { Upload, AlertTriangle, Shield, Info, CheckCircle, X, Camera, FileText, Star, ExternalLink, Mail, ArrowRight, Lightbulb, Database, Users, Award } from 'lucide-react'
+import { Upload, AlertTriangle, Shield, Info, CheckCircle, X, Camera, FileText, Star, ExternalLink, Mail, ArrowRight, Lightbulb, Database, Users, Award, Search, Plus } from 'lucide-react'
+import { Button } from "@/components/ui/Button"
+import Link from 'next/link'
+
+interface IngredientSearchResult {
+  id: string
+  name_en: string
+  name_cn: string
+  description_short: string
+  safety_level: 'high' | 'medium' | 'low'
+  efficacy: string[]
+  image_url?: string
+}
 
 interface AnalysisResults {
   ingredients: Array<{
@@ -42,13 +54,15 @@ interface AnalysisResults {
 }
 
 export default function IngredientCheckerPage() {
-  const [ingredientText, setIngredientText] = useState('')
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchResults, setSearchResults] = useState<IngredientSearchResult[]>([])
+  const [isSearching, setIsSearching] = useState(false)
+  const [selectedIngredients, setSelectedIngredients] = useState<string[]>([])
   const [analysisResults, setAnalysisResults] = useState<AnalysisResults | null>(null)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
-  const [inputMethod, setInputMethod] = useState<'text' | 'photo'>('text')
-  const [emailForResults, setEmailForResults] = useState('')
-  const [showEmailCapture, setShowEmailCapture] = useState(false)
+  const [bulkInput, setBulkInput] = useState('')
+  const [showBulkInput, setShowBulkInput] = useState(false)
+  const [connectionStatus, setConnectionStatus] = useState<'loading' | 'connected' | 'error'>('loading')
 
   // Example ingredients for demo
   const exampleIngredients = [
@@ -58,126 +72,155 @@ export default function IngredientCheckerPage() {
     "St. John's Wort 300mg, Valerian root 450mg, Passion flower 250mg"
   ]
 
-  const loadExample = (example: string) => {
-    setIngredientText(example)
-    setInputMethod('text')
-  }
+  // 测试Notion连接
+  useEffect(() => {
+    testConnection()
+  }, [])
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file) {
-      setSelectedFile(file)
-      setInputMethod('photo')
+  const testConnection = async () => {
+    try {
+      const response = await fetch('/api/herbs/notion?test=true')
+      const data = await response.json()
+      setConnectionStatus(data.success ? 'connected' : 'error')
+    } catch (error) {
+      setConnectionStatus('error')
     }
   }
 
-  const analyzeIngredients = () => {
-    setIsAnalyzing(true)
-    
-    // Enhanced mock analysis with herb database linkage
-    setTimeout(() => {
-      const mockResults: AnalysisResults = {
-        ingredients: [
-          {
-            name: 'Ginseng Root Extract (Panax ginseng)',
-            chineseName: '人参 (Ren Shen)',
-            latinName: 'Panax ginseng',
-            safety: 'Generally Safe',
-            safetyScore: 85,
-            interactions: ['Blood thinners (Warfarin)', 'Diabetes medications', 'Blood pressure medications'],
-            benefits: 'Increases energy, improves cognitive function, boosts immune system, reduces stress',
-            sideEffects: ['Insomnia', 'Headache', 'Digestive upset', 'Nervousness'],
-            dosage: '100-400mg daily (standardized extract)',
-            contraindications: ['Pregnancy', 'High blood pressure (uncontrolled)', 'Insomnia'],
-            pregnancySafety: 'Avoid - insufficient safety data',
-            qualityGrade: 'A',
-            herbFinderLink: '/herb-finder?search=ginseng',
-            alternativeSuggestions: ['Rhodiola rosea', 'Schisandra berry']
-          },
-          {
-            name: 'Ginkgo Biloba Leaf Extract',
-            chineseName: '银杏叶 (Yin Xing Ye)',
-            latinName: 'Ginkgo biloba',
-            safety: 'Moderate Risk',
-            safetyScore: 75,
-            interactions: ['Blood thinners', 'Seizure medications', 'NSAID pain relievers'],
-            benefits: 'Improves memory and circulation, supports brain health, may help with tinnitus',
-            sideEffects: ['Bleeding risk', 'Stomach upset', 'Headache', 'Skin reactions'],
-            dosage: '120-240mg daily (24% flavone glycosides)',
-            contraindications: ['Bleeding disorders', 'Surgery (stop 2 weeks before)', 'Epilepsy'],
-            pregnancySafety: 'Avoid - may cause bleeding',
-            qualityGrade: 'B+',
-            herbFinderLink: '/herb-finder?search=ginkgo',
-            alternativeSuggestions: ['Bacopa monnieri', 'Lion\'s mane mushroom']
-          },
-          {
-            name: 'Turmeric Extract (Curcumin)',
-            chineseName: '姜黄 (Jiang Huang)',
-            latinName: 'Curcuma longa',
-            safety: 'Safe',
-            safetyScore: 90,
-            interactions: ['Blood thinners', 'Diabetes medications', 'Chemotherapy drugs'],
-            benefits: 'Anti-inflammatory, antioxidant, supports joint health, may improve brain function',
-            sideEffects: ['Stomach upset', 'Increased bleeding risk (high doses)', 'Kidney stones (rare)'],
-            dosage: '500-1000mg daily (with black pepper for absorption)',
-            contraindications: ['Gallstones', 'Kidney stones', 'Bleeding disorders'],
-            pregnancySafety: 'Safe in food amounts, avoid supplements',
-            qualityGrade: 'A+',
-            herbFinderLink: '/herb-finder?search=turmeric',
-            alternativeSuggestions: ['Boswellia', 'Tart cherry extract']
-          }
-        ],
-        overallRisk: 'Low-Moderate',
-        riskScore: 78,
-        recommendations: [
-          'Consult your healthcare provider before starting, especially if taking blood thinners',
-          'Start with lower doses to assess individual tolerance',
-          'Monitor for any unusual symptoms and discontinue if adverse reactions occur',
-          'Take ginseng in the morning to avoid sleep interference',
-          'Consider timing: take turmeric with food to reduce stomach upset'
-        ],
-        warnings: [
-          'This combination may increase bleeding risk - important if you take blood thinners',
-          'Ginkgo should be stopped 2 weeks before any surgery',
-          'Avoid this combination during pregnancy and breastfeeding'
-        ],
-        drugInteractions: [
-          {
-            drug: 'Warfarin (Coumadin)',
-            severity: 'High',
-            description: 'May significantly increase bleeding risk when combined with ginseng and ginkgo'
-          },
-          {
-            drug: 'Diabetes medications',
-            severity: 'Moderate',
-            description: 'Ginseng may lower blood sugar and require medication adjustment'
-          }
-        ],
-        alternativeRecommendations: [
-          {
-            name: 'Rhodiola Rosea',
-            reason: 'Safer alternative to ginseng for energy without cardiovascular risks',
-            safetyScore: 88,
-            link: '/herb-finder?search=rhodiola'
-          },
-          {
-            name: 'Bacopa Monnieri',
-            reason: 'Memory enhancement without bleeding concerns',
-            safetyScore: 85,
-            link: '/herb-finder?search=bacopa'
-          }
-        ]
+  // 搜索成分
+  const handleSearch = async () => {
+    if (!searchQuery.trim() || searchQuery.length < 2) return
+
+    setIsSearching(true)
+    try {
+      const response = await fetch(`/api/ingredients/search?q=${encodeURIComponent(searchQuery)}`)
+      const data = await response.json()
+      
+      if (data.success) {
+        setSearchResults(data.data || [])
+      } else {
+        console.error('Search failed:', data.error)
+        setSearchResults([])
       }
-      setAnalysisResults(mockResults)
-      setIsAnalyzing(false)
-      setShowEmailCapture(true)
-    }, 3000)
+    } catch (error) {
+      console.error('Search error:', error)
+      setSearchResults([])
+    } finally {
+      setIsSearching(false)
+    }
   }
 
-  const getRiskColor = (score: number) => {
-    if (score >= 85) return 'text-green-600 bg-green-100'
-    if (score >= 70) return 'text-yellow-600 bg-yellow-100'
-    return 'text-red-600 bg-red-100'
+  // 实时搜索（防抖）
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchQuery.length >= 2) {
+        handleSearch()
+      } else {
+        setSearchResults([])
+      }
+    }, 500)
+
+    return () => clearTimeout(timer)
+  }, [searchQuery])
+
+  // 添加成分到分析列表
+  const addIngredient = (ingredient: IngredientSearchResult) => {
+    if (!selectedIngredients.includes(ingredient.name_en)) {
+      setSelectedIngredients([...selectedIngredients, ingredient.name_en])
+    }
+    setSearchQuery('')
+    setSearchResults([])
+  }
+
+  // 移除成分
+  const removeIngredient = (ingredient: string) => {
+    setSelectedIngredients(selectedIngredients.filter(item => item !== ingredient))
+    // 清空分析结果如果没有成分了
+    if (selectedIngredients.length === 1) {
+      setAnalysisResults(null)
+    }
+  }
+
+  // 批量添加成分
+  const handleBulkAdd = () => {
+    const ingredients = bulkInput
+      .split(/[,\n;]/)
+      .map(item => item.trim())
+      .filter(item => item.length > 0)
+    
+    const newIngredients = ingredients.filter(item => !selectedIngredients.includes(item))
+    setSelectedIngredients([...selectedIngredients, ...newIngredients])
+    setBulkInput('')
+    setShowBulkInput(false)
+  }
+
+  // 分析成分组合
+  const analyzeIngredients = async () => {
+    if (selectedIngredients.length === 0) return
+
+    setIsAnalyzing(true)
+    try {
+      const response = await fetch('/api/ingredients/search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          action: 'analyze',
+          ingredients: selectedIngredients
+        })
+      })
+      
+      const data = await response.json()
+      
+      if (data.success) {
+        setAnalysisResults(data.data)
+      } else {
+        console.error('Analysis failed:', data.error)
+      }
+    } catch (error) {
+      console.error('Analysis error:', error)
+    } finally {
+      setIsAnalyzing(false)
+    }
+  }
+
+  const getRiskBadge = (safety_level: string, score?: number) => {
+    if (score !== undefined) {
+      if (score >= 80) return <span className="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Low Risk</span>
+      if (score >= 60) return <span className="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">Moderate Risk</span>
+      return <span className="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">High Risk</span>
+    }
+    
+    switch (safety_level) {
+      case 'high':
+        return <span className="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Generally Safe</span>
+      case 'medium':
+        return <span className="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">Use with Caution</span>
+      case 'low':
+        return <span className="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">High Caution</span>
+      default:
+        return <span className="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Unknown</span>
+    }
+  }
+
+  const getRiskIcon = (safety_level: string, score?: number) => {
+    if (score !== undefined) {
+      if (score >= 80) return <CheckCircle className="h-5 w-5 text-green-600" />
+      if (score >= 60) return <Shield className="h-5 w-5 text-yellow-600" />
+      return <AlertTriangle className="h-5 w-5 text-red-600" />
+    }
+
+    switch (safety_level) {
+      case 'high':
+        return <CheckCircle className="h-5 w-5 text-green-600" />
+      case 'medium':
+        return <Shield className="h-5 w-5 text-yellow-600" />
+      case 'low':
+        return <AlertTriangle className="h-5 w-5 text-red-600" />
+      default:
+        return <Shield className="h-5 w-5 text-gray-600" />
+    }
   }
 
   const getSeverityColor = (severity: string) => {
@@ -258,7 +301,10 @@ export default function IngredientCheckerPage() {
                 {exampleIngredients.map((example, index) => (
                   <button
                     key={index}
-                    onClick={() => loadExample(example)}
+                    onClick={() => {
+                      setSearchQuery(example)
+                      setIsSearching(true)
+                    }}
                     className="text-left p-3 bg-gray-50 rounded-xl hover:bg-blue-50 hover:border-blue-200 border border-gray-200 transition-colors text-sm"
                   >
                     <div className="font-medium text-gray-900 mb-1">Example {index + 1}</div>
@@ -272,97 +318,53 @@ export default function IngredientCheckerPage() {
             <div className="flex justify-center mb-8">
               <div className="bg-gray-100 p-1 rounded-xl">
                 <button
-                  onClick={() => setInputMethod('text')}
+                  onClick={() => {
+                    setSearchQuery('')
+                    setIsSearching(true)
+                  }}
                   className={`flex items-center space-x-2 px-6 py-2 rounded-lg font-medium transition-colors ${
-                    inputMethod === 'text'
+                    searchQuery.length > 0
                       ? 'bg-blue-600 text-white'
                       : 'text-gray-600 hover:text-blue-600'
                   }`}
                 >
                   <FileText className="w-4 h-4" />
-                  <span>Type Ingredients</span>
-                </button>
-                <button
-                  onClick={() => setInputMethod('photo')}
-                  className={`flex items-center space-x-2 px-6 py-2 rounded-lg font-medium transition-colors ${
-                    inputMethod === 'photo'
-                      ? 'bg-blue-600 text-white'
-                      : 'text-gray-600 hover:text-blue-600'
-                  }`}
-                >
-                  <Camera className="w-4 h-4" />
-                  <span>Upload Photo</span>
+                  <span>Search Ingredients</span>
                 </button>
               </div>
             </div>
 
             {/* Enhanced Input Methods */}
-            {inputMethod === 'text' ? (
+            {searchQuery.length > 0 && (
               <div className="mb-8">
                 <label className="block text-lg font-semibold mb-4">📝 Enter Supplement Ingredients</label>
-                <textarea
-                  placeholder="Enter your ingredients here...
-
-Examples:
-• Ginkgo biloba, Rhodiola rosea, Caffeine
-• Turmeric 500mg, Ginger 200mg, Black pepper 5mg  
-• Ashwagandha extract, L-theanine, Magnesium
-• Valerian root, Passion flower, Melatonin
-
-Include dosages when available for more accurate analysis!"
-                  value={ingredientText}
-                  onChange={(e) => setIngredientText(e.target.value)}
-                  className="w-full p-6 border-2 border-gray-200 rounded-2xl h-48 resize-none focus:border-blue-500 focus:outline-none text-gray-700"
-                />
-                <div className="flex justify-between items-center mt-3">
-                  <p className="text-sm text-gray-500">
-                    💡 Tip: Include dosages (mg, IU, etc.) for more precise safety assessment
-                  </p>
-                  <span className="text-xs text-gray-400">
-                    {ingredientText.length}/1000
-                  </span>
-                </div>
-              </div>
-            ) : (
-              <div className="mb-8">
-                <label className="block text-lg font-semibold mb-4">📷 Upload Supplement Label</label>
-                <div 
-                  className="border-2 border-dashed border-gray-300 rounded-2xl p-12 text-center hover:border-blue-400 transition-colors cursor-pointer"
-                  onClick={() => document.getElementById('fileInput')?.click()}
-                >
-                  {selectedFile ? (
-                    <div>
-                      <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-4" />
-                      <p className="text-gray-700 font-medium">{selectedFile.name}</p>
-                      <p className="text-sm text-gray-500 mt-2">🤖 AI will extract ingredients from this image</p>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          setSelectedFile(null)
-                        }}
-                        className="mt-4 text-red-600 hover:text-red-700"
-                      >
-                        <X className="w-5 h-5 inline mr-1" />
-                        Remove
-                      </button>
-                    </div>
-                  ) : (
-                    <div>
-                      <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                      <p className="text-gray-600 mb-4">📱 Drag & drop or click to upload supplement label</p>
-                      <p className="text-sm text-gray-500 mb-4">Supports JPG, PNG, PDF • Max 10MB</p>
-                      <div className="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700 transition-colors inline-block">
-                        Choose File
+                <div className="space-y-2 max-h-64 overflow-y-auto">
+                  {searchResults.map((ingredient) => (
+                    <div
+                      key={ingredient.id}
+                      className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50 cursor-pointer"
+                      onClick={() => addIngredient(ingredient)}
+                    >
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2">
+                          <span className="font-medium">{ingredient.name_en}</span>
+                          {ingredient.name_cn && (
+                            <span className="text-gray-500 text-sm">({ingredient.name_cn})</span>
+                          )}
+                        </div>
+                        <p className="text-sm text-gray-600 truncate">{ingredient.description_short}</p>
+                        <div className="flex items-center space-x-2 mt-1">
+                          {getRiskBadge(ingredient.safety_level)}
+                                                     {ingredient.efficacy.slice(0, 2).map((effect, idx) => (
+                             <span key={idx} className="px-2 py-1 text-xs font-medium rounded border bg-gray-50 text-gray-700">
+                               {effect}
+                             </span>
+                           ))}
+                        </div>
                       </div>
+                      <Plus className="h-4 w-4 text-blue-500" />
                     </div>
-                  )}
-                  <input
-                    id="fileInput"
-                    type="file"
-                    accept="image/*,.pdf"
-                    onChange={handleFileUpload}
-                    className="hidden"
-                  />
+                  ))}
                 </div>
               </div>
             )}
@@ -371,7 +373,7 @@ Include dosages when available for more accurate analysis!"
             <div className="text-center">
               <button
                 onClick={analyzeIngredients}
-                disabled={(!ingredientText.trim() && !selectedFile) || isAnalyzing}
+                disabled={(!searchQuery.trim() && searchResults.length === 0) || isAnalyzing}
                 className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-400 text-white font-semibold py-4 px-12 rounded-2xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none"
               >
                 {isAnalyzing ? (
@@ -401,7 +403,7 @@ Include dosages when available for more accurate analysis!"
                 
                 <div className="grid md:grid-cols-3 gap-6 mb-8">
                   <div className="text-center">
-                    <div className={`text-3xl font-bold mb-2 px-4 py-2 rounded-xl ${getRiskColor(analysisResults.riskScore)}`}>
+                    <div className="text-3xl font-bold mb-2 px-4 py-2 rounded-xl bg-blue-100 text-blue-800">
                       {analysisResults.riskScore}/100
                     </div>
                     <p className="text-gray-600">Safety Score</p>
@@ -623,36 +625,6 @@ Include dosages when available for more accurate analysis!"
                         <p className="text-gray-700">{interaction.description}</p>
                       </div>
                     ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Email Capture for Results */}
-              {showEmailCapture && (
-                <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl shadow-lg p-8 text-white">
-                  <div className="text-center">
-                    <Mail className="w-12 h-12 mx-auto mb-4 text-blue-100" />
-                    <h3 className="text-2xl font-bold mb-4">📧 Get Your Complete Safety Report</h3>
-                    <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
-                      Receive a detailed PDF report with personalized recommendations, alternative suggestions, 
-                      and a "Top 10 Dangerous Ingredients to Avoid" guide - absolutely free!
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
-                      <input
-                        type="email"
-                        placeholder="Enter your email address"
-                        value={emailForResults}
-                        onChange={(e) => setEmailForResults(e.target.value)}
-                        className="flex-1 px-4 py-3 rounded-xl text-gray-900 w-full sm:w-auto"
-                      />
-                      <button className="bg-white text-blue-600 px-6 py-3 rounded-xl font-semibold hover:bg-blue-50 transition-colors whitespace-nowrap">
-                        Send Report
-                        <ArrowRight className="w-4 h-4 inline ml-2" />
-                      </button>
-                    </div>
-                    <p className="text-blue-200 text-sm mt-4">
-                      ✅ No spam • 🔒 Privacy protected • 📱 Mobile-friendly PDF
-                    </p>
                   </div>
                 </div>
               )}
