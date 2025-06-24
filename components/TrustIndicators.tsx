@@ -90,7 +90,7 @@ export default function TrustIndicators() {
             Why Trust HerbScience.shop?
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            We're committed to providing accurate, science-based information to help you make informed decisions about herbal supplements.
+            We&apos;re committed to providing accurate, science-based information to help you make informed decisions about herbal supplements.
           </p>
         </div>
 
@@ -181,7 +181,7 @@ export default function TrustIndicators() {
                     ))}
                   </div>
                   <blockquote className="text-gray-700 italic mb-4">
-                    "{endorsement.quote}"
+                    &quot;{endorsement.quote}&quot;
                   </blockquote>
                 </div>
                 <div className="border-t border-gray-200 pt-4">

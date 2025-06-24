@@ -61,7 +61,7 @@ const popularCategories = [
   },
   { 
     icon: <Users className="w-4 h-4" />, 
-    label: 'Women\'s Health', 
+    label: 'Women&apos;s Health', 
     keywords: ['女性健康', 'women', 'female', 'hormonal'] 
   }
 ]

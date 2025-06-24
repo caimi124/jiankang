@@ -156,7 +156,7 @@ export default function AboutPage() {
               Bridging Ancient Wisdom with Modern Science
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              We're on a mission to make herbal supplements accessible, understandable, and safe for everyone. 
+              We&apos;re on a mission to make herbal supplements accessible, understandable, and safe for everyone. 
               By combining traditional knowledge with cutting-edge research, we help people make informed decisions about their health.
             </p>
           </div>
@@ -172,7 +172,7 @@ export default function AboutPage() {
               </div>
               <p className="text-gray-700 leading-relaxed">
                 To democratize access to safe, evidence-based herbal health information. We believe everyone deserves 
-                to understand what they're putting in their body and why, without needing a medical degree to make 
+                to understand what they&apos;re putting in their body and why, without needing a medical degree to make 
                 informed decisions.
               </p>
             </div>
@@ -325,7 +325,7 @@ export default function AboutPage() {
                   <div className="text-center py-12">
                     <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
                     <h4 className="text-xl font-bold text-gray-900 mb-2">Message Sent!</h4>
-                    <p className="text-gray-600">Thank you for contacting us. We'll get back to you soon.</p>
+                    <p className="text-gray-600">Thank you for contacting us. We&apos;ll get back to you soon.</p>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-6">
@@ -483,7 +483,7 @@ export default function AboutPage() {
           <div className="text-center bg-gradient-to-br from-green-600 to-green-700 rounded-3xl p-12 text-white">
             <h2 className="text-3xl font-bold mb-4">Questions About Our Mission?</h2>
             <p className="text-xl mb-8 text-green-100">
-              We'd love to hear from you and discuss how we can better serve your herbal health needs.
+              We&apos;re here to help you make informed decisions about herbal supplements.
             </p>
             <a 
               href="#contact" 

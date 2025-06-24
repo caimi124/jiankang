@@ -44,7 +44,7 @@ export default function PersonalizedRecommendations() {
       icon: '🧠',
       title: 'Mental Clarity',
       description: 'Enhance focus and cognitive function',
-      herbs: ['Ginkgo', 'Bacopa', 'Lion\'s Mane'],
+      herbs: ['Ginkgo', 'Bacopa', 'Lion&apos;s Mane'],
       color: 'teal'
     },
     {
@@ -76,7 +76,7 @@ export default function PersonalizedRecommendations() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            What's Your Health Goal Today?
+            What&apos;s Your Health Goal Today?
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Get personalized herb recommendations based on your specific health objectives. 

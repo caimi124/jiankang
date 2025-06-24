@@ -406,7 +406,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">What Our Users Say</h2>
-            <p className="text-lg text-gray-600">Real stories from people who've transformed their herbal supplement journey</p>
+            <p className="text-lg text-gray-600">Real stories from people who&apos;ve transformed their herbal supplement journey</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:border-green-200 transition-colors">
@@ -456,7 +456,7 @@ export default function Home() {
                 </div>
               </div>
               <p className="text-gray-700 leading-relaxed mb-4">
-                &quot;The herbal quiz helped me understand my constitution better. Now I know exactly which herbs work for my body type!&quot;
+                &quot;I finally found herbs that actually work for my sleep issues. The personalized recommendations were spot-on!&quot;
               </p>
               <div className="flex text-yellow-400">
                 ⭐⭐⭐⭐⭐
@@ -474,7 +474,7 @@ export default function Home() {
               Get Your Free Herbal Guide
             </h2>
             <p className="text-xl text-green-100 mb-8 max-w-2xl mx-auto">
-              Download our comprehensive "Traditional Chinese Medicine Body Constitution Guide" and weekly evidence-based herbal insights.
+              Download our comprehensive &quot;Traditional Chinese Medicine Body Constitution Guide&quot; and weekly evidence-based herbal insights.
             </p>
             
             {/* Lead Magnet Benefits */}

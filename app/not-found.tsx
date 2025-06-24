@@ -43,7 +43,7 @@ export default function NotFound() {
             Page not found
           </h1>
           <p className="mt-4 text-lg text-gray-500">
-            Sorry, we couldn't find the page you're looking for. Don't worry though, we've got some helpful suggestions below.
+            Sorry, we couldn&apos;t find the page you&apos;re looking for. Don&apos;t worry though, we&apos;ve got some helpful suggestions below.
           </p>
         </div>
 
