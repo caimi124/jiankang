@@ -243,6 +243,64 @@ export async function GET(request: NextRequest) {
       }
     }
 
+    if (action === 'get_post') {
+      // 获取单个文章
+      const slug = searchParams.get('slug')
+      
+      if (!slug) {
+        return NextResponse.json({
+          success: false,
+          error: 'Slug parameter is required'
+        }, { status: 400 })
+      }
+
+      try {
+        const notionSync = await getNotionSync()
+        const posts = await notionSync.getAllPages()
+        
+        // 根据slug查找文章
+        const post = posts.find((p: any) => p.slug === slug)
+        
+        if (!post) {
+          return NextResponse.json({
+            success: false,
+            error: 'Post not found'
+          }, { status: 404 })
+        }
+
+        return NextResponse.json({
+          success: true,
+          data: post
+        })
+      } catch (error) {
+        return NextResponse.json({
+          success: false,
+          error: 'Failed to fetch post from Notion',
+          details: error instanceof Error ? error.message : 'Unknown error'
+        }, { status: 500 })
+      }
+    }
+
+    if (action === 'posts') {
+      // 获取所有文章
+      try {
+        const notionSync = await getNotionSync()
+        const posts = await notionSync.getAllPages()
+        
+        return NextResponse.json({
+          success: true,
+          count: posts.length,
+          data: posts
+        })
+      } catch (error) {
+        return NextResponse.json({
+          success: false,
+          error: 'Failed to fetch posts from Notion',
+          details: error instanceof Error ? error.message : 'Unknown error'
+        }, { status: 500 })
+      }
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Blog Notion Sync API - Available actions: POST /sync-to-notion, GET /sync-to-notion?action=status'

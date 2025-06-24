@@ -5,16 +5,30 @@ import HerbDetailClient from './HerbDetailClient'
 // 草药数据获取函数
 async function getHerbData(slug: string) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+    // 优先使用生产环境URL，开发环境fallback到localhost
+    const baseUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://herbscience.shop' 
+      : 'http://localhost:3000'
+    
+    console.log(`[DEBUG] Fetching herb data for slug: ${slug} from ${baseUrl}`)
+    
     const response = await fetch(`${baseUrl}/api/herbs/${slug}`, {
-      cache: 'no-store'
+      cache: 'no-store',
+      headers: {
+        'Content-Type': 'application/json',
+      }
     })
     
+    console.log(`[DEBUG] Response status: ${response.status}`)
+    
     if (!response.ok) {
+      console.log(`[DEBUG] Response not ok: ${response.status} ${response.statusText}`)
       return null
     }
     
     const data = await response.json()
+    console.log(`[DEBUG] API response success: ${data.success}`)
+    
     return data.success ? data.data : null
   } catch (error) {
     console.error('Error fetching herb data:', error)

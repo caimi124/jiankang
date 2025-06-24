@@ -314,30 +314,56 @@ export default function IngredientCheckerPage() {
               </div>
             </div>
             
-            {/* Input Method Tabs */}
-            <div className="flex justify-center mb-8">
-              <div className="bg-gray-100 p-1 rounded-xl">
-                <button
-                  onClick={() => {
-                    setSearchQuery('')
-                    setIsSearching(true)
-                  }}
-                  className={`flex items-center space-x-2 px-6 py-2 rounded-lg font-medium transition-colors ${
-                    searchQuery.length > 0
-                      ? 'bg-blue-600 text-white'
-                      : 'text-gray-600 hover:text-blue-600'
-                  }`}
-                >
-                  <FileText className="w-4 h-4" />
-                  <span>Search Ingredients</span>
-                </button>
+            {/* Search Input */}
+            <div className="mb-8">
+              <label className="block text-lg font-semibold mb-4">🔍 Search Ingredients</label>
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Type ingredient name... (e.g., turmeric, ginkgo, ashwagandha)"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full p-4 pr-12 border-2 border-gray-200 rounded-2xl text-lg focus:border-blue-500 focus:outline-none"
+                />
+                <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-400" />
+                {isSearching && (
+                  <div className="absolute right-12 top-1/2 transform -translate-y-1/2">
+                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-500 border-t-transparent"></div>
+                  </div>
+                )}
               </div>
+              <p className="text-sm text-gray-500 mt-2">
+                💡 Start typing to search from our database of 1000+ herbal ingredients
+              </p>
             </div>
 
-            {/* Enhanced Input Methods */}
-            {searchQuery.length > 0 && (
+            {/* Selected Ingredients */}
+            {selectedIngredients.length > 0 && (
               <div className="mb-8">
-                <label className="block text-lg font-semibold mb-4">📝 Enter Supplement Ingredients</label>
+                <h3 className="text-lg font-semibold mb-4">Selected Ingredients</h3>
+                <div className="flex flex-wrap gap-2">
+                  {selectedIngredients.map((ingredient, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center space-x-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full"
+                    >
+                      <span>{ingredient}</span>
+                      <button
+                        onClick={() => removeIngredient(ingredient)}
+                        className="hover:bg-blue-200 rounded-full p-0.5"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Search Results */}
+            {searchResults.length > 0 && (
+              <div className="mb-8">
+                <label className="block text-lg font-semibold mb-4">📝 Search Results - Click to Add</label>
                 <div className="space-y-2 max-h-64 overflow-y-auto">
                   {searchResults.map((ingredient) => (
                     <div
@@ -355,7 +381,7 @@ export default function IngredientCheckerPage() {
                         <p className="text-sm text-gray-600 truncate">{ingredient.description_short}</p>
                         <div className="flex items-center space-x-2 mt-1">
                           {getRiskBadge(ingredient.safety_level)}
-                                                     {ingredient.efficacy.slice(0, 2).map((effect, idx) => (
+                          {ingredient.efficacy.slice(0, 2).map((effect, idx) => (
                              <span key={idx} className="px-2 py-1 text-xs font-medium rounded border bg-gray-50 text-gray-700">
                                {effect}
                              </span>
@@ -373,7 +399,7 @@ export default function IngredientCheckerPage() {
             <div className="text-center">
               <button
                 onClick={analyzeIngredients}
-                disabled={(!searchQuery.trim() && searchResults.length === 0) || isAnalyzing}
+                disabled={selectedIngredients.length === 0 || isAnalyzing}
                 className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-400 text-white font-semibold py-4 px-12 rounded-2xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none"
               >
                 {isAnalyzing ? (
@@ -382,7 +408,7 @@ export default function IngredientCheckerPage() {
                     <span>🧪 Analyzing Safety...</span>
                   </div>
                 ) : (
-                  <>🔍 Get Comprehensive Safety Analysis</>
+                  <>🔍 Get Comprehensive Safety Analysis ({selectedIngredients.length} ingredients)</>
                 )}
               </button>
               <p className="text-sm text-gray-500 mt-3">
