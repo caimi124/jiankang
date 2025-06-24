@@ -23,6 +23,7 @@ import {
   Baby,
   TrendingUp
 } from 'lucide-react'
+import Image from 'next/image'
 
 interface IngredientDetailPageProps {
   params: Promise<{
@@ -206,14 +207,12 @@ export default async function IngredientDetailPage({ params }: IngredientDetailP
               <div className="space-y-4">
                 {/* 图片 */}
                 <div className="aspect-square rounded-xl overflow-hidden bg-gray-100 mb-4">
-                  <img
-                    src={ingredient.image_url}
+                  <Image
+                    src={ingredient.image_url || '/hero-bg.svg'}
                     alt={ingredient.name_en}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement
-                      target.src = '/herbs/default-herb.jpg'
-                    }}
+                    width={400}
+                    height={300}
+                    className="w-full h-48 object-cover rounded-lg"
                   />
                 </div>
 

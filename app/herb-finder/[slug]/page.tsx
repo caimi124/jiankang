@@ -21,6 +21,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { Metadata } from 'next'
+import Image from 'next/image'
 
 interface HerbDetailPageProps {
   params: Promise<{
@@ -187,10 +188,12 @@ export default async function HerbDetailPage({ params }: HerbDetailPageProps) {
               {/* 左侧：图片 */}
               <div className="space-y-4">
                 <div className="aspect-square rounded-xl overflow-hidden bg-gray-100">
-                  <img
-                    src={herb.image_url || `/herbs/${herb.name_en.toLowerCase().replace(/\s+/g, '-')}.jpg`}
-                    alt={`${herb.name_en} - ${herb.name_cn}`}
-                    className="w-full h-full object-cover"
+                  <Image
+                    src={herb.image_url || '/hero-bg.svg'}
+                    alt={herb.name_en}
+                    width={400}
+                    height={300}
+                    className="w-full h-48 object-cover rounded-lg"
                   />
                 </div>
                 

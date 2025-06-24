@@ -728,13 +728,13 @@ export default function IngredientCheckerPage() {
                 Click on any ingredient result to explore detailed monographs, traditional uses, 
                 modern research, and find high-quality suppliers.
               </p>
-              <a 
+              <Link 
                 href="/herb-finder"
                 className="inline-flex items-center bg-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-700 transition-colors"
               >
                 Explore Herb Database
                 <ArrowRight className="w-4 h-4 ml-2" />
-              </a>
+              </Link>
             </div>
           </div>
 

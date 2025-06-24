@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Navigation from '../../components/Navigation'
 import Breadcrumb from '../../components/Breadcrumb'
 import { HerbCard } from '../../components/HerbRecommendations'
@@ -103,74 +103,8 @@ export default function HerbFinderPage() {
     fetchHerbsData()
   }, [])
 
-  // 应用过滤器
-  useEffect(() => {
-    applyFilters()
-  }, [herbs, filters])
-
-  const fetchHerbsData = async () => {
-    try {
-      setIsLoading(true)
-      setError(null)
-
-      // 首先尝试从Notion获取数据
-      let response = await fetch('/api/herbs/notion?limit=100')
-      let data = await response.json()
-      
-      if (data.success && data.data.length > 0) {
-        // 转换Notion数据格式为本地格式
-        const notionHerbs = data.data.map((notionHerb: any) => ({
-          id: notionHerb.id,
-          chinese_name: notionHerb.name_cn || notionHerb.name_en,
-          english_name: notionHerb.name_en,
-          latin_name: notionHerb.latin_name || notionHerb.name_en,
-          description: notionHerb.description_short || notionHerb.description_detail || '',
-          efficacy: notionHerb.efficacy || [],
-          primary_effects: notionHerb.efficacy || [],
-          safety_level: notionHerb.safety_level || 'medium',
-          constitution_type: notionHerb.constitution_type || '平和质',
-          traditional_use: notionHerb.traditional_use || notionHerb.description_detail || '',
-          modern_applications: notionHerb.modern_applications || notionHerb.description_detail || '',
-          dosage_info: notionHerb.dosage || '请咨询专业医师',
-          safety_notes: notionHerb.safety_notes || '',
-          quality_score: notionHerb.quality_score || 75,
-          popularity_score: notionHerb.popularity_score || 70,
-          ingredients: notionHerb.ingredients || ['待补充'],
-          image_url: notionHerb.image_url || `/herbs/${notionHerb.name_en.toLowerCase().replace(/\s+/g, '-')}.jpg`,
-          price_range: notionHerb.price_range || 'moderate',
-          availability: notionHerb.availability || 'common'
-        }))
-        
-        setHerbs(notionHerbs)
-        console.log(`✅ Loaded ${notionHerbs.length} herbs from Notion database`)
-      } else {
-        // 如果Notion数据不可用，使用本地数据
-        console.log('⚠️ Notion data unavailable, using local herb data')
-        response = await fetch('/api/herbs/data?limit=100')
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`)
-        }
-
-        data = await response.json()
-        
-        if (data.herbs) {
-          setHerbs(data.herbs)
-        } else {
-          throw new Error(data.error || 'Failed to fetch herbs')
-        }
-      }
-    } catch (err) {
-      console.error('Error fetching herbs:', err)
-      setError(err instanceof Error ? err.message : 'Failed to load herbs data')
-      setHerbs([])
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
   // Enhanced search with multiple fields and fuzzy matching
-  const applyFilters = () => {
+  const applyFilters = useCallback(() => {
     let filtered = [...herbs]
 
     // Enhanced text search across multiple fields
@@ -233,6 +167,72 @@ export default function HerbFinderPage() {
     })
 
     setFilteredHerbs(filtered)
+  }, [herbs, filters])
+
+  // 应用过滤器
+  useEffect(() => {
+    applyFilters()
+  }, [applyFilters])
+
+  const fetchHerbsData = async () => {
+    try {
+      setIsLoading(true)
+      setError(null)
+
+      // 首先尝试从Notion获取数据
+      let response = await fetch('/api/herbs/notion?limit=100')
+      let data = await response.json()
+      
+      if (data.success && data.data.length > 0) {
+        // 转换Notion数据格式为本地格式
+        const notionHerbs = data.data.map((notionHerb: any) => ({
+          id: notionHerb.id,
+          chinese_name: notionHerb.name_cn || notionHerb.name_en,
+          english_name: notionHerb.name_en,
+          latin_name: notionHerb.latin_name || notionHerb.name_en,
+          description: notionHerb.description_short || notionHerb.description_detail || '',
+          efficacy: notionHerb.efficacy || [],
+          primary_effects: notionHerb.efficacy || [],
+          safety_level: notionHerb.safety_level || 'medium',
+          constitution_type: notionHerb.constitution_type || '平和质',
+          traditional_use: notionHerb.traditional_use || notionHerb.description_detail || '',
+          modern_applications: notionHerb.modern_applications || notionHerb.description_detail || '',
+          dosage_info: notionHerb.dosage || '请咨询专业医师',
+          safety_notes: notionHerb.safety_notes || '',
+          quality_score: notionHerb.quality_score || 75,
+          popularity_score: notionHerb.popularity_score || 70,
+          ingredients: notionHerb.ingredients || ['待补充'],
+          image_url: notionHerb.image_url || `/herbs/${notionHerb.name_en.toLowerCase().replace(/\s+/g, '-')}.jpg`,
+          price_range: notionHerb.price_range || 'moderate',
+          availability: notionHerb.availability || 'common'
+        }))
+        
+        setHerbs(notionHerbs)
+        console.log(`✅ Loaded ${notionHerbs.length} herbs from Notion database`)
+      } else {
+        // 如果Notion数据不可用，使用本地数据
+        console.log('⚠️ Notion data unavailable, using local herb data')
+        response = await fetch('/api/herbs/data?limit=100')
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+
+        data = await response.json()
+        
+        if (data.herbs) {
+          setHerbs(data.herbs)
+        } else {
+          throw new Error(data.error || 'Failed to fetch herbs')
+        }
+      }
+    } catch (err) {
+      console.error('Error fetching herbs:', err)
+      setError(err instanceof Error ? err.message : 'Failed to load herbs data')
+      setHerbs([])
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleFilterChange = (key: keyof FilterState, value: string) => {

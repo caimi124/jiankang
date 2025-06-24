@@ -257,8 +257,8 @@ export default function Home() {
                   <span className="text-xl">❓</span>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">"I don't know what this herb actually does"</h3>
-                  <p className="text-gray-600 text-sm">Our database explains each herb's traditional uses, active compounds, and scientific evidence in plain English.</p>
+                  <h3 className="font-semibold text-gray-900 mb-2">&quot;I don&apos;t know what this herb actually does&quot;</h3>
+                  <p className="text-gray-600 text-sm">Our database explains each herb&apos;s traditional uses, active compounds, and scientific evidence in plain English.</p>
                 </div>
               </div>
             </div>
@@ -269,7 +269,7 @@ export default function Home() {
                   <span className="text-xl">🤔</span>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">"Will this actually work for me?"</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">&quot;Will this actually work for me?&quot;</h3>
                   <p className="text-gray-600 text-sm">We provide evidence ratings and help you understand which herbs have strong vs. limited research support.</p>
                 </div>
               </div>
@@ -281,7 +281,7 @@ export default function Home() {
                   <span className="text-xl">⚠️</span>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">"Is this safe to take?"</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">&quot;Is this safe to take?&quot;</h3>
                   <p className="text-gray-600 text-sm">Our safety checker identifies potential risks, contraindications, and drug interactions before you start.</p>
                 </div>
               </div>
@@ -293,7 +293,7 @@ export default function Home() {
                   <span className="text-xl">😰</span>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">"What if I get side effects?"</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">&quot;What if I get side effects?&quot;</h3>
                   <p className="text-gray-600 text-sm">We list known side effects, warning signs to watch for, and when to stop taking supplements.</p>
                 </div>
               </div>
@@ -305,7 +305,7 @@ export default function Home() {
                   <span className="text-xl">🏛️</span>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">"Are herbal supplements FDA approved?"</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">&quot;Are herbal supplements FDA approved?&quot;</h3>
                   <p className="text-gray-600 text-sm">We explain supplement regulations, quality standards, and how to choose reputable brands.</p>
                 </div>
               </div>
@@ -317,7 +317,7 @@ export default function Home() {
                   <span className="text-xl">🈲</span>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">"I can't read Chinese herb names"</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">&quot;I can&apos;t read Chinese herb names&quot;</h3>
                   <p className="text-gray-600 text-sm">We provide English names, pronunciation guides, and clear explanations for all traditional herbs.</p>
                 </div>
               </div>
@@ -420,7 +420,7 @@ export default function Home() {
                 </div>
               </div>
               <p className="text-gray-700 leading-relaxed mb-4">
-                "Finally found a reliable source for herbal information. The safety checker saved me from a potentially dangerous interaction!"
+                &quot;Finally found a reliable source for herbal information. The safety checker saved me from a potentially dangerous interaction!&quot;
               </p>
               <div className="flex text-yellow-400">
                 ⭐⭐⭐⭐⭐
@@ -438,7 +438,7 @@ export default function Home() {
                 </div>
               </div>
               <p className="text-gray-700 leading-relaxed mb-4">
-                "The symptom-based finder helped me discover turmeric and boswellia. My joint pain has improved significantly."
+                &quot;The symptom-based finder helped me discover turmeric and boswellia. My joint pain has improved significantly.&quot;
               </p>
               <div className="flex text-yellow-400">
                 ⭐⭐⭐⭐⭐
@@ -456,7 +456,7 @@ export default function Home() {
                 </div>
               </div>
               <p className="text-gray-700 leading-relaxed mb-4">
-                "The constitution quiz revealed I'm a 'heat' type. The cooling herbs recommended work perfectly for my anxiety."
+                &quot;The herbal quiz helped me understand my constitution better. Now I know exactly which herbs work for my body type!&quot;
               </p>
               <div className="flex text-yellow-400">
                 ⭐⭐⭐⭐⭐
@@ -585,7 +585,7 @@ export default function Home() {
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Can I use this information to replace medical treatment?</h3>
-              <p className="text-gray-600">No. Our information is for educational purposes only and should not replace professional medical advice. Always consult with your healthcare provider before starting any new supplement regimen.</p>
+              <p className="text-gray-600">Our information is for educational purposes only and should not replace professional medical advice. Always consult with your healthcare provider before starting any new supplement regimen.</p>
             </div>
           </div>
         </div>

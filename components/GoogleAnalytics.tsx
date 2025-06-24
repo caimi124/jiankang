@@ -5,7 +5,7 @@ import Script from 'next/script'
 export default function GoogleAnalytics() {
   return (
     <>
-      {/* Google Analytics (gtag.js) */}
+      {/* Google Analytics (gtag.js) - 更新为最新代码 */}
       <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-31K0XJ79MR"
         strategy="afterInteractive"
@@ -19,7 +19,7 @@ export default function GoogleAnalytics() {
         `}
       </Script>
 
-      {/* Google Tag Manager */}
+      {/* Google Tag Manager - 更新为最新代码 */}
       <Script id="google-tag-manager" strategy="afterInteractive">
         {`
           (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -41,7 +41,7 @@ export function GoogleTagManagerNoScript() {
         src="https://www.googletagmanager.com/ns.html?id=GTM-T5ZM339M"
         height="0" 
         width="0" 
-        style={{display:'none',visibility:'hidden'}}
+        style={{display: 'none', visibility: 'hidden'}}
       />
     </noscript>
   )
