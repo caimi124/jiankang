@@ -1,3 +1,5 @@
+// Chinese Constitution Test - FORCE UPDATE: 2025-01-19 22:45:00
+// CRITICAL: CDN cache issue - this should display 20 questions TCM system
 'use client'
 
 import React, { useState } from 'react'

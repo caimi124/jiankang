@@ -1,4 +1,6 @@
-// Constitution Test System - Updated: 2025-01-19 18:35:00
+// Constitution Test System - FORCE UPDATE: 2025-01-19 22:45:00
+// CRITICAL: Website still shows 8 questions - forcing CDN refresh
+// Expected: 20 questions TCM system should be live after this commit
 // Force deployment: This should show 20 questions in Chinese, not 8 questions in English
 'use client'
 
