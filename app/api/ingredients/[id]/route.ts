@@ -4,9 +4,10 @@ import { getHerbByIdFromNotion } from '@/lib/notion-herbs-api'
 // GET /api/ingredients/[id] - 获取单个成分详情
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const params = await context.params
     const { id } = params
 
     if (!id) {
@@ -70,6 +71,7 @@ export async function GET(
     })
 
   } catch (error) {
+    const params = await context.params
     console.error(`❌ Error fetching ingredient ${params.id}:`, error)
     
     return NextResponse.json({

@@ -23,9 +23,9 @@ import Link from 'next/link'
 import { Metadata } from 'next'
 
 interface HerbDetailPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 // 根据slug查找草药
@@ -52,7 +52,8 @@ async function getHerbBySlug(slug: string): Promise<NotionHerb | null> {
 
 // 生成元数据
 export async function generateMetadata({ params }: HerbDetailPageProps): Promise<Metadata> {
-  const herb = await getHerbBySlug(params.slug)
+  const resolvedParams = await params
+  const herb = await getHerbBySlug(resolvedParams.slug)
   
   if (!herb) {
     return {
@@ -106,7 +107,8 @@ export async function generateStaticParams() {
 }
 
 export default async function HerbDetailPage({ params }: HerbDetailPageProps) {
-  const herb = await getHerbBySlug(params.slug)
+  const resolvedParams = await params
+  const herb = await getHerbBySlug(resolvedParams.slug)
 
   if (!herb) {
     notFound()
@@ -165,14 +167,14 @@ export default async function HerbDetailPage({ params }: HerbDetailPageProps) {
             items={[
               { label: 'Home', href: '/' },
               { label: 'Herb Finder', href: '/herb-finder' },
-              { label: herb.name_en, href: `/herb-finder/${params.slug}` }
+              { label: herb.name_en, href: `/herb-finder/${resolvedParams.slug}` }
             ]}
           />
 
           {/* 返回按钮 */}
           <div className="mb-6">
             <Link href="/herb-finder">
-              <Button variant="outline" className="flex items-center space-x-2">
+              <Button variant="secondary" className="flex items-center space-x-2">
                 <ArrowLeft className="h-4 w-4" />
                 <span>Back to Herb Finder</span>
               </Button>
@@ -189,10 +191,6 @@ export default async function HerbDetailPage({ params }: HerbDetailPageProps) {
                     src={herb.image_url || `/herbs/${herb.name_en.toLowerCase().replace(/\s+/g, '-')}.jpg`}
                     alt={`${herb.name_en} - ${herb.name_cn}`}
                     className="w-full h-full object-cover"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement
-                      target.src = '/herbs/default-herb.jpg'
-                    }}
                   />
                 </div>
                 
@@ -260,7 +258,7 @@ export default async function HerbDetailPage({ params }: HerbDetailPageProps) {
                     </Button>
                   </Link>
                   <Link href="/constitution-test">
-                    <Button variant="outline">
+                    <Button variant="secondary">
                       <Target className="h-4 w-4 mr-2" />
                       Find Your Type
                     </Button>

@@ -25,15 +25,16 @@ import {
 } from 'lucide-react'
 
 interface IngredientDetailPageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 // 生成元数据
 export async function generateMetadata({ params }: IngredientDetailPageProps): Promise<Metadata> {
+  const resolvedParams = await params
   try {
-    const response = await fetch(`${process.env.NODE_ENV === 'production' ? 'https://herbscience.shop' : 'http://localhost:3000'}/api/ingredients/${params.id}`)
+    const response = await fetch(`${process.env.NODE_ENV === 'production' ? 'https://herbscience.shop' : 'http://localhost:3000'}/api/ingredients/${resolvedParams.id}`)
     const data = await response.json()
     
     if (!data.success) {
@@ -65,10 +66,11 @@ export async function generateMetadata({ params }: IngredientDetailPageProps): P
 }
 
 export default async function IngredientDetailPage({ params }: IngredientDetailPageProps) {
+  const resolvedParams = await params
   let ingredient
   
   try {
-    const response = await fetch(`${process.env.NODE_ENV === 'production' ? 'https://herbscience.shop' : 'http://localhost:3000'}/api/ingredients/${params.id}`)
+    const response = await fetch(`${process.env.NODE_ENV === 'production' ? 'https://herbscience.shop' : 'http://localhost:3000'}/api/ingredients/${resolvedParams.id}`)
     const data = await response.json()
     
     if (!data.success) {
@@ -144,14 +146,14 @@ export default async function IngredientDetailPage({ params }: IngredientDetailP
             items={[
               { label: 'Home', href: '/' },
               { label: 'Ingredient Checker', href: '/ingredient-checker' },
-              { label: ingredient.name_en, href: `/ingredient-checker/${params.id}` }
+              { label: ingredient.name_en, href: `/ingredient-checker/${resolvedParams.id}` }
             ]}
           />
 
           {/* 返回按钮 */}
           <div className="mb-6">
             <Link href="/ingredient-checker">
-              <Button variant="outline" className="flex items-center space-x-2">
+              <Button variant="secondary" className="flex items-center space-x-2">
                 <ArrowLeft className="h-4 w-4" />
                 <span>Back to Ingredient Checker</span>
               </Button>
@@ -304,7 +306,7 @@ export default async function IngredientDetailPage({ params }: IngredientDetailP
                         <div className="flex items-center justify-between mt-2">
                           <span className="text-xs text-gray-500">Safety: {similar.safety_score}/100</span>
                           <Link href={`/herb-finder?search=${encodeURIComponent(similar.name)}`}>
-                            <Button variant="outline" size="sm">
+                            <Button variant="secondary" size="sm">
                               <ExternalLink className="h-3 w-3 mr-1" />
                               View
                             </Button>
