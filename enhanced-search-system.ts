@@ -9,7 +9,7 @@ export interface HerbData {
 }
 
 // Symptom mapping for intelligent search
-export const symptomMapping = {
+export const symptomMapping: Record<string, string[]> = {
   // Chinese symptoms mapped to English
   '胃胀': ['bloating', 'indigestion'],
   '失眠': ['insomnia', 'sleep-problems'],
@@ -26,7 +26,7 @@ export const symptomMapping = {
 };
 
 // Safety checking system
-export const safetyDatabase = {
+export const safetyDatabase: Record<string, any> = {
   pregnancy: {
     forbidden: ['angelica', 'blue-cohosh'],
     safe: ['ginger-small-dose', 'chamomile']
@@ -57,7 +57,7 @@ export class HerbSearchEngine {
       }
     });
     
-    return [...new Set(results)];
+    return Array.from(new Set(results));
   }
 
   checkSafety(herb: string, conditions: string[]): {
