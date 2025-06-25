@@ -278,5 +278,5 @@ export function extractSymptomKeywords(text: string): string[] {
     }
   });
 
-  return [...new Set(keywords)];
+  return Array.from(new Set(keywords));
 } 
