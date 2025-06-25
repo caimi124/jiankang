@@ -48,13 +48,26 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     }
   }
 
-  const title = `${herbData.name} Benefits: ${herbData.properties?.slice(0, 2).join(' & ')} | HerbScience`
-  const description = `Discover the powerful benefits of ${herbData.name} (${herbData.latin_name}). ${herbData.overview.substring(0, 120)}...`
+  // 优化SEO标题 - 更具描述性和关键词丰富
+  const title = `${herbData.name} (${herbData.latin_name}): Benefits, Dosage, Safety & Modern Uses | HerbScience`
+  
+  // 优化SEO描述 - 更吸引人且场景化
+  const benefitsPreview = herbData.benefits?.slice(0, 2).join(', ') || 'multiple health benefits'
+  const description = `Discover the science-backed benefits of ${herbData.name} — from ${benefitsPreview.toLowerCase()} — and learn how to use it safely in daily wellness. Evidence-based herbal medicine guide with dosage recommendations.`
   
   return {
     title,
     description,
-    keywords: herbData.seo_keywords?.join(', '),
+    keywords: [
+      ...herbData.seo_keywords || [],
+      `${herbData.name} benefits`,
+      `${herbData.name} dosage`,
+      `${herbData.name} safety`,
+      'herbal medicine',
+      'natural remedies',
+      'traditional chinese medicine',
+      herbData.latin_name
+    ].join(', '),
     authors: [{ name: 'HerbScience Team' }],
     openGraph: {
       title,
@@ -67,7 +80,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
           url: '/hero-bg.svg',
           width: 1200,
           height: 630,
-          alt: `${herbData.name} - Natural Herb Benefits`
+          alt: `${herbData.name} - Natural Herb Benefits & Uses`
         }
       ]
     },
@@ -83,7 +96,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     other: {
       'article:author': 'HerbScience Team',
       'article:section': 'Natural Health',
-      'article:tag': herbData.seo_keywords?.join(',')
+      'article:tag': herbData.seo_keywords?.join(','),
+      'og:article:published_time': new Date().toISOString(),
+      'og:article:modified_time': new Date().toISOString(),
     }
   }
 }
