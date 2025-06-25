@@ -1,4 +1,3 @@
-import EnhancedHerbSearch from '../../components/EnhancedHerbSearch'
 import EnhancedHerbDetail from '../../components/EnhancedHerbDetail'
 import { Metadata } from 'next'
 
@@ -69,16 +68,7 @@ export default function TestEnhancedPage() {
       {/* 功能展示区域 */}
       <div className="max-w-7xl mx-auto px-4 py-8 space-y-12">
         
-        {/* 智能搜索功能 */}
-        <section>
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">🔍 智能症状搜索功能</h2>
-          <div className="bg-white rounded-2xl shadow-xl p-1">
-            <EnhancedHerbSearch />
-          </div>
-        </section>
 
-        {/* 分隔线 */}
-        <div className="border-t border-gray-200"></div>
 
         {/* 草药详情展示 */}
         <section>

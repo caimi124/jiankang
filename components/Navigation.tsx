@@ -47,12 +47,6 @@ export default function Navigation() {
       description: 'Search for herbs based on your health symptoms'
     },
     { 
-      name: '症状搜索', 
-      href: '/symptom-search',
-      ariaLabel: 'Smart herb search by symptoms',
-      description: 'AI-powered symptom to herb matching with safety checks'
-    },
-    { 
       name: t.nav.safetyChecker, 
       href: '/ingredient-checker',
       ariaLabel: 'Check supplement safety',
