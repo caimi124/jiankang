@@ -476,7 +476,7 @@ export async function GET(
           
           benefits: matchedHerb.primary_effects || matchedHerb.efficacy || ['General wellness support'],
           
-          active_compounds: `Active compounds in ${matchedHerb.english_name} include ${matchedHerb.ingredients?.join(', ') || 'various bioactive compounds'} that contribute to its therapeutic effects.`,
+          active_compounds: `Active compounds in ${matchedHerb.english_name} include ${Array.isArray(matchedHerb.ingredients) ? matchedHerb.ingredients.join(', ') : matchedHerb.ingredients || 'various bioactive compounds'} that contribute to its therapeutic effects.`,
           
           traditional_uses: matchedHerb.traditional_use || `Traditionally used in herbal medicine for various health purposes.`,
           
