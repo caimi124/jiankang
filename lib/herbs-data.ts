@@ -743,7 +743,7 @@ https://www.anna-europa.eu/en/medicines/herbal/altheae-herba`,
   },
   {
     id: 'st-john-s-wort',
-    herbName: 'St. John's Wort',
+    herbName: 'St. John\'s Wort',
     chineseName: '贯叶连翘',
     briefDescription: '安神定志、疏肝解郁',
     composition: '金丝桃素、假金丝桃素、黄酮类',
@@ -753,7 +753,7 @@ https://www.anna-europa.eu/en/medicines/herbal/altheae-herba`,
     safetyLevel: 'medium' as 'high' | 'medium' | 'low',
     precautions: '孕妇慎用，过敏体质注意，请咨询专业医生',
     tcmConstitution: '气郁体质',
-    caseStudy: '临床研究显示，St. John's Wort在Mental and nervous disorders方面具有显著疗效，多数患者在使用2-4周后症状明显改善。',
+    caseStudy: '临床研究显示，St. John\'s Wort在Mental and nervous disorders方面具有显著疗效，多数患者在使用2-4周后症状明显改善。',
     detailedDescription: `**St. John's Wort** (Hypericum perforatum L.)是一种传统草药，具有悠久的药用历史。
 
 **详细功效：**
