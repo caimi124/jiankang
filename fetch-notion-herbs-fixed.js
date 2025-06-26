@@ -62,22 +62,22 @@ async function fetchAllHerbs() {
           return null;
         };
         
-        // 构建草药对象（使用正确的中文字段名）
+        // 构建草药对象（使用正确的字段名映射）
         const herb = {
           id: page.id,
           chinese_name: extractTitle(properties['草药名称']),
-          english_name: extractRichText(properties['中文名']),
-          latin_name: extractTitle(properties['草药名称']), // 草药名称包含了拉丁名
+          english_name: extractTitle(properties['草药名称']), // 使用草药名称作为英文名
+          latin_name: extractRichText(properties['Latin Name']) || extractRichText(properties['拉丁文']) || extractTitle(properties['草药名称']),
           category: 'general',
           constitution_type: extractSelect(properties['中医体质匹配']),
-          primary_effects: extractMultiSelect(properties['功效分类']),
+          primary_effects: extractMultiSelect(properties['Tags']) || extractMultiSelect(properties['功效分类']),
           secondary_effects: [],
-          efficacy: extractMultiSelect(properties['功效分类']),
-          dosage: extractRichText(properties['推荐剂量']),
+          efficacy: extractMultiSelect(properties['Tags']) || extractMultiSelect(properties['功效分类']),
+          dosage: extractRichText(properties['Daily Dose Guide']) || extractRichText(properties['推荐剂量']),
           safety_level: extractSelect(properties['安全性等级']),
-          contraindications: extractRichText(properties['注意事项']),
+          contraindications: extractRichText(properties['Contraindications']) || extractRichText(properties['注意事项']),
           interactions: '',
-          description: extractRichText(properties['简要描述']),
+          description: extractRichText(properties['Overview']) || extractRichText(properties['简要描述']),
           source: '',
           preparation: '',
           storage: '',
@@ -86,8 +86,8 @@ async function fetchAllHerbs() {
           quality_score: 75,
           popularity_score: 70,
           research_status: '',
-          traditional_use: extractRichText(properties['简要描述']),
-          modern_applications: extractRichText(properties['案例分析']),
+          traditional_use: extractRichText(properties['Overview']) || extractRichText(properties['简要描述']),
+          modern_applications: extractRichText(properties['案例分析']) || extractRichText(properties['Mechanism of Action']),
           growing_regions: [],
           harvest_season: '',
           part_used: '',
@@ -97,8 +97,8 @@ async function fetchAllHerbs() {
           pregnancy_safe: extractRichText(properties['注意事项']),
           children_safe: extractRichText(properties['注意事项']),
           elderly_safe: extractRichText(properties['注意事项']),
-          usage_suggestions: extractRichText(properties['使用建议']),
-          ingredients: extractMultiSelect(properties['成分构成']),
+          usage_suggestions: extractRichText(properties['Usage Tips']) || extractRichText(properties['使用建议']),
+          ingredients: extractRichText(properties['Active Compounds']) || extractMultiSelect(properties['成分构成']),
           created_time: page.created_time,
           last_edited_time: page.last_edited_time
         };

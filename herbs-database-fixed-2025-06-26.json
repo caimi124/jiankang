@@ -1,10 +1,4 @@
-import { Herb } from './herbs-data';
-
-// 自动生成的草药数据库 - 最后更新: 2025-06-26T14:27:56.434Z
-// 数据来源: Notion草药数据库
-// 包含草药数量: 68
-
-const herbsDatabase: Herb[] = [
+[
   {
     "id": "21e6f14b-923c-8188-95fd-ff5ac23db68e",
     "chinese_name": "Rhubarb",
@@ -3000,80 +2994,4 @@ const herbsDatabase: Herb[] = [
     "created_time": "2025-06-17T10:43:00.000Z",
     "last_edited_time": "2025-06-17T10:43:00.000Z"
   }
-];
-
-// 导出草药数据
-export const herbs: Herb[] = herbsDatabase;
-
-// 按中文名称索引的草药映射
-export const herbsByChineseName = herbsDatabase.reduce((acc, herb) => {
-  acc[herb.chinese_name] = herb;
-  return acc;
-}, {} as Record<string, Herb>);
-
-// 按英文名称索引的草药映射
-export const herbsByEnglishName = herbsDatabase.reduce((acc, herb) => {
-  acc[herb.english_name] = herb;
-  return acc;
-}, {} as Record<string, Herb>);
-
-// 按功效分类的草药映射
-export const herbsByEffect = herbsDatabase.reduce((acc, herb) => {
-  herb.primary_effects.forEach(effect => {
-    if (!acc[effect]) acc[effect] = [];
-    acc[effect].push(herb);
-  });
-  return acc;
-}, {} as Record<string, Herb[]>);
-
-// 按体质类型分类的草药映射
-export const herbsByConstitution = herbsDatabase.reduce((acc, herb) => {
-  if (herb.constitution_type) {
-    if (!acc[herb.constitution_type]) acc[herb.constitution_type] = [];
-    acc[herb.constitution_type].push(herb);
-  }
-  return acc;
-}, {} as Record<string, Herb[]>);
-
-// 常用搜索功能
-export const searchHerbs = (query: string): Herb[] => {
-  const lowercaseQuery = query.toLowerCase();
-  return herbsDatabase.filter(herb => 
-    herb.chinese_name.toLowerCase().includes(lowercaseQuery) ||
-    herb.english_name.toLowerCase().includes(lowercaseQuery) ||
-    herb.latin_name.toLowerCase().includes(lowercaseQuery) ||
-    herb.primary_effects.some(effect => effect.toLowerCase().includes(lowercaseQuery)) ||
-    herb.description.toLowerCase().includes(lowercaseQuery)
-  );
-};
-
-// 根据ID获取草药详情
-export const getHerbById = (id: string): Herb | undefined => {
-  return herbsDatabase.find(herb => herb.id === id);
-};
-
-// 获取推荐草药（基于质量分数和流行度）
-export const getRecommendedHerbs = (limit = 10): Herb[] => {
-  return herbsDatabase
-    .sort((a, b) => (b.quality_score + b.popularity_score) - (a.quality_score + a.popularity_score))
-    .slice(0, limit);
-};
-
-// 统计信息
-export const herbStats = {
-  total: herbsDatabase.length,
-  byConstitution: Object.keys(herbsByConstitution).reduce((acc, key) => {
-    acc[key] = herbsByConstitution[key].length;
-    return acc;
-  }, {} as Record<string, number>),
-  bySafetyLevel: herbsDatabase.reduce((acc, herb) => {
-    acc[herb.safety_level] = (acc[herb.safety_level] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>),
-  topEffects: Object.keys(herbsByEffect)
-    .map(effect => ({ effect, count: herbsByEffect[effect].length }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 10)
-};
-
-console.log('✅ 草药数据库已加载', herbStats);
+]
