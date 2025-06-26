@@ -1,10 +1,49 @@
-import { Herb } from './herbs-data';
+// 草药数据接口 - 与Notion数据库匹配
+interface NotionHerb {
+  id: string;
+  chinese_name: string;
+  english_name: string;
+  latin_name: string;
+  category: string;
+  constitution_type: string;
+  primary_effects: string[];
+  secondary_effects: string[];
+  efficacy: string[];
+  dosage: string;
+  safety_level: string;
+  contraindications: string;
+  interactions: string;
+  description: string;
+  source: string;
+  preparation: string;
+  storage: string;
+  price_range: string;
+  availability: string;
+  quality_score: number;
+  popularity_score: number;
+  research_status: string;
+  traditional_use: string;
+  modern_applications: string;
+  growing_regions: string[];
+  harvest_season: string;
+  part_used: string;
+  taste: string;
+  meridians: string[];
+  toxicity: string;
+  pregnancy_safe: string;
+  children_safe: string;
+  elderly_safe: string;
+  usage_suggestions: string;
+  ingredients: string | string[];
+  created_time: string;
+  last_edited_time: string;
+}
 
 // 自动生成的草药数据库 - 最后更新: 2025-06-26T14:27:56.434Z
 // 数据来源: Notion草药数据库
 // 包含草药数量: 68
 
-const herbsDatabase: Herb[] = [
+const herbsDatabase: NotionHerb[] = [
   {
     "id": "21e6f14b-923c-8188-95fd-ff5ac23db68e",
     "chinese_name": "Rhubarb",
@@ -3003,19 +3042,20 @@ const herbsDatabase: Herb[] = [
 ];
 
 // 导出草药数据
-export const herbs: Herb[] = herbsDatabase;
+export const herbs: NotionHerb[] = herbsDatabase;
+export const HERBS_DATABASE: NotionHerb[] = herbsDatabase; // 向后兼容
 
 // 按中文名称索引的草药映射
 export const herbsByChineseName = herbsDatabase.reduce((acc, herb) => {
   acc[herb.chinese_name] = herb;
   return acc;
-}, {} as Record<string, Herb>);
+}, {} as Record<string, NotionHerb>);
 
 // 按英文名称索引的草药映射
 export const herbsByEnglishName = herbsDatabase.reduce((acc, herb) => {
   acc[herb.english_name] = herb;
   return acc;
-}, {} as Record<string, Herb>);
+}, {} as Record<string, NotionHerb>);
 
 // 按功效分类的草药映射
 export const herbsByEffect = herbsDatabase.reduce((acc, herb) => {
@@ -3024,7 +3064,7 @@ export const herbsByEffect = herbsDatabase.reduce((acc, herb) => {
     acc[effect].push(herb);
   });
   return acc;
-}, {} as Record<string, Herb[]>);
+}, {} as Record<string, NotionHerb[]>);
 
 // 按体质类型分类的草药映射
 export const herbsByConstitution = herbsDatabase.reduce((acc, herb) => {
@@ -3033,10 +3073,10 @@ export const herbsByConstitution = herbsDatabase.reduce((acc, herb) => {
     acc[herb.constitution_type].push(herb);
   }
   return acc;
-}, {} as Record<string, Herb[]>);
+}, {} as Record<string, NotionHerb[]>);
 
 // 常用搜索功能
-export const searchHerbs = (query: string): Herb[] => {
+export const searchHerbs = (query: string): NotionHerb[] => {
   const lowercaseQuery = query.toLowerCase();
   return herbsDatabase.filter(herb => 
     herb.chinese_name.toLowerCase().includes(lowercaseQuery) ||
@@ -3048,12 +3088,12 @@ export const searchHerbs = (query: string): Herb[] => {
 };
 
 // 根据ID获取草药详情
-export const getHerbById = (id: string): Herb | undefined => {
+export const getHerbById = (id: string): NotionHerb | undefined => {
   return herbsDatabase.find(herb => herb.id === id);
 };
 
 // 获取推荐草药（基于质量分数和流行度）
-export const getRecommendedHerbs = (limit = 10): Herb[] => {
+export const getRecommendedHerbs = (limit = 10): NotionHerb[] => {
   return herbsDatabase
     .sort((a, b) => (b.quality_score + b.popularity_score) - (a.quality_score + a.popularity_score))
     .slice(0, limit);
@@ -3075,5 +3115,8 @@ export const herbStats = {
     .sort((a, b) => b.count - a.count)
     .slice(0, 10)
 };
+
+// 导出类型定义
+export type { NotionHerb };
 
 console.log('✅ 草药数据库已加载', herbStats);
