@@ -9,15 +9,22 @@ module.exports = {
   // 排除不需要在sitemap中的页面
   exclude: [
     '/test',
+    '/test-enhanced',
     '/api/*',
     '/_*',
-    '/zh/test'
+    '/zh/test',
+    '/loading',
+    '/error',
+    '/not-found',
+    // 排除重定向源页面，避免404
+    '/home',
+    '/herbs'
   ],
   
   // 添加额外的路径或自定义页面
   additionalPaths: async (config) => {
     const extraPaths = [
-      // 核心功能页面
+      // 核心功能页面 - 确保这些页面真实存在
       await config.transform(config, '/knowledge-center'),
       await config.transform(config, '/zh/knowledge-center'),
       await config.transform(config, '/constitution-test'),
@@ -28,11 +35,24 @@ module.exports = {
       await config.transform(config, '/zh/ingredient-checker'),
       await config.transform(config, '/dosage-calculator'),
       await config.transform(config, '/zh/dosage-calculator'),
+      await config.transform(config, '/user-experiences'),
+      await config.transform(config, '/zh/user-experiences'),
+      await config.transform(config, '/about'),
+      await config.transform(config, '/zh/about'),
+      await config.transform(config, '/articles'),
+      await config.transform(config, '/zh/articles'),
+      await config.transform(config, '/blog'),
+      await config.transform(config, '/zh/blog'),
+      await config.transform(config, '/privacy'),
+      await config.transform(config, '/zh/privacy'),
       
-      // 草药详情页面
+      // 确认存在的草药详情页面
       await config.transform(config, '/herbs/ginseng'),
       await config.transform(config, '/herbs/ginger'),
       await config.transform(config, '/herbs/turmeric'),
+      
+      // 博客文章页面
+      await config.transform(config, '/blog/turmeric-gut-relief-guide'),
     ];
 
     return extraPaths;
@@ -47,6 +67,21 @@ module.exports = {
         changefreq: 'daily',
         priority: 1.0,
         lastmod: new Date().toISOString(),
+        // 添加多语言替代版本
+        alternateRefs: [
+          {
+            href: 'https://www.herbscience.shop/',
+            hreflang: 'en',
+          },
+          {
+            href: 'https://www.herbscience.shop/zh',
+            hreflang: 'zh',
+          },
+          {
+            href: 'https://www.herbscience.shop/',
+            hreflang: 'x-default',
+          },
+        ],
       }
     }
 
@@ -67,6 +102,19 @@ module.exports = {
         changefreq: 'weekly',
         priority: 0.9,
         lastmod: new Date().toISOString(),
+        // 多语言替代版本
+        ...(path.startsWith('/zh/') ? {} : {
+          alternateRefs: [
+            {
+              href: `https://www.herbscience.shop${path}`,
+              hreflang: 'en',
+            },
+            {
+              href: `https://www.herbscience.shop/zh${path}`,
+              hreflang: 'zh',
+            },
+          ],
+        }),
       }
     }
 
@@ -84,10 +132,11 @@ module.exports = {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/test', '/_next/', '/zh/test']
+        disallow: ['/api/', '/test', '/test-enhanced', '/_next/', '/zh/test']
       }
     ],
-    // 修复：只引用主sitemap，避免循环
-    additionalSitemaps: []
+    additionalSitemaps: [
+      'https://www.herbscience.shop/sitemap-0.xml'
+    ]
   }
 } 

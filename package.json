@@ -26,6 +26,7 @@
     "sync-blog-manual": "node scripts/real-time-blog-sync.js sync"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@notionhq/client": "^2.3.0",
     "@tailwindcss/typography": "^0.5.16",
     "autoprefixer": "^10.4.21",

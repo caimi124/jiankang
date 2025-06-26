@@ -3,6 +3,7 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /test
+Disallow: /test-enhanced
 Disallow: /_next/
 Disallow: /zh/test
 
@@ -11,3 +12,4 @@ Host: https://www.herbscience.shop
 
 # Sitemaps
 Sitemap: https://www.herbscience.shop/sitemap.xml
+Sitemap: https://www.herbscience.shop/sitemap-0.xml

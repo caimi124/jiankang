@@ -27,43 +27,62 @@ const notoSansSC = Noto_Sans_SC({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.herbscience.shop'),
   title: {
-    template: '%s | HerbScience.shop',
-    default: 'HerbScience.shop - Your Trusted Source for Traditional Chinese Medicine',
+    default: 'HerbScience.shop | Evidence-Based Herbal Medicine Guide',
+    template: '%s | HerbScience.shop'
   },
-  description: 'Discover personalized herbal remedies, take our constitution test, and learn about Traditional Chinese Medicine with expert guidance.',
-  keywords: ['Traditional Chinese Medicine', 'Herbal Remedies', 'Constitution Test', 'Natural Health', 'Wellness', 'Herbs', 'TCM'],
+  description: 'Discover the power of herbal medicine with our evidence-based guide. Get personalized herb recommendations, safety information, and expert insights backed by scientific research.',
+  keywords: [
+    'herbal medicine',
+    'natural remedies',
+    'herbs for health',
+    'traditional chinese medicine',
+    'herbal supplements',
+    'plant medicine',
+    'alternative medicine',
+    'natural healing',
+    'herb safety',
+    'evidence-based herbalism'
+  ],
   authors: [{ name: 'HerbScience Team' }],
   creator: 'HerbScience.shop',
   publisher: 'HerbScience.shop',
-  metadataBase: new URL('https://herbscience.shop'),
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   alternates: {
-    canonical: '/',
+    canonical: 'https://www.herbscience.shop',
     languages: {
-      'en-US': '/',
-      'zh-CN': '/zh',
-      'en': '/',
-      'zh': '/zh'
-    }
+      'en': 'https://www.herbscience.shop',
+      'zh': 'https://www.herbscience.shop/zh',
+      'x-default': 'https://www.herbscience.shop',
+    },
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://herbscience.shop',
+    alternateLocale: ['zh_CN'],
+    url: 'https://www.herbscience.shop',
     siteName: 'HerbScience.shop',
+    title: 'HerbScience.shop | Evidence-Based Herbal Medicine Guide',
+    description: 'Discover the power of herbal medicine with our evidence-based guide. Get personalized herb recommendations, safety information, and expert insights backed by scientific research.',
     images: [
       {
-        url: '/og-image.jpg',
+        url: '/hero-bg.svg',
         width: 1200,
         height: 630,
-        alt: 'HerbScience.shop - Traditional Chinese Medicine',
+        alt: 'HerbScience.shop - Evidence-Based Herbal Medicine',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@herbscience',
-    creator: '@herbscience',
+    title: 'HerbScience.shop | Evidence-Based Herbal Medicine Guide',
+    description: 'Discover the power of herbal medicine with our evidence-based guide. Get personalized herb recommendations, safety information, and expert insights backed by scientific research.',
+    images: ['/hero-bg.svg'],
   },
   robots: {
     index: true,
@@ -77,9 +96,8 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: 'G-31K0XJ79MR',
-    yandex: 'your-yandex-verification-code',
-  }
+    google: 'your-google-site-verification-code',
+  },
 }
 
 export default function RootLayout({
