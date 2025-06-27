@@ -1,6 +1,4 @@
-'use client'
-
-import { useState } from 'react'
+import React from 'react'
 import { Metadata } from 'next'
 import Navigation from '../../../components/Navigation'
 import Breadcrumb from '../../../components/Breadcrumb'
@@ -13,31 +11,6 @@ export const metadata: Metadata = {
 }
 
 export default function AboutPage() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    category: 'general',
-    message: ''
-  })
-  const [isSubmitted, setIsSubmitted] = useState(false)
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitted(true)
-    setTimeout(() => {
-      setIsSubmitted(false)
-      setFormData({ name: '', email: '', subject: '', category: 'general', message: '' })
-    }, 3000)
-  }
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
-
   const teamMembers = [
     {
       name: "陈博士",
@@ -323,112 +296,94 @@ export default function AboutPage() {
             </div>
 
             <div className="grid lg:grid-cols-2 gap-12">
-              {/* Contact Form */}
+              {/* Contact Form - Static version since this is now a server component */}
               <div className="bg-white rounded-3xl shadow-lg p-8">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">给我们留言</h3>
                 
-                {isSubmitted ? (
-                  <div className="text-center py-12">
-                    <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                    <h4 className="text-xl font-bold text-gray-900 mb-2">消息已发送！</h4>
-                    <p className="text-gray-600">感谢您联系我们，我们会尽快回复您。</p>
-                  </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                          姓名 *
-                        </label>
-                        <input
-                          type="text"
-                          id="name"
-                          name="name"
-                          required
-                          value={formData.name}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                          placeholder="您的姓名"
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                          邮箱地址 *
-                        </label>
-                        <input
-                          type="email"
-                          id="email"
-                          name="email"
-                          required
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                          placeholder="your.email@example.com"
-                        />
-                      </div>
-                    </div>
-
+                <form className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
-                        问题类别
-                      </label>
-                      <select
-                        id="category"
-                        name="category"
-                        value={formData.category}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                      >
-                        <option value="general">一般问题</option>
-                        <option value="safety">安全性与相互作用</option>
-                        <option value="technical">技术支持</option>
-                        <option value="medical">医疗咨询</option>
-                        <option value="business">商务/合作</option>
-                        <option value="feedback">反馈与建议</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
-                        主题 *
+                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                        姓名 *
                       </label>
                       <input
                         type="text"
-                        id="subject"
-                        name="subject"
+                        id="name"
+                        name="name"
                         required
-                        value={formData.subject}
-                        onChange={handleInputChange}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                        placeholder="您的咨询简要描述"
+                        placeholder="您的姓名"
                       />
                     </div>
-
                     <div>
-                      <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                        留言 *
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                        邮箱地址 *
                       </label>
-                      <textarea
-                        id="message"
-                        name="message"
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
                         required
-                        rows={4}
-                        value={formData.message}
-                        onChange={handleInputChange}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                        placeholder="请详细描述您的问题或关切..."
+                        placeholder="your.email@example.com"
                       />
                     </div>
+                  </div>
 
-                    <button
-                      type="submit"
-                      className="w-full bg-green-600 text-white py-3 px-6 rounded-xl font-semibold hover:bg-green-700 transition-colors flex items-center justify-center"
+                  <div>
+                    <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
+                      问题类别
+                    </label>
+                    <select
+                      id="category"
+                      name="category"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
                     >
-                      <Send className="w-5 h-5 mr-2" />
-                      发送消息
-                    </button>
-                  </form>
-                )}
+                      <option value="general">一般问题</option>
+                      <option value="safety">安全性与相互作用</option>
+                      <option value="technical">技术支持</option>
+                      <option value="medical">医疗咨询</option>
+                      <option value="business">商务/合作</option>
+                      <option value="feedback">反馈与建议</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
+                      主题 *
+                    </label>
+                    <input
+                      type="text"
+                      id="subject"
+                      name="subject"
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      placeholder="您的咨询简要描述"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                      留言 *
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      required
+                      rows={4}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      placeholder="请详细描述您的问题或关切..."
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full bg-green-600 text-white py-3 px-6 rounded-xl font-semibold hover:bg-green-700 transition-colors flex items-center justify-center"
+                  >
+                    <Send className="w-5 h-5 mr-2" />
+                    发送消息
+                  </button>
+                </form>
               </div>
 
               {/* Office Info & Response Times */}
