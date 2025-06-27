@@ -2,6 +2,15 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  // 处理中文路由重定向 - 使用永久重定向(301)替代临时重定向
+  if (pathname === '/zh' && !pathname.endsWith('/')) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/zh/'
+    return NextResponse.redirect(url, 301) // 永久重定向，解决SEO问题
+  }
+
   const response = NextResponse.next()
 
   // 添加安全相关的响应头

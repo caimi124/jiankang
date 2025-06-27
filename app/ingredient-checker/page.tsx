@@ -89,25 +89,102 @@ export default function IngredientCheckerPage() {
 
   // 搜索成分
   const handleSearch = async () => {
-    if (!searchQuery.trim() || searchQuery.length < 2) return
+    if (!searchQuery.trim() || searchQuery.length < 2) {
+      setSearchResults([])
+      return
+    }
 
     setIsSearching(true)
     try {
+      console.log('🔍 Searching for:', searchQuery)
       const response = await fetch(`/api/ingredients/search?q=${encodeURIComponent(searchQuery)}`)
-      const data = await response.json()
       
-      if (data.success) {
-        setSearchResults(data.data || [])
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      
+      const data = await response.json()
+      console.log('📊 Search response:', data)
+      
+      if (data.success && data.data) {
+        setSearchResults(data.data)
+        console.log(`✅ Found ${data.data.length} ingredients`)
       } else {
-        console.error('Search failed:', data.error)
+        console.error('❌ Search failed:', data.error)
         setSearchResults([])
+        // 显示错误消息给用户
+        if (connectionStatus === 'error') {
+          // 如果数据库连接有问题，使用模拟数据
+          setSearchResults(getMockSearchResults(searchQuery))
+        }
       }
     } catch (error) {
-      console.error('Search error:', error)
+      console.error('❌ Search error:', error)
       setSearchResults([])
+      // 使用模拟数据作为降级方案
+      setSearchResults(getMockSearchResults(searchQuery))
     } finally {
       setIsSearching(false)
     }
+  }
+
+  // 模拟搜索结果作为降级方案
+  const getMockSearchResults = (query: string): IngredientSearchResult[] => {
+    const mockData = [
+      {
+        id: 'turmeric-1',
+        name_en: 'Turmeric',
+        name_cn: '姜黄',
+        description_short: 'Anti-inflammatory spice with curcumin compounds',
+        safety_level: 'high' as const,
+        efficacy: ['抗炎作用', '消化健康'],
+        image_url: '/herbs/turmeric.jpg'
+      },
+      {
+        id: 'ginger-1',
+        name_en: 'Ginger',
+        name_cn: '生姜',
+        description_short: 'Digestive aid and anti-nausea herb',
+        safety_level: 'high' as const,
+        efficacy: ['消化健康', '止咳化痰'],
+        image_url: '/herbs/ginger.jpg'
+      },
+      {
+        id: 'ginseng-1',
+        name_en: 'Ginseng',
+        name_cn: '人参',
+        description_short: 'Adaptogenic herb for energy and stress support',
+        safety_level: 'medium' as const,
+        efficacy: ['能量提升', '补气养血'],
+        image_url: '/herbs/ginseng.jpg'
+      },
+      {
+        id: 'chamomile-1',
+        name_en: 'Chamomile',
+        name_cn: '洋甘菊',
+        description_short: 'Gentle herb for relaxation and sleep',
+        safety_level: 'high' as const,
+        efficacy: ['镇静安神', '睡眠支持'],
+        image_url: '/herbs/chamomile.jpg'
+      },
+      {
+        id: 'ashwagandha-1',
+        name_en: 'Ashwagandha',
+        name_cn: '南非醉茄',
+        description_short: 'Adaptogenic herb for stress and anxiety',
+        safety_level: 'medium' as const,
+        efficacy: ['压力与焦虑', '睡眠支持'],
+        image_url: '/herbs/ashwagandha.jpg'
+      }
+    ]
+
+    const queryLower = query.toLowerCase()
+    return mockData.filter(item => 
+      item.name_en.toLowerCase().includes(queryLower) ||
+      item.name_cn.includes(queryLower) ||
+      item.description_short.toLowerCase().includes(queryLower) ||
+      item.efficacy.some(eff => eff.toLowerCase().includes(queryLower))
+    )
   }
 
   // 实时搜索（防抖）
@@ -312,6 +389,28 @@ export default function IngredientCheckerPage() {
                   </button>
                 ))}
               </div>
+              
+              {/* Quick test buttons */}
+              <div className="mt-4 flex flex-wrap gap-2">
+                <button
+                  onClick={() => setSearchQuery('turmeric')}
+                  className="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-sm font-medium"
+                >
+                  🟡 Test: Turmeric
+                </button>
+                <button
+                  onClick={() => setSearchQuery('ginger')}
+                  className="px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors text-sm font-medium"
+                >
+                  🫚 Test: Ginger
+                </button>
+                <button
+                  onClick={() => setSearchQuery('ashwagandha')}
+                  className="px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors text-sm font-medium"
+                >
+                  🌿 Test: Ashwagandha
+                </button>
+              </div>
             </div>
             
             {/* Search Input */}
@@ -332,9 +431,21 @@ export default function IngredientCheckerPage() {
                   </div>
                 )}
               </div>
-              <p className="text-sm text-gray-500 mt-2">
-                💡 Start typing to search from our database of 1000+ herbal ingredients
-              </p>
+              <div className="flex items-center justify-between mt-2">
+                <p className="text-sm text-gray-500">
+                  💡 Start typing to search from our database of 1000+ herbal ingredients
+                </p>
+                <div className="flex items-center space-x-2">
+                  <div className={`w-2 h-2 rounded-full ${
+                    connectionStatus === 'connected' ? 'bg-green-500' : 
+                    connectionStatus === 'error' ? 'bg-red-500' : 'bg-yellow-500'
+                  }`}></div>
+                  <span className="text-xs text-gray-500">
+                    {connectionStatus === 'connected' ? 'Database Online' : 
+                     connectionStatus === 'error' ? 'Offline Mode' : 'Connecting...'}
+                  </span>
+                </div>
+              </div>
             </div>
 
             {/* Selected Ingredients */}
@@ -361,9 +472,22 @@ export default function IngredientCheckerPage() {
             )}
 
             {/* Search Results */}
+            {searchQuery.length >= 2 && searchResults.length === 0 && !isSearching && (
+              <div className="mb-8">
+                <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
+                  <p className="text-yellow-800 text-sm">
+                    🔍 No results found for "{searchQuery}". Try different spelling or check the quick test buttons above.
+                    {connectionStatus === 'error' && ' (Currently in offline mode - limited search results available)'}
+                  </p>
+                </div>
+              </div>
+            )}
+            
             {searchResults.length > 0 && (
               <div className="mb-8">
-                <label className="block text-lg font-semibold mb-4">📝 Search Results - Click to Add</label>
+                <label className="block text-lg font-semibold mb-4">
+                  📝 Search Results - Click to Add ({searchResults.length} found)
+                </label>
                 <div className="space-y-2 max-h-64 overflow-y-auto">
                   {searchResults.map((ingredient) => (
                     <div

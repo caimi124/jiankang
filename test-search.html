@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜索功能测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        #results { margin-top: 20px; padding: 10px; border: 1px solid #ccc; }
+        .ingredient { margin: 5px 0; padding: 10px; background: #f5f5f5; }
+        button { padding: 10px; margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>HerbScience 搜索功能测试</h1>
+    
+    <div>
+        <input type="text" id="searchInput" placeholder="输入成分名称..." style="width: 300px; padding: 10px;">
+        <button onclick="testSearch()">搜索</button>
+    </div>
+    
+    <div>
+        <p>快速测试：</p>
+        <button onclick="quickTest('turmeric')">测试: Turmeric</button>
+        <button onclick="quickTest('ginger')">测试: Ginger</button>
+        <button onclick="quickTest('ginseng')">测试: Ginseng</button>
+    </div>
+    
+    <div id="status"></div>
+    <div id="results"></div>
+
+    <script>
+        async function testSearch() {
+            const query = document.getElementById('searchInput').value;
+            if (!query) return;
+            
+            document.getElementById('status').innerHTML = '🔍 搜索中...';
+            
+            try {
+                const response = await fetch(`/api/ingredients/search?q=${encodeURIComponent(query)}`);
+                const data = await response.json();
+                
+                console.log('API Response:', data);
+                
+                if (data.success) {
+                    displayResults(data.data, query);
+                } else {
+                    document.getElementById('status').innerHTML = `❌ 搜索失败: ${data.error}`;
+                }
+            } catch (error) {
+                console.error('Search error:', error);
+                document.getElementById('status').innerHTML = `❌ 网络错误: ${error.message}`;
+            }
+        }
+        
+        function quickTest(query) {
+            document.getElementById('searchInput').value = query;
+            testSearch();
+        }
+        
+        function displayResults(results, query) {
+            const statusDiv = document.getElementById('status');
+            const resultsDiv = document.getElementById('results');
+            
+            statusDiv.innerHTML = `✅ 找到 ${results.length} 个结果 for "${query}"`;
+            
+            if (results.length === 0) {
+                resultsDiv.innerHTML = '<p>没有找到匹配的成分</p>';
+                return;
+            }
+            
+            let html = '<h3>搜索结果:</h3>';
+            results.forEach(ingredient => {
+                html += `
+                    <div class="ingredient">
+                        <strong>${ingredient.name_en}</strong> 
+                        ${ingredient.name_cn ? `(${ingredient.name_cn})` : ''}
+                        <br>
+                        <small>${ingredient.description_short}</small>
+                        <br>
+                        <span style="color: ${getSafetyColor(ingredient.safety_level)}">
+                            安全等级: ${ingredient.safety_level}
+                        </span>
+                        <br>
+                        功效: ${ingredient.efficacy.join(', ')}
+                    </div>
+                `;
+            });
+            
+            resultsDiv.innerHTML = html;
+        }
+        
+        function getSafetyColor(level) {
+            switch(level) {
+                case 'high': return 'green';
+                case 'medium': return 'orange';
+                case 'low': return 'red';
+                default: return 'gray';
+            }
+        }
+        
+        // 页面加载时测试连接
+        window.onload = function() {
+            fetch('/api/ingredients/search?test=true')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Connection test:', data);
+                })
+                .catch(error => {
+                    console.error('Connection test failed:', error);
+                });
+        }
+    </script>
+</body>
+</html> 

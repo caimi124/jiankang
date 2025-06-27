@@ -573,8 +573,117 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FAQ Section */}
+      {/* Popular Herbs Section - Internal Linking */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-4">🌿 热门草药指南</h2>
+          <p className="text-lg text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+            探索我们精心整理的热门草药，了解它们的功效、用法和安全注意事项
+          </p>
+          <div className="grid md:grid-cols-3 gap-8">
+            <Link href="/herbs/ginseng" className="block group">
+              <div className="bg-gradient-to-br from-green-50 to-emerald-100 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-green-100">
+                <div className="text-4xl mb-4">🌿</div>
+                <h3 className="text-xl font-semibold mb-3 group-hover:text-green-600 transition-colors">人参完整指南</h3>
+                <p className="text-gray-600 mb-4">了解人参的功效、用法、剂量和注意事项。千年中药之王的现代应用。</p>
+                <div className="flex items-center text-green-600 font-medium">
+                  <span>深入了解</span>
+                  <span className="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                </div>
+              </div>
+            </Link>
+            
+            <Link href="/herbs/turmeric" className="block group">
+              <div className="bg-gradient-to-br from-yellow-50 to-orange-100 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-yellow-100">
+                <div className="text-4xl mb-4">🟡</div>
+                <h3 className="text-xl font-semibold mb-3 group-hover:text-orange-600 transition-colors">姜黄抗炎指南</h3>
+                <p className="text-gray-600 mb-4">发现姜黄在消化健康和疼痛缓解中的应用。天然抗炎的黄金香料。</p>
+                <div className="flex items-center text-orange-600 font-medium">
+                  <span>查看详情</span>
+                  <span className="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                </div>
+              </div>
+            </Link>
+            
+            <Link href="/herbs/ginger" className="block group">
+              <div className="bg-gradient-to-br from-amber-50 to-yellow-100 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-amber-100">
+                <div className="text-4xl mb-4">🫚</div>
+                <h3 className="text-xl font-semibold mb-3 group-hover:text-amber-600 transition-colors">生姜养生智慧</h3>
+                <p className="text-gray-600 mb-4">传统生姜的现代应用和科学验证。温中散寒的天然良药。</p>
+                <div className="flex items-center text-amber-600 font-medium">
+                  <span>了解更多</span>
+                  <span className="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                </div>
+              </div>
+            </Link>
+          </div>
+          
+          <div className="text-center mt-8">
+            <Link href={addLocalePrefix("/herb-finder")} className="inline-flex items-center bg-green-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-green-700 transition-colors shadow-lg hover:shadow-xl">
+              <span>浏览所有草药</span>
+              <span className="ml-2">🔍</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Health Topics Hub - Content Clusters */}
       <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-4">📚 健康主题中心</h2>
+          <p className="text-lg text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+            按健康主题探索相关草药和调理方案
+          </p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Link href="/herb-finder?category=Sleep+%26+Relaxation" className="block group">
+              <div className="bg-purple-50 p-6 rounded-2xl border border-purple-100 hover:border-purple-200 hover:shadow-lg transition-all">
+                <div className="text-3xl mb-3">😴</div>
+                <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-purple-600">睡眠与放松</h3>
+                <p className="text-sm text-gray-600">改善睡眠质量，缓解压力焦虑</p>
+                <div className="mt-3 text-purple-600 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                  查看相关草药 →
+                </div>
+              </div>
+            </Link>
+            
+            <Link href="/herb-finder?category=Energy+%26+Vitality" className="block group">
+              <div className="bg-orange-50 p-6 rounded-2xl border border-orange-100 hover:border-orange-200 hover:shadow-lg transition-all">
+                <div className="text-3xl mb-3">⚡</div>
+                <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-orange-600">能量与活力</h3>
+                <p className="text-sm text-gray-600">补气养血，提升精神状态</p>
+                <div className="mt-3 text-orange-600 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                  查看相关草药 →
+                </div>
+              </div>
+            </Link>
+            
+            <Link href="/herb-finder?category=Immune+Support" className="block group">
+              <div className="bg-green-50 p-6 rounded-2xl border border-green-100 hover:border-green-200 hover:shadow-lg transition-all">
+                <div className="text-3xl mb-3">🛡️</div>
+                <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-green-600">免疫支持</h3>
+                <p className="text-sm text-gray-600">增强免疫力，预防疾病</p>
+                <div className="mt-3 text-green-600 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                  查看相关草药 →
+                </div>
+              </div>
+            </Link>
+            
+            <Link href="/herb-finder?category=Digestive+Health" className="block group">
+              <div className="bg-blue-50 p-6 rounded-2xl border border-blue-100 hover:border-blue-200 hover:shadow-lg transition-all">
+                <div className="text-3xl mb-3">🫶</div>
+                <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-blue-600">消化健康</h3>
+                <p className="text-sm text-gray-600">改善消化功能，呵护肠胃</p>
+                <div className="mt-3 text-blue-600 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                  查看相关草药 →
+                </div>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-16">
             Frequently Asked Questions
