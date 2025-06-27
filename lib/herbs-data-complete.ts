@@ -3506,3 +3506,58 @@ export default herbs;
     tags: ['Prostate Health', 'Hormonal Balance', 'Heart Health', 'Anti-Parasitic', "Men's Health", "Women's Health"]
   },
 
+  'clove': {
+    id: 'clove',
+    name: 'Clove',
+    chineseName: '丁香',
+    latinName: 'Syzygium aromaticum',
+    category: 'Aromatic Spices',
+    properties: {
+      taste: 'Pungent, Warm',
+      nature: 'Warm',
+      meridians: ['Stomach', 'Kidney', 'Spleen']
+    },
+    effects: [
+      'Warms the stomach',
+      'Stops vomiting and nausea',
+      'Freshens breath and oral health',
+      'Supports men's reproductive health',
+      'Reduces inflammation',
+      'Fights bacterial infections'
+    ],
+    conditions: [
+      'Toothaches and oral health',
+      'Nausea and vomiting',
+      'Bloating and poor appetite',
+      'Cold-type abdominal pain',
+      'Low libido and impotence',
+      'Arthritis and inflammation',
+      'Minor infections and cuts'
+    ],
+    dosage: {
+      general: '1-3g whole cloves daily',
+      powder: '0.5-1g daily',
+      external: '1-2 drops diluted oil'
+    },
+    precautions: [
+      'Not for acid reflux or stomach ulcers',
+      'Avoid during pregnancy',
+      'Not for children under 12',
+      'May irritate GI tract if overused',
+      'Do not mix with turmeric'
+    ],
+    constitution: {
+      suitable: ['Yang Deficiency', 'Cold Stomach', 'Poor Digestion', 'Weak Circulation'],
+      unsuitable: ['Yin Deficiency', 'Internal Heat', 'High Blood Pressure']
+    },
+    activeCompounds: [
+      'Eugenol',
+      'Tannins',
+      'Flavonoids',
+      'Volatile oils'
+    ],
+    clinicalStudies: 'Proven effective for oral health, antimicrobial action, and anti-inflammatory benefits',
+    safetyLevel: 'Medium',
+    tags: ['Digestion', 'Oral Health', 'Inflammation', "Men's Health", 'Antibacterial', 'Anti-nausea']
+  },
+
