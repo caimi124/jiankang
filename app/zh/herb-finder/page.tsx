@@ -90,6 +90,22 @@ export default function HerbFinderPage() {
     { value: '压力与焦虑', label: '压力与焦虑' }
   ]
 
+  // 从URL参数初始化筛选器
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    setSearchQuery(urlParams.get('search') || '')
+    setSelectedCategory(urlParams.get('category') || '')
+    setSelectedConstitution(urlParams.get('constitution') || '')
+    setSelectedSafety(urlParams.get('safety') || '')
+    setSelectedEfficacy(urlParams.get('efficacy') || '')
+    
+    // 如果有URL参数，显示筛选器
+    const hasParams = Array.from(urlParams.keys()).length > 0
+    if (hasParams) {
+      setShowFilters(true)
+    }
+  }, [])
+
   // 加载草药数据
   useEffect(() => {
     const loadHerbs = async () => {

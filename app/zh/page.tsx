@@ -53,8 +53,14 @@ export default function ZhHome() {
               <SmartSearch 
                 placeholder={currentLocale === 'zh' ? '搜索草药、症状或获取安全信息...' : 'Search herbs, symptoms, or get safety information...'}
                 onSearch={(query, filters) => {
-                  // Handle search - could redirect to search results page
-                  console.log('Search:', query, filters);
+                  // Redirect to herb finder with search query
+                  const searchParams = new URLSearchParams();
+                  if (query) searchParams.set('search', query);
+                  if (filters.category) searchParams.set('category', filters.category);
+                  
+                  // For Chinese version, redirect to Chinese herb finder
+                  const targetUrl = `/zh/herb-finder?${searchParams.toString()}`;
+                  window.location.href = targetUrl;
                 }}
               />
             </div>

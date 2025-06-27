@@ -81,6 +81,25 @@ export default function HerbFinderPage() {
     category: ''
   })
 
+  // Initialize filters from URL parameters
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const initialFilters: FilterState = {
+      constitution: urlParams.get('constitution') || '',
+      efficacy: urlParams.get('efficacy') || '',
+      safety: urlParams.get('safety') || '',
+      search: urlParams.get('search') || '',
+      category: urlParams.get('category') || ''
+    }
+    
+    setFilters(initialFilters)
+    
+    // Show filters if any are set from URL
+    if (Object.values(initialFilters).some(value => value !== '')) {
+      setShowFilters(true)
+    }
+  }, [])
+
   const constitutionOptions = [
     '平和质', '气虚质', '阳虚质', '阴虚质', '痰湿质', 
     '湿热质', '血瘀质', '气郁质', '特禀质'
