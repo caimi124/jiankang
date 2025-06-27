@@ -6,6 +6,7 @@ import AccessibilityAnnouncer from '@/components/AccessibilityAnnouncer'
 import GoogleAnalytics, { GoogleTagManagerNoScript } from '@/components/GoogleAnalytics'
 import PerformanceMonitor from '@/components/PerformanceMonitor'
 import HeatmapAnalytics from '@/components/HeatmapAnalytics'
+import FontManager from '@/components/FontManager'
 
 // 优化字体配置 - Inter for Latin text
 const inter = Inter({ 
@@ -184,6 +185,9 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased bg-white text-gray-900 font-feature-settings-default`}>
         {/* Google Tag Manager (noscript) */}
         <GoogleTagManagerNoScript />
+        
+        {/* 字体管理器 */}
+        <FontManager />
         
         <AccessibilityAnnouncer />
         <PerformanceMonitor />

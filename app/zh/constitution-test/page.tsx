@@ -2,7 +2,7 @@
 // CRITICAL: CDN cache issue - this should display 20 questions TCM system
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Navigation from '../../../components/Navigation'
 import Breadcrumb from '../../../components/Breadcrumb'
 import { 
@@ -24,7 +24,9 @@ import {
   Users,
   Award,
   Download,
-  Share2
+  Share2,
+  Zap,
+  SkipForward
 } from 'lucide-react'
 
 export default function ConstitutionTestPage() {
@@ -32,12 +34,59 @@ export default function ConstitutionTestPage() {
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [answers, setAnswers] = useState<number[]>(new Array(questions.length).fill(0))
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
+  const [autoAdvanceEnabled, setAutoAdvanceEnabled] = useState(true)
   const [testResults, setTestResults] = useState<{
     primary: ConstitutionType;
     secondary?: ConstitutionType;
     scores: { [key: string]: number };
     isBalanced: boolean;
   } | null>(null)
+
+  // 键盘支持
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (currentStep !== 'test') return
+      
+      // 数字键1-5选择答案
+      if (e.key >= '1' && e.key <= '5') {
+        const score = parseInt(e.key)
+        setSelectedAnswer(score)
+      }
+      
+      // 回车键确认并前进
+      if (e.key === 'Enter' && selectedAnswer !== null) {
+        handleNextQuestion()
+      }
+      
+      // 空格键快速前进
+      if (e.key === ' ' && selectedAnswer !== null) {
+        e.preventDefault()
+        handleNextQuestion()
+      }
+      
+      // 方向键导航
+      if (e.key === 'ArrowLeft') {
+        handlePrevQuestion()
+      }
+      if (e.key === 'ArrowRight' && selectedAnswer !== null) {
+        handleNextQuestion()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyPress)
+    return () => window.removeEventListener('keydown', handleKeyPress)
+  }, [currentStep, selectedAnswer])
+
+  // 自动前进功能（选择答案后延迟自动前进）
+  useEffect(() => {
+    if (currentStep === 'test' && selectedAnswer !== null && autoAdvanceEnabled) {
+      const timer = setTimeout(() => {
+        handleNextQuestion()
+      }, 800) // 800ms后自动前进
+      
+      return () => clearTimeout(timer)
+    }
+  }, [selectedAnswer, autoAdvanceEnabled, currentStep])
 
   const handleStartTest = () => {
     setCurrentStep('test')
@@ -121,10 +170,10 @@ export default function ConstitutionTestPage() {
 
             <div className="bg-white rounded-2xl p-8 shadow-lg text-center">
               <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Clock className="w-8 h-8 text-blue-600" />
+                <Zap className="w-8 h-8 text-blue-600" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">快速便捷</h3>
-              <p className="text-gray-600">仅需5分钟完成20道问题，即可获得详细的体质分析报告</p>
+              <h3 className="text-xl font-semibold mb-2">智能体验</h3>
+              <p className="text-gray-600">支持键盘快捷键、自动前进，流畅的答题体验让测试更轻松</p>
             </div>
 
             <div className="bg-white rounded-2xl p-8 shadow-lg text-center">
@@ -133,6 +182,29 @@ export default function ConstitutionTestPage() {
               </div>
               <h3 className="text-xl font-semibold mb-2">个性化建议</h3>
               <p className="text-gray-600">根据您的体质特点，提供专属的草药推荐和生活调理方案</p>
+            </div>
+          </div>
+
+          {/* 快捷键提示 */}
+          <div className="bg-white rounded-2xl p-6 shadow-lg mb-8">
+            <h3 className="text-lg font-semibold mb-4 text-center">⌨️ 快捷键提示</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+              <div className="text-center p-3 bg-gray-50 rounded-lg">
+                <div className="font-medium">1-5</div>
+                <div className="text-gray-600">选择答案</div>
+              </div>
+              <div className="text-center p-3 bg-gray-50 rounded-lg">
+                <div className="font-medium">回车</div>
+                <div className="text-gray-600">确认答案</div>
+              </div>
+              <div className="text-center p-3 bg-gray-50 rounded-lg">
+                <div className="font-medium">空格</div>
+                <div className="text-gray-600">快速前进</div>
+              </div>
+              <div className="text-center p-3 bg-gray-50 rounded-lg">
+                <div className="font-medium">方向键</div>
+                <div className="text-gray-600">导航题目</div>
+              </div>
             </div>
           </div>
 
@@ -159,7 +231,7 @@ export default function ConstitutionTestPage() {
               <div className="text-gray-600">科学问题</div>
             </div>
             <div className="bg-white rounded-xl p-6 shadow-lg text-center">
-              <div className="text-3xl font-bold text-blue-600 mb-2">5</div>
+              <div className="text-3xl font-bold text-blue-600 mb-2">3</div>
               <div className="text-gray-600">分钟完成</div>
             </div>
             <div className="bg-white rounded-xl p-6 shadow-lg text-center">
@@ -198,85 +270,140 @@ export default function ConstitutionTestPage() {
         <Navigation />
         
         <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <Breadcrumb 
-            items={[
-              { label: '首页', href: '/zh' },
-              { label: '体质测试', href: '/zh/constitution-test' },
-              { label: `问题 ${currentQuestion + 1}` }
-            ]} 
-          />
-
-          {/* 进度条 */}
-          <div className="mb-8">
-            <div className="flex justify-between text-sm text-gray-600 mb-2">
-              <span>{question.category}</span>
-              <span>{currentQuestion + 1} / {questions.length}</span>
+          <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+            {/* 进度条 */}
+            <div className="bg-white p-6 border-b border-gray-100">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center space-x-4">
+                  <span className="text-sm font-medium text-gray-600">
+                    问题 {currentQuestion + 1} / {questions.length}
+                  </span>
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={() => setAutoAdvanceEnabled(!autoAdvanceEnabled)}
+                      className={`text-xs px-3 py-1 rounded-full transition-colors ${
+                        autoAdvanceEnabled 
+                          ? 'bg-green-100 text-green-700' 
+                          : 'bg-gray-100 text-gray-600'
+                      }`}
+                    >
+                      <SkipForward className="w-3 h-3 inline mr-1" />
+                      自动前进
+                    </button>
+                  </div>
+                </div>
+                <span className="text-sm font-medium text-green-600">
+                  {Math.round(progress)}% 完成
+                </span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-3">
+                <div 
+                  className="bg-gradient-to-r from-green-600 to-blue-600 h-3 rounded-full transition-all duration-500 ease-out"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-3">
-              <div 
-                className="bg-gradient-to-r from-green-500 to-blue-500 h-3 rounded-full transition-all duration-300"
-                style={{ width: `${progress}%` }}
-              ></div>
-            </div>
-          </div>
 
-          {/* 问题卡片 */}
-          <div className="bg-white rounded-2xl p-8 shadow-lg mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-              {question.text}
-            </h2>
-            <p className="text-gray-600 mb-8">
-              请选择最符合您情况的选项
-            </p>
+            {/* 问题内容 */}
+            <div className="p-8">
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  {question.question}
+                </h2>
+                <p className="text-gray-600">
+                  请根据您的实际情况选择最符合的答案
+                </p>
+              </div>
 
-            {/* 答案选项 */}
-            <div className="space-y-4">
-              {['从不', '偶尔', '有时', '经常', '总是'].map((option, index) => (
+              {/* 答案选项 */}
+              <div className="space-y-4 mb-8">
+                {scoreOptions.map((option, index) => (
+                  <button
+                    key={option.score}
+                    onClick={() => handleAnswerSelect(option.score)}
+                    className={`w-full p-4 text-left rounded-2xl border-2 transition-all duration-200 hover:shadow-lg group ${
+                      selectedAnswer === option.score
+                        ? 'border-green-500 bg-green-50 shadow-lg'
+                        : 'border-gray-200 hover:border-green-300 bg-white'
+                    }`}
+                  >
+                    <div className="flex items-center">
+                      <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center mr-4 transition-colors ${
+                        selectedAnswer === option.score
+                          ? 'border-green-500 bg-green-500 text-white'
+                          : 'border-gray-300 group-hover:border-green-400'
+                      }`}>
+                        <span className="text-sm font-medium">
+                          {selectedAnswer === option.score ? (
+                            <CheckCircle className="w-4 h-4" />
+                          ) : (
+                            index + 1
+                          )}
+                        </span>
+                      </div>
+                      <div className="flex-1">
+                        <div className={`font-medium ${
+                          selectedAnswer === option.score ? 'text-green-700' : 'text-gray-900'
+                        }`}>
+                          {option.text}
+                        </div>
+                        {selectedAnswer === option.score && autoAdvanceEnabled && (
+                          <div className="text-sm text-green-600 mt-1">
+                            即将自动前进...
+                          </div>
+                        )}
+                      </div>
+                      <div className="text-xs text-gray-500 ml-4">
+                        快捷键: {index + 1}
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+
+              {/* 导航按钮 */}
+              <div className="flex justify-between items-center">
                 <button
-                  key={index}
-                  onClick={() => handleAnswerSelect(index + 1)}
-                  className={`w-full p-4 text-left rounded-xl border-2 transition-all duration-200 ${
-                    selectedAnswer === index + 1
-                      ? 'border-green-500 bg-green-50 text-green-800'
-                      : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                  onClick={handlePrevQuestion}
+                  disabled={currentQuestion === 0}
+                  className={`flex items-center px-6 py-3 rounded-xl font-medium transition-colors ${
+                    currentQuestion === 0
+                      ? 'text-gray-400 cursor-not-allowed'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                   }`}
                 >
-                  <div className="flex items-center">
-                    <div className={`w-6 h-6 rounded-full border-2 mr-4 flex items-center justify-center ${
-                      selectedAnswer === index + 1
-                        ? 'border-green-500 bg-green-500'
-                        : 'border-gray-300'
-                    }`}>
-                      {selectedAnswer === index + 1 && (
-                        <CheckCircle className="w-4 h-4 text-white" />
-                      )}
-                    </div>
-                    <span className="font-medium">{option}</span>
-                  </div>
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  上一题
                 </button>
-              ))}
+
+                <div className="text-center">
+                  <div className="text-sm text-gray-500 mb-2">
+                    {selectedAnswer !== null ? (
+                      autoAdvanceEnabled ? (
+                        <span className="text-green-600">✨ 即将自动前进</span>
+                      ) : (
+                        <span>按回车键继续</span>
+                      )
+                    ) : (
+                      '请选择一个答案'
+                    )}
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleNextQuestion}
+                  disabled={selectedAnswer === null}
+                  className={`flex items-center px-6 py-3 rounded-xl font-medium transition-all ${
+                    selectedAnswer === null
+                      ? 'text-gray-400 cursor-not-allowed'
+                      : 'text-white bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 shadow-lg hover:shadow-xl'
+                  }`}
+                >
+                  {currentQuestion === questions.length - 1 ? '完成测试' : '下一题'}
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </button>
+              </div>
             </div>
-          </div>
-
-          {/* 导航按钮 */}
-          <div className="flex justify-between">
-            <button
-              onClick={handlePrevQuestion}
-              disabled={currentQuestion === 0}
-              className="flex items-center px-6 py-3 text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <ArrowLeft className="w-5 h-5 mr-2" />
-              上一题
-            </button>
-
-            <button
-              onClick={handleNextQuestion}
-              disabled={selectedAnswer === null}
-              className="flex items-center px-8 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              {currentQuestion === questions.length - 1 ? '查看结果' : '下一题'}
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </button>
           </div>
         </main>
       </div>
