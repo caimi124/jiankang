@@ -234,7 +234,7 @@ export default async function HerbDetailPage({ params }: { params: Promise<{ slu
       />
       
       {/* 客户端组件 */}
-      <HerbDetailClient herbData={herbData} slug={slug} />
+      <HerbDetailClient slug={slug} />
     </>
   )
 } 
