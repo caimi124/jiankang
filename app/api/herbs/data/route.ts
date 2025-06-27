@@ -57,8 +57,8 @@ export async function GET(request: NextRequest) {
     if (search) {
       const searchLower = search.toLowerCase()
       filteredHerbs = filteredHerbs.filter(herb => 
-        herb.chinese_name.toLowerCase().includes(searchLower) ||
-        herb.english_name.toLowerCase().includes(searchLower) ||
+        herb.herbName.toLowerCase().includes(searchLower) ||
+        herb.englishName.toLowerCase().includes(searchLower) ||
         herb.description.toLowerCase().includes(searchLower) ||
         herb.efficacy.some((effect: string) => effect.toLowerCase().includes(searchLower))
       )
@@ -72,7 +72,7 @@ export async function GET(request: NextRequest) {
 
     if (safety) {
       filteredHerbs = filteredHerbs.filter(herb => 
-        herb.safety_level === safety
+        herb.safetyLevel === safety
       )
     }
 

@@ -14,7 +14,9 @@ import {
   Heart,
   CheckCircle,
   ArrowRight,
-  Eye
+  Eye,
+  Users,
+  TrendingUp
 } from 'lucide-react'
 
 interface HerbRecommendationsProps {
@@ -32,13 +34,14 @@ interface HerbCardProps {
 
 export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
   const [isExpanded, setIsExpanded] = useState(false)
+  const [isFavorite, setIsFavorite] = useState(false)
 
   const getSafetyColor = (level: string) => {
     switch (level) {
-      case 'high': return 'text-green-600 bg-green-50'
-      case 'medium': return 'text-yellow-600 bg-yellow-50'
-      case 'low': return 'text-red-600 bg-red-50'
-      default: return 'text-gray-600 bg-gray-50'
+      case 'high': return 'text-green-600 bg-green-50 border-green-200'
+      case 'medium': return 'text-yellow-600 bg-yellow-50 border-yellow-200'
+      case 'low': return 'text-red-600 bg-red-50 border-red-200'
+      default: return 'text-gray-600 bg-gray-50 border-gray-200'
     }
   }
 
@@ -49,6 +52,13 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
       case 'low': return <AlertTriangle className="w-4 h-4" />
       default: return <Shield className="w-4 h-4" />
     }
+  }
+
+  const getQualityBadge = (score: number) => {
+    if (score >= 85) return { label: '优质', color: 'bg-green-100 text-green-800', icon: '⭐' }
+    if (score >= 75) return { label: '良好', color: 'bg-blue-100 text-blue-800', icon: '👍' }
+    if (score >= 65) return { label: '一般', color: 'bg-yellow-100 text-yellow-800', icon: '📋' }
+    return { label: '待评', color: 'bg-gray-100 text-gray-800', icon: '❓' }
   }
 
   // 生成草药的slug用于URL
@@ -70,70 +80,129 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
 
   const herbSlug = generateSlug(herb.chinese_name, herb.english_name)
 
+  const qualityBadge = getQualityBadge(herb.quality_score || 0)
+
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 group">
+    <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-2xl transition-all duration-300 group hover:scale-[1.02] relative overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-50 to-transparent rounded-full -mr-16 -mt-16 opacity-50"></div>
+      
       {/* Header */}
-      <div className="flex items-start justify-between mb-4">
+      <div className="flex items-start justify-between mb-4 relative">
         <div className="flex-1">
-          <div className="flex items-center mb-2">
-            <Leaf className="w-5 h-5 text-green-600 mr-2 group-hover:text-green-700 transition-colors" />
-            <h3 className="text-lg font-semibold text-gray-900 line-clamp-1 group-hover:text-green-700 transition-colors">
-              {herb.chinese_name || herb.english_name}
-            </h3>
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mr-3 group-hover:scale-110 transition-transform">
+                <Leaf className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-gray-900 group-hover:text-green-700 transition-colors">
+                  {herb.chinese_name || herb.english_name}
+                </h3>
+                <p className="text-sm text-gray-600">{herb.english_name}</p>
+              </div>
+            </div>
+            
+            {/* Favorite Button */}
+            <button
+              onClick={() => setIsFavorite(!isFavorite)}
+              className={`p-2 rounded-lg transition-all ${
+                isFavorite 
+                  ? 'text-red-500 bg-red-50 hover:bg-red-100' 
+                  : 'text-gray-400 hover:text-red-500 hover:bg-red-50'
+              }`}
+            >
+              <Heart className={`w-5 h-5 ${isFavorite ? 'fill-current' : ''}`} />
+            </button>
           </div>
-          <p className="text-sm text-gray-600 mb-2">{herb.english_name}</p>
+          
           {herb.latin_name && (
-            <p className="text-xs text-gray-500 italic mb-2">{herb.latin_name}</p>
+            <p className="text-xs text-gray-500 italic mb-3 font-medium">{herb.latin_name}</p>
           )}
-          <div className="flex flex-wrap gap-1 mb-2">
+          
+          {/* Enhanced Badge Section */}
+          <div className="flex flex-wrap gap-2 mb-3">
             {herb.constitution_type && (
-              <span className="inline-block px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full">
+              <span className="inline-flex items-center px-3 py-1 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 text-xs rounded-full font-medium">
+                <Users className="w-3 h-3 mr-1" />
                 {herb.constitution_type}
               </span>
             )}
-            {herb.quality_score && herb.quality_score > 80 && (
-              <span className="inline-flex items-center px-2 py-1 bg-yellow-50 text-yellow-700 text-xs rounded-full">
-                <Star className="w-3 h-3 mr-1" />
-                Premium
+            {herb.quality_score && (
+              <span className={`inline-flex items-center px-3 py-1 text-xs rounded-full font-medium ${qualityBadge.color}`}>
+                <span className="mr-1">{qualityBadge.icon}</span>
+                {qualityBadge.label} ({herb.quality_score})
+              </span>
+            )}
+            {herb.popularity_score && herb.popularity_score > 70 && (
+              <span className="inline-flex items-center px-3 py-1 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-800 text-xs rounded-full font-medium">
+                <TrendingUp className="w-3 h-3 mr-1" />
+                热门
               </span>
             )}
           </div>
         </div>
-        <div className={`flex items-center px-2 py-1 rounded-full text-xs font-medium ${getSafetyColor(herb.safety_level)}`}>
+        
+        {/* Enhanced Safety Badge */}
+        <div className={`flex items-center px-3 py-2 rounded-xl text-xs font-semibold border ${getSafetyColor(herb.safety_level)} shadow-sm`}>
           {getSafetyIcon(herb.safety_level)}
-          <span className="ml-1 capitalize">{herb.safety_level}</span>
+          <span className="ml-2">{herb.safety_level === 'high' ? '高安全' : herb.safety_level === 'medium' ? '中等' : '谨慎'}</span>
         </div>
       </div>
 
-      {/* Description */}
-      <p className="text-gray-700 text-sm mb-4 line-clamp-2">{herb.description}</p>
+      {/* Enhanced Description */}
+      <div className="mb-4">
+        <p className="text-gray-700 text-sm leading-relaxed mb-2 line-clamp-3">{herb.description}</p>
+        {herb.traditional_use && (
+          <p className="text-xs text-gray-600 italic">
+            <span className="font-medium">传统用法：</span>{herb.traditional_use.slice(0, 80)}...
+          </p>
+        )}
+      </div>
 
-      {/* Efficacy Tags */}
+      {/* Enhanced Efficacy Tags with icons */}
       {herb.efficacy && herb.efficacy.length > 0 && (
-        <div className="flex flex-wrap gap-1 mb-4">
-          {herb.efficacy.slice(0, 3).map((eff, index) => (
-            <span 
-              key={index}
-              className="px-2 py-1 bg-green-50 text-green-700 text-xs rounded-md"
-            >
-              {eff}
-            </span>
-          ))}
-          {herb.efficacy.length > 3 && (
-            <span className="px-2 py-1 bg-gray-50 text-gray-600 text-xs rounded-md">
-              +{herb.efficacy.length - 3} more
-            </span>
-          )}
+        <div className="mb-4">
+          <h4 className="text-xs font-semibold text-gray-700 mb-2 flex items-center">
+            <Star className="w-3 h-3 mr-1 text-yellow-500" />
+            主要功效
+          </h4>
+          <div className="flex flex-wrap gap-2">
+            {herb.efficacy.slice(0, 4).map((eff, index) => (
+              <span 
+                key={index}
+                className="px-3 py-1 bg-gradient-to-r from-green-50 to-emerald-50 text-green-800 text-xs rounded-full font-medium border border-green-200"
+              >
+                {eff}
+              </span>
+            ))}
+            {herb.efficacy.length > 4 && (
+              <span className="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full font-medium">
+                +{herb.efficacy.length - 4}
+              </span>
+            )}
+          </div>
         </div>
       )}
 
-      {/* Basic Info */}
-      <div className="space-y-2 mb-4">
+      {/* Enhanced Info Grid */}
+      <div className="grid grid-cols-2 gap-3 mb-4">
         {herb.dosage && (
-          <div className="flex items-center text-sm">
-            <Clock className="w-4 h-4 text-gray-500 mr-2" />
-            <span className="text-gray-600">剂量: </span>
-            <span className="text-gray-800 ml-1">{herb.dosage}</span>
+          <div className="bg-gray-50 rounded-lg p-3">
+            <div className="flex items-center text-xs font-medium text-gray-700 mb-1">
+              <Clock className="w-3 h-3 mr-1 text-blue-500" />
+              推荐剂量
+            </div>
+            <p className="text-xs text-gray-600">{herb.dosage.slice(0, 20)}...</p>
+          </div>
+        )}
+        {herb.availability && (
+          <div className="bg-gray-50 rounded-lg p-3">
+            <div className="flex items-center text-xs font-medium text-gray-700 mb-1">
+              <Shield className="w-3 h-3 mr-1 text-green-500" />
+              可获得性
+            </div>
+            <p className="text-xs text-gray-600 capitalize">{herb.availability}</p>
           </div>
         )}
       </div>

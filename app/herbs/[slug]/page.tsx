@@ -110,7 +110,7 @@ export async function generateStaticParams() {
     // 从完整数据库生成slug列表
     const herbs = await import('../../../lib/herbs-data-complete')
     return herbs.HERBS_DATABASE.map(herb => ({
-      slug: herb.english_name.toLowerCase()
+      slug: herb.englishName.toLowerCase()
         .replace(/\s+/g, '-')
         .replace(/[^\w\-]/g, '')
         .replace(/--+/g, '-')

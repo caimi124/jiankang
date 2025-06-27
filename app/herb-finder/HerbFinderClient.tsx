@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import Navigation from '../../components/Navigation'
 import Breadcrumb from '../../components/Breadcrumb'
 import { HerbCard } from '../../components/HerbRecommendations'
@@ -20,7 +20,13 @@ import {
   Zap,
   Moon,
   Users,
-  Target
+  Target,
+  Sparkles,
+  TrendingUp,
+  Award,
+  Clock,
+  BookOpen,
+  ChevronRight
 } from 'lucide-react'
 import type { Herb } from '../../lib/herbs-recommendation'
 
@@ -30,40 +36,62 @@ interface FilterState {
   safety: string
   search: string
   category: string
+  sortBy: string
 }
 
-// Popular search categories for better UX
+// Enhanced popular search categories with more detailed info
 const popularCategories = [
   { 
     icon: <Moon className="w-4 h-4" />, 
     label: 'Sleep & Relaxation', 
-    keywords: ['睡眠支持', '镇静安神', '情绪管理', 'sleep', 'relaxation', 'calm'] 
+    description: '助眠安神',
+    keywords: ['睡眠支持', '镇静安神', '情绪管理', 'sleep', 'relaxation', 'calm', '失眠', '焦虑'],
+    color: 'from-indigo-500 to-purple-600'
   },
   { 
     icon: <Zap className="w-4 h-4" />, 
     label: 'Energy & Vitality', 
-    keywords: ['能量提升', '补气养血', 'energy', 'vitality', 'boost'] 
+    description: '补气提神',
+    keywords: ['能量提升', '补气养血', 'energy', 'vitality', 'boost', '疲劳', '虚弱'],
+    color: 'from-orange-500 to-red-600'
   },
   { 
     icon: <Shield className="w-4 h-4" />, 
     label: 'Immune Support', 
-    keywords: ['免疫支持', 'immune', 'support', 'defense'] 
+    description: '免疫增强',
+    keywords: ['免疫支持', 'immune', 'support', 'defense', '抵抗力', '预防'],
+    color: 'from-green-500 to-emerald-600'
   },
   { 
     icon: <Heart className="w-4 h-4" />, 
     label: 'Digestive Health', 
-    keywords: ['消化健康', 'digestive', 'stomach', 'gut'] 
+    description: '消化调理',
+    keywords: ['消化健康', 'digestive', 'stomach', 'gut', '胃病', '肠胃'],
+    color: 'from-yellow-500 to-orange-600'
   },
   { 
     icon: <Brain className="w-4 h-4" />, 
     label: 'Mental Clarity', 
-    keywords: ['压力与焦虑', 'mental', 'focus', 'clarity', 'stress', 'anxiety'] 
+    description: '健脑益智',
+    keywords: ['压力与焦虑', 'mental', 'focus', 'clarity', 'stress', 'anxiety', '记忆力', '专注'],
+    color: 'from-blue-500 to-indigo-600'
   },
   { 
     icon: <Users className="w-4 h-4" />, 
-    label: 'Women&apos;s Health', 
-    keywords: ['女性健康', 'women', 'female', 'hormonal'] 
+    label: 'Women\'s Health', 
+    description: '女性健康',
+    keywords: ['女性健康', 'women', 'female', 'hormonal', '月经', '更年期'],
+    color: 'from-pink-500 to-rose-600'
   }
+]
+
+// Enhanced sort options
+const sortOptions = [
+  { value: 'relevance', label: '相关度排序', icon: <Target className="w-4 h-4" /> },
+  { value: 'quality', label: '质量评分', icon: <Award className="w-4 h-4" /> },
+  { value: 'safety', label: '安全等级', icon: <Shield className="w-4 h-4" /> },
+  { value: 'name', label: '名称排序', icon: <BookOpen className="w-4 h-4" /> },
+  { value: 'popularity', label: '热门程度', icon: <TrendingUp className="w-4 h-4" /> }
 ]
 
 export default function HerbFinderClient() {
@@ -72,13 +100,17 @@ export default function HerbFinderClient() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [showFilters, setShowFilters] = useState(false)
+  const [searchSuggestions, setSearchSuggestions] = useState<string[]>([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const [activeFilter, setActiveFilter] = useState<string>('')
   
   const [filters, setFilters] = useState<FilterState>({
     constitution: '',
     efficacy: '',
     safety: '',
     search: '',
-    category: ''
+    category: '',
+    sortBy: 'relevance'
   })
 
   // Initialize filters from URL parameters
@@ -89,7 +121,8 @@ export default function HerbFinderClient() {
       efficacy: urlParams.get('efficacy') || '',
       safety: urlParams.get('safety') || '',
       search: urlParams.get('search') || '',
-      category: urlParams.get('category') || ''
+      category: urlParams.get('category') || '',
+      sortBy: urlParams.get('sortBy') || 'relevance'
     }
     
     setFilters(initialFilters)
@@ -108,13 +141,13 @@ export default function HerbFinderClient() {
   const efficacyOptions = [
     '免疫支持', '消化健康', '肝脏健康', '呼吸系统', '镇静安神',
     '抗炎作用', '解毒支持', '补气养血', '止咳化痰', '能量提升',
-    '情绪管理', '睡眠支持', '压力与焦虑'
+    '情绪管理', '睡眠支持', '压力与焦虑', '记忆增强', '心血管健康'
   ]
 
   const safetyOptions = [
-    { value: 'high', label: 'High Safety' },
-    { value: 'medium', label: 'Moderate Safety' },
-    { value: 'low', label: 'Use with Caution' }
+    { value: 'high', label: 'High Safety (高安全)', icon: <Shield className="w-4 h-4 text-green-600" /> },
+    { value: 'medium', label: 'Moderate Safety (中等安全)', icon: <Shield className="w-4 h-4 text-yellow-600" /> },
+    { value: 'low', label: 'Use with Caution (谨慎使用)', icon: <AlertCircle className="w-4 h-4 text-red-600" /> }
   ]
 
   // 获取草药数据
@@ -122,27 +155,72 @@ export default function HerbFinderClient() {
     fetchHerbsData()
   }, [])
 
-  // Enhanced search with multiple fields and fuzzy matching
+  // Enhanced search suggestions based on real herb data
+  const generateSearchSuggestions = useMemo(() => {
+    if (!filters.search || filters.search.length < 2) return []
+    
+    const searchLower = filters.search.toLowerCase()
+    const suggestions = new Set<string>()
+    
+    herbs.forEach(herb => {
+      // Add herb names
+      if (herb.chinese_name.toLowerCase().includes(searchLower)) {
+        suggestions.add(herb.chinese_name)
+      }
+      if (herb.english_name.toLowerCase().includes(searchLower)) {
+        suggestions.add(herb.english_name)
+      }
+      
+      // Add efficacy suggestions
+      herb.efficacy.forEach(eff => {
+        if (eff.toLowerCase().includes(searchLower)) {
+          suggestions.add(eff)
+        }
+      })
+      
+      // Add symptom suggestions from descriptions
+      const commonSymptoms = ['失眠', '焦虑', '疲劳', '消化不良', '头痛', '咳嗽', '感冒', '压力']
+      commonSymptoms.forEach(symptom => {
+        if (symptom.includes(searchLower) || herb.description.includes(symptom)) {
+          suggestions.add(symptom)
+        }
+      })
+    })
+    
+    return Array.from(suggestions).slice(0, 8)
+  }, [herbs, filters.search])
+
+  useEffect(() => {
+    setSearchSuggestions(generateSearchSuggestions)
+    setShowSuggestions(generateSearchSuggestions.length > 0 && filters.search.length >= 2)
+  }, [generateSearchSuggestions, filters.search])
+
+  // Enhanced search with fuzzy matching and multiple fields
   const applyFilters = useCallback(() => {
     let filtered = [...herbs]
 
-    // Enhanced text search across multiple fields
+    // Enhanced text search with fuzzy matching
     if (filters.search) {
       const searchLower = filters.search.toLowerCase()
-      filtered = filtered.filter(herb =>
-        herb.chinese_name.toLowerCase().includes(searchLower) ||
-        herb.english_name.toLowerCase().includes(searchLower) ||
-        herb.latin_name.toLowerCase().includes(searchLower) ||
-        herb.description.toLowerCase().includes(searchLower) ||
-        herb.efficacy.some(eff => eff.toLowerCase().includes(searchLower)) ||
-        herb.primary_effects.some(eff => eff.toLowerCase().includes(searchLower)) ||
-        herb.traditional_use.toLowerCase().includes(searchLower) ||
-        herb.modern_applications.toLowerCase().includes(searchLower) ||
-        herb.ingredients.some(ing => ing.toLowerCase().includes(searchLower))
-      )
+      filtered = filtered.filter(herb => {
+        // Exact matches get higher priority
+        const exactMatch = herb.chinese_name.toLowerCase().includes(searchLower) ||
+                          herb.english_name.toLowerCase().includes(searchLower) ||
+                          herb.latin_name.toLowerCase().includes(searchLower)
+        
+        // Fuzzy matches in descriptions and efficacy
+        const fuzzyMatch = herb.description.toLowerCase().includes(searchLower) ||
+                          herb.efficacy.some(eff => eff.toLowerCase().includes(searchLower)) ||
+                          herb.primary_effects.some(eff => eff.toLowerCase().includes(searchLower)) ||
+                          herb.traditional_use.toLowerCase().includes(searchLower) ||
+                          herb.modern_applications.toLowerCase().includes(searchLower) ||
+                          herb.ingredients.some(ing => ing.toLowerCase().includes(searchLower))
+        
+        return exactMatch || fuzzyMatch
+      })
     }
 
-    // Category-based filtering
+    // Category-based filtering with enhanced matching
     if (filters.category) {
       const category = popularCategories.find(cat => cat.label === filters.category)
       if (category) {
@@ -150,7 +228,8 @@ export default function HerbFinderClient() {
           category.keywords.some(keyword =>
             herb.efficacy.some(eff => eff.toLowerCase().includes(keyword.toLowerCase())) ||
             herb.primary_effects.some(eff => eff.toLowerCase().includes(keyword.toLowerCase())) ||
-            herb.description.toLowerCase().includes(keyword.toLowerCase())
+            herb.description.toLowerCase().includes(keyword.toLowerCase()) ||
+            herb.traditional_use.toLowerCase().includes(keyword.toLowerCase())
           )
         )
       }
@@ -178,11 +257,37 @@ export default function HerbFinderClient() {
       )
     }
 
-    // Sort by quality score and popularity
+    // Enhanced sorting with multiple criteria
     filtered.sort((a, b) => {
-      const scoreA = (a.quality_score || 0) + (a.popularity_score || 0)
-      const scoreB = (b.quality_score || 0) + (b.popularity_score || 0)
-      return scoreB - scoreA
+      switch (filters.sortBy) {
+        case 'quality':
+          return (b.quality_score || 0) - (a.quality_score || 0)
+        case 'safety':
+          const safetyOrder = { 'high': 3, 'medium': 2, 'low': 1 }
+          return (safetyOrder[b.safety_level as keyof typeof safetyOrder] || 0) - 
+                 (safetyOrder[a.safety_level as keyof typeof safetyOrder] || 0)
+        case 'name':
+          return a.chinese_name.localeCompare(b.chinese_name, 'zh-CN')
+        case 'popularity':
+          return (b.popularity_score || 0) - (a.popularity_score || 0)
+        case 'relevance':
+        default:
+          // Search relevance + quality + popularity combined
+          const scoreA = (a.quality_score || 0) * 0.4 + (a.popularity_score || 0) * 0.3
+          const scoreB = (b.quality_score || 0) * 0.4 + (b.popularity_score || 0) * 0.3
+          
+          // Boost exact search matches
+          if (filters.search) {
+            const searchLower = filters.search.toLowerCase()
+            const exactMatchA = a.chinese_name.toLowerCase().includes(searchLower) || a.english_name.toLowerCase().includes(searchLower)
+            const exactMatchB = b.chinese_name.toLowerCase().includes(searchLower) || b.english_name.toLowerCase().includes(searchLower)
+            
+            if (exactMatchA && !exactMatchB) return -1
+            if (exactMatchB && !exactMatchA) return 1
+          }
+          
+          return scoreB - scoreA
+      }
     })
 
     setFilteredHerbs(filtered)
@@ -256,13 +361,26 @@ export default function HerbFinderClient() {
 
   const handleFilterChange = (key: keyof FilterState, value: string) => {
     setFilters(prev => ({ ...prev, [key]: value }))
+    setActiveFilter(key)
+    
+    // Update URL parameters for SEO and sharing
+    const url = new URL(window.location.href)
+    if (value) {
+      url.searchParams.set(key, value)
+    } else {
+      url.searchParams.delete(key)
+    }
+    window.history.replaceState({}, '', url.toString())
   }
 
   const handleCategorySelect = (categoryLabel: string) => {
-    setFilters(prev => ({ 
-      ...prev, 
-      category: prev.category === categoryLabel ? '' : categoryLabel 
-    }))
+    const newCategory = filters.category === categoryLabel ? '' : categoryLabel
+    handleFilterChange('category', newCategory)
+  }
+
+  const handleSearchSuggestionSelect = (suggestion: string) => {
+    handleFilterChange('search', suggestion)
+    setShowSuggestions(false)
   }
 
   const clearFilters = () => {
@@ -271,28 +389,51 @@ export default function HerbFinderClient() {
       efficacy: '',
       safety: '',
       search: '',
-      category: ''
+      category: '',
+      sortBy: 'relevance'
     })
+    setActiveFilter('')
+    // Clear URL parameters
+    window.history.replaceState({}, '', window.location.pathname)
   }
 
   const refreshData = () => {
     fetchHerbsData()
   }
 
-  const hasActiveFilters = Object.values(filters).some(value => value !== '')
+  const hasActiveFilters = Object.entries(filters).some(([key, value]) => 
+    key !== 'sortBy' && value !== ''
+  )
+
+  // Enhanced statistics
+  const stats = useMemo(() => {
+    return {
+      total: herbs.length,
+      highSafety: herbs.filter(h => h.safety_level === 'high').length,
+      uniqueBenefits: new Set(herbs.flatMap(h => h.efficacy)).size,
+      constitutionTypes: new Set(herbs.map(h => h.constitution_type)).size,
+      premiumHerbs: herbs.filter(h => (h.quality_score || 0) >= 85).length
+    }
+  }, [herbs])
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100">
+      <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-100">
         <Navigation />
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
             <div className="relative mb-8">
-              <Leaf className="w-20 h-20 text-green-600 mx-auto mb-4 animate-pulse" />
-              <div className="absolute inset-0 bg-green-200 rounded-full animate-ping opacity-25"></div>
+              <div className="w-20 h-20 mx-auto mb-4 relative">
+                <Leaf className="w-full h-full text-green-600 animate-pulse" />
+                <div className="absolute inset-0 bg-green-200 rounded-full animate-ping opacity-25"></div>
+                <Sparkles className="w-6 h-6 text-yellow-500 absolute -top-1 -right-1 animate-bounce" />
+              </div>
             </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Loading Herb Database</h2>
-            <p className="text-gray-600">Fetching the latest herb information...</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">正在加载草药数据库</h2>
+            <p className="text-gray-600 mb-2">获取最新的草药信息中...</p>
+            <div className="w-64 h-2 bg-gray-200 rounded-full mx-auto">
+              <div className="h-2 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full animate-pulse" style={{width: '75%'}}></div>
+            </div>
           </div>
         </div>
       </div>
@@ -300,7 +441,7 @@ export default function HerbFinderClient() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-100">
       <Navigation />
       <main className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -311,96 +452,184 @@ export default function HerbFinderClient() {
             ]} 
           />
 
-          {/* Enhanced Header */}
+          {/* Enhanced Header with more visual appeal */}
           <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-green-600 to-emerald-600 rounded-full mb-6 shadow-lg hover:shadow-xl transition-shadow">
-              <Leaf className="w-10 h-10 text-white" />
+            <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-green-600 to-emerald-600 rounded-full mb-6 shadow-xl hover:shadow-2xl transition-all duration-300 group">
+              <Leaf className="w-12 h-12 text-white group-hover:scale-110 transition-transform" />
+              <Sparkles className="w-6 h-6 text-yellow-300 absolute -top-1 -right-1 animate-pulse" />
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Smart Herb Finder
+            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-6">
+              智能草药查找器
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover the perfect natural remedies from our comprehensive database of <span className="font-semibold text-green-600">{herbs.length} traditional herbs</span>. 
-              Search by symptoms, health goals, or constitution type.
+            <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+              从我们的 <span className="font-bold text-green-600">{herbs.length}</span> 种传统草药数据库中发现完美的天然疗法。
+              根据症状、健康目标或体质类型进行智能搜索匹配。
             </p>
+            
+            {/* Quick stats showcase */}
+            <div className="flex justify-center space-x-8 mt-8">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-green-600">{stats.highSafety}</div>
+                <div className="text-sm text-gray-600">高安全等级</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-emerald-600">{stats.premiumHerbs}</div>
+                <div className="text-sm text-gray-600">优质草药</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-teal-600">{stats.uniqueBenefits}</div>
+                <div className="text-sm text-gray-600">独特功效</div>
+              </div>
+            </div>
           </div>
 
-          {/* Popular Categories */}
-          <div className="mb-8">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-              <Target className="w-5 h-5 mr-2 text-green-600" />
-              Popular Categories
+          {/* Enhanced Popular Categories with visual improvements */}
+          <div className="mb-10">
+            <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
+              <Target className="w-6 h-6 mr-3 text-green-600" />
+              热门分类
+              <span className="ml-3 text-sm font-normal text-gray-500">点击快速筛选</span>
             </h3>
-            <div className="flex flex-wrap gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {popularCategories.map((category) => (
                 <button
                   key={category.label}
                   onClick={() => handleCategorySelect(category.label)}
-                  className={`flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 ${
+                  className={`group relative overflow-hidden rounded-2xl p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-xl ${
                     filters.category === category.label
-                      ? 'bg-green-600 text-white shadow-lg'
-                      : 'bg-white text-gray-700 hover:bg-green-50 hover:text-green-700 border border-gray-200 hover:border-green-200'
+                      ? `bg-gradient-to-br ${category.color} text-white shadow-2xl scale-105`
+                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200 hover:border-green-200'
                   }`}
                 >
-                  {category.icon}
-                  <span className="ml-2">{category.label}</span>
+                  <div className={`inline-flex items-center justify-center w-12 h-12 rounded-full mb-3 transition-colors ${
+                    filters.category === category.label
+                      ? 'bg-white/20'
+                      : 'bg-green-100 text-green-600 group-hover:bg-green-200'
+                  }`}>
+                    {category.icon}
+                  </div>
+                  <h4 className="font-semibold text-sm mb-1">{category.label}</h4>
+                  <p className={`text-xs ${
+                    filters.category === category.label ? 'text-white/80' : 'text-gray-500'
+                  }`}>
+                    {category.description}
+                  </p>
+                  
+                  {/* Active indicator */}
+                  {filters.category === category.label && (
+                    <div className="absolute top-2 right-2">
+                      <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
+                    </div>
+                  )}
                 </button>
               ))}
             </div>
           </div>
 
           {/* Enhanced Search and Filter Bar */}
-          <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-gray-100">
-            <div className="flex flex-col lg:flex-row gap-4">
-              {/* Enhanced Search Input */}
+          <div className="bg-white rounded-3xl shadow-xl p-8 mb-10 border border-gray-100 backdrop-blur-sm bg-white/90">
+            <div className="flex flex-col lg:flex-row gap-6">
+              {/* Enhanced Search Input with suggestions */}
               <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search by name, symptoms, benefits, or ingredients... (e.g., 'sleep', 'anxiety', 'ginseng')"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                  value={filters.search}
-                  onChange={(e) => handleFilterChange('search', e.target.value)}
-                />
+                <div className="relative">
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="搜索草药名称、症状、功效或成分... (例如：'失眠', '焦虑', '人参')"
+                    className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-lg bg-gray-50 focus:bg-white"
+                    value={filters.search}
+                    onChange={(e) => handleFilterChange('search', e.target.value)}
+                    onFocus={() => setShowSuggestions(searchSuggestions.length > 0)}
+                    onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                  />
+                  {filters.search && (
+                    <button
+                      onClick={() => handleFilterChange('search', '')}
+                      className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  )}
+                </div>
+                
+                {/* Search Suggestions Dropdown */}
+                {showSuggestions && searchSuggestions.length > 0 && (
+                  <div className="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-xl shadow-lg max-h-64 overflow-y-auto">
+                    {searchSuggestions.map((suggestion, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleSearchSuggestionSelect(suggestion)}
+                        className="w-full px-4 py-3 text-left hover:bg-green-50 transition-colors border-b border-gray-100 last:border-b-0 flex items-center"
+                      >
+                        <Search className="w-4 h-4 mr-3 text-gray-400" />
+                        <span className="text-gray-700">{suggestion}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
-              {/* Filter Toggle */}
-              <div className="flex gap-2">
+              {/* Enhanced Control Buttons */}
+              <div className="flex gap-3">
+                {/* Sort Dropdown */}
+                <div className="relative">
+                  <select
+                    value={filters.sortBy}
+                    onChange={(e) => handleFilterChange('sortBy', e.target.value)}
+                    className="appearance-none bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-6 py-4 rounded-2xl transition-all hover:from-blue-600 hover:to-indigo-700 focus:ring-2 focus:ring-blue-500 pr-12"
+                  >
+                    {sortOptions.map(option => (
+                      <option key={option.value} value={option.value} className="bg-white text-gray-900">
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white pointer-events-none" />
+                </div>
+                
                 <button
                   onClick={() => setShowFilters(!showFilters)}
-                  className={`flex items-center px-4 py-3 rounded-xl transition-colors ${
-                    showFilters ? 'bg-green-100 text-green-700' : 'bg-gray-100 hover:bg-gray-200'
+                  className={`flex items-center px-6 py-4 rounded-2xl transition-all font-medium ${
+                    showFilters || hasActiveFilters 
+                      ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg' 
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
                   }`}
                 >
                   <Filter className="w-5 h-5 mr-2" />
-                  Advanced Filters
+                  高级筛选
+                  {hasActiveFilters && (
+                    <span className="ml-2 bg-white/20 text-xs px-2 py-1 rounded-full">
+                      {Object.values(filters).filter(v => v && v !== 'relevance').length}
+                    </span>
+                  )}
                   <ChevronDown className={`w-4 h-4 ml-2 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
                 </button>
                 
                 <button
                   onClick={refreshData}
-                  className="flex items-center px-4 py-3 bg-green-100 hover:bg-green-200 text-green-700 rounded-xl transition-colors"
+                  className="flex items-center px-6 py-4 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white rounded-2xl transition-all shadow-lg hover:shadow-xl"
                 >
                   <RefreshCw className="w-5 h-5" />
                 </button>
               </div>
             </div>
                         
-            {/* Expanded Filters */}
+            {/* Expanded Filters with enhanced design */}
             {showFilters && (
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                <div className="grid md:grid-cols-3 gap-4">
+              <div className="mt-8 pt-8 border-t border-gray-200">
+                <div className="grid md:grid-cols-3 gap-6">
                   {/* Constitution Filter */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Constitution Type
+                  <div className="space-y-3">
+                    <label className="block text-sm font-semibold text-gray-700 flex items-center">
+                      <Users className="w-4 h-4 mr-2 text-indigo-600" />
+                      体质类型
                     </label>
                     <select
                       value={filters.constitution}
                       onChange={(e) => handleFilterChange('constitution', e.target.value)}
-                      className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500"
+                      className="w-full p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 bg-gray-50 focus:bg-white transition-all"
                     >
-                      <option value="">All Constitutions</option>
+                      <option value="">所有体质类型</option>
                       {constitutionOptions.map(option => (
                         <option key={option} value={option}>{option}</option>
                       ))}
@@ -408,16 +637,17 @@ export default function HerbFinderClient() {
                   </div>
                         
                   {/* Efficacy Filter */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Primary Benefit
+                  <div className="space-y-3">
+                    <label className="block text-sm font-semibold text-gray-700 flex items-center">
+                      <Heart className="w-4 h-4 mr-2 text-red-600" />
+                      主要功效
                     </label>
                     <select
                       value={filters.efficacy}
                       onChange={(e) => handleFilterChange('efficacy', e.target.value)}
-                      className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500"
+                      className="w-full p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 bg-gray-50 focus:bg-white transition-all"
                     >
-                      <option value="">All Benefits</option>
+                      <option value="">所有功效</option>
                       {efficacyOptions.map(option => (
                         <option key={option} value={option}>{option}</option>
                       ))}
@@ -425,16 +655,17 @@ export default function HerbFinderClient() {
                   </div>
                         
                   {/* Safety Filter */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Safety Level
+                  <div className="space-y-3">
+                    <label className="block text-sm font-semibold text-gray-700 flex items-center">
+                      <Shield className="w-4 h-4 mr-2 text-green-600" />
+                      安全等级
                     </label>
                     <select
                       value={filters.safety}
                       onChange={(e) => handleFilterChange('safety', e.target.value)}
-                      className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500"
+                      className="w-full p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 bg-gray-50 focus:bg-white transition-all"
                     >
-                      <option value="">All Safety Levels</option>
+                      <option value="">所有安全等级</option>
                       {safetyOptions.map(option => (
                         <option key={option.value} value={option.value}>{option.label}</option>
                       ))}
@@ -442,15 +673,20 @@ export default function HerbFinderClient() {
                   </div>
                 </div>
                       
-                {/* Clear Filters */}
+                {/* Clear Filters with enhanced styling */}
                 {hasActiveFilters && (
-                  <div className="mt-4 flex justify-end">
+                  <div className="mt-6 flex justify-between items-center p-4 bg-gray-50 rounded-xl">
+                    <div className="text-sm text-gray-600">
+                      已应用 <span className="font-semibold text-green-600">
+                        {Object.values(filters).filter(v => v && v !== 'relevance').length}
+                      </span> 个筛选条件
+                    </div>
                     <button
                       onClick={clearFilters}
-                      className="flex items-center px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                      className="flex items-center px-4 py-2 text-gray-600 hover:text-gray-800 hover:bg-white rounded-lg transition-all"
                     >
                       <X className="w-4 h-4 mr-1" />
-                      Clear All Filters
+                      清除所有筛选
                     </button>
                   </div>
                 )}
@@ -458,26 +694,46 @@ export default function HerbFinderClient() {
             )}
           </div>
 
-          {/* Results Header with Enhanced Info */}
+          {/* Enhanced Results Header */}
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">
-                {error ? 'Error Loading Herbs' : (
+              <h2 className="text-3xl font-bold text-gray-900 flex items-center">
+                {error ? (
+                  <span className="text-red-600">加载错误</span>
+                ) : (
                   <>
-                    <span className="text-green-600">{filteredHerbs.length}</span> Herbs Found
+                    找到 <span className="text-green-600 mx-2">{filteredHerbs.length}</span> 种草药
+                    <Sparkles className="w-6 h-6 ml-2 text-yellow-500" />
                   </>
                 )}
               </h2>
               {!error && (
-                <p className="text-gray-600 mt-1">
+                <p className="text-gray-600 mt-2 flex items-center">
                   {hasActiveFilters ? (
-                    <>Filtered from {herbs.length} total herbs • Sorted by quality & popularity</>
+                    <>
+                      <Filter className="w-4 h-4 mr-2" />
+                      从 {herbs.length} 种草药中筛选 • 按{sortOptions.find(opt => opt.value === filters.sortBy)?.label}排序
+                    </>
                   ) : (
-                    <>Showing all available herbs • Use filters to find specific remedies</>
+                    <>
+                      <BookOpen className="w-4 h-4 mr-2" />
+                      显示所有可用草药 • 使用上方筛选器查找特定疗法
+                    </>
                   )}
                 </p>
               )}
             </div>
+
+            {/* Quick filter reset */}
+            {hasActiveFilters && (
+              <button
+                onClick={clearFilters}
+                className="flex items-center px-4 py-2 bg-red-50 hover:bg-red-100 text-red-700 rounded-xl transition-colors"
+              >
+                <X className="w-4 h-4 mr-2" />
+                重置筛选
+              </button>
+            )}
           </div>
 
           {/* Error State */}

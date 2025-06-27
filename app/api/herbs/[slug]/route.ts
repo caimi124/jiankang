@@ -450,37 +450,37 @@ export async function GET(
       
       // 尝试匹配slug
       const matchedHerb = HERBS_DATABASE.find(herb => {
-        const herbSlug = herb.english_name.toLowerCase()
+        const herbSlug = herb.englishName.toLowerCase()
           .replace(/\s+/g, '-')
           .replace(/[^\w\-]/g, '')
           .replace(/--+/g, '-')
           .trim()
         return herbSlug === normalizedSlug || 
-               herb.english_name.toLowerCase().includes(normalizedSlug) ||
-               herb.chinese_name.includes(normalizedSlug)
+               herb.englishName.toLowerCase().includes(normalizedSlug) ||
+               herb.herbName.includes(normalizedSlug)
       })
       
       if (matchedHerb) {
         // 为数据库中的草药生成基础详情页数据
         herbData = {
           id: matchedHerb.id,
-          name: matchedHerb.english_name.replace(/\(.*?\)/g, '').trim(),
-          chinese_name: matchedHerb.chinese_name.replace(/\s*\/\s*.*/g, '').trim(),
-          latin_name: matchedHerb.latin_name.replace(/\s*\/\s*.*/g, '').trim(),
+          name: matchedHerb.englishName.replace(/\(.*?\)/g, '').trim(),
+          chinese_name: matchedHerb.herbName.replace(/\s*\/\s*.*/g, '').trim(),
+          latin_name: matchedHerb.latinName.replace(/\s*\/\s*.*/g, '').trim(),
           slug: normalizedSlug,
           category: matchedHerb.category,
           evidence_level: 'Moderate' as const,
-          safety_level: matchedHerb.safety_level,
+          safety_level: matchedHerb.safetyLevel,
           
-          overview: matchedHerb.description || `${matchedHerb.english_name} is a traditional herb known for its therapeutic properties. ${matchedHerb.traditional_use}`,
+          overview: matchedHerb.description || `${matchedHerb.englishName} is a traditional herb known for its therapeutic properties. ${matchedHerb.traditionalUse}`,
           
-          benefits: matchedHerb.primary_effects || matchedHerb.efficacy || ['General wellness support'],
+          benefits: matchedHerb.efficacy || ['General wellness support'],
           
-          active_compounds: `Active compounds in ${matchedHerb.english_name} include ${Array.isArray(matchedHerb.ingredients) ? matchedHerb.ingredients.join(', ') : matchedHerb.ingredients || 'various bioactive compounds'} that contribute to its therapeutic effects.`,
+          active_compounds: `Active compounds in ${matchedHerb.englishName} include ${Array.isArray(matchedHerb.ingredients) ? matchedHerb.ingredients.join(', ') : matchedHerb.ingredients || 'various bioactive compounds'} that contribute to its therapeutic effects.`,
           
-          traditional_uses: matchedHerb.traditional_use || `Traditionally used in herbal medicine for various health purposes.`,
+          traditional_uses: matchedHerb.traditionalUse || `Traditionally used in herbal medicine for various health purposes.`,
           
-          suitable_for: [`People seeking ${matchedHerb.primary_effects?.[0] || 'natural health support'}`],
+          suitable_for: [`People seeking ${matchedHerb.efficacy?.[0] || 'natural health support'}`],
           
           not_suitable_for: [
             matchedHerb.contraindications || 'People with known allergies to this herb',
@@ -492,7 +492,7 @@ export async function GET(
             {
               form: 'Capsule',
               dosage: matchedHerb.dosage || '根据产品标签服用',
-              usage: matchedHerb.usage_suggestions || '随餐服用'
+              usage: matchedHerb.usageTips || '随餐服用'
             }
           ],
           
@@ -504,13 +504,13 @@ export async function GET(
           
           interactions: ['请咨询医生关于可能的药物相互作用'],
           
-          scientific_evidence: matchedHerb.modern_applications || 'Research is ongoing to better understand the therapeutic benefits of this herb.',
+          scientific_evidence: matchedHerb.modernApplications || 'Research is ongoing to better understand the therapeutic benefits of this herb.',
           
           constitution_match: [
             {
-              type: matchedHerb.constitution_type,
+              type: matchedHerb.constitutionType,
               suitable: 'yes' as const,
-              description: `适合${matchedHerb.constitution_type}体质`
+              description: `适合${matchedHerb.constitutionType}体质`
             }
           ],
           
@@ -518,7 +518,7 @@ export async function GET(
           
           user_stories: [
             {
-              quote: `I found ${matchedHerb.english_name} helpful for my wellness routine.`,
+              quote: `I found ${matchedHerb.englishName} helpful for my wellness routine.`,
               author: 'Verified User',
               location: 'User Review'
             }
@@ -526,8 +526,8 @@ export async function GET(
           
           faqs: [
             {
-              question: `What is ${matchedHerb.english_name} used for?`,
-              answer: `${matchedHerb.english_name} is traditionally used for ${matchedHerb.primary_effects?.[0] || 'various health purposes'}.`
+              question: `What is ${matchedHerb.englishName} used for?`,
+              answer: `${matchedHerb.englishName} is traditionally used for ${matchedHerb.efficacy?.[0] || 'various health purposes'}.`
             },
             {
               question: 'Is it safe to use daily?',
@@ -535,8 +535,8 @@ export async function GET(
             }
           ],
           
-          seo_keywords: [matchedHerb.english_name.toLowerCase(), ...(matchedHerb.efficacy || [])],
-          properties: matchedHerb.primary_effects || ['Natural Health Support']
+          seo_keywords: [matchedHerb.englishName.toLowerCase(), ...(matchedHerb.efficacy || [])],
+          properties: matchedHerb.efficacy || ['Natural Health Support']
         }
       }
     }

@@ -1,38 +1,11 @@
 // Updated herb recommendation system for HerbScience.shop
-// Using complete Notion database with 58 herbs
+// Using complete Notion database with 69 herbs
 
 // Import complete herbs database from Notion
-import { HERBS_DATABASE, herbsByConstitution, searchHerbs, herbs } from './herbs-data-complete';
+import { HERBS_DATABASE, herbs, Herb } from './herbs-data-complete';
 
 // Re-export the Herb interface for compatibility
-export interface Herb {
-  id: string;
-  chinese_name: string;
-  english_name: string;
-  latin_name: string;
-  category: string;
-  constitution_type: string;
-  primary_effects: string[];
-  secondary_effects: string[];
-  efficacy: string[];
-  dosage: string;
-  safety_level: 'high' | 'medium' | 'low';
-  contraindications: string;
-  description: string;
-  traditional_use: string;
-  modern_applications: string;
-  taste: string;
-  meridians: string[];
-  part_used: string;
-  source: string;
-  growing_regions: string[];
-  price_range: string;
-  availability: string;
-  quality_score: number;
-  popularity_score: number;
-  usage_suggestions: string;
-  ingredients: string[];
-}
+export type { Herb } from './herbs-data-complete';
 
 // Constitution type mapping for herb recommendations
 export const CONSTITUTION_HERB_MAPPING = {
@@ -93,7 +66,7 @@ export class HerbsDataService {
   // Get personalized herb recommendations based on constitution
   async getRecommendationsForConstitution(
     constitutionType: string,
-    preferredSafety: ('high' | 'medium' | 'low')[] = ['high', 'medium'],
+    preferredSafety: string[] = ['high', 'medium'],
     limit: number = 6
   ): Promise<Herb[]> {
     try {
@@ -101,7 +74,7 @@ export class HerbsDataService {
       const mapping = CONSTITUTION_HERB_MAPPING[constitutionType as keyof typeof CONSTITUTION_HERB_MAPPING];
       
       if (!mapping) {
-        return allHerbs.filter(herb => preferredSafety.includes(herb.safety_level)).slice(0, limit);
+        return allHerbs.filter(herb => preferredSafety.includes(herb.safetyLevel)).slice(0, limit);
       }
 
       // Score herbs based on constitution compatibility
@@ -109,14 +82,14 @@ export class HerbsDataService {
         let score = 0;
 
         // Constitution match scoring
-        if (mapping.primaryConstitutions.includes(herb.constitution_type)) {
+        if (mapping.primaryConstitutions.includes(herb.constitutionType)) {
           score += 10;
-        } else if (mapping.secondaryConstitutions.includes(herb.constitution_type)) {
+        } else if (mapping.secondaryConstitutions.includes(herb.constitutionType)) {
           score += 5;
         }
 
         // Efficacy match scoring
-        const herbEfficacy = [...herb.primary_effects, ...herb.secondary_effects, ...herb.efficacy];
+        const herbEfficacy = [...herb.efficacy];
         const matchingEfficacy = herbEfficacy.filter(eff => 
           mapping.preferredEfficacy.some(preferred => 
             eff.includes(preferred) || preferred.includes(eff)
@@ -133,16 +106,16 @@ export class HerbsDataService {
         score -= avoidMatches.length * 2;
 
         // Safety preference
-        if (preferredSafety.includes(herb.safety_level)) {
+        if (preferredSafety.includes(herb.safetyLevel)) {
           score += 2;
         }
 
         // Quality and popularity boost
-        score += (herb.quality_score || 0) / 25;
-        score += (herb.popularity_score || 0) / 25;
+        score += (herb.qualityScore || 0) / 25;
+        score += (herb.popularityScore || 0) / 25;
 
         // Boost for high safety herbs
-        if (herb.safety_level === 'high') {
+        if (herb.safetyLevel === 'high') {
           score += 3;
         }
 
@@ -152,7 +125,7 @@ export class HerbsDataService {
       // Sort by score and return top results
       const recommendations = scoredHerbs
         .sort((a, b) => b.score - a.score)
-        .filter(item => preferredSafety.includes(item.herb.safety_level))
+        .filter(item => preferredSafety.includes(item.herb.safetyLevel))
         .slice(0, limit)
         .map(item => item.herb);
 
@@ -177,7 +150,7 @@ export class HerbsDataService {
   // Search herbs by constitution
   async searchHerbsByConstitution(constitution: string, limit: number = 10): Promise<Herb[]> {
     try {
-      const constitutionHerbs = herbsByConstitution[constitution] || [];
+      const constitutionHerbs = herbsByConstitution(constitution);
       return constitutionHerbs.map(herb => this.convertNotionHerbToHerb(herb)).slice(0, limit);
     } catch (error) {
       console.error('Error searching herbs by constitution:', error);
@@ -186,54 +159,55 @@ export class HerbsDataService {
   }
 
   // Filter herbs by safety level
-  async filterHerbsBySafety(safetyLevel: 'high' | 'medium' | 'low'): Promise<Herb[]> {
+  async filterHerbsBySafety(safetyLevel: string): Promise<Herb[]> {
     try {
       const allHerbs = await this.fetchAllHerbs();
-      return allHerbs.filter(herb => herb.safety_level === safetyLevel);
+      return allHerbs.filter(herb => herb.safetyLevel === safetyLevel);
     } catch (error) {
       console.error('Error filtering herbs by safety:', error);
       return [];
     }
   }
 
-  // Convert NotionHerb to Herb interface
+  // Convert Notion herb data to Herb interface
   private convertNotionHerbToHerb(notionHerb: any): Herb {
-    // Normalize safety level
-    let safety_level: 'high' | 'medium' | 'low' = 'medium';
-    if (notionHerb.safety_level) {
-      const level = notionHerb.safety_level.toLowerCase();
-      if (level.includes('高') || level === 'high') safety_level = 'high';
-      else if (level.includes('低') || level === 'low') safety_level = 'low';
-      else safety_level = 'medium';
-    }
-
     return {
       id: notionHerb.id || '',
-      chinese_name: notionHerb.chinese_name || '',
-      english_name: notionHerb.english_name || '',
-      latin_name: notionHerb.latin_name || '',
+      herbName: notionHerb.herbName || '',
+      englishName: notionHerb.englishName || '',
+      latinName: notionHerb.latinName || '',
       category: notionHerb.category || '',
-      constitution_type: notionHerb.constitution_type || '',
-      primary_effects: notionHerb.primary_effects || [],
-      secondary_effects: notionHerb.secondary_effects || [],
-      efficacy: notionHerb.efficacy || [],
-      dosage: notionHerb.dosage || '',
-      safety_level,
-      contraindications: notionHerb.contraindications || '',
       description: notionHerb.description || '',
-      traditional_use: notionHerb.traditional_use || '',
-      modern_applications: notionHerb.modern_applications || '',
-      taste: notionHerb.taste || '',
-      meridians: notionHerb.meridians || [],
-      part_used: notionHerb.part_used || '',
-      source: notionHerb.source || '',
-      growing_regions: notionHerb.growing_regions || [],
-      price_range: notionHerb.price_range || '',
+      efficacy: notionHerb.efficacy || [],
+      safetyLevel: notionHerb.safetyLevel || 'medium',
+      ingredients: notionHerb.ingredients || [],
+      qualityScore: notionHerb.qualityScore || 70,
+      popularityScore: notionHerb.popularityScore || 70,
       availability: notionHerb.availability || '',
-      quality_score: notionHerb.quality_score || 0,
-      popularity_score: notionHerb.popularity_score || 0,
-      usage_suggestions: notionHerb.usage_suggestions || '',
-      ingredients: Array.isArray(notionHerb.ingredients) ? notionHerb.ingredients : [notionHerb.ingredients || '']
+      priceRange: notionHerb.priceRange || '',
+      growingRegions: notionHerb.growingRegions || [],
+      constitutionType: notionHerb.constitutionType || '',
+      traditionalUse: notionHerb.traditionalUse || '',
+      modernApplications: notionHerb.modernApplications || '',
+      contraindications: notionHerb.contraindications || '',
+      dosage: notionHerb.dosage || '',
+      usageTips: notionHerb.usageTips || '',
+      tags: notionHerb.tags || [],
+      overview: notionHerb.overview || '',
+      benefits: notionHerb.benefits || '',
+      activeCompounds: notionHerb.activeCompounds || '',
+      mechanismOfAction: notionHerb.mechanismOfAction || '',
+      constitutionExplanation: notionHerb.constitutionExplanation || '',
+      recommendedFor: notionHerb.recommendedFor || [],
+      notRecommendedFor: notionHerb.notRecommendedFor || [],
+      medicalStudies: notionHerb.medicalStudies || '',
+      caseStudy: notionHerb.caseStudy || '',
+      faq: notionHerb.faq || '',
+      partUsed: notionHerb.partUsed || '',
+      taste: notionHerb.taste || '',
+      source: notionHerb.source || '',
+      createdTime: notionHerb.createdTime || '',
+      lastEditedTime: notionHerb.lastEditedTime || ''
     };
   }
 
@@ -244,9 +218,9 @@ export class HerbsDataService {
       const searchTerm = query.toLowerCase();
       
       const results = allHerbs.filter(herb => 
-        herb.chinese_name.toLowerCase().includes(searchTerm) ||
-        herb.english_name.toLowerCase().includes(searchTerm) ||
-        herb.latin_name.toLowerCase().includes(searchTerm)
+        herb.herbName.toLowerCase().includes(searchTerm) ||
+        herb.englishName.toLowerCase().includes(searchTerm) ||
+        herb.latinName.toLowerCase().includes(searchTerm)
       );
       
       return results.slice(0, limit);
@@ -274,7 +248,7 @@ export class HerbRecommendationEngine {
     primaryConstitution: string,
     secondaryConstitutions: string[] = [],
     healthGoals: string[] = [],
-    safetyPreference: ('high' | 'medium' | 'low')[] = ['high', 'medium']
+    safetyPreference: string[] = ['high', 'medium']
   ) {
     try {
       console.log('Generating personalized recommendations for:', {
@@ -334,15 +308,15 @@ export class HerbRecommendationEngine {
         }
 
         // Safety level preference
-        if (herb.safety_level === 'high') {
+        if (herb.safetyLevel === 'high') {
           score += 2;
-        } else if (herb.safety_level === 'medium') {
+        } else if (herb.safetyLevel === 'medium') {
           score += 1;
         }
 
         // Quality scores
-        score += (herb.quality_score || 0) / 20;
-        score += (herb.popularity_score || 0) / 20;
+        score += (herb.qualityScore || 0) / 20;
+        score += (herb.popularityScore || 0) / 20;
 
         return { herb, score };
       });
@@ -389,4 +363,22 @@ export class HerbRecommendationEngine {
 }
 
 // Export singleton instance
-export const herbRecommendationEngine = new HerbRecommendationEngine(); 
+export const herbRecommendationEngine = new HerbRecommendationEngine();
+
+// Helper functions
+const searchHerbs = (query: string): Herb[] => {
+  const searchLower = query.toLowerCase();
+  return herbs.filter((herb: Herb) => 
+    herb.herbName.toLowerCase().includes(searchLower) ||
+    herb.englishName.toLowerCase().includes(searchLower) ||
+    herb.description.toLowerCase().includes(searchLower) ||
+    herb.efficacy.some((effect: string) => effect.toLowerCase().includes(searchLower))
+  );
+};
+
+const herbsByConstitution = (constitution: string): Herb[] => {
+  return herbs.filter((herb: Herb) => 
+    herb.constitutionType === constitution ||
+    herb.recommendedFor.includes(constitution)
+  );
+}; 
