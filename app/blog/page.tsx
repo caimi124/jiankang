@@ -1,185 +1,73 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import Navigation from '../../components/Navigation'
 import Breadcrumb from '../../components/Breadcrumb'
 import { Calendar, User, Tag, ArrowRight, Search, Filter } from 'lucide-react'
+import { blogPosts, getBlogPostsByCategory } from '../../lib/blog-data'
 
 export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
 
+  // 从Notion获取的博客数据
+  const allArticles = blogPosts || []
+  
+  // 获取分类统计
+  const categoryCounts: Record<string, number> = allArticles.reduce((acc: Record<string, number>, article) => {
+    acc[article.category] = (acc[article.category] || 0) + 1
+    return acc
+  }, {})
+  
   const categories = [
-    { id: 'all', name: 'All Articles', count: 24 },
-    { id: 'research', name: 'Latest Research', count: 8 },
-    { id: 'safety', name: 'Safety & Interactions', count: 6 },
-    { id: 'traditional', name: 'Traditional Medicine', count: 5 },
-    { id: 'lifestyle', name: 'Lifestyle & Wellness', count: 5 }
+    { id: 'all', name: 'All Articles', count: allArticles.length },
+    { id: 'lifestyle', name: 'Lifestyle & Wellness', count: categoryCounts['lifestyle'] || 0 },
+    { id: 'research', name: 'Latest Research', count: categoryCounts['research'] || 0 },
+    { id: 'safety', name: 'Safety & Interactions', count: categoryCounts['safety'] || 0 },
+    { id: 'traditional', name: 'Traditional Medicine', count: categoryCounts['traditional'] || 0 },
+    { id: '科学研究', name: 'Scientific Research', count: categoryCounts['科学研究'] || 0 },
+    { id: '季节养生', name: 'Seasonal Wellness', count: categoryCounts['季节养生'] || 0 },
+    { id: '草药科普', name: 'Herb Education', count: categoryCounts['草药科普'] || 0 },
+    { id: '购买指南', name: 'Buying Guide', count: categoryCounts['购买指南'] || 0 }
   ]
 
-  const featuredArticles = [
-    {
-      id: 1,
-      title: "Turmeric Made Simple: How to Use It Today for Real Gut Relief and Pain Reduction",
-      excerpt: "Feeling bloated, achy, or tired? Discover how turmeric can help calm your gut, reduce inflammation, and boost your energy.",
-      category: "lifestyle",
-      author: "HerbScience Team", 
-      date: "2025-01-19",
-      readTime: "8 min read",
-      image: "🌿",
-      featured: true,
-      slug: "turmeric-gut-relief-guide",
-      tags: ["turmeric benefits", "gut health", "natural pain relief", "inflammation"]
-    },
-    {
-      id: 2,
-      title: "Breakthrough Research: Turmeric and Curcumin Show Promise in Alzheimer's Prevention",
-      excerpt: "New clinical trials demonstrate significant cognitive benefits from standardized curcumin supplementation in adults over 50.",
-      category: "research",
-      author: "Dr. Sarah Chen",
-      date: "2024-01-15",
-      readTime: "5 min read",
-      image: "🧠",
-      featured: true,
-      tags: ["turmeric", "alzheimer's", "cognitive health", "clinical trial"]
-    },
-    {
-      id: 3,
-      title: "Hidden Dangers: 5 Popular Herb-Medication Combinations to Avoid",
-      excerpt: "Essential safety information about dangerous interactions between common herbal supplements and prescription medications.",
-      category: "safety",
-      author: "Dr. Michael Rodriguez",
-      date: "2024-01-12",
-      readTime: "7 min read",
-      image: "⚠️",
-      featured: true,
-      tags: ["drug interactions", "safety", "blood thinners", "diabetes"]
+  // 获取分类图标
+  function getCategoryIcon(category: string): string {
+    const icons: Record<string, string> = {
+      'lifestyle': '🌿',
+      'research': '🧠',
+      'safety': '⚠️',
+      'traditional': '🏛️',
+      '科学研究': '🔬',
+      '季节养生': '🍂',
+      '草药科普': '📚',
+      '购买指南': '🛒'
     }
-  ]
+    return icons[category] || '📄'
+  }
 
-  const articles = [
-    // High-traffic SEO optimized articles
-    {
-      id: 3,
-      title: "Best Herbs for Anxiety: Natural Alternatives to Prescription Medications",
-      excerpt: "Compare the effectiveness of ashwagandha, valerian, and passionflower vs. prescription anti-anxiety drugs. Evidence-based guide with dosages.",
-      category: "research",
-      author: "Dr. Sarah Chen",
-      date: "2024-01-10",
-      readTime: "8 min read",
-      image: "🧠",
-      slug: "herbs-for-anxiety-natural-alternatives",
-      tags: ["anxiety", "herbs vs drugs", "ashwagandha", "prescription alternatives"]
-    },
-    {
-      id: 4,
-      title: "Is Turmeric Safe During Pregnancy? Complete Safety Guide",
-      excerpt: "Everything expecting mothers need to know about turmeric and curcumin supplementation, including trimester-specific recommendations.",
-      category: "safety",
-      author: "Dr. Michael Rodriguez",
-      date: "2024-01-08",
-      readTime: "6 min read",
-      image: "🤰",
-      tags: ["turmeric pregnancy", "curcumin safety", "pregnancy herbs", "expecting mothers"]
-    },
-    {
-      id: 5,
-      title: "Best Herbs for Sleep: What Actually Works for Insomnia",
-      excerpt: "Scientific comparison of valerian, chamomile, passionflower, and melatonin. Which sleep herbs have the strongest evidence?",
-      category: "lifestyle",
-      author: "Dr. Sarah Chen",
-      date: "2024-01-06",
-      readTime: "7 min read",
-      image: "🌙",
-      tags: ["herbs for sleep", "insomnia", "valerian vs melatonin", "natural sleep aids"]
-    },
-    {
-      id: 6,
-      title: "Ginseng vs. Coffee: Which is Better for Energy and Focus?",
-      excerpt: "Head-to-head comparison of ginseng and caffeine for mental energy, with pros, cons, and ideal use cases for each.",
-      category: "lifestyle",
-      author: "Dr. Michael Rodriguez",
-      date: "2024-01-04",
-      readTime: "5 min read",
-      image: "⚡",
-      tags: ["ginseng vs coffee", "natural energy", "focus supplements", "caffeine alternatives"]
-    },
-    {
-      id: 7,
-      title: "Herbs for Women's Health: Hormonal Balance and Menstrual Support",
-      excerpt: "Evidence-based guide to chasteberry, evening primrose, and other herbs for PMS, irregular periods, and hormone balance.",
-      category: "lifestyle",
-      author: "Dr. Lisa Zhang",
-      date: "2024-01-02",
-      readTime: "9 min read",
-      image: "🌸",
-      tags: ["women's health", "hormonal balance", "menstrual herbs", "PMS relief"]
-    },
-    {
-      id: 8,
-      title: "Herbs for Brain Health: Memory, Focus, and Cognitive Protection",
-      excerpt: "Complete guide to nootropic herbs: ginkgo, bacopa, lion's mane, and rhodiola for memory enhancement and brain protection.",
-      category: "research",
-      author: "Dr. Sarah Chen",
-      date: "2023-12-30",
-      readTime: "10 min read",
-      image: "🧬",
-      tags: ["brain health", "memory herbs", "cognitive enhancement", "nootropics"]
-    },
-    {
-      id: 9,
-      title: "Are Herbal Supplements FDA Approved? Regulation Guide 2024",
-      excerpt: "Understanding supplement regulations, what FDA approval means for herbs, and how to choose quality products.",
-      category: "safety",
-      author: "Dr. Michael Rodriguez",
-      date: "2023-12-28",
-      readTime: "6 min read",
-      image: "🏛️",
-      tags: ["FDA approval", "supplement regulation", "quality standards", "herb safety"]
-    },
-    {
-      id: 10,
-      title: "Herbs for Immunity: Boost Your Immune System Naturally",
-      excerpt: "Research-backed immune herbs: echinacea, elderberry, astragalus, and medicinal mushrooms. When and how to use them effectively.",
-      category: "traditional",
-      author: "Dr. Lisa Zhang",
-      date: "2023-12-26",
-      readTime: "8 min read",
-      image: "🛡️",
-      tags: ["immune herbs", "echinacea", "elderberry", "immune support"]
-    },
-    {
-      id: 11,
-      title: "Herbs vs. Prescription Drugs: Safety, Effectiveness, and Cost Comparison",
-      excerpt: "Honest comparison of herbal medicine vs. pharmaceutical drugs for common conditions, including benefits, risks, and costs.",
-      category: "research",
-      author: "Dr. Sarah Chen",
-      date: "2023-12-24",
-      readTime: "12 min read",
-      image: "⚖️",
-      tags: ["herbs vs drugs", "natural vs pharmaceutical", "treatment comparison", "healthcare costs"]
-    },
-    {
-      id: 12,
-      title: "Digestive Health Herbs: Natural Remedies for Gut Issues",
-      excerpt: "Traditional and modern herbs for IBS, bloating, acid reflux, and digestive wellness. Evidence-based dosing and combinations.",
-      category: "traditional",
-      author: "Dr. Lisa Zhang",
-      date: "2023-12-22",
-      readTime: "7 min read",
-      image: "🫶",
-      tags: ["digestive herbs", "gut health", "IBS herbs", "stomach remedies"]
-    }
-  ]
+  // 精选文章（取前3篇）
+  const featuredArticles = allArticles.slice(0, 3).map(article => ({
+    ...article,
+    date: article.publishDate,
+    image: getCategoryIcon(article.category),
+    featured: true
+  }))
 
-  const filteredArticles = articles.filter(article => {
+  // 筛选文章
+  const filteredArticles = allArticles.filter(article => {
     const matchesCategory = selectedCategory === 'all' || article.category === selectedCategory
     const matchesSearch = searchQuery === '' || 
       article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       article.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      article.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+      article.tags.some((tag: string) => tag.toLowerCase().includes(searchQuery.toLowerCase()))
     return matchesCategory && matchesSearch
-  })
+  }).map(article => ({
+    ...article,
+    date: article.publishDate,
+    image: getCategoryIcon(article.category)
+  }))
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -269,10 +157,12 @@ export default function BlogPage() {
                         <Calendar className="w-4 h-4 text-gray-400" />
                         <span className="text-sm text-gray-600">{article.date}</span>
                       </div>
-                      <button className="text-green-600 hover:text-green-700 flex items-center space-x-1">
-                        <span className="text-sm font-medium">Read More</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </button>
+                      <Link href={`/blog/${article.slug}`}>
+                        <button className="text-green-600 hover:text-green-700 flex items-center space-x-1">
+                          <span className="text-sm font-medium">Read More</span>
+                          <ArrowRight className="w-4 h-4" />
+                        </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -313,9 +203,11 @@ export default function BlogPage() {
                       <div className="text-xs text-gray-500">
                         {article.author} • {article.date}
                       </div>
-                      <button className="text-green-600 hover:text-green-700">
-                        <ArrowRight className="w-4 h-4" />
-                      </button>
+                      <Link href={`/blog/${article.slug}`}>
+                        <button className="text-green-600 hover:text-green-700">
+                          <ArrowRight className="w-4 h-4" />
+                        </button>
+                      </Link>
                     </div>
                   </div>
                 </div>

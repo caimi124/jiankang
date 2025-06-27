@@ -11,23 +11,12 @@ interface BlogPostPageProps {
   }>
 }
 
-// 从Notion获取博客文章数据
+// 从本地数据获取博客文章
+import { getBlogPostBySlug } from '../../../lib/blog-data'
+
 async function getBlogPostFromNotion(slug: string) {
-  try {
-    const response = await fetch(`${process.env.NODE_ENV === 'production' ? 'https://herbscience.shop' : 'http://localhost:3000'}/api/blog/sync-to-notion?action=get_post&slug=${slug}`, {
-      cache: 'no-store'
-    })
-    
-    if (!response.ok) {
-      return null
-    }
-    
-    const data = await response.json()
-    return data.success ? data.data : null
-  } catch (error) {
-    console.error('Error fetching blog post:', error)
-    return null
-  }
+  // 直接从本地数据获取
+  return getBlogPostBySlug(slug)
 }
 
 // 生成元数据
@@ -44,12 +33,12 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
   return {
     title: `${post.title} | HerbScience Blog`,
-    description: post.excerpt || post.description || `Read about ${post.title} on HerbScience - evidence-based herbal medicine insights.`,
-    keywords: post.seo_keywords?.join(', ') || post.tags?.join(', '),
+    description: post.excerpt || `Read about ${post.title} on HerbScience - evidence-based herbal medicine insights.`,
+    keywords: post.tags?.join(', '),
     authors: [{ name: post.author || 'HerbScience Team' }],
     openGraph: {
       title: post.title,
-      description: post.excerpt || post.description,
+      description: post.excerpt,
       type: 'article',
       url: `https://www.herbscience.shop/blog/${resolvedParams.slug}`,
       siteName: 'HerbScience',
@@ -65,7 +54,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     twitter: {
       card: 'summary_large_image',
       title: post.title,
-      description: post.excerpt || post.description,
+      description: post.excerpt,
       images: ['/hero-bg.svg']
     },
     alternates: {
@@ -88,12 +77,7 @@ export async function generateStaticParams() {
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const resolvedParams = await params
-  let post = await getBlogPostFromNotion(resolvedParams.slug)
-  
-  // 如果Notion中没有找到，使用本地数据作为备用
-  if (!post) {
-    post = getLocalBlogPost(resolvedParams.slug)
-  }
+  const post = await getBlogPostFromNotion(resolvedParams.slug)
   
   if (!post) {
     notFound()
@@ -104,7 +88,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: post.title,
-    description: post.excerpt || post.description,
+    description: post.excerpt,
     author: {
       '@type': 'Person',
       name: post.author || 'HerbScience Team'
@@ -117,8 +101,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         url: 'https://www.herbscience.shop/logo.png'
       }
     },
-    datePublished: post.published_date || post.date,
-    dateModified: post.published_date || post.date,
+    datePublished: post.publishDate,
+    dateModified: post.publishDate,
     keywords: post.tags?.join(', ') || '',
     url: `https://www.herbscience.shop/blog/${resolvedParams.slug}`
   }
@@ -167,16 +151,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     )}
                     <span className="flex items-center">
                       <Calendar className="h-4 w-4 mr-1" />
-                      {post.published_date || post.date}
+                      {post.publishDate}
                     </span>
                     <span className="flex items-center">
                       <User className="h-4 w-4 mr-1" />
                       {post.author || 'HerbScience Team'}
                     </span>
-                    {post.read_time && (
+                    {post.readTime && (
                       <span className="flex items-center">
                         <Clock className="h-4 w-4 mr-1" />
-                        {post.read_time}
+                        {post.readTime}
                       </span>
                     )}
                   </div>
@@ -212,11 +196,61 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <div className="p-8">
                 <div className="prose prose-lg max-w-none">
                   {post.content ? (
-                    <div dangerouslySetInnerHTML={{ __html: post.content }} />
+                    <div className="text-gray-700 leading-relaxed space-y-6">
+                      {/* 使用段落分割内容 */}
+                      {post.content.split('\n\n').map((paragraph: string, index: number) => {
+                        if (paragraph.trim() === '') return null
+                        
+                        // 处理标题
+                        if (paragraph.startsWith('##')) {
+                          return (
+                            <h2 key={index} className="text-2xl font-bold text-gray-900 mt-8 mb-4">
+                              {paragraph.replace('##', '').trim()}
+                            </h2>
+                          )
+                        }
+                        
+                        if (paragraph.startsWith('#')) {
+                          return (
+                            <h1 key={index} className="text-3xl font-bold text-gray-900 mt-8 mb-4">
+                              {paragraph.replace('#', '').trim()}
+                            </h1>
+                          )
+                        }
+                        
+                        // 处理列表
+                        if (paragraph.includes('\n-') || paragraph.includes('\n1.')) {
+                          const items = paragraph.split('\n').filter(line => line.trim())
+                          return (
+                            <div key={index} className="my-6">
+                              <ul className="list-disc pl-6 space-y-2">
+                                {items.map((item: string, itemIndex: number) => {
+                                  if (item.startsWith('-') || item.match(/^\d+\./)) {
+                                    return (
+                                      <li key={itemIndex} className="text-gray-700 leading-relaxed">
+                                        {item.replace(/^-\s*/, '').replace(/^\d+\.\s*/, '')}
+                                      </li>
+                                    )
+                                  }
+                                  return null
+                                })}
+                              </ul>
+                            </div>
+                          )
+                        }
+                        
+                        // 普通段落
+                        return (
+                          <p key={index} className="mb-6 text-gray-700 leading-relaxed">
+                            {paragraph}
+                          </p>
+                        )
+                      })}
+                    </div>
                   ) : (
                     <div className="text-gray-700 leading-relaxed space-y-6">
                       <p>
-                        {post.description || 'This article is currently being updated with the latest information. Please check back soon for the complete content.'}
+                        This article is currently being updated with the latest information. Please check back soon for the complete content.
                       </p>
                       
                       {resolvedParams.slug === 'turmeric-gut-relief-guide' && (

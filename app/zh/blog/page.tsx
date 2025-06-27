@@ -1,80 +1,34 @@
 'use client'
 
 import React from 'react'
+import Link from 'next/link'
 import Navigation from '../../../components/Navigation'
 import Breadcrumb from '../../../components/Breadcrumb'
+import { blogPosts } from '../../../lib/blog-data'
 
 export default function Blog() {
-  const featuredArticles = [
-    {
-      id: 1,
-      title: '中药现代化：传统智慧与科学研究的完美结合',
-      excerpt: '探索中药如何在现代科学的验证下，继续为人类健康服务，以及最新的研究发现。',
-      author: '李博士',
-      date: '2024年12月15日',
-      category: '科学研究',
-      readTime: '8分钟阅读',
-      image: '/api/placeholder/600/400',
-      tags: ['中药现代化', '科学研究', '传统医学']
-    },
-    {
-      id: 2,
-      title: '冬季养生：5种草药助您温暖过冬',
-      excerpt: '冬季是养生的重要季节，了解这5种草药如何帮助您增强免疫力，温暖度过寒冷的冬天。',
-      author: '张中医',
-      date: '2024年12月10日',
-      category: '季节养生',
-      readTime: '6分钟阅读',
-      image: '/api/placeholder/600/400',
-      tags: ['冬季养生', '免疫力', '温补']
-    },
-    {
-      id: 3,
-      title: '姜黄的神奇功效：不仅仅是调料那么简单',
-      excerpt: '深入了解姜黄的多种健康益处，从抗炎到护肝，这个黄金香料的价值远超想象。',
-      author: '王营养师',
-      date: '2024年12月5日',
-      category: '草药科普',
-      readTime: '10分钟阅读',
-      image: '/api/placeholder/600/400',
-      tags: ['姜黄', '抗炎', '营养科普']
-    }
-  ]
+  // 从Notion获取的中文博客数据
+  const chinesePosts = blogPosts.filter(post => 
+    post.category === '科学研究' || 
+    post.category === '季节养生' || 
+    post.category === '草药科普' || 
+    post.category === '购买指南' ||
+    post.title.includes('中') || 
+    post.title.includes('姜黄的神奇功效')
+  )
+  
+  const featuredArticles = chinesePosts.slice(0, 3).map(article => ({
+    ...article,
+    id: article.id,
+    date: article.publishDate,
+    image: '/api/placeholder/600/400'
+  }))
 
-  const recentArticles = [
-    {
-      id: 4,
-      title: '人参的选择指南：如何挑选适合您的人参产品',
-      author: '陈专家',
-      date: '2024年12月1日',
-      category: '购买指南',
-      readTime: '5分钟阅读'
-    },
-    {
-      id: 5,
-      title: '草药与现代药物的相互作用：您需要知道的安全知识',
-      author: '刘药师',
-      date: '2024年11月28日',
-      category: '用药安全',
-      readTime: '7分钟阅读'
-    },
-    {
-      id: 6,
-      title: '中医体质辨识：了解您的体质，选择合适的草药',
-      author: '赵中医',
-      date: '2024年11月25日',
-      category: '体质养生',
-      readTime: '12分钟阅读'
-    },
-    {
-      id: 7,
-      title: '春季排毒：这些草药帮您清理身体毒素',
-      author: '孙养生师',
-      date: '2024年11月20日',
-      category: '季节养生',
-      readTime: '8分钟阅读'
-    }
-  ]
+  const recentArticles = chinesePosts.slice(3).map(article => ({
+    ...article,
+    id: article.id,
+    date: article.publishDate
+  }))
 
   const categories = [
     { name: '科学研究', count: 15, color: 'bg-blue-100 text-blue-800' },
@@ -161,9 +115,11 @@ export default function Blog() {
                         </span>
                       ))}
                     </div>
-                    <button className="w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors">
-                      阅读全文 →
-                    </button>
+                    <Link href={`/zh/blog/${article.slug}`}>
+                      <button className="w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors">
+                        阅读全文 →
+                      </button>
+                    </Link>
                   </div>
                 </article>
               ))}
