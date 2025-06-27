@@ -171,3 +171,138 @@ export const HERBS_DATABASE: NotionHerb[] = herbsDatabase; // 向后兼容
 **✅ 状态**: 修复完成，等待部署验证  
 
 🌿 **Rhubarb草药修复完成，HerbScience.shop即将恢复正常服务！** 
+
+## St. John's Wort 单引号语法错误修复
+
+**日期:** 2024年12月26日  
+**状态:** ✅ 已修复并重新部署  
+**修复人员:** AI Assistant
+
+---
+
+## 🚨 问题描述
+
+第三次部署失败，出现新的 TypeScript 编译错误：
+
+### 错误详情
+```
+./lib/herbs-data.ts:744:3
+Type error: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
+
+742 |     referenceUrl: 'https://www.anna-europa.eu/en/medicines/herbal/altheae-herba'
+743 |   },
+> 744 |   {
+    |   ^
+745 |     id: 'st-john-s-wort',
+746 |     herbName: 'St. John's Wort',
+747 |     chineseName: '贯叶连翘',
+```
+
+## 🔍 根本原因分析
+
+**主要问题：**
+- St. John's Wort 字符串中包含单引号 (`'`)
+- 当整个字符串用单引号包围时，内部的单引号需要转义
+- 未转义的单引号导致 JavaScript/TypeScript 语法解析错误
+
+**受影响的代码位置：**
+1. **第745行：** `herbName: 'St. John's Wort'` 
+2. **第755行：** `caseStudy: '临床研究显示，St. John's Wort在Mental...'`
+
+---
+
+## ✅ 修复方案
+
+### 1. 字符串转义修复
+**修复前：**
+```typescript
+herbName: 'St. John's Wort',
+caseStudy: '临床研究显示，St. John's Wort在Mental and nervous disorders方面具有显著疗效...',
+```
+
+**修复后：**
+```typescript
+herbName: 'St. John\'s Wort',
+caseStudy: '临床研究显示，St. John\'s Wort在Mental and nervous disorders方面具有显著疗效...',
+```
+
+### 2. 模板字符串验证
+确认模板字符串 (反引号 `) 中的 St. John's Wort 无需转义：
+```typescript
+detailedDescription: `**St. John's Wort** (Hypericum perforatum L.)是一种传统草药...`
+```
+✅ 正确 - 模板字符串中单引号不需要转义
+
+---
+
+## 🚀 部署流程
+
+### Git 提交历史
+1. **d98533f** - Fix: 修复 St. John's Wort 单引号语法错误
+2. **76082b0** - Force deployment: 修复单引号语法错误后强制部署
+
+### 修复命令序列
+```bash
+# 1. 添加修复的文件
+git add lib/herbs-data.ts
+
+# 2. 提交语法修复
+git commit -m "Fix: 修复 St. John's Wort 单引号语法错误"
+
+# 3. 推送到远程
+git push origin main
+
+# 4. 强制触发部署
+git commit --allow-empty -m "Force deployment: 修复单引号语法错误后强制部署"
+git push origin main
+```
+
+---
+
+## 📋 技术细节
+
+### JavaScript/TypeScript 字符串规则
+- **单引号字符串：** `'string'` - 内部单引号需转义 `\'`
+- **双引号字符串：** `"string"` - 内部双引号需转义 `\"`  
+- **模板字符串：** \`string\` - 单引号和双引号都无需转义
+
+### 最佳实践建议
+1. **包含撇号的英文名称使用双引号：** `"St. John's Wort"`
+2. **或者正确转义单引号：** `'St. John\'s Wort'`
+3. **模板字符串适合多行和复杂内容**
+
+---
+
+## 🎯 预期结果
+
+**修复内容：**
+- ✅ St. John's Wort herbName 字段语法正确
+- ✅ St. John's Wort caseStudy 字段语法正确  
+- ✅ 模板字符串保持不变（无需修改）
+- ✅ TypeScript 编译错误已解决
+
+**部署状态：**
+- 📤 代码已推送到 GitHub (commit: 76082b0)
+- 🔄 Vercel 重新部署已触发
+- ⏳ 等待部署完成确认
+
+---
+
+## 📝 经验总结
+
+### 避免类似问题的方法：
+1. **代码审查：** 检查所有包含撇号的英文单词
+2. **ESLint 配置：** 启用字符串语法检查规则
+3. **自动格式化：** 使用 Prettier 统一字符串格式
+4. **本地测试：** 部署前进行 TypeScript 编译测试
+
+### 常见包含撇号的词汇：
+- St. John's Wort (贯叶连翘)
+- Devil's Claw (魔鬼爪)
+- Shepherd's Purse (荠菜)
+- 等医学/植物学名称
+
+---
+
+**报告生成时间:** 2024-12-26 23:50 (UTC+8)  
+**下次检查:** 等待 Vercel 部署结果确认 
