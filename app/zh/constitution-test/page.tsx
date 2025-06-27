@@ -308,7 +308,7 @@ export default function ConstitutionTestPage() {
             <div className="p-8">
               <div className="text-center mb-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                  {question.question}
+                  {question.text}
                 </h2>
                 <p className="text-gray-600">
                   请根据您的实际情况选择最符合的答案
