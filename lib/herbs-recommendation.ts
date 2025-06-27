@@ -84,12 +84,53 @@ export class HerbsDataService {
   // Fetch all herbs from complete database
   async fetchAllHerbs(): Promise<Herb[]> {
     try {
-      // Use the complete database from Notion
-      return HERBS_DATABASE;
+      // Use the complete database from Notion and convert to Herb interface
+      return HERBS_DATABASE.map(herb => this.convertNotionHerbToHerb(herb));
     } catch (error) {
       console.error('Error fetching herbs:', error);
       return [];
     }
+  }
+
+  // Convert NotionHerb to Herb interface
+  private convertNotionHerbToHerb(notionHerb: any): Herb {
+    // Normalize safety level
+    let safety_level: 'high' | 'medium' | 'low' = 'medium';
+    if (notionHerb.safety_level) {
+      const level = notionHerb.safety_level.toLowerCase();
+      if (level.includes('高') || level === 'high') safety_level = 'high';
+      else if (level.includes('低') || level === 'low') safety_level = 'low';
+      else safety_level = 'medium';
+    }
+
+    return {
+      id: notionHerb.id || '',
+      chinese_name: notionHerb.chinese_name || '',
+      english_name: notionHerb.english_name || '',
+      latin_name: notionHerb.latin_name || '',
+      category: notionHerb.category || '',
+      constitution_type: notionHerb.constitution_type || '',
+      primary_effects: notionHerb.primary_effects || [],
+      secondary_effects: notionHerb.secondary_effects || [],
+      efficacy: notionHerb.efficacy || [],
+      dosage: notionHerb.dosage || '',
+      safety_level,
+      contraindications: notionHerb.contraindications || '',
+      description: notionHerb.description || '',
+      traditional_use: notionHerb.traditional_use || '',
+      modern_applications: notionHerb.modern_applications || '',
+      taste: notionHerb.taste || '',
+      meridians: notionHerb.meridians || [],
+      part_used: notionHerb.part_used || '',
+      source: notionHerb.source || '',
+      growing_regions: notionHerb.growing_regions || [],
+      price_range: notionHerb.price_range || '',
+      availability: notionHerb.availability || '',
+      quality_score: notionHerb.quality_score || 0,
+      popularity_score: notionHerb.popularity_score || 0,
+      usage_suggestions: notionHerb.usage_suggestions || '',
+      ingredients: Array.isArray(notionHerb.ingredients) ? notionHerb.ingredients : [notionHerb.ingredients || '']
+    };
   }
 
   // Get personalized herb recommendations based on constitution
