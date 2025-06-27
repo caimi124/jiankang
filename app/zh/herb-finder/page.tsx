@@ -381,6 +381,7 @@ export default function HerbFinderPage() {
                 key={herb.id} 
                 herb={herb} 
                 showDetailed={true}
+                language="zh"
               />
               ))}
           </div>

@@ -25,14 +25,16 @@ interface HerbRecommendationsProps {
   subtitle?: string
   showDetailed?: boolean
   maxVisible?: number
+  language?: 'en' | 'zh'
 }
 
 interface HerbCardProps {
   herb: Herb
   showDetailed?: boolean
+  language?: 'en' | 'zh'
 }
 
-export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
+export function HerbCard({ herb, showDetailed = false, language = 'en' }: HerbCardProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [isFavorite, setIsFavorite] = useState(false)
 
@@ -76,6 +78,16 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
     return chineseName.toLowerCase()
       .replace(/\s+/g, '-')
       .replace(/[^\w\-]+/g, '')
+  }
+
+  // 根据语言生成正确的链接
+  const getHerbDetailLink = () => {
+    const herbSlug = generateSlug(herb.chinese_name, herb.english_name)
+    // 根据语言参数决定路径
+    if (language === 'zh') {
+      return `/zh/herbs/${herbSlug}`
+    }
+    return `/herbs/${herbSlug}`
   }
 
   const herbSlug = generateSlug(herb.chinese_name, herb.english_name)
@@ -210,7 +222,7 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
       {/* Action Buttons */}
       <div className="flex gap-2 mb-4">
         <Link 
-          href={`/herbs/${herbSlug}`}
+          href={getHerbDetailLink()}
           className="flex-1 flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition-colors text-sm font-medium"
         >
           <Eye className="w-4 h-4" />
@@ -293,7 +305,8 @@ export default function HerbRecommendations({
   title, 
   subtitle,
   showDetailed = false,
-  maxVisible = 6
+  maxVisible = 6,
+  language = 'en'
 }: HerbRecommendationsProps) {
   const [showAll, setShowAll] = useState(false)
   const visibleHerbs = showAll ? herbs : herbs.slice(0, maxVisible)
@@ -325,6 +338,7 @@ export default function HerbRecommendations({
             key={`${herb.chinese_name}-${index}`} 
             herb={herb} 
             showDetailed={showDetailed}
+            language={language}
           />
         ))}
       </div>
