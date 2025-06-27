@@ -2,7 +2,7 @@
 // Using complete Notion database with 58 herbs
 
 // Import complete herbs database from Notion
-import { HERBS_DATABASE, getHerbsForConstitution, searchHerbsByEfficacy, filterHerbsBySafety } from './herbs-data-complete';
+import { HERBS_DATABASE, herbsByConstitution, searchHerbs, herbs } from './herbs-data-complete';
 
 // Re-export the Herb interface for compatibility
 export interface Herb {
@@ -82,8 +82,8 @@ export class HerbsDataService {
   // Fetch all herbs from complete database
   async fetchAllHerbs(): Promise<Herb[]> {
     try {
-      // Use the complete database
-      return HERBS_DATABASE;
+      // Use the complete database and convert to Herb interface
+      return HERBS_DATABASE.map(herb => this.convertNotionHerbToHerb(herb));
     } catch (error) {
       console.error('Error fetching herbs:', error);
       return [];
@@ -166,8 +166,8 @@ export class HerbsDataService {
   // Search herbs by efficacy
   async searchHerbsByEfficacy(efficacyTypes: string[], limit: number = 10): Promise<Herb[]> {
     try {
-      const results = searchHerbsByEfficacy(efficacyTypes.join('|'));
-      return results.slice(0, limit);
+      const results = searchHerbs(efficacyTypes.join('|'));
+      return results.map(herb => this.convertNotionHerbToHerb(herb)).slice(0, limit);
     } catch (error) {
       console.error('Error searching herbs by efficacy:', error);
       return [];
@@ -177,8 +177,8 @@ export class HerbsDataService {
   // Search herbs by constitution
   async searchHerbsByConstitution(constitution: string, limit: number = 10): Promise<Herb[]> {
     try {
-      const herbs = getHerbsForConstitution(constitution);
-      return herbs.slice(0, limit);
+      const constitutionHerbs = herbsByConstitution[constitution] || [];
+      return constitutionHerbs.map(herb => this.convertNotionHerbToHerb(herb)).slice(0, limit);
     } catch (error) {
       console.error('Error searching herbs by constitution:', error);
       return [];
@@ -188,11 +188,53 @@ export class HerbsDataService {
   // Filter herbs by safety level
   async filterHerbsBySafety(safetyLevel: 'high' | 'medium' | 'low'): Promise<Herb[]> {
     try {
-      return filterHerbsBySafety(safetyLevel);
+      const allHerbs = await this.fetchAllHerbs();
+      return allHerbs.filter(herb => herb.safety_level === safetyLevel);
     } catch (error) {
       console.error('Error filtering herbs by safety:', error);
       return [];
     }
+  }
+
+  // Convert NotionHerb to Herb interface
+  private convertNotionHerbToHerb(notionHerb: any): Herb {
+    // Normalize safety level
+    let safety_level: 'high' | 'medium' | 'low' = 'medium';
+    if (notionHerb.safety_level) {
+      const level = notionHerb.safety_level.toLowerCase();
+      if (level.includes('高') || level === 'high') safety_level = 'high';
+      else if (level.includes('低') || level === 'low') safety_level = 'low';
+      else safety_level = 'medium';
+    }
+
+    return {
+      id: notionHerb.id || '',
+      chinese_name: notionHerb.chinese_name || '',
+      english_name: notionHerb.english_name || '',
+      latin_name: notionHerb.latin_name || '',
+      category: notionHerb.category || '',
+      constitution_type: notionHerb.constitution_type || '',
+      primary_effects: notionHerb.primary_effects || [],
+      secondary_effects: notionHerb.secondary_effects || [],
+      efficacy: notionHerb.efficacy || [],
+      dosage: notionHerb.dosage || '',
+      safety_level,
+      contraindications: notionHerb.contraindications || '',
+      description: notionHerb.description || '',
+      traditional_use: notionHerb.traditional_use || '',
+      modern_applications: notionHerb.modern_applications || '',
+      taste: notionHerb.taste || '',
+      meridians: notionHerb.meridians || [],
+      part_used: notionHerb.part_used || '',
+      source: notionHerb.source || '',
+      growing_regions: notionHerb.growing_regions || [],
+      price_range: notionHerb.price_range || '',
+      availability: notionHerb.availability || '',
+      quality_score: notionHerb.quality_score || 0,
+      popularity_score: notionHerb.popularity_score || 0,
+      usage_suggestions: notionHerb.usage_suggestions || '',
+      ingredients: Array.isArray(notionHerb.ingredients) ? notionHerb.ingredients : [notionHerb.ingredients || '']
+    };
   }
 
   // Search herbs by name (Chinese or English)
