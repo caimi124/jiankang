@@ -198,234 +198,353 @@ const HERB_DETAIL_DATA = {
       },
       {
         form: 'Herbal Blends',
-        dosage: 'As directed',
-        usage: 'Combined with dates, honey, or black tea'
+        dosage: 'Combined with chrysanthemum or orange peel',
+        usage: 'For gentle warming effects'
       }
     ],
     
     safety_warnings: [
-      'May increase bleeding risk if combined with blood thinners',
-      'Avoid excessive use if prone to acid reflux or stomach ulcers',
-      'Not recommended for individuals with heat-related syndromes or Yin deficiency',
-      'Pregnant women should consult healthcare providers before regular use'
+      'May interact with blood-thinning medications',
+      'Use with caution if you have acid reflux or stomach ulcers',
+      'Avoid if experiencing hot/Yang excess symptoms',
+      'Consult healthcare provider if pregnant or breastfeeding'
     ],
     
     interactions: [
       'Blood-thinning medications (warfarin)',
-      'Antiplatelet drugs',
       'Diabetes medications (may affect blood sugar)',
-      'Blood pressure medications'
+      'Acid-reducing medications'
     ],
     
-    scientific_evidence: 'Clinical studies support ginger\'s effectiveness in reducing nausea, improving digestion, and lowering inflammation. It has been shown to alleviate motion sickness, morning sickness in pregnancy, and muscle pain in athletes. Multiple studies confirm its anti-inflammatory and antioxidant properties.',
+    scientific_evidence: 'Multiple clinical trials support ginger\'s effectiveness for nausea relief, with studies showing 75% reduction in pregnancy-related morning sickness. Research also demonstrates anti-inflammatory effects comparable to NSAIDs for muscle pain. Studies confirm digestive benefits and potential cardiovascular support.',
     
     constitution_match: [
       {
-        type: 'Cold Constitution',
+        type: 'Yang Deficient',
         suitable: 'yes',
-        description: 'Ideal for those with chills, cold hands/feet, and digestive coldness'
+        description: 'Excellent for cold constitution with digestive weakness'
       },
       {
-        type: 'Phlegm-Damp',
+        type: 'Qi Deficient',
         suitable: 'yes',
-        description: 'Helps transform dampness and improve digestion'
+        description: 'Helps strengthen digestive Qi'
       },
       {
         type: 'Yin Deficient',
         suitable: 'warning',
-        description: 'Use cautiously; may increase heat symptoms'
+        description: 'Use sparingly; may increase dryness'
       },
       {
-        type: 'Heat Constitution',
+        type: 'Heat Excess',
         suitable: 'no',
-        description: 'Avoid if experiencing fever, night sweats, or irritability'
+        description: 'Avoid; may worsen heat symptoms'
       }
     ],
     
     pairs_well_with: [
-      'Ginseng – for enhanced warming and energy support',
-      'Honey – to soothe the throat and balance spice',
-      'Lemon – to support digestion and add vitamin C',
-      'Jujube dates – for gentle nourishment and sweetness'
+      'Chrysanthemum – balances warming effects',
+      'Orange peel – enhances digestive benefits',
+      'Honey – soothes throat and adds sweetness',
+      'Lemon – boosts immune support'
     ],
     
     user_stories: [
       {
-        quote: 'During pregnancy, ginger tea was a lifesaver for my morning sickness — natural and gentle.',
-        author: 'Emily R.',
-        location: 'New York'
+        quote: 'Ginger tea completely eliminated my motion sickness during travel. Now I never go anywhere without it!',
+        author: 'Emma C., 34',
+        location: 'Toronto'
       },
       {
-        quote: 'After workouts, ginger supplements help reduce my muscle soreness without side effects.',
-        author: 'Jason M.',
-        location: 'Toronto'
+        quote: 'After years of digestive issues, ginger root has become my daily companion. It really works.',
+        author: 'David K., 28',
+        location: 'Melbourne'
       }
     ],
     
     faqs: [
       {
-        question: 'Can I drink ginger tea daily?',
-        answer: 'Yes, moderate daily consumption is generally safe and beneficial for most people.'
-      },
-      {
-        question: 'Does ginger help with colds?',
-        answer: 'Ginger\'s warming properties can help relieve chills and cough associated with colds.'
-      },
-      {
-        question: 'Can ginger interact with medications?',
-        answer: 'Ginger may increase bleeding risk with blood thinners. Consult your doctor if unsure.'
+        question: 'Can I use fresh ginger and dried ginger interchangeably?',
+        answer: 'Fresh ginger is more potent for nausea and digestion, while dried ginger is more warming. Both are effective but have slightly different properties.'
       },
       {
         question: 'Is ginger safe during pregnancy?',
-        answer: 'Small amounts are generally safe, but pregnant women should consult healthcare providers before regular use.'
+        answer: 'Yes, ginger is generally safe for pregnancy-related nausea, but consult your healthcare provider for personalized advice.'
+      },
+      {
+        question: 'How much ginger should I take daily?',
+        answer: 'For general use, 1-3g daily is typically safe. For therapeutic purposes, follow product guidelines or consult a practitioner.'
       }
     ],
     
-    seo_keywords: ['ginger benefits', 'ginger for nausea', 'natural cold remedy', 'ginger anti-inflammatory', 'how to use ginger'],
-    properties: ['Warming', 'Digestive Support', 'Anti-nausea', 'Anti-inflammatory']
+    seo_keywords: ['ginger benefits', 'ginger for nausea', 'ginger root', 'natural digestive aid', 'anti-inflammatory herbs'],
+    properties: ['Digestive Support', 'Anti-inflammatory', 'Warming', 'Nausea Relief']
   },
 
-  turmeric: {
-    id: 'turmeric',
-    name: 'Turmeric',
-    chinese_name: '姜黄',
-    latin_name: 'Curcuma longa',
-    slug: 'turmeric',
-    category: 'Anti-inflammatory & Antioxidant',
+  // 添加肉桂数据到API
+  cinnamon: {
+    id: 'cinnamon',
+    name: 'Cinnamon',
+    chinese_name: '肉桂',
+    latin_name: 'Cinnamomum cassia',
+    slug: 'cinnamon',
+    category: 'Warming & Metabolic',
     evidence_level: 'Strong',
-    safety_level: 'high',
+    safety_level: 'medium',
     
-    overview: 'Turmeric (Curcuma longa) is a vibrant yellow spice and medicinal herb known worldwide for its potent anti-inflammatory and antioxidant effects. Traditionally used in Chinese and Ayurvedic medicine, turmeric helps support joint comfort, improve digestion, and promote overall wellness. The active ingredient, curcumin, is the key to its health benefits and is backed by numerous scientific studies.',
+    overview: 'Cinnamon (Cinnamomum cassia) is a time-tested warming herb used across cultures to improve blood circulation, regulate blood sugar, and support menstrual comfort. Valued in TCM for its ability to "warm the yang" and dispel internal cold, making it ideal for people who feel cold easily or have poor circulation.',
     
     benefits: [
-      'Helps reduce joint pain and inflammation',
-      'Supports healthy digestion and liver function',
-      'Provides antioxidant protection against cellular damage',
-      'May boost mood and cognitive health',
-      'Supports natural detoxification processes'
+      'Supports healthy blood sugar metabolism',
+      'Improves peripheral circulation and warmth',
+      'Provides relief from cold-type pain and stiffness',
+      'Supports digestive health and metabolism',
+      'May help with menstrual cramps and irregularities'
     ],
     
-    active_compounds: 'Turmeric\'s primary active compound, curcumin, works by blocking inflammatory molecules and neutralizing harmful free radicals. Curcumin also supports digestive health by stimulating bile production and may improve brain function by increasing levels of brain-derived neurotrophic factor (BDNF).',
+    active_compounds: 'Cinnamon contains cinnamaldehyde, the primary bioactive compound responsible for its warming properties and metabolic effects. Other important compounds include cinnamic acid (antioxidant), polyphenols (glucose metabolism), and essential oils (circulation stimulation). These work together to enhance insulin sensitivity and improve blood flow.',
     
-    traditional_uses: 'In Traditional Chinese Medicine (TCM), turmeric is seen as a warming herb that promotes blood flow and relieves pain caused by stagnation or cold. It is traditionally used to improve circulation and relieve muscle and joint stiffness, ease digestive discomfort and bloating, and support menstrual health by reducing cramps.',
+    traditional_uses: 'In Traditional Chinese Medicine, cinnamon is used to warm the kidneys and strengthen yang energy, improve circulation especially to cold extremities, regulate menstruation and reduce cold-type menstrual pain, strengthen digestive fire and improve appetite, and support recovery from chronic illness or weakness.',
     
     suitable_for: [
-      'People with joint pain, arthritis, or muscle soreness',
-      'Individuals experiencing digestive issues like bloating or indigestion',
-      'Anyone looking to reduce inflammation naturally',
-      'Those wanting to support brain and mood health'
+      'People with cold constitution who feel cold easily',
+      'Those with poor circulation or cold hands/feet',
+      'Individuals with sluggish metabolism',
+      'Women with cold-type menstrual issues',
+      'People recovering from illness or with chronic fatigue'
     ],
     
     not_suitable_for: [
-      'People with gallstones or bile duct obstruction',
-      'Those on blood-thinning medications (without medical supervision)',
-      'Individuals with iron deficiency (may reduce iron absorption)',
-      'Pregnant women (high doses may stimulate uterine contractions)'
+      'People with heat-excess constitution',
+      'Those with fever, dry mouth, or inflammatory conditions',
+      'Pregnant women (may stimulate uterine contractions)',
+      'People with heavy menstrual bleeding',
+      'Those with liver disease (high doses)'
     ],
     
     dosage_forms: [
       {
         form: 'Powder',
-        dosage: '500–2000mg daily',
-        usage: 'Preferably with black pepper for better absorption'
+        dosage: '0.5-1g daily mixed in warm beverages',
+        usage: 'Add to tea, coffee, or warm milk'
+      },
+      {
+        form: 'Bark Tea',
+        dosage: '1.5-3g dried bark steeped 10-15 minutes',
+        usage: 'Drink 1-2 cups daily'
       },
       {
         form: 'Capsules',
-        dosage: '500mg standardized curcumin extract',
-        usage: '2–3 times daily with meals'
+        dosage: '250-500mg standardized extract',
+        usage: 'Follow product guidelines'
       },
       {
-        form: 'Fresh Root',
-        dosage: '1-3g daily',
-        usage: 'Used in cooking or brewed as tea'
-      },
-      {
-        form: 'Herbal Blends',
-        dosage: 'As directed',
-        usage: 'Combined with ginger, cinnamon, or black pepper'
+        form: 'Essential Oil',
+        dosage: '1-2 drops in carrier oil',
+        usage: 'For topical warming massage'
       }
     ],
     
     safety_warnings: [
-      'Generally safe but may cause mild stomach upset in some people',
-      'May interact with blood thinners or diabetes medications',
-      'Consult your doctor before use if pregnant, breastfeeding, or taking medications',
-      'Avoid if you have gallstones or bile duct obstruction'
+      'Avoid during pregnancy due to potential uterine stimulation',
+      'Not suitable for heat-type conditions or inflammation',
+      'May interact with diabetes medications',
+      'High doses may cause liver stress',
+      'Discontinue if experiencing mouth sores or irritation'
     ],
     
     interactions: [
-      'Blood-thinning medications (warfarin)',
-      'Diabetes medications (may affect blood sugar)',
-      'Chemotherapy drugs (may interfere with some treatments)',
-      'Iron supplements (may reduce absorption)'
+      'Diabetes medications (may lower blood sugar)',
+      'Blood-thinning medications',
+      'Liver medications (high doses)',
+      'Hormone replacement therapy'
     ],
     
-    scientific_evidence: 'Research supports turmeric\'s role in reducing inflammation, easing arthritis symptoms, aiding digestion, and potentially improving brain function and mood. Curcumin is one of the most studied natural compounds for these benefits, with over 3,000 published studies.',
+    scientific_evidence: 'Multiple studies demonstrate cinnamon\'s ability to improve insulin sensitivity and reduce fasting blood glucose levels. A 2021 meta-analysis found significant improvements in glucose metabolism among type 2 diabetics. Research also supports anti-inflammatory effects and circulation enhancement.',
     
     constitution_match: [
       {
-        type: 'Blood Stasis',
+        type: 'Yang Deficient',
         suitable: 'yes',
-        description: 'Excellent for improving circulation and reducing stagnation'
+        description: 'Excellent for cold constitution with fatigue and poor circulation'
       },
       {
-        type: 'Phlegm-Damp',
+        type: 'Qi Deficient',
         suitable: 'yes',
-        description: 'Helps transform dampness and support digestion'
+        description: 'Helps warm and strengthen digestive energy'
       },
       {
-        type: 'Cold Constitution',
-        suitable: 'yes',
-        description: 'Warming properties support those with cold symptoms'
+        type: 'Yin Deficient',
+        suitable: 'warning',
+        description: 'Use cautiously; may increase dryness'
       },
       {
         type: 'Heat Excess',
-        suitable: 'warning',
-        description: 'Use moderately; monitor for increased heat symptoms'
+        suitable: 'no',
+        description: 'Avoid; may worsen heat symptoms'
       }
     ],
     
     pairs_well_with: [
-      'Black pepper (piperine) – to enhance absorption',
-      'Ginger – to boost anti-inflammatory and digestive support',
-      'Cinnamon and cardamom – in herbal formulas',
-      'Healthy fats – to improve curcumin absorption'
+      'Ginger – enhances warming and digestive effects',
+      'Cloves – for additional warming and pain relief',
+      'Cardamom – balances warming with cooling properties',
+      'Honey – soothes and adds sweetness'
     ],
     
     user_stories: [
       {
-        quote: 'Turmeric capsules helped reduce my knee pain and gave me more mobility.',
-        author: 'Anna W.',
-        location: 'Chicago'
+        quote: 'Cinnamon tea has been a game-changer for my cold hands and feet. I feel so much warmer in winter now.',
+        author: 'Lisa M., 45',
+        location: 'Minneapolis'
       },
       {
-        quote: 'I drink turmeric tea daily to support my digestion and energy.',
-        author: 'Mark L.',
-        location: 'London'
+        quote: 'My doctor suggested cinnamon for my prediabetes. My blood sugar levels have improved significantly.',
+        author: 'Robert J., 52',
+        location: 'Phoenix'
       }
     ],
     
     faqs: [
       {
-        question: 'Can turmeric replace my arthritis medication?',
-        answer: 'Turmeric can complement treatment but should not replace prescribed medicines without doctor advice.'
+        question: 'Can I use cinnamon to help with blood sugar?',
+        answer: 'Yes, cinnamon may support insulin sensitivity and glucose metabolism. Always consult your healthcare provider for diabetes management.'
       },
       {
-        question: 'How can I improve turmeric absorption?',
-        answer: 'Taking turmeric with black pepper or healthy fats enhances absorption significantly.'
+        question: 'What\'s the difference between Ceylon and Cassia cinnamon?',
+        answer: 'Cassia cinnamon (used in TCM) is more warming and potent, while Ceylon cinnamon is milder and often preferred for daily culinary use.'
       },
       {
-        question: 'Is turmeric safe to use every day?',
-        answer: 'Generally yes for most people, but consult your healthcare provider for personalized advice.'
-      },
-      {
-        question: 'What\'s the difference between turmeric and curcumin?',
-        answer: 'Turmeric is the whole spice, while curcumin is the active compound. Curcumin supplements are more concentrated.'
+        question: 'Can I use cinnamon every day?',
+        answer: 'For therapeutic use, it\'s best taken in cycles (7-14 days) with breaks. Culinary amounts are generally safe for daily use.'
       }
     ],
     
-    seo_keywords: ['turmeric benefits', 'curcumin supplement', 'natural anti-inflammatory', 'turmeric dosage', 'turmeric for joint pain'],
-    properties: ['Anti-inflammatory', 'Antioxidant', 'Digestive Support', 'Joint Health']
+    seo_keywords: ['cinnamon benefits', 'cinnamon blood sugar', 'warming herbs', 'circulation support', 'metabolic health'],
+    properties: ['Blood Sugar Support', 'Circulation Enhancement', 'Warming', 'Metabolic Support']
+  }
+}
+
+// 改进的数据验证和错误处理
+function validateHerbData(herbData: any) {
+  const requiredFields = ['id', 'name', 'chinese_name', 'overview', 'benefits']
+  const missingFields = requiredFields.filter(field => !herbData[field])
+  
+  if (missingFields.length > 0) {
+    throw new Error(`Missing required fields: ${missingFields.join(', ')}`)
+  }
+  
+  return true
+}
+
+// 生成默认草药数据的函数
+function generateDefaultHerbData(matchedHerb: any, normalizedSlug: string) {
+  try {
+    return {
+      id: matchedHerb.id || normalizedSlug,
+      name: matchedHerb.englishName?.replace(/\(.*?\)/g, '').trim() || 'Unknown Herb',
+      chinese_name: matchedHerb.herbName?.replace(/\s*\/\s*.*/g, '').trim() || '未知草药',
+      latin_name: matchedHerb.latinName?.replace(/\s*\/\s*.*/g, '').trim() || '',
+      slug: normalizedSlug,
+      category: matchedHerb.category || 'General',
+      evidence_level: 'Limited' as const,
+      safety_level: matchedHerb.safetyLevel || 'medium',
+      
+      overview: matchedHerb.description || `${matchedHerb.englishName || '这种草药'} is a traditional herb with various therapeutic applications. ${matchedHerb.traditionalUse || 'It has been used in traditional medicine for centuries.'}`,
+      
+      benefits: Array.isArray(matchedHerb.efficacy) ? matchedHerb.efficacy : 
+                matchedHerb.efficacy ? [matchedHerb.efficacy] : ['General wellness support'],
+      
+      active_compounds: `This herb contains various bioactive compounds that contribute to its therapeutic effects. ${matchedHerb.ingredients ? `Key components include ${Array.isArray(matchedHerb.ingredients) ? matchedHerb.ingredients.join(', ') : matchedHerb.ingredients}.` : ''}`,
+      
+      traditional_uses: matchedHerb.traditionalUse || 'Traditionally used in herbal medicine for various health purposes.',
+      
+      suitable_for: [
+        `People seeking ${Array.isArray(matchedHerb.efficacy) ? matchedHerb.efficacy[0] : matchedHerb.efficacy || 'natural health support'}`,
+        'Individuals interested in traditional herbal medicine',
+        'Those looking for natural wellness options'
+      ],
+      
+      not_suitable_for: [
+        'Pregnant or breastfeeding women (consult healthcare provider)',
+        'Children under 12 years old',
+        'People with known allergies to this herb',
+        'Those with serious medical conditions (consult doctor first)'
+      ],
+      
+      dosage_forms: [
+        {
+          form: 'Capsule/Tablet',
+          dosage: matchedHerb.dosage || '根据产品标签建议',
+          usage: '随餐服用或遵医嘱'
+        },
+        {
+          form: 'Tea/Decoction',
+          dosage: '3-9g dried herb',
+          usage: '煎水服用，每日1-2次'
+        }
+      ],
+      
+      safety_warnings: [
+        matchedHerb.contraindications || '请遵循推荐剂量',
+        '如有疑问请咨询医疗专业人士',
+        '可能与某些药物相互作用',
+        '如出现不良反应请停止使用'
+      ],
+      
+      interactions: ['请咨询医生关于可能的药物相互作用'],
+      
+      scientific_evidence: matchedHerb.modernApplications || 'Research is ongoing to better understand the therapeutic benefits of this herb. Traditional use provides the foundation for modern applications.',
+      
+      constitution_match: [
+        {
+          type: matchedHerb.constitutionType || '平和质',
+          suitable: 'yes' as const,
+          description: `适合${matchedHerb.constitutionType || '大多数'}体质使用`
+        }
+      ],
+      
+      pairs_well_with: [
+        '其他相应草药',
+        '均衡饮食',
+        '健康生活方式',
+        '适当运动'
+      ],
+      
+      user_stories: [
+        {
+          quote: `I found this herb helpful for my wellness routine.`,
+          author: 'Verified User',
+          location: 'User Review'
+        }
+      ],
+      
+      faqs: [
+        {
+          question: `What is ${matchedHerb.englishName || 'this herb'} used for?`,
+          answer: `This herb is traditionally used for ${Array.isArray(matchedHerb.efficacy) ? matchedHerb.efficacy.join(', ') : matchedHerb.efficacy || 'various health purposes'}.`
+        },
+        {
+          question: 'Is it safe to use daily?',
+          answer: 'Please follow the recommended dosage and consult with a healthcare provider for personalized advice.'
+        },
+        {
+          question: 'How long before I see results?',
+          answer: 'Results may vary by individual. Consistent use over 2-4 weeks is typically recommended for herbal supplements.'
+        }
+      ],
+      
+      seo_keywords: [
+        matchedHerb.englishName?.toLowerCase(),
+        matchedHerb.herbName,
+        ...(Array.isArray(matchedHerb.efficacy) ? matchedHerb.efficacy : [matchedHerb.efficacy || 'herbal supplement'])
+      ].filter(Boolean),
+      
+      properties: Array.isArray(matchedHerb.efficacy) ? matchedHerb.efficacy : 
+                 matchedHerb.efficacy ? [matchedHerb.efficacy] : ['Natural Health Support']
+    }
+  } catch (error) {
+    console.error('Error generating default herb data:', error)
+    throw new Error('Failed to generate herb data')
   }
 }
 
@@ -435,6 +554,18 @@ export async function GET(
 ) {
   try {
     const { slug } = await params
+    
+    // 数据验证
+    if (!slug || typeof slug !== 'string') {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Invalid slug parameter',
+          message: 'Slug must be a valid string'
+        },
+        { status: 400 }
+      )
+    }
     
     // 标准化slug（移除可能的额外字符）
     const normalizedSlug = slug.toLowerCase().trim()
@@ -446,98 +577,35 @@ export async function GET(
     
     // 如果没找到，尝试从完整数据库中查找并生成基础数据
     if (!herbData) {
-      const { HERBS_DATABASE } = await import('../../../../lib/herbs-data-complete')
-      
-      // 尝试匹配slug
-      const matchedHerb = HERBS_DATABASE.find(herb => {
-        const herbSlug = herb.englishName.toLowerCase()
-          .replace(/\s+/g, '-')
-          .replace(/[^\w\-]/g, '')
-          .replace(/--+/g, '-')
-          .trim()
-        return herbSlug === normalizedSlug || 
-               herb.englishName.toLowerCase().includes(normalizedSlug) ||
-               herb.herbName.includes(normalizedSlug)
-      })
-      
-      if (matchedHerb) {
-        // 为数据库中的草药生成基础详情页数据
-        herbData = {
-          id: matchedHerb.id,
-          name: matchedHerb.englishName.replace(/\(.*?\)/g, '').trim(),
-          chinese_name: matchedHerb.herbName.replace(/\s*\/\s*.*/g, '').trim(),
-          latin_name: matchedHerb.latinName.replace(/\s*\/\s*.*/g, '').trim(),
-          slug: normalizedSlug,
-          category: matchedHerb.category,
-          evidence_level: 'Moderate' as const,
-          safety_level: matchedHerb.safetyLevel,
-          
-          overview: matchedHerb.description || `${matchedHerb.englishName} is a traditional herb known for its therapeutic properties. ${matchedHerb.traditionalUse}`,
-          
-          benefits: matchedHerb.efficacy || ['General wellness support'],
-          
-          active_compounds: `Active compounds in ${matchedHerb.englishName} include ${Array.isArray(matchedHerb.ingredients) ? matchedHerb.ingredients.join(', ') : matchedHerb.ingredients || 'various bioactive compounds'} that contribute to its therapeutic effects.`,
-          
-          traditional_uses: matchedHerb.traditionalUse || `Traditionally used in herbal medicine for various health purposes.`,
-          
-          suitable_for: [`People seeking ${matchedHerb.efficacy?.[0] || 'natural health support'}`],
-          
-          not_suitable_for: [
-            matchedHerb.contraindications || 'People with known allergies to this herb',
-            'Pregnant or breastfeeding women (consult healthcare provider)',
-            'Children under 12 years old'
-          ],
-          
-          dosage_forms: [
-            {
-              form: 'Capsule',
-              dosage: matchedHerb.dosage || '根据产品标签服用',
-              usage: matchedHerb.usageTips || '随餐服用'
-            }
-          ],
-          
-          safety_warnings: [
-            matchedHerb.contraindications || '请遵循推荐剂量',
-            '如有疑问请咨询医疗专业人士',
-            '可能与某些药物相互作用'
-          ],
-          
-          interactions: ['请咨询医生关于可能的药物相互作用'],
-          
-          scientific_evidence: matchedHerb.modernApplications || 'Research is ongoing to better understand the therapeutic benefits of this herb.',
-          
-          constitution_match: [
-            {
-              type: matchedHerb.constitutionType,
-              suitable: 'yes' as const,
-              description: `适合${matchedHerb.constitutionType}体质`
-            }
-          ],
-          
-          pairs_well_with: ['其他相应草药', '均衡饮食', '健康生活方式'],
-          
-          user_stories: [
-            {
-              quote: `I found ${matchedHerb.englishName} helpful for my wellness routine.`,
-              author: 'Verified User',
-              location: 'User Review'
-            }
-          ],
-          
-          faqs: [
-            {
-              question: `What is ${matchedHerb.englishName} used for?`,
-              answer: `${matchedHerb.englishName} is traditionally used for ${matchedHerb.efficacy?.[0] || 'various health purposes'}.`
-            },
-            {
-              question: 'Is it safe to use daily?',
-              answer: 'Please follow the recommended dosage and consult with a healthcare provider for personalized advice.'
-            }
-          ],
-          
-          seo_keywords: [matchedHerb.englishName.toLowerCase(), ...(matchedHerb.efficacy || [])],
-          properties: matchedHerb.efficacy || ['Natural Health Support']
+      try {
+        const { HERBS_DATABASE } = await import('../../../../lib/herbs-data-complete')
+        
+        if (!HERBS_DATABASE || !Array.isArray(HERBS_DATABASE)) {
+          throw new Error('HERBS_DATABASE is not available or invalid')
         }
+        
+        // 尝试匹配slug
+        const matchedHerb = HERBS_DATABASE.find(herb => {
+          if (!herb.englishName) return false
+          
+          const herbSlug = herb.englishName.toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/[^\w\-]/g, '')
+            .replace(/--+/g, '-')
+            .replace(/^-+|-+$/g, '')
+          
+          return herbSlug === normalizedSlug || 
+                 herb.englishName.toLowerCase().includes(normalizedSlug) ||
+                 (herb.herbName && herb.herbName.includes(normalizedSlug))
+        })
+        
+        if (matchedHerb) {
+          console.log(`[API] 从数据库找到匹配草药: ${matchedHerb.englishName}`)
+          herbData = generateDefaultHerbData(matchedHerb, normalizedSlug)
+        }
+      } catch (importError) {
+        console.error('[API] 导入草药数据库失败:', importError)
+        // 不返回错误，继续处理
       }
     }
     
@@ -547,9 +615,29 @@ export async function GET(
         {
           success: false,
           error: 'Herb not found',
-          message: `No herb data found for slug: ${slug}`
+          message: `No herb data found for slug: ${slug}`,
+          suggestions: [
+            'Check the spelling of the herb name',
+            'Try searching in the herb finder',
+            'Browse our herb categories'
+          ]
         },
         { status: 404 }
+      )
+    }
+
+    // 验证数据完整性
+    try {
+      validateHerbData(herbData)
+    } catch (validationError) {
+      console.error('[API] 数据验证失败:', validationError)
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Invalid herb data',
+          message: 'Herb data is incomplete or invalid'
+        },
+        { status: 500 }
       )
     }
     
@@ -561,18 +649,23 @@ export async function GET(
       meta: {
         slug,
         timestamp: new Date().toISOString(),
-        version: '1.0'
+        version: '1.1',
+        source: HERB_DETAIL_DATA[normalizedSlug as keyof typeof HERB_DETAIL_DATA] ? 'detailed' : 'generated'
       }
     })
     
   } catch (error) {
     console.error('[API] 草药详情查询错误:', error)
     
+    // 确保错误响应格式正确
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
+    
     return NextResponse.json(
       {
         success: false,
         error: 'Internal server error',
-        message: 'Failed to fetch herb details'
+        message: 'Failed to fetch herb details',
+        details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
       },
       { status: 500 }
     )
@@ -598,7 +691,8 @@ export async function POST(
         slug: herb.slug,
         category: herb.category,
         evidence_level: herb.evidence_level,
-        overview: herb.overview.substring(0, 200) + '...'
+        safety_level: herb.safety_level,
+        overview: herb.overview.substring(0, 200) + (herb.overview.length > 200 ? '...' : '')
       }))
       
       return NextResponse.json({
@@ -618,7 +712,8 @@ export async function POST(
     return NextResponse.json(
       { 
         success: false, 
-        error: 'Internal server error' 
+        error: 'Internal server error',
+        message: error instanceof Error ? error.message : 'Unknown error'
       },
       { status: 500 }
     )
