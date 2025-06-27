@@ -319,22 +319,22 @@ export default function ConstitutionTestPage() {
               <div className="space-y-4 mb-8">
                 {scoreOptions.map((option, index) => (
                   <button
-                    key={option.score}
-                    onClick={() => handleAnswerSelect(option.score)}
+                    key={option.value}
+                    onClick={() => handleAnswerSelect(option.value)}
                     className={`w-full p-4 text-left rounded-2xl border-2 transition-all duration-200 hover:shadow-lg group ${
-                      selectedAnswer === option.score
+                      selectedAnswer === option.value
                         ? 'border-green-500 bg-green-50 shadow-lg'
                         : 'border-gray-200 hover:border-green-300 bg-white'
                     }`}
                   >
                     <div className="flex items-center">
                       <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center mr-4 transition-colors ${
-                        selectedAnswer === option.score
+                        selectedAnswer === option.value
                           ? 'border-green-500 bg-green-500 text-white'
                           : 'border-gray-300 group-hover:border-green-400'
                       }`}>
                         <span className="text-sm font-medium">
-                          {selectedAnswer === option.score ? (
+                          {selectedAnswer === option.value ? (
                             <CheckCircle className="w-4 h-4" />
                           ) : (
                             index + 1
@@ -343,11 +343,14 @@ export default function ConstitutionTestPage() {
                       </div>
                       <div className="flex-1">
                         <div className={`font-medium ${
-                          selectedAnswer === option.score ? 'text-green-700' : 'text-gray-900'
+                          selectedAnswer === option.value ? 'text-green-700' : 'text-gray-900'
                         }`}>
-                          {option.text}
+                          {option.label}
                         </div>
-                        {selectedAnswer === option.score && autoAdvanceEnabled && (
+                        <div className="text-sm text-gray-500">
+                          {option.description}
+                        </div>
+                        {selectedAnswer === option.value && autoAdvanceEnabled && (
                           <div className="text-sm text-green-600 mt-1">
                             即将自动前进...
                           </div>
