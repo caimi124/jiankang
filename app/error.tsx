@@ -12,8 +12,31 @@ export default function Error({
   reset: () => void
 }) {
   useEffect(() => {
-    // 可以在这里添加错误日志上报逻辑
+    // 错误日志上报到监控系统
     console.error('Application error:', error)
+    
+    // 发送错误到监控API
+    if (typeof window !== 'undefined') {
+      fetch('/api/404-monitor', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'application_error',
+          path: window.location.pathname,
+          error: error.message,
+          digest: error.digest,
+          timestamp: new Date().toISOString()
+        })
+      }).catch(e => console.error('Failed to log error:', e))
+      
+      // Google Analytics 错误跟踪
+      if (window.gtag) {
+        window.gtag('event', 'exception', {
+          description: error.message,
+          fatal: false
+        })
+      }
+    }
   }, [error])
 
   return (

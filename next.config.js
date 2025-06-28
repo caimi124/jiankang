@@ -91,9 +91,10 @@ const nextConfig = {
     ]
   },
 
-  // Redirects for SEO
+  // Redirects for SEO and 404 prevention
   async redirects() {
     return [
+      // 主要页面重定向
       {
         source: '/home',
         destination: '/',
@@ -107,6 +108,94 @@ const nextConfig = {
       {
         source: '/herbs',
         destination: '/herb-finder',
+        permanent: true,
+      },
+      
+      // 常见的404路径重定向
+      {
+        source: '/herbs/:slug',
+        destination: '/herb-finder?search=:slug',
+        permanent: false,
+      },
+      {
+        source: '/articles',
+        destination: '/blog',
+        permanent: true,
+      },
+      {
+        source: '/safety',
+        destination: '/ingredient-checker',
+        permanent: true,
+      },
+      {
+        source: '/checker',
+        destination: '/ingredient-checker',
+        permanent: true,
+      },
+      {
+        source: '/dosage',
+        destination: '/dosage-calculator',
+        permanent: true,
+      },
+      {
+        source: '/calculator',
+        destination: '/dosage-calculator',
+        permanent: true,
+      },
+      {
+        source: '/knowledge',
+        destination: '/knowledge-center',
+        permanent: true,
+      },
+      {
+        source: '/faq',
+        destination: '/knowledge-center#faq',
+        permanent: true,
+      },
+      {
+        source: '/search',
+        destination: '/herb-finder',
+        permanent: true,
+      },
+      {
+        source: '/find',
+        destination: '/herb-finder',
+        permanent: true,
+      },
+      
+      // 旧版本路径兼容
+      {
+        source: '/herb/:slug',
+        destination: '/herbs/:slug',
+        permanent: true,
+      },
+      {
+        source: '/article/:slug',
+        destination: '/blog/:slug',
+        permanent: true,
+      },
+      
+      // 中文路径重定向
+      {
+        source: '/cn/:path*',
+        destination: '/zh/:path*',
+        permanent: true,
+      },
+      {
+        source: '/chinese/:path*',
+        destination: '/zh/:path*',
+        permanent: true,
+      },
+      
+      // 移动端特定重定向
+      {
+        source: '/m/:path*',
+        destination: '/:path*',
+        permanent: true,
+      },
+      {
+        source: '/mobile/:path*',
+        destination: '/:path*',
         permanent: true,
       }
     ]

@@ -2,14 +2,15 @@
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /test
-Disallow: /test-enhanced
+Disallow: /test*
 Disallow: /_next/
-Disallow: /zh/test
+Disallow: /404
+Disallow: /500
+Disallow: /error
+Disallow: /loading
 
 # Host
-Host: https://www.herbscience.shop
+Host: https://herbscience.shop
 
 # Sitemaps
-Sitemap: https://www.herbscience.shop/sitemap.xml
-Sitemap: https://www.herbscience.shop/sitemap-0.xml
+Sitemap: https://herbscience.shop/sitemap.xml
