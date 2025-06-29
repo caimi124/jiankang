@@ -209,7 +209,8 @@ export default function HerbFinderClient() {
           herb.latin_name || '',
           herb.description,
           ...(herb.efficacy || []),
-          ...(herb.symptoms || [])
+          herb.traditional_use || '',
+          herb.modern_applications || ''
         ].join(' ').toLowerCase()
         
         return searchIn.includes(searchTerm)
@@ -219,8 +220,8 @@ export default function HerbFinderClient() {
     // Constitution filter
     if (filters.constitution) {
       filtered = filtered.filter(herb => 
-        herb.constitution_match && 
-        herb.constitution_match.includes(filters.constitution)
+        herb.constitution_type && 
+        herb.constitution_type.includes(filters.constitution)
       )
     }
 
@@ -245,7 +246,8 @@ export default function HerbFinderClient() {
         const herbContent = [
           ...herb.efficacy,
           herb.description,
-          ...(herb.symptoms || [])
+          herb.traditional_use || '',
+          herb.modern_applications || ''
         ].join(' ').toLowerCase()
         
         return categoryKeywords.some(keyword => 
@@ -657,9 +659,7 @@ export default function HerbFinderClient() {
                   <HerbCard 
                     key={herb.id} 
                     herb={herb}
-                    onClick={() => {
-                      window.location.href = `/herbs/${herb.slug}`
-                    }}
+                    language="en"
                   />
                 ))}
               </div>
@@ -703,7 +703,7 @@ export default function HerbFinderClient() {
               </div>
 
               {/* FAQ Section */}
-              <HerbFinderFAQ />
+              <HerbFinderFAQ language="en" />
             </>
           )}
         </div>
