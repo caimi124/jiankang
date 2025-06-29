@@ -311,6 +311,43 @@ export default function IngredientCheckerPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* SEO结构化数据 */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            name: 'Herbal Ingredient Safety Checker',
+            url: 'https://herbscience.shop/ingredient-checker',
+            description: 'Analyze herbal supplement ingredients for safety, interactions, and contraindications. Get expert recommendations backed by scientific research.',
+            applicationCategory: 'HealthApplication',
+            operatingSystem: 'Web Browser',
+            offers: {
+              '@type': 'Offer',
+              price: '0',
+              priceCurrency: 'USD'
+            },
+            featureList: [
+              'Ingredient safety analysis',
+              'Drug interaction warnings', 
+              'Contraindication alerts',
+              'Dosage recommendations',
+              'Alternative suggestions',
+              'Quality grade assessment'
+            ],
+            provider: {
+              '@type': 'Organization',
+              name: 'HerbScience.shop'
+            },
+            audience: {
+              '@type': 'Audience',
+              audienceType: 'Health-conscious consumers, Healthcare providers, Supplement users'
+            }
+          })
+        }}
+      />
+
       <Navigation />
       
       <main className="py-8">
@@ -322,17 +359,83 @@ export default function IngredientCheckerPage() {
             ]} 
           />
 
+          {/* SEO Content Introduction */}
+          <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
+            <div className="text-center mb-8">
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Herbal Ingredient Safety Checker
+                <span className="block text-blue-600">Analyze Supplements for Safety & Interactions</span>
+              </h1>
+              <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                Curious about what's in your herbal supplement? Use our intelligent ingredient checker to identify active compounds, 
+                analyze safety profiles, detect drug interactions, and get expert recommendations. Our tool analyzes over 1,000 
+                herbal ingredients with comprehensive safety data backed by scientific research and traditional usage patterns.
+              </p>
+            </div>
+
+            {/* How It Works */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">🔍</span>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">Enter Ingredients</h3>
+                <p className="text-gray-600">Type herb names or upload supplement labels. Our AI recognizes common and scientific names.</p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">⚖️</span>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">Safety Analysis</h3>
+                <p className="text-gray-600">Get detailed safety scores, interaction warnings, and contraindication alerts for each ingredient.</p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">📋</span>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">Expert Recommendations</h3>
+                <p className="text-gray-600">Receive personalized suggestions including safer alternatives and usage guidelines.</p>
+              </div>
+            </div>
+
+            {/* What We Check */}
+            <div className="bg-gray-50 rounded-xl p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">🔬 What Our Safety Checker Analyzes</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="text-center">
+                  <div className="text-2xl mb-2">⚠️</div>
+                  <div className="font-medium text-gray-900">Drug Interactions</div>
+                  <div className="text-sm text-gray-600">200+ medications</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl mb-2">🚫</div>
+                  <div className="font-medium text-gray-900">Contraindications</div>
+                  <div className="text-sm text-gray-600">Health conditions</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl mb-2">🤰</div>
+                  <div className="font-medium text-gray-900">Pregnancy Safety</div>
+                  <div className="text-sm text-gray-600">Maternal health</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl mb-2">📊</div>
+                  <div className="font-medium text-gray-900">Dosage Guidelines</div>
+                  <div className="text-sm text-gray-600">Safe usage ranges</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Enhanced Header */}
           <div className="text-center mb-12">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
               <Shield className="w-8 h-8 text-blue-600" />
             </div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              🛡️ Herbal Ingredient Safety Checker
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-6">
-              Upload your supplement label or enter ingredients to get comprehensive safety analysis, 
-              interaction warnings, and expert recommendations backed by scientific research.
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              🛡️ Analyze Your Supplement Now
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-6">
+              Enter ingredient names below or try our example supplements to see how our safety analysis works.
             </p>
 
             {/* Stats Section */}

@@ -28,76 +28,75 @@ const notoSansSC = Noto_Sans_SC({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.herbscience.shop'),
   title: {
-    default: 'HerbScience.shop | Evidence-Based Herbal Medicine Guide',
-    template: '%s | HerbScience.shop'
+    template: '%s | HerbScience.shop',
+    default: 'HerbScience.shop - Evidence-Based Herbal Medicine Guide | TCM & Natural Remedies'
   },
-  description: 'Discover the power of herbal medicine with our evidence-based guide. Get personalized herb recommendations, safety information, and expert insights backed by scientific research.',
+  description: 'Your trusted guide to herbal wellness. Discover safe and effective herbal remedies with our evidence-based platform combining Traditional Chinese Medicine wisdom with modern scientific research. Get personalized recommendations, safety checks, and expert guidance.',
   keywords: [
-    'herbal medicine',
-    'natural remedies',
-    'herbs for health',
-    'traditional chinese medicine',
-    'herbal supplements',
-    'plant medicine',
-    'alternative medicine',
-    'natural healing',
-    'herb safety',
-    'evidence-based herbalism'
+    'herbal medicine', 'traditional Chinese medicine', 'TCM', 'natural remedies', 'herb finder',
+    'herbal supplements', 'plant medicine', 'alternative medicine', 'holistic health',
+    'herbal safety', 'herb interactions', 'constitution test', 'medicinal herbs',
+    'botanical medicine', 'natural health', 'evidence-based herbalism', 'herbal wellness',
+    '草药', '中医', '传统中医', '中药', '草药补充剂', '天然疗法', '中医体质'
   ],
-  authors: [{ name: 'HerbScience Team' }],
+  authors: [{ name: 'HerbScience Team', url: 'https://herbscience.shop' }],
   creator: 'HerbScience.shop',
   publisher: 'HerbScience.shop',
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
+  metadataBase: new URL('https://herbscience.shop'),
   alternates: {
-    canonical: 'https://www.herbscience.shop',
+    canonical: '/',
     languages: {
-      'en': 'https://www.herbscience.shop',
-      'zh': 'https://www.herbscience.shop/zh',
-      'x-default': 'https://www.herbscience.shop',
+      'en-US': '/en-US',
+      'zh-CN': '/zh-CN',
     },
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    alternateLocale: ['zh_CN'],
-    url: 'https://www.herbscience.shop',
+    url: 'https://herbscience.shop',
     siteName: 'HerbScience.shop',
-    title: 'HerbScience.shop | Evidence-Based Herbal Medicine Guide',
-    description: 'Discover the power of herbal medicine with our evidence-based guide. Get personalized herb recommendations, safety information, and expert insights backed by scientific research.',
+    title: 'HerbScience.shop - Evidence-Based Herbal Medicine Guide',
+    description: 'Your trusted guide to herbal wellness. Discover safe and effective herbal remedies with evidence-based guidance combining TCM wisdom and modern research.',
     images: [
       {
-        url: '/hero-bg.svg',
+        url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'HerbScience.shop - Evidence-Based Herbal Medicine',
+        alt: 'HerbScience.shop - Evidence-Based Herbal Medicine Platform',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'HerbScience.shop | Evidence-Based Herbal Medicine Guide',
-    description: 'Discover the power of herbal medicine with our evidence-based guide. Get personalized herb recommendations, safety information, and expert insights backed by scientific research.',
-    images: ['/hero-bg.svg'],
+    title: 'HerbScience.shop - Evidence-Based Herbal Medicine Guide',
+    description: 'Discover safe and effective herbal remedies with evidence-based guidance.',
+    images: ['/og-image.jpg'],
+    creator: '@herbscience',
+    site: '@herbscience',
   },
   robots: {
     index: true,
     follow: true,
+    nocache: true,
     googleBot: {
       index: true,
       follow: true,
+      noimageindex: false,
       'max-video-preview': -1,
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
   },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon-16x16.png',
+    apple: '/apple-touch-icon.png',
+  },
+  manifest: '/manifest.json',
   verification: {
     google: 'your-google-site-verification-code',
+    yandex: 'your-yandex-verification-code',
   },
 }
 
@@ -107,80 +106,165 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${notoSansSC.variable}`}>
+    <html lang="en" className={`${inter.variable} ${notoSansSC.variable}`} suppressHydrationWarning>
       <head>
-        {/* 字体通过Google Fonts加载，无需预加载本地字体 */}
+        {/* 基础SEO元标签 */}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#10B981" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="format-detection" content="telephone=no" />
         
-        {/* DNS 预解析优化 */}
-        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
-        
-        {/* 预连接重要资源 */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        
-        {/* 添加 JSON-LD 结构化数据 */}
+        {/* 结构化数据 - 组织信息 */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              "name": "HerbScience.shop",
-              "description": "Evidence-based herbal supplement guidance with TCM insights and safety analysis",
-              "url": "https://herbscience.shop",
-              "potentialAction": {
-                "@type": "SearchAction",
-                "target": "https://herbscience.shop/search?q={search_term_string}",
-                "query-input": "required name=search_term_string"
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              name: 'HerbScience.shop',
+              url: 'https://herbscience.shop',
+              logo: 'https://herbscience.shop/logo.png',
+              description: 'Evidence-based herbal medicine platform combining Traditional Chinese Medicine with modern scientific research.',
+              foundingDate: '2024',
+              contactPoint: {
+                '@type': 'ContactPoint',
+                telephone: '+1-555-HERBS',
+                contactType: 'customer support',
+                availableLanguage: ['English', 'Chinese'],
+                areaServed: 'Worldwide'
               },
-              "publisher": {
-                "@type": "Organization",
-                "name": "HerbScience.shop",
-                "logo": {
-                  "@type": "ImageObject",
-                  "url": "https://herbscience.shop/logo.png"
+              sameAs: [
+                'https://facebook.com/herbscience',
+                'https://twitter.com/herbscience',
+                'https://instagram.com/herbscience'
+              ],
+              hasOfferCatalog: {
+                '@type': 'OfferCatalog',
+                name: 'Herbal Wellness Services',
+                itemListElement: [
+                  {
+                    '@type': 'Offer',
+                    itemOffered: {
+                      '@type': 'Service',
+                      name: 'Herbal Database Search',
+                      description: 'Search and discover herbs by symptoms and health conditions'
+                    }
+                  },
+                  {
+                    '@type': 'Offer',
+                    itemOffered: {
+                      '@type': 'Service',
+                      name: 'Safety Checking',
+                      description: 'Analyze herbal supplements for safety and interactions'
+                    }
+                  },
+                  {
+                    '@type': 'Offer',
+                    itemOffered: {
+                      '@type': 'Service',
+                      name: 'TCM Constitution Test',
+                      description: 'Determine your Traditional Chinese Medicine constitution type'
+                    }
+                  }
+                ]
+              }
+            })
+          }}
+        />
+
+        {/* 结构化数据 - 网站信息 */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: 'HerbScience.shop',
+              url: 'https://herbscience.shop',
+              description: 'Evidence-based herbal medicine platform with comprehensive herb database, safety checking, and personalized recommendations.',
+              inLanguage: ['en', 'zh'],
+              copyrightYear: 2024,
+              copyrightHolder: {
+                '@type': 'Organization',
+                name: 'HerbScience.shop'
+              },
+              potentialAction: [
+                {
+                  '@type': 'SearchAction',
+                  target: {
+                    '@type': 'EntryPoint',
+                    urlTemplate: 'https://herbscience.shop/herb-finder?search={search_term_string}'
+                  },
+                  'query-input': 'required name=search_term_string'
+                }
+              ],
+              mainEntity: {
+                '@type': 'Dataset',
+                name: 'Herbal Medicine Database',
+                description: 'Comprehensive database of 500+ medicinal herbs with safety profiles and traditional usage information',
+                creator: {
+                  '@type': 'Organization',
+                  name: 'HerbScience.shop'
                 }
               }
             })
           }}
         />
-        
-        {/* 医疗相关结构化数据 */}
+
+        {/* 结构化数据 - 面包屑导航 */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "MedicalWebPage",
-              "name": "Herbal Supplement Safety and Information",
-              "description": "Professional guidance on herbal supplements, traditional Chinese medicine, and natural health",
-              "medicalAudience": {
-                "@type": "MedicalAudience",
-                "audienceType": "General Public"
-              },
-              "about": {
-                "@type": "Thing",
-                "name": "Herbal Medicine and Traditional Chinese Medicine"
-              }
+              '@context': 'https://schema.org',
+              '@type': 'BreadcrumbList',
+              itemListElement: [
+                {
+                  '@type': 'ListItem',
+                  position: 1,
+                  name: 'Home',
+                  item: 'https://herbscience.shop'
+                },
+                {
+                  '@type': 'ListItem',
+                  position: 2,
+                  name: 'Herb Finder',
+                  item: 'https://herbscience.shop/herb-finder'
+                },
+                {
+                  '@type': 'ListItem',
+                  position: 3,
+                  name: 'Safety Checker',
+                  item: 'https://herbscience.shop/ingredient-checker'
+                },
+                {
+                  '@type': 'ListItem',
+                  position: 4,
+                  name: 'Constitution Test',
+                  item: 'https://herbscience.shop/constitution-test'
+                },
+                {
+                  '@type': 'ListItem',
+                  position: 5,
+                  name: 'Knowledge Center',
+                  item: 'https://herbscience.shop/knowledge-center'
+                }
+              ]
             })
           }}
         />
-        
-        {/* 关键资源预加载 */}
-        <link rel="preload" href="/hero-bg.svg" as="image" type="image/svg+xml" />
-        <script defer src="/js/search.js"></script>
-        
-        {/* 添加 theme-color for PWA */}
-        <meta name="theme-color" content="#16a34a" />
-        <meta name="color-scheme" content="light" />
-        <meta name="format-detection" content="telephone=no" />
-        
-        {/* 改进的视窗配置 */}
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes, viewport-fit=cover" />
-        
-        {/* Google Analytics and Tag Manager */}
+
+        {/* Google Analytics */}
         <GoogleAnalytics />
+        
+        {/* Preconnect to external domains */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        
+        {/* DNS Prefetch for performance */}
+        <link rel="dns-prefetch" href="//www.google-analytics.com" />
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
       </head>
       <body className={`${inter.className} antialiased bg-white text-gray-900 font-feature-settings-default`}>
         {/* Google Tag Manager (noscript) */}
@@ -196,6 +280,51 @@ export default function RootLayout({
           {children}
         </main>
         <div id="portal-root" /> {/* 用于模态框等弹出内容 */}
+        
+        {/* 页面底部的额外结构化数据 */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'FAQPage',
+              mainEntity: [
+                {
+                  '@type': 'Question',
+                  name: 'What is HerbScience.shop?',
+                  acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: 'HerbScience.shop is an evidence-based herbal medicine platform that combines Traditional Chinese Medicine wisdom with modern scientific research to provide safe, effective herbal guidance.'
+                  }
+                },
+                {
+                  '@type': 'Question', 
+                  name: 'How do I find herbs for my health condition?',
+                  acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: 'Use our Herb Finder tool to search by symptoms or conditions. Our database will suggest appropriate herbs based on traditional usage and scientific evidence.'
+                  }
+                },
+                {
+                  '@type': 'Question',
+                  name: 'Are herbal supplements safe?',
+                  acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: 'When used properly, many herbs are safe. Use our Safety Checker to analyze ingredients for interactions and contraindications. Always consult healthcare providers before starting new supplements.'
+                  }
+                },
+                {
+                  '@type': 'Question',
+                  name: 'What is a TCM constitution test?',
+                  acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: 'Our constitution test determines your Traditional Chinese Medicine body type through a scientifically-validated questionnaire, helping you find herbs that match your individual constitution.'
+                  }
+                }
+              ]
+            })
+          }}
+        />
       </body>
     </html>
   )
