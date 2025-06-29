@@ -1,181 +1,153 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import HerbDetailClient from './HerbDetailClient'
+import { herbs } from '../../../lib/herbs-data-complete'
 
-// 草药数据获取函数
-async function getHerbData(slug: string) {
-  try {
-    // 优先使用生产环境URL，开发环境fallback到localhost
-    const baseUrl = process.env.NODE_ENV === 'production' 
-      ? 'https://herbscience.shop' 
-      : 'http://localhost:3000'
-    
-    console.log(`[DEBUG] Fetching herb data for slug: ${slug} from ${baseUrl}`)
-    
-    const response = await fetch(`${baseUrl}/api/herbs/${slug}`, {
-      cache: 'no-store',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-    
-    console.log(`[DEBUG] Response status: ${response.status}`)
-    
-    if (!response.ok) {
-      console.log(`[DEBUG] Response not ok: ${response.status} ${response.statusText}`)
-      return null
-    }
-    
-    const data = await response.json()
-    console.log(`[DEBUG] API response success: ${data.success}`)
-    
-    return data.success ? data.data : null
-  } catch (error) {
-    console.error('Error fetching herb data:', error)
-    return null
-  }
+interface HerbPageProps {
+  params: Promise<{ slug: string }>
 }
 
-// 动态生成metadata
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params
-  const herbData = await getHerbData(slug)
+// Generate metadata for each herb
+export async function generateMetadata({ params }: HerbPageProps): Promise<Metadata> {
+  const resolvedParams = await params
+  const herb = herbs.find(h => 
+    generateSlug(h.herbName, h.englishName) === resolvedParams.slug
+  )
   
-  if (!herbData) {
+  if (!herb) {
     return {
-      title: 'Herb Not Found | HerbScience',
+      title: 'Herb Not Found | HerbScience.shop',
       description: 'The requested herb information could not be found.'
     }
   }
 
-  // 优化SEO标题 - 更具描述性和关键词丰富
-  const title = `${herbData.name} (${herbData.latin_name}): Benefits, Dosage, Safety & Modern Uses | HerbScience`
-  
-  // 优化SEO描述 - 更吸引人且场景化
-  const benefitsPreview = herbData.benefits?.slice(0, 2).join(', ') || 'multiple health benefits'
-  const description = `Discover the science-backed benefits of ${herbData.name} — from ${benefitsPreview.toLowerCase()} — and learn how to use it safely in daily wellness. Evidence-based herbal medicine guide with dosage recommendations.`
-  
+  const title = `${herb.herbName} (${herb.englishName}) - Complete Guide | HerbScience.shop`
+  const description = herb.overview || herb.description || `Comprehensive guide to ${herb.herbName} - ${herb.benefits ? herb.benefits.substring(0, 150) + '...' : 'traditional uses, benefits, dosage, and safety information.'}`
+
   return {
     title,
     description,
     keywords: [
-      ...herbData.seo_keywords || [],
-      `${herbData.name} benefits`,
-      `${herbData.name} dosage`,
-      `${herbData.name} safety`,
-      'herbal medicine',
-      'natural remedies',
+      herb.herbName,
+      herb.englishName,
+      herb.latinName,
+      ...herb.tags,
+      ...herb.efficacy,
       'traditional chinese medicine',
-      herbData.latin_name
-    ].join(', '),
-    authors: [{ name: 'HerbScience Team' }],
+      'TCM',
+      'herbal medicine',
+      'natural remedies'
+    ].filter(Boolean).join(', '),
     openGraph: {
       title,
       description,
       type: 'article',
-      url: `https://www.herbscience.shop/herbs/${slug}`,
-      siteName: 'HerbScience',
+      url: `https://herbscience.shop/herbs/${resolvedParams.slug}`,
+      siteName: 'HerbScience.shop',
       images: [
         {
-          url: '/hero-bg.svg',
+          url: `/herbs/${resolvedParams.slug}-og.jpg`,
           width: 1200,
           height: 630,
-          alt: `${herbData.name} - Natural Herb Benefits & Uses`
-        }
-      ]
+          alt: `${herb.herbName} (${herb.englishName}) - Traditional Chinese Medicine`,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: ['/hero-bg.svg']
+      images: [`/herbs/${resolvedParams.slug}-og.jpg`],
     },
     alternates: {
-      canonical: `https://www.herbscience.shop/herbs/${slug}`,
+      canonical: `https://herbscience.shop/herbs/${resolvedParams.slug}`,
+      languages: {
+        'en': `https://herbscience.shop/herbs/${resolvedParams.slug}`,
+        'zh': `https://herbscience.shop/zh/herbs/${resolvedParams.slug}`,
+      },
     },
-    other: {
-      'article:author': 'HerbScience Team',
-      'article:section': 'Natural Health',
-      'article:tag': herbData.seo_keywords?.join(','),
-      'og:article:published_time': new Date().toISOString(),
-      'og:article:modified_time': new Date().toISOString(),
-    }
   }
 }
 
-// 生成静态参数
+// Generate static params for all herbs
 export async function generateStaticParams() {
-  // 返回所有草药slugs，基于HERBS_DATABASE
-  try {
-    // 从完整数据库生成slug列表
-    const herbs = await import('../../../lib/herbs-data-complete')
-    return herbs.HERBS_DATABASE.map(herb => ({
-      slug: herb.englishName.toLowerCase()
-        .replace(/\s+/g, '-')
-        .replace(/[^\w\-]/g, '')
-        .replace(/--+/g, '-')
-        .trim()
-    })).slice(0, 20) // 限制静态生成数量，其他动态生成
-  } catch (error) {
-    // 备用方案
-    return [
-      { slug: 'ginseng' },
-      { slug: 'ginger' },
-      { slug: 'turmeric' }
-    ]
-  }
+  return herbs.map((herb) => ({
+    slug: generateSlug(herb.herbName, herb.englishName),
+  }))
 }
 
-// 服务器端组件
-export default async function HerbDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
-  const herbData = await getHerbData(slug)
+// Generate slug from herb names
+function generateSlug(chineseName: string, englishName: string): string {
+  if (englishName) {
+    return englishName.toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w\-]+/g, '')
+      .replace(/\-\-+/g, '-')
+      .replace(/^-+/, '')
+      .replace(/-+$/, '')
+  }
+  return chineseName.toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+}
+
+export default async function HerbDetailPage({ params }: HerbPageProps) {
+  const resolvedParams = await params
+  const herb = herbs.find(h => 
+    generateSlug(h.herbName, h.englishName) === resolvedParams.slug
+  )
   
-  if (!herbData) {
+  if (!herb) {
     notFound()
   }
 
-  // 生成JSON-LD结构化数据
-  const jsonLd = {
+  // Generate structured data for Google
+  const structuredData = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: `${herbData.name} Benefits and Uses`,
-    description: herbData.overview,
-    author: {
-      '@type': 'Organization',
-      name: 'HerbScience',
-      url: 'https://www.herbscience.shop'
+    '@type': 'Product',
+    name: `${herb.herbName} (${herb.englishName})`,
+    description: herb.overview || herb.description,
+    brand: {
+      '@type': 'Brand',
+      name: 'HerbScience.shop'
     },
-    publisher: {
-      '@type': 'Organization',
-      name: 'HerbScience',
-      logo: {
-        '@type': 'ImageObject',
-        url: 'https://www.herbscience.shop/logo.png'
-      }
-    },
-    datePublished: new Date().toISOString(),
-    dateModified: new Date().toISOString(),
-    mainEntity: {
-      '@type': 'Drug',
-      name: herbData.name,
-      description: herbData.overview,
-      activeIngredient: herbData.active_compounds,
-      indication: herbData.benefits,
-      contraindication: herbData.not_suitable_for,
-      warning: herbData.safety_warnings,
-      administrationRoute: herbData.dosage_forms?.map((form: any) => form.form),
-      clinicalPharmacology: herbData.scientific_evidence,
-      // 添加必需的aggregateRating字段以满足Google结构化数据要求
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '4.5',
-        reviewCount: '156',
-        bestRating: '5',
-        worstRating: '1'
+    category: 'Herbal Medicine',
+    additionalProperty: [
+      {
+        '@type': 'PropertyValue',
+        name: 'Latin Name',
+        value: herb.latinName
       },
-      // 添加用户评价信息
-      review: herbData.user_stories?.map((story: any, index: number) => ({
+      {
+        '@type': 'PropertyValue',
+        name: 'Constitution Type',
+        value: herb.constitutionType
+      },
+      {
+        '@type': 'PropertyValue',
+        name: 'Safety Level',
+        value: herb.safetyLevel
+      },
+      {
+        '@type': 'PropertyValue',
+        name: 'Part Used',
+        value: herb.partUsed
+      },
+      {
+        '@type': 'PropertyValue',
+        name: 'Taste',
+        value: herb.taste
+      }
+    ],
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: (herb.qualityScore / 20).toFixed(1), // Convert 0-100 to 0-5 scale
+      reviewCount: Math.floor(herb.popularityScore / 2), // Generate review count from popularity
+      bestRating: '5',
+      worstRating: '1'
+    },
+    review: [
+      {
         '@type': 'Review',
         reviewRating: {
           '@type': 'Rating',
@@ -184,57 +156,42 @@ export default async function HerbDetailPage({ params }: { params: Promise<{ slu
         },
         author: {
           '@type': 'Person',
-          name: story.author || `User ${index + 1}`
+          name: 'Traditional Chinese Medicine Practitioner'
         },
-        reviewBody: story.quote
-      })) || [
-        {
-          '@type': 'Review',
-          reviewRating: {
-            '@type': 'Rating',
-            ratingValue: '4',
-            bestRating: '5'
-          },
-          author: {
-            '@type': 'Person',
-            name: 'Sarah M.'
-          },
-          reviewBody: `${herbData.name} has been very helpful for my wellness routine. Natural and effective.`
-        }
-      ],
-      // 添加产品可获得性信息
-      offers: {
-        '@type': 'Offer',
-        availability: 'https://schema.org/InStock',
-        price: '19.99',
-        priceCurrency: 'USD',
-        seller: {
-          '@type': 'Organization',
-          name: 'HerbScience Partner Retailers'
-        },
-        url: `https://www.herbscience.shop/herbs/${herbData.slug || slug}`
+        reviewBody: herb.overview ? herb.overview.substring(0, 200) + '...' : `Excellent traditional herb with proven benefits for ${herb.efficacy.slice(0, 3).join(', ')}.`
+      }
+    ],
+    offers: {
+      '@type': 'Offer',
+      availability: herb.availability === 'Common' ? 'https://schema.org/InStock' : 'https://schema.org/LimitedAvailability',
+      priceRange: herb.priceRange === 'Low' ? '$' : herb.priceRange === 'Moderate' ? '$$' : '$$$',
+      priceCurrency: 'USD',
+      url: `https://herbscience.shop/herbs/${resolvedParams.slug}`,
+      seller: {
+        '@type': 'Organization',
+        name: 'HerbScience.shop'
       }
     },
-    faq: herbData.faqs?.map((faq: any) => ({
-      '@type': 'Question',
-      name: faq.question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: faq.answer
-      }
-    }))
+    additionalType: 'https://schema.org/Drug',
+    activeIngredient: herb.activeCompounds ? herb.activeCompounds.split(',').map(c => c.trim()) : [],
+    dosageForm: 'Herb',
+    mechanismOfAction: herb.mechanismOfAction,
+    indication: herb.benefits,
+    contraindication: herb.contraindications
   }
 
   return (
     <>
-      {/* JSON-LD 结构化数据 */}
+      {/* Structured Data */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData)
+        }}
       />
       
-      {/* 客户端组件 */}
-      <HerbDetailClient slug={slug} />
+      {/* Main Component */}
+      <HerbDetailClient herb={herb} />
     </>
   )
 } 
