@@ -6,6 +6,22 @@ Disallow: /test
 Disallow: /test-enhanced
 Disallow: /_next/
 Disallow: /zh/test
+# 禁止爬取旧的herb-finder路径，已重定向到/herbs/
+Disallow: /herb-finder/
+# 禁止爬取重定向源页面
+Disallow: /home
+Disallow: /herbs
+Disallow: /index.html
+
+# 特殊爬虫配置
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /test
+Disallow: /test-enhanced
+Disallow: /_next/
+Disallow: /herb-finder/
+Crawl-delay: 1
 
 # Host
 Host: https://www.herbscience.shop

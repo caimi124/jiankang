@@ -1,6 +1,35 @@
+'use client'
+
 import React from 'react'
+import { Metadata } from 'next'
 import Navigation from '../../../components/Navigation'
 import Breadcrumb from '../../../components/Breadcrumb'
+
+// 导出metadata用于SEO
+export const metadata: Metadata = {
+  title: '隐私政策 | HerbScience.shop',
+  description: 'HerbScience.shop的隐私政策，了解我们如何保护您的个人信息和数据安全。',
+  alternates: {
+    canonical: 'https://www.herbscience.shop/zh/privacy',
+    languages: {
+      'en': 'https://www.herbscience.shop/privacy',
+      'zh': 'https://www.herbscience.shop/zh/privacy',
+      'x-default': 'https://www.herbscience.shop/privacy',
+    },
+  },
+  openGraph: {
+    title: '隐私政策 | HerbScience.shop',
+    description: 'HerbScience.shop的隐私政策，了解我们如何保护您的个人信息和数据安全。',
+    url: 'https://www.herbscience.shop/zh/privacy',
+    siteName: 'HerbScience.shop',
+    locale: 'zh_CN',
+    type: 'website',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+}
 
 export default function Privacy() {
   return (

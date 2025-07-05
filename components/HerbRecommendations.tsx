@@ -33,45 +33,27 @@ interface HerbCardProps {
 export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
   const [isExpanded, setIsExpanded] = useState(false)
 
-  const getSafetyBadge = (level: string) => {
+  const getSafetyText = (level: string) => {
     switch (level) {
       case 'high': 
-        return {
-          text: 'GRAS',
-          color: 'text-green-700 bg-green-50 border-green-200',
-          icon: <CheckCircle className="w-3 h-3" />
-        }
+        return 'Generally safe'
       case 'medium': 
-        return {
-          text: 'Caution',
-          color: 'text-yellow-700 bg-yellow-50 border-yellow-200',
-          icon: <Shield className="w-3 h-3" />
-        }
+        return 'Use with caution'
       case 'low': 
-        return {
-          text: 'Avoid',
-          color: 'text-red-700 bg-red-50 border-red-200',
-          icon: <AlertTriangle className="w-3 h-3" />
-        }
+        return 'Avoid without medical supervision'
       default: 
-        return {
-          text: 'Caution',
-          color: 'text-gray-700 bg-gray-50 border-gray-200',
-          icon: <Shield className="w-3 h-3" />
-        }
+        return 'Consult healthcare provider'
     }
   }
 
-  const getEvidenceLevel = (herb: Herb) => {
-    // 基于质量分数和流行度来判断证据强度
+  const getEvidenceText = (herb: Herb) => {
     const score = (herb.quality_score || 70) + (herb.popularity_score || 60)
-    if (score > 160) return { text: 'Strong clinical support', color: 'text-green-600' }
-    if (score > 120) return { text: 'Moderate clinical support', color: 'text-yellow-600' }
-    return { text: 'Traditional use evidence', color: 'text-gray-600' }
+    if (score > 160) return 'Strong scientific support'
+    if (score > 120) return 'Moderate scientific support'
+    return 'Traditional use evidence'
   }
 
   const getBestForScenario = (herb: Herb) => {
-    // 根据功效生成用户场景
     const efficacy = herb.efficacy || []
     if (efficacy.includes('免疫支持') || efficacy.includes('immune')) {
       return 'Frequent infections or low immunity'
@@ -96,7 +78,6 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
     return benefits.slice(0, 2).join(' · ') || 'Wellness Support'
   }
 
-  // 生成草药的slug用于URL
   const generateSlug = (chineseName: string, englishName: string) => {
     if (englishName) {
       return englishName.toLowerCase()
@@ -112,87 +93,86 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
   }
 
   const herbSlug = generateSlug(herb.chinese_name, herb.english_name)
-  const safetyBadge = getSafetyBadge(herb.safety_level)
-  const evidenceLevel = getEvidenceLevel(herb)
+  const safetyText = getSafetyText(herb.safety_level)
+  const evidenceText = getEvidenceText(herb)
   const bestForScenario = getBestForScenario(herb)
   const mainBenefits = getMainBenefits(herb)
 
+  // 格式化草药名称显示
+  const formatHerbName = () => {
+    const englishName = herb.english_name || herb.chinese_name
+    const chineseName = herb.chinese_name
+    
+    if (englishName && chineseName && englishName !== chineseName) {
+      return `${englishName} (${chineseName})`
+    }
+    return englishName || chineseName
+  }
+
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 group cursor-pointer">
-      {/* Header - Herb Name */}
+    <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 group">
+      {/* Herb Name */}
       <div className="mb-4">
-        <div className="flex items-center mb-2">
-          <span className="text-lg mr-2">🌿</span>
-          <h3 className="text-lg font-semibold text-gray-900 group-hover:text-green-700 transition-colors">
-            {herb.english_name || herb.chinese_name}
-          </h3>
-        </div>
-        {herb.latin_name && herb.latin_name !== herb.english_name && (
-          <p className="text-sm text-gray-500 italic ml-8">({herb.latin_name})</p>
-        )}
+        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-green-700 transition-colors">
+          <span className="mr-2">🌿</span>
+          {formatHerbName()}
+        </h3>
       </div>
 
-      {/* Main Benefits */}
+      {/* Subheadline - Main Benefits */}
       <div className="mb-4">
-        <p className="text-base font-medium text-gray-800 leading-relaxed">
+        <p className="text-base font-medium text-gray-700 leading-relaxed">
           {mainBenefits}
         </p>
       </div>
 
       {/* Best For */}
-      <div className="mb-3 flex items-start">
-        <span className="text-sm mr-2">✔️</span>
-        <div className="flex-1">
-          <span className="text-sm font-medium text-gray-700">Best for: </span>
-          <span className="text-sm text-gray-600">{bestForScenario}</span>
-        </div>
+      <div className="mb-3">
+        <p className="text-sm text-gray-600">
+          <span className="mr-2">✔️</span>
+          <span className="font-medium">Best for:</span> {bestForScenario}
+        </p>
       </div>
 
       {/* Evidence Level */}
-      <div className="mb-3 flex items-start">
-        <span className="text-sm mr-2">📊</span>
-        <div className="flex-1">
-          <span className="text-sm font-medium text-gray-700">Evidence: </span>
-          <span className={`text-sm ${evidenceLevel.color}`}>{evidenceLevel.text}</span>
-        </div>
+      <div className="mb-3">
+        <p className="text-sm text-gray-600">
+          <span className="mr-2">📊</span>
+          <span className="font-medium">Evidence:</span> {evidenceText}
+        </p>
       </div>
 
       {/* Safety Level */}
-      <div className="mb-6 flex items-start">
-        <span className="text-sm mr-2">🛡️</span>
-        <div className="flex-1">
-          <span className="text-sm font-medium text-gray-700">Safety: </span>
-          <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border ${safetyBadge.color}`}>
-            {safetyBadge.icon}
-            <span className="ml-1">{safetyBadge.text}</span>
-          </span>
-        </div>
+      <div className="mb-6">
+        <p className="text-sm text-gray-600">
+          <span className="mr-2">🛡️</span>
+          <span className="font-medium">Safety:</span> {safetyText}
+        </p>
       </div>
 
-      {/* Call to Action */}
-      <div className="pt-4 border-t border-gray-100">
+      {/* Call to Action Buttons */}
+      <div className="space-y-3">
         <Link 
           href={`/herbs/${herbSlug}`}
-          className="flex items-center justify-center gap-2 w-full bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg transition-all duration-200 text-sm font-medium group-hover:bg-green-700"
+          className="flex items-center justify-center gap-2 w-full bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg transition-all duration-200 text-sm font-medium"
         >
-          <span className="text-sm mr-1">🔍</span>
+          <span className="mr-1">🔍</span>
           Learn how to use
           <ArrowRight className="w-4 h-4" />
         </Link>
+        
+        <button 
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="flex items-center justify-center gap-2 w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-4 rounded-lg transition-all duration-200 text-sm font-medium"
+        >
+          <span className="mr-1">📖</span>
+          Show More Details
+          {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+        </button>
       </div>
 
-      {/* Premium Badge */}
-      {herb.quality_score && herb.quality_score > 80 && (
-        <div className="absolute top-4 right-4">
-          <span className="inline-flex items-center px-2 py-1 bg-yellow-50 text-yellow-700 text-xs rounded-full border border-yellow-200">
-            <Star className="w-3 h-3 mr-1" />
-            Premium
-          </span>
-        </div>
-      )}
-
-      {/* Expanded Details for Detailed View */}
-      {isExpanded && showDetailed && (
+      {/* Expanded Details */}
+      {isExpanded && (
         <div className="mt-6 pt-4 border-t border-gray-100 space-y-4">
           {/* Traditional Description */}
           {herb.description && (
@@ -226,28 +206,17 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
               <p className="text-sm text-gray-700">{herb.contraindications}</p>
             </div>
           )}
-        </div>
-      )}
 
-      {/* Expand Button for Detailed View */}
-      {showDetailed && (
-        <div className="mt-4">
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="flex items-center justify-center gap-1 w-full bg-gray-50 hover:bg-gray-100 text-gray-700 py-2 px-3 rounded-lg transition-colors text-sm"
-          >
-            {isExpanded ? (
-              <>
-                <ChevronUp className="w-4 h-4" />
-                Show Less
-              </>
-            ) : (
-              <>
-                <ChevronDown className="w-4 h-4" />
-                Show More Details
-              </>
-            )}
-          </button>
+          {/* Usage Suggestions */}
+          {herb.usage_suggestions && (
+            <div>
+              <h4 className="font-medium text-gray-900 mb-2 flex items-center">
+                <Heart className="w-4 h-4 mr-2 text-red-600" />
+                Usage Tips
+              </h4>
+              <p className="text-sm text-gray-700">{herb.usage_suggestions}</p>
+            </div>
+          )}
         </div>
       )}
     </div>
