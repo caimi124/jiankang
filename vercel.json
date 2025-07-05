@@ -4,30 +4,23 @@
   "framework": "nextjs",
   "redirects": [
     {
-      "source": "/herb-finder/(.*)",
-      "destination": "/herbs/$1",
-      "permanent": true
-    },
-    {
       "source": "/index.html",
       "destination": "/",
       "permanent": true
     },
     {
-      "source": "/herbs/cinnamon",
-      "destination": "/herb-finder/cinnamon",
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "herbscience.shop"
+        }
+      ],
+      "destination": "https://www.herbscience.shop/$1",
       "permanent": true
     }
   ],
   "headers": [
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, PUT, DELETE, OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "X-Requested-With, Content-Type, Authorization" }
-      ]
-    },
     {
       "source": "/(.*)",
       "headers": [
@@ -48,22 +41,35 @@
           "value": "origin-when-cross-origin"
         },
         {
-          "key": "Permissions-Policy",
-          "value": "camera=(), microphone=(), geolocation=()"
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains; preload"
         }
       ]
     },
     {
-      "source": "/static/(.*)",
+      "source": "/api/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "s-maxage=86400"
         }
       ]
     },
     {
       "source": "/sitemap.xml",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/xml"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
+      ]
+    },
+    {
+      "source": "/sitemap-0.xml",
       "headers": [
         {
           "key": "Content-Type",

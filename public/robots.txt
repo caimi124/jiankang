@@ -1,20 +1,10 @@
 # *
 User-agent: *
 Allow: /
-
-# 禁止抓取的目录
 Disallow: /api/
-Disallow: /test
 Disallow: /test-enhanced
 Disallow: /_next/
 Disallow: /zh/test
-Disallow: /herb-finder/
-
-# 允许抓取主要功能页面
-Allow: /herbs/
-Allow: /constitution-test
-Allow: /knowledge-center
-Allow: /herb-finder$
 
 # Host
 Host: https://www.herbscience.shop

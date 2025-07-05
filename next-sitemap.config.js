@@ -18,13 +18,15 @@ module.exports = {
     '/not-found',
     // 排除重定向源页面，避免404
     '/home',
-    '/herbs'
+    '/herbs',
+    // 排除旧的herb-finder页面，因为它们现在重定向到/herbs/
+    '/herb-finder/*'
   ],
   
   // 添加额外的路径或自定义页面
   additionalPaths: async (config) => {
     const extraPaths = [
-      // 核心功能页面 - 确保这些页面真实存在
+      // 核心功能页面
       await config.transform(config, '/knowledge-center'),
       await config.transform(config, '/zh/knowledge-center'),
       await config.transform(config, '/constitution-test'),
@@ -46,10 +48,24 @@ module.exports = {
       await config.transform(config, '/privacy'),
       await config.transform(config, '/zh/privacy'),
       
-      // 确认存在的草药详情页面
+      // 主要草药详情页面（统一模版）
       await config.transform(config, '/herbs/ginseng'),
       await config.transform(config, '/herbs/ginger'),
       await config.transform(config, '/herbs/turmeric'),
+      await config.transform(config, '/herbs/valerian'),
+      await config.transform(config, '/herbs/echinacea'),
+      await config.transform(config, '/herbs/ashwagandha'),
+      await config.transform(config, '/herbs/chamomile'),
+      await config.transform(config, '/herbs/peppermint'),
+      await config.transform(config, '/herbs/licorice'),
+      await config.transform(config, '/herbs/milk-thistle'),
+      await config.transform(config, '/herbs/cinnamon'),
+      await config.transform(config, '/herbs/clove'),
+      await config.transform(config, '/herbs/fenugreek'),
+      await config.transform(config, '/herbs/cranberry'),
+      await config.transform(config, '/herbs/green-tea'),
+      await config.transform(config, '/herbs/pumpkin-seed'),
+      await config.transform(config, '/herbs/rhubarb'),
       
       // 博客文章页面
       await config.transform(config, '/blog/turmeric-gut-relief-guide'),
@@ -102,7 +118,7 @@ module.exports = {
         changefreq: 'weekly',
         priority: 0.9,
         lastmod: new Date().toISOString(),
-        // 多语言替代版本
+        // 多语言替代版本（只对英文页面添加）
         ...(path.startsWith('/zh/') ? {} : {
           alternateRefs: [
             {
@@ -132,7 +148,7 @@ module.exports = {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/test', '/test-enhanced', '/_next/', '/zh/test']
+        disallow: ['/api/', '/test-enhanced', '/_next/', '/zh/test']
       }
     ],
     additionalSitemaps: [
