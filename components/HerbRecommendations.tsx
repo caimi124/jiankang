@@ -33,44 +33,65 @@ interface HerbCardProps {
 export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
   const [isExpanded, setIsExpanded] = useState(false)
 
-  const getSafetyText = (level: string) => {
+  const getSafetyBadge = (level: string) => {
     switch (level) {
       case 'high': 
-        return 'Generally safe'
+        return {
+          text: 'Generally safe',
+          color: 'text-green-700 bg-green-50 border-green-200',
+          icon: <CheckCircle className="w-3 h-3" />
+        }
       case 'medium': 
-        return 'Use with caution'
+        return {
+          text: 'Use with caution',
+          color: 'text-yellow-700 bg-yellow-50 border-yellow-200',
+          icon: <Shield className="w-3 h-3" />
+        }
       case 'low': 
-        return 'Avoid without medical supervision'
+        return {
+          text: 'Avoid if pregnant',
+          color: 'text-red-700 bg-red-50 border-red-200',
+          icon: <AlertTriangle className="w-3 h-3" />
+        }
       default: 
-        return 'Consult healthcare provider'
+        return {
+          text: 'Consult healthcare provider',
+          color: 'text-gray-700 bg-gray-50 border-gray-200',
+          icon: <Shield className="w-3 h-3" />
+        }
     }
   }
 
-  const getEvidenceText = (herb: Herb) => {
+  const getEvidenceLevel = (herb: Herb) => {
+    // 基于质量分数和流行度来判断证据强度
     const score = (herb.quality_score || 70) + (herb.popularity_score || 60)
-    if (score > 160) return 'Strong scientific support'
-    if (score > 120) return 'Moderate scientific support'
-    return 'Traditional use evidence'
+    if (score > 160) return { text: 'Strong scientific support', color: 'text-green-600' }
+    if (score > 120) return { text: 'Moderate scientific support', color: 'text-yellow-600' }
+    return { text: 'Traditional use evidence', color: 'text-gray-600' }
   }
 
   const getBestForScenario = (herb: Herb) => {
+    // 根据功效生成用户场景
     const efficacy = herb.efficacy || []
     if (efficacy.includes('免疫支持') || efficacy.includes('immune')) {
-      return 'Frequent infections or low immunity'
+      return "Frequent infections or low immunity"
     }
     if (efficacy.includes('消化健康') || efficacy.includes('digestive')) {
-      return 'Digestive discomfort or poor gut health'
+      return "Digestive discomfort or poor gut health"
     }
     if (efficacy.includes('镇静安神') || efficacy.includes('睡眠支持')) {
-      return 'Stress, anxiety or sleep issues'
+      return "Stress, anxiety or sleep issues"
     }
     if (efficacy.includes('抗炎作用')) {
-      return 'Inflammation or pain management'
+      return "Inflammation or pain management"
     }
     if (efficacy.includes('能量提升') || efficacy.includes('补气养血')) {
-      return 'Fatigue or low energy levels'
+      return "Fatigue or low energy levels"
     }
-    return 'General wellness and vitality'
+    if (efficacy.includes('前列腺健康') || efficacy.includes('男性健康')) {
+      return "Men's vitality, frequent urination"
+    }
+    return "General wellness and vitality"
   }
 
   const getMainBenefits = (herb: Herb) => {
@@ -78,6 +99,7 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
     return benefits.slice(0, 2).join(' · ') || 'Wellness Support'
   }
 
+  // 生成草药的slug用于URL
   const generateSlug = (chineseName: string, englishName: string) => {
     if (englishName) {
       return englishName.toLowerCase()
@@ -93,79 +115,78 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
   }
 
   const herbSlug = generateSlug(herb.chinese_name, herb.english_name)
-  const safetyText = getSafetyText(herb.safety_level)
-  const evidenceText = getEvidenceText(herb)
+  const safetyBadge = getSafetyBadge(herb.safety_level)
+  const evidenceLevel = getEvidenceLevel(herb)
   const bestForScenario = getBestForScenario(herb)
   const mainBenefits = getMainBenefits(herb)
 
-  // 格式化草药名称显示
-  const formatHerbName = () => {
-    const englishName = herb.english_name || herb.chinese_name
-    const chineseName = herb.chinese_name
-    
-    if (englishName && chineseName && englishName !== chineseName) {
-      return `${englishName} (${chineseName})`
-    }
-    return englishName || chineseName
-  }
-
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 group">
-      {/* Herb Name */}
+      {/* Herb Name with Icon */}
       <div className="mb-4">
-        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-green-700 transition-colors">
-          <span className="mr-2">🌿</span>
-          {formatHerbName()}
+        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-green-700 transition-colors flex items-center gap-2">
+          <span className="text-lg">🌿</span>
+          <span>{herb.english_name || herb.chinese_name}</span>
+          {herb.chinese_name && herb.english_name && (
+            <span className="text-sm text-gray-500">({herb.chinese_name})</span>
+          )}
         </h3>
       </div>
 
       {/* Subheadline - Main Benefits */}
       <div className="mb-4">
-        <p className="text-base font-medium text-gray-700 leading-relaxed">
+        <p className="text-base font-medium text-gray-800 leading-relaxed">
           {mainBenefits}
         </p>
       </div>
 
       {/* Best For */}
-      <div className="mb-3">
-        <p className="text-sm text-gray-600">
-          <span className="mr-2">✔️</span>
-          <span className="font-medium">Best for:</span> {bestForScenario}
-        </p>
+      <div className="mb-3 flex items-start gap-2">
+        <span className="text-sm">✔️</span>
+        <div className="flex-1">
+          <span className="text-sm font-medium text-gray-700">Best for: </span>
+          <span className="text-sm text-gray-600">{bestForScenario}</span>
+        </div>
       </div>
 
       {/* Evidence Level */}
-      <div className="mb-3">
-        <p className="text-sm text-gray-600">
-          <span className="mr-2">📊</span>
-          <span className="font-medium">Evidence:</span> {evidenceText}
-        </p>
+      <div className="mb-3 flex items-start gap-2">
+        <span className="text-sm">📊</span>
+        <div className="flex-1">
+          <span className="text-sm font-medium text-gray-700">Evidence: </span>
+          <span className={`text-sm ${evidenceLevel.color}`}>{evidenceLevel.text}</span>
+        </div>
       </div>
 
       {/* Safety Level */}
-      <div className="mb-6">
-        <p className="text-sm text-gray-600">
-          <span className="mr-2">🛡️</span>
-          <span className="font-medium">Safety:</span> {safetyText}
-        </p>
+      <div className="mb-6 flex items-start gap-2">
+        <span className="text-sm">🛡️</span>
+        <div className="flex-1">
+          <span className="text-sm font-medium text-gray-700">Safety: </span>
+          <span className={`text-sm ${safetyBadge.color.split(' ')[0]}`}>
+            {safetyBadge.text}
+          </span>
+        </div>
       </div>
 
       {/* Call to Action Buttons */}
-      <div className="space-y-3">
+      <div className="space-y-2">
+        {/* Primary CTA */}
         <Link 
           href={`/herbs/${herbSlug}`}
           className="flex items-center justify-center gap-2 w-full bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg transition-all duration-200 text-sm font-medium"
         >
-          <span className="mr-1">🔍</span>
+          <span className="text-sm">🔍</span>
           Learn how to use
           <ArrowRight className="w-4 h-4" />
         </Link>
-        
+
+        {/* Secondary CTA */}
         <button 
           onClick={() => setIsExpanded(!isExpanded)}
-          className="flex items-center justify-center gap-2 w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-4 rounded-lg transition-all duration-200 text-sm font-medium"
+          className="flex items-center justify-center gap-2 w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg transition-all duration-200 text-sm font-medium"
         >
-          <span className="mr-1">📖</span>
+          <span className="text-sm">📖</span>
           Show More Details
           {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
         </button>
@@ -173,48 +194,34 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
 
       {/* Expanded Details */}
       {isExpanded && (
-        <div className="mt-6 pt-4 border-t border-gray-100 space-y-4">
+        <div className="mt-4 pt-4 border-t border-gray-100 space-y-3">
           {/* Traditional Description */}
           {herb.description && (
             <div>
-              <h4 className="font-medium text-gray-900 mb-2 flex items-center">
-                <Leaf className="w-4 h-4 mr-2 text-green-600" />
-                Traditional Use
-              </h4>
-              <p className="text-sm text-gray-700 leading-relaxed">{herb.description}</p>
+              <h4 className="font-medium text-gray-900 mb-2">Traditional Use</h4>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                {herb.description}
+              </p>
             </div>
           )}
 
           {/* Dosage Information */}
           {herb.dosage && (
             <div>
-              <h4 className="font-medium text-gray-900 mb-2 flex items-center">
-                <Clock className="w-4 h-4 mr-2 text-blue-600" />
-                Recommended Dosage
-              </h4>
-              <p className="text-sm text-gray-700">{herb.dosage}</p>
+              <h4 className="font-medium text-gray-900 mb-2">Typical Dosage</h4>
+              <p className="text-sm text-gray-600">
+                {herb.dosage}
+              </p>
             </div>
           )}
 
-          {/* Safety Notes */}
+          {/* Contraindications */}
           {herb.contraindications && (
             <div>
-              <h4 className="font-medium text-gray-900 mb-2 flex items-center">
-                <AlertTriangle className="w-4 h-4 mr-2 text-amber-600" />
-                Important Notes
-              </h4>
-              <p className="text-sm text-gray-700">{herb.contraindications}</p>
-            </div>
-          )}
-
-          {/* Usage Suggestions */}
-          {herb.usage_suggestions && (
-            <div>
-              <h4 className="font-medium text-gray-900 mb-2 flex items-center">
-                <Heart className="w-4 h-4 mr-2 text-red-600" />
-                Usage Tips
-              </h4>
-              <p className="text-sm text-gray-700">{herb.usage_suggestions}</p>
+              <h4 className="font-medium text-gray-900 mb-2">Important Notes</h4>
+              <p className="text-sm text-red-600">
+                {herb.contraindications}
+              </p>
             </div>
           )}
         </div>

@@ -18,39 +18,10 @@ module.exports = {
     '/not-found',
     // 排除重定向源页面，避免404
     '/home',
-    '/herbs',  // 重定向到 /herb-finder
-    '/index.html',
-    // 排除草药finder的旧路径，现在重定向到 /herbs/
-    '/herb-finder/*',
-    // 排除系统生成的页面
-    '/_next/*',
-    '/api/*',
-    '/*.json',
+    '/herbs'
   ],
   
-  // robots.txt 配置
-  robotsTxtOptions: {
-    policies: [
-      {
-        userAgent: '*',
-        allow: '/',
-        disallow: [
-          '/api/',
-          '/test',
-          '/test-enhanced',
-          '/_next/',
-          '/zh/test',
-          '/herb-finder/*', // 旧的草药页面路径不让爬虫访问
-        ],
-      },
-    ],
-    additionalSitemaps: [
-      'https://www.herbscience.shop/sitemap.xml',
-      'https://www.herbscience.shop/sitemap-0.xml',
-    ],
-  },
-  
-  // 添加额外的路径或自定义页面 - 只包含确实存在的页面
+  // 添加额外的路径或自定义页面
   additionalPaths: async (config) => {
     const extraPaths = [
       // 核心功能页面 - 确保这些页面真实存在
@@ -75,26 +46,97 @@ module.exports = {
       await config.transform(config, '/privacy'),
       await config.transform(config, '/zh/privacy'),
       
-      // 确认存在的草药详情页面 - 新的统一路径
+      // 确认存在的草药详情页面
       await config.transform(config, '/herbs/ginseng'),
       await config.transform(config, '/herbs/ginger'),
       await config.transform(config, '/herbs/turmeric'),
-      await config.transform(config, '/herbs/valerian'),
       
-      // 博客文章
+      // 博客文章页面
       await config.transform(config, '/blog/turmeric-gut-relief-guide'),
-    ]
-    return extraPaths
+    ];
+
+    return extraPaths;
   },
-  
-  // 为多语言网站添加 hreflang
+
+  // 为不同类型的页面设置不同的优先级
   transform: async (config, path) => {
+    // 首页最高优先级
+    if (path === '/' || path === '/zh') {
+      return {
+        loc: path,
+        changefreq: 'daily',
+        priority: 1.0,
+        lastmod: new Date().toISOString(),
+        // 添加多语言替代版本
+        alternateRefs: [
+          {
+            href: 'https://www.herbscience.shop/',
+            hreflang: 'en',
+          },
+          {
+            href: 'https://www.herbscience.shop/zh',
+            hreflang: 'zh',
+          },
+          {
+            href: 'https://www.herbscience.shop/',
+            hreflang: 'x-default',
+          },
+        ],
+      }
+    }
+
+    // 草药详情页面高优先级
+    if (path.includes('/herbs/')) {
+      return {
+        loc: path,
+        changefreq: 'weekly',
+        priority: 0.9,
+        lastmod: new Date().toISOString(),
+      }
+    }
+
+    // 核心工具页面高优先级
+    if (path.includes('constitution-test') || path.includes('herb-finder') || path.includes('knowledge-center')) {
+      return {
+        loc: path,
+        changefreq: 'weekly',
+        priority: 0.9,
+        lastmod: new Date().toISOString(),
+        // 多语言替代版本
+        ...(path.startsWith('/zh/') ? {} : {
+          alternateRefs: [
+            {
+              href: `https://www.herbscience.shop${path}`,
+              hreflang: 'en',
+            },
+            {
+              href: `https://www.herbscience.shop/zh${path}`,
+              hreflang: 'zh',
+            },
+          ],
+        }),
+      }
+    }
+
+    // 其他页面标准优先级
     return {
       loc: path,
       changefreq: config.changefreq,
       priority: config.priority,
-      lastmod: config.autoLastmod ? new Date().toISOString() : undefined,
-      alternateRefs: config.alternateRefs ?? [],
+      lastmod: new Date().toISOString(),
     }
   },
+
+  robotsTxtOptions: {
+    policies: [
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: ['/api/', '/test', '/test-enhanced', '/_next/', '/zh/test']
+      }
+    ],
+    additionalSitemaps: [
+      'https://www.herbscience.shop/sitemap-0.xml'
+    ]
+  }
 } 

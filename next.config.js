@@ -94,7 +94,6 @@ const nextConfig = {
   // Redirects for SEO
   async redirects() {
     return [
-      // 基础重定向
       {
         source: '/home',
         destination: '/',
@@ -109,37 +108,7 @@ const nextConfig = {
         source: '/herbs',
         destination: '/herb-finder',
         permanent: true,
-      },
-      // HTTP到HTTPS重定向
-      {
-        source: '/index.html',
-        destination: '/',
-        permanent: true,
-      },
-      // 修复常见的404问题
-      {
-        source: '/herbscience.shop/:path*',
-        destination: '/:path*',
-        permanent: true,
-      },
-      // 草药页面重定向 - herb-finder到herbs统一路径
-      {
-        source: '/herb-finder/:slug',
-        destination: '/herbs/:slug',
-        permanent: true,
-      },
-      // 域名标准化 - 如果用户访问无www版本
-      {
-        source: '/:path*',
-        has: [
-          {
-            type: 'host',
-            value: 'herbscience.shop',
-          },
-        ],
-        destination: 'https://www.herbscience.shop/:path*',
-        permanent: true,
-      },
+      }
     ]
   },
 
