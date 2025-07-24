@@ -24,10 +24,9 @@
     "sync-blog-watch": "node scripts/real-time-blog-sync.js start",
     "sync-blog-status": "node scripts/real-time-blog-sync.js status",
     "sync-blog-manual": "node scripts/real-time-blog-sync.js sync",
-    "sanity": "npx sanity dev",
-    "sanity:build": "npx sanity build",
-    "sanity:deploy": "npx sanity deploy",
-    "cms": "npm run sanity"
+    "setup-cms": "node scripts/setup-sanity.js",
+    "cms-test": "echo 'Visit http://localhost:3000/test-cms to test CMS functionality'",
+    "cms-admin": "echo 'Visit http://localhost:3000/admin to access Sanity Studio'"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
