@@ -91,10 +91,13 @@ const nextConfig = {
     ]
   },
 
-  // 只保留路径重定向，域名重定向由vercel.json处理
+  // Redirects for SEO
   async redirects() {
     return [
-      // Remove index.html
+      // Remove HTTP to HTTPS redirect (handled by Vercel)
+      // Remove Non-www to www redirect (handled by Vercel)
+      
+      // Only keep internal redirects
       {
         source: '/index.html',
         destination: '/',
