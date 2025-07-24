@@ -95,9 +95,11 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  verification: {
-    google: 'your-google-site-verification-code',
-  },
+  // Google Search Console验证
+  // 请在Google Search Console中获取验证代码后取消注释
+  // verification: {
+  //   google: 'your-actual-verification-code',
+  // },
 }
 
 export default function RootLayout({
