@@ -91,21 +91,9 @@ const nextConfig = {
     ]
   },
 
-  // Redirects for SEO
+  // 只保留路径重定向，域名重定向由vercel.json处理
   async redirects() {
     return [
-      // Non-www to www redirect (simplified)
-      {
-        source: '/:path*',
-        has: [
-          {
-            type: 'host',
-            value: 'herbscience.shop',
-          },
-        ],
-        destination: 'https://www.herbscience.shop/:path*',
-        permanent: true,
-      },
       // Remove index.html
       {
         source: '/index.html',
