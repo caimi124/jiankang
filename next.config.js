@@ -94,7 +94,7 @@ const nextConfig = {
   // Redirects for SEO
   async redirects() {
     return [
-      // Non-www to www redirect - simplified to avoid conflicts
+      // Non-www to www redirect (simplified)
       {
         source: '/:path*',
         has: [
