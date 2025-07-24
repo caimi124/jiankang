@@ -1,98 +1,88 @@
-import { defineType } from 'sanity'
+import { defineType, defineField } from 'sanity'
 
-export default defineType({
+export const author = defineType({
   name: 'author',
   title: 'Author',
   type: 'document',
+  icon: () => '👨‍⚕️',
   fields: [
-    {
+    defineField({
       name: 'name',
       title: 'Name',
       type: 'string',
-      validation: (rule) => rule.required()
-    },
-    {
+      validation: Rule => Rule.required()
+    }),
+    
+    defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
       options: {
         source: 'name',
-        maxLength: 96
+        maxLength: 96,
       },
-      validation: (rule) => rule.required()
-    },
-    {
+      validation: Rule => Rule.required()
+    }),
+    
+    defineField({
       name: 'avatar',
       title: 'Avatar',
       type: 'image',
-      options: { hotspot: true },
-      fields: [
-        {
-          name: 'alt',
-          type: 'string',
-          title: 'Alternative text'
-        }
-      ]
-    },
-    {
+      options: {
+        hotspot: true
+      }
+    }),
+    
+    defineField({
       name: 'bio',
       title: 'Bio',
-      type: 'array',
-      of: [
-        {
-          type: 'block',
-          styles: [{ title: 'Normal', value: 'normal' }],
-          marks: {
-            decorators: [
-              { title: 'Strong', value: 'strong' },
-              { title: 'Emphasis', value: 'em' }
-            ]
-          }
-        }
-      ]
-    },
-    {
-      name: 'expertise',
-      title: 'Expertise',
+      type: 'text',
+      rows: 4
+    }),
+    
+    defineField({
+      name: 'title',
+      title: 'Professional Title',
+      type: 'string',
+      description: 'e.g., "Dr. Sarah Chen, PhD in Herbal Medicine"'
+    }),
+    
+    defineField({
+      name: 'credentials',
+      title: 'Credentials',
       type: 'array',
       of: [{ type: 'string' }],
       options: {
         layout: 'tags'
       }
-    },
-    {
-      name: 'credentials',
-      title: 'Credentials',
-      type: 'string',
-      description: 'e.g., "PhD in Pharmacology, Licensed Herbalist"'
-    },
-    {
+    }),
+    
+    defineField({
+      name: 'specialties',
+      title: 'Specialties',
+      type: 'array',
+      of: [{ type: 'string' }],
+      options: {
+        layout: 'tags'
+      }
+    }),
+    
+    defineField({
       name: 'social',
-      title: 'Social Media',
+      title: 'Social Links',
       type: 'object',
       fields: [
-        {
-          name: 'twitter',
-          title: 'Twitter',
-          type: 'url'
-        },
-        {
-          name: 'linkedin',
-          title: 'LinkedIn',
-          type: 'url'
-        },
-        {
-          name: 'website',
-          title: 'Website',
-          type: 'url'
-        }
+        { name: 'website', type: 'url', title: 'Website' },
+        { name: 'linkedin', type: 'url', title: 'LinkedIn' },
+        { name: 'twitter', type: 'url', title: 'Twitter' },
       ]
-    }
+    })
   ],
+  
   preview: {
     select: {
       title: 'name',
-      subtitle: 'credentials',
+      subtitle: 'title',
       media: 'avatar'
     }
   }

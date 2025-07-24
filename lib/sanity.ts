@@ -1,144 +1,151 @@
 import { createClient } from 'next-sanity'
-import { cache } from 'react'
+import imageUrlBuilder from '@sanity/image-url'
 
+// Sanity配置
+export const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'your-project-id'
+export const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
+export const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2024-01-01'
+
+// Sanity客户端
 export const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
-  apiVersion: '2024-01-01',
-  useCdn: process.env.NODE_ENV === 'production',
-  stega: {
-    enabled: false,
-    studioUrl: '/admin'
-  }
+  projectId,
+  dataset,
+  apiVersion,
+  useCdn: process.env.NODE_ENV === 'production', // 生产环境使用CDN
+  token: process.env.SANITY_API_TOKEN, // 用于写操作
 })
 
-// 验证必需的环境变量
-if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) {
-  throw new Error('Missing NEXT_PUBLIC_SANITY_PROJECT_ID environment variable')
-}
-
-if (!process.env.NEXT_PUBLIC_SANITY_DATASET) {
-  throw new Error('Missing NEXT_PUBLIC_SANITY_DATASET environment variable')
-}
-
-// 用于预览模式的客户端
+// 预览模式客户端（不使用CDN，获取最新数据）
 export const previewClient = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
-  apiVersion: '2024-01-01',
+  projectId,
+  dataset,
+  apiVersion,
   useCdn: false,
   token: process.env.SANITY_API_TOKEN,
-  perspective: 'previewDrafts'
 })
 
+// 获取客户端（根据预览模式）
 export const getClient = (usePreview = false) => (usePreview ? previewClient : client)
 
-// 缓存的查询函数
-export const sanityFetch = cache(async <T>(
+// 图片URL构建器
+const builder = imageUrlBuilder(client)
+export const urlFor = (source: any) => builder.image(source)
+
+// 通用查询函数
+export async function sanityFetch<T = any>(
   query: string,
-  params: Record<string, any> = {},
-  options?: {
-    revalidate?: number | false
-    tags?: string[]
-  }
-): Promise<T> => {
-  const { revalidate = 60, tags } = options || {}
+  params: any = {},
+  options: { 
+    next?: { revalidate?: number | false; tags?: string[] }
+    cache?: RequestCache
+  } = {}
+): Promise<T> {
+  const { next = { revalidate: 60 }, cache = 'force-cache' } = options
   
-  return client.fetch<T>(query, params, {
-    next: { revalidate, tags }
-  })
-})
+  try {
+    return await client.fetch<T>(query, params, {
+      cache,
+      next,
+    })
+  } catch (error) {
+    console.error('Sanity fetch error:', error)
+    throw error
+  }
+}
 
 // 博客相关查询
-export const BLOG_QUERIES = {
+export const blogQueries = {
   // 获取所有已发布的博客文章
-  ALL_POSTS: `
-    *[_type == "blog" && status == "published"] | order(publishedAt desc) {
+  getAllPosts: `
+    *[_type == "blogPost" && status == "published"] | order(publishedAt desc) {
       _id,
       title,
       slug,
       excerpt,
-      "author": author->{name, slug, avatar, credentials},
-      "category": category->{title, slug, color},
-      tags,
       publishedAt,
       readTime,
       featured,
-      featuredImage,
-      seo
+      "author": author->{name, slug, avatar, title},
+      "category": category->{title, slug, color, icon},
+      "tags": tags[]->{title, slug},
+      featured_image,
+      seoTitle,
+      seoDescription,
+      seoKeywords
     }
   `,
   
-  // 获取单篇博客文章
-  POST_BY_SLUG: `
-    *[_type == "blog" && slug.current == $slug && status == "published"][0] {
+  // 根据slug获取单篇文章
+  getPostBySlug: `
+    *[_type == "blogPost" && slug.current == $slug && status == "published"][0] {
       _id,
       title,
       slug,
       excerpt,
       content,
-      "author": author->{name, slug, avatar, bio, credentials, expertise, social},
-      "category": category->{title, slug, color, icon},
-      tags,
       publishedAt,
       readTime,
       featured,
-      featuredImage,
-      seo,
-      _updatedAt
+      "author": author->{name, slug, avatar, title, bio, credentials, specialties},
+      "category": category->{title, slug, color, icon},
+      "tags": tags[]->{title, slug},
+      featured_image,
+      seoTitle,
+      seoDescription,
+      seoKeywords,
+      status
     }
   `,
   
   // 获取特色文章
-  FEATURED_POSTS: `
-    *[_type == "blog" && status == "published" && featured == true] | order(publishedAt desc) [0...6] {
+  getFeaturedPosts: `
+    *[_type == "blogPost" && status == "published" && featured == true] | order(publishedAt desc) [0...3] {
       _id,
       title,
       slug,
       excerpt,
-      "author": author->{name, slug},
-      "category": category->{title, slug, color},
-      tags,
       publishedAt,
       readTime,
-      featuredImage
+      "author": author->{name, slug},
+      "category": category->{title, slug, color, icon},
+      "tags": tags[]->{title, slug},
+      featured_image
     }
   `,
   
-  // 获取按分类的文章
-  POSTS_BY_CATEGORY: `
-    *[_type == "blog" && status == "published" && category->slug.current == $categorySlug] | order(publishedAt desc) {
+  // 根据分类获取文章
+  getPostsByCategory: `
+    *[_type == "blogPost" && status == "published" && category._ref == $categoryId] | order(publishedAt desc) {
       _id,
       title,
       slug,
       excerpt,
-      "author": author->{name, slug},
-      "category": category->{title, slug, color},
-      tags,
       publishedAt,
       readTime,
-      featuredImage
+      "author": author->{name, slug},
+      "category": category->{title, slug, color, icon},
+      featured_image
     }
   `,
   
   // 获取相关文章
-  RELATED_POSTS: `
-    *[_type == "blog" && status == "published" && _id != $excludeId && (category->slug.current == $categorySlug || count((tags[])[@ in $tags]) > 0)] | order(publishedAt desc) [0...3] {
+  getRelatedPosts: `
+    *[_type == "blogPost" && status == "published" && _id != $postId && count(tags[@._ref in *[_type == "blogPost" && _id == $postId][0].tags[]._ref]) > 0] | order(publishedAt desc) [0...3] {
       _id,
       title,
       slug,
       excerpt,
-      "author": author->{name, slug},
-      "category": category->{title, slug, color},
-      tags,
       publishedAt,
-      readTime,
-      featuredImage
+      "author": author->{name, slug},
+      "category": category->{title, slug}
     }
-  `,
-  
+  `
+}
+
+// 其他查询
+export const queries = {
   // 获取所有分类
-  ALL_CATEGORIES: `
+  getAllCategories: `
     *[_type == "category"] | order(title asc) {
       _id,
       title,
@@ -146,63 +153,116 @@ export const BLOG_QUERIES = {
       description,
       color,
       icon,
-      "postCount": count(*[_type == "blog" && status == "published" && references(^._id)])
+      "postCount": count(*[_type == "blogPost" && category._ref == ^._id && status == "published"])
+    }
+  `,
+  
+  // 获取所有标签
+  getAllTags: `
+    *[_type == "tag"] | order(title asc) {
+      _id,
+      title,
+      slug,
+      description,
+      "postCount": count(*[_type == "blogPost" && references(^._id) && status == "published"])
     }
   `,
   
   // 获取所有作者
-  ALL_AUTHORS: `
+  getAllAuthors: `
     *[_type == "author"] | order(name asc) {
       _id,
       name,
       slug,
       avatar,
+      title,
       bio,
       credentials,
-      expertise,
-      social,
-      "postCount": count(*[_type == "blog" && status == "published" && references(^._id)])
+      specialties,
+      "postCount": count(*[_type == "blogPost" && author._ref == ^._id && status == "published"])
+    }
+  `,
+  
+  // 获取站点设置
+  getSiteSettings: `
+    *[_type == "siteSettings"][0] {
+      title,
+      description,
+      keywords,
+      logo,
+      favicon,
+      socialMedia,
+      analytics
     }
   `
 }
 
-// 辅助函数：检查Sanity连接
-export async function testSanityConnection() {
-  try {
-    const result = await client.fetch('*[_type == "blog"][0...1]')
-    return {
-      success: true,
-      message: 'Sanity connection successful',
-      data: result
-    }
-  } catch (error) {
-    return {
-      success: false,
-      message: 'Sanity connection failed',
-      error: error instanceof Error ? error.message : 'Unknown error'
-    }
+// 类型定义
+export interface BlogPost {
+  _id: string
+  title: string
+  slug: { current: string }
+  excerpt: string
+  content?: any[]
+  publishedAt: string
+  readTime: number
+  featured: boolean
+  author: Author
+  category: Category
+  tags: Tag[]
+  featured_image?: any
+  seoTitle?: string
+  seoDescription?: string
+  seoKeywords?: string[]
+  status: 'draft' | 'published' | 'archived'
+}
+
+export interface Author {
+  _id?: string
+  name: string
+  slug: { current: string }
+  avatar?: any
+  title?: string
+  bio?: string
+  credentials?: string[]
+  specialties?: string[]
+  social?: {
+    website?: string
+    linkedin?: string
+    twitter?: string
   }
 }
 
-// 辅助函数：格式化Portable Text为纯文本
-export function portableTextToPlainText(blocks: any[]): string {
-  if (!blocks || !Array.isArray(blocks)) return ''
-  
-  return blocks
-    .filter(block => block._type === 'block')
-    .map(block => {
-      if (block.children) {
-        return block.children.map((child: any) => child.text).join('')
-      }
-      return ''
-    })
-    .join('\n\n')
+export interface Category {
+  _id?: string
+  title: string
+  slug: { current: string }
+  description?: string
+  color?: { hex: string }
+  icon?: string
 }
 
-// 辅助函数：计算阅读时间
-export function calculateReadingTime(text: string): string {
-  const wordsPerMinute = 200
-  const wordCount = text.split(/\s+/).length
-  const minutes = Math.ceil(wordCount / wordsPerMinute)
-  return `${minutes} min read`
+export interface Tag {
+  _id?: string
+  title: string
+  slug: { current: string }
+  description?: string
+}
+
+export interface SiteSettings {
+  title: string
+  description: string
+  keywords: string[]
+  logo?: any
+  favicon?: any
+  socialMedia?: {
+    twitter?: string
+    facebook?: string
+    instagram?: string
+    youtube?: string
+  }
+  analytics?: {
+    googleAnalytics?: string
+    googleTagManager?: string
+  }
 } 

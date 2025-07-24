@@ -1,58 +1,65 @@
-import { defineType } from 'sanity'
+import { defineType, defineField } from 'sanity'
 
-export default defineType({
+export const category = defineType({
   name: 'category',
   title: 'Category',
   type: 'document',
+  icon: () => '🏷️',
   fields: [
-    {
+    defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
-      validation: (rule) => rule.required()
-    },
-    {
+      validation: Rule => Rule.required()
+    }),
+    
+    defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
       options: {
         source: 'title',
-        maxLength: 96
+        maxLength: 96,
       },
-      validation: (rule) => rule.required()
-    },
-    {
+      validation: Rule => Rule.required()
+    }),
+    
+    defineField({
       name: 'description',
       title: 'Description',
-      type: 'text'
-    },
-    {
+      type: 'text',
+      rows: 3
+    }),
+    
+    defineField({
       name: 'color',
       title: 'Color',
-      type: 'string',
+      type: 'color',
       options: {
-        list: [
-          { title: 'Blue', value: 'blue' },
-          { title: 'Green', value: 'green' },
-          { title: 'Purple', value: 'purple' },
-          { title: 'Red', value: 'red' },
-          { title: 'Orange', value: 'orange' },
-          { title: 'Yellow', value: 'yellow' }
-        ]
-      },
-      initialValue: 'blue'
-    },
-    {
+        disableAlpha: true
+      }
+    }),
+    
+    defineField({
       name: 'icon',
-      title: 'Icon',
+      title: 'Icon Emoji',
       type: 'string',
-      description: 'Lucide icon name (e.g., "leaf", "heart", "brain")'
-    }
+      description: 'Single emoji to represent this category'
+    })
   ],
+  
   preview: {
     select: {
       title: 'title',
-      subtitle: 'description'
+      subtitle: 'description',
+      icon: 'icon'
+    },
+    prepare(selection) {
+      const { icon } = selection
+      return {
+        ...selection,
+        media: () => icon || '🏷️'
+      }
     }
   }
 }) 

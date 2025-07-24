@@ -24,16 +24,19 @@
     "sync-blog-watch": "node scripts/real-time-blog-sync.js start",
     "sync-blog-status": "node scripts/real-time-blog-sync.js status",
     "sync-blog-manual": "node scripts/real-time-blog-sync.js sync",
-    "setup-cms": "node scripts/setup-sanity.js",
-    "cms-test": "echo 'Visit http://localhost:3000/test-cms to test CMS functionality'",
-    "cms-admin": "echo 'Visit http://localhost:3000/admin to access Sanity Studio'"
+    "sanity": "sanity dev",
+    "sanity:build": "sanity build",
+    "sanity:deploy": "sanity deploy",
+    "sanity:start": "sanity start"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@notionhq/client": "^2.3.0",
     "@portabletext/react": "^3.2.1",
     "@sanity/client": "^7.8.1",
+    "@sanity/color-input": "^4.0.5",
     "@sanity/image-url": "^1.1.0",
+    "@sanity/ui": "^2.16.7",
     "@sanity/vision": "^4.1.1",
     "@tailwindcss/typography": "^0.5.16",
     "autoprefixer": "^10.4.21",
