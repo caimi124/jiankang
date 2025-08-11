@@ -98,6 +98,7 @@ const nextConfig = {
       // Remove Non-www to www redirect (handled by Vercel)
       
       // Only keep internal redirects
+      // 规范化：防止 /index.html 被索引
       {
         source: '/index.html',
         destination: '/',
@@ -114,11 +115,8 @@ const nextConfig = {
         destination: '/constitution-test',
         permanent: true,
       },
-      {
-        source: '/herbs',
-        destination: '/herb-finder',
-        permanent: true,
-      }
+      // 注意：不要将功能目录整体重定向到新路径，以免 Google 记录“网页会自动重定向”。
+      // 若需要，请仅对旧具体URL做一对一 301。
     ]
   },
 

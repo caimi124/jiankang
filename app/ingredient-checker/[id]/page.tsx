@@ -35,7 +35,7 @@ interface IngredientDetailPageProps {
 export async function generateMetadata({ params }: IngredientDetailPageProps): Promise<Metadata> {
   const resolvedParams = await params
   try {
-    const response = await fetch(`${process.env.NODE_ENV === 'production' ? 'https://herbscience.shop' : 'http://localhost:3000'}/api/ingredients/${resolvedParams.id}`)
+    const response = await fetch(`${process.env.NODE_ENV === 'production' ? 'https://www.herbscience.shop' : 'http://localhost:3000'}/api/ingredients/${resolvedParams.id}`)
     const data = await response.json()
     
     if (!data.success) {
@@ -71,7 +71,7 @@ export default async function IngredientDetailPage({ params }: IngredientDetailP
   let ingredient
   
   try {
-    const response = await fetch(`${process.env.NODE_ENV === 'production' ? 'https://herbscience.shop' : 'http://localhost:3000'}/api/ingredients/${resolvedParams.id}`)
+    const response = await fetch(`${process.env.NODE_ENV === 'production' ? 'https://www.herbscience.shop' : 'http://localhost:3000'}/api/ingredients/${resolvedParams.id}`)
     const data = await response.json()
     
     if (!data.success) {

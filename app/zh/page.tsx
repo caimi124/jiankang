@@ -15,6 +15,9 @@ export default function ZhHome() {
 
   return (
     <main className="min-h-screen bg-white">
+      {/* 中文首页动态 OG 图 */}
+      <meta property="og:image" content="https://www.herbscience.shop/zh/opengraph-image" />
+      <meta name="twitter:image" content="https://www.herbscience.shop/zh/opengraph-image" />
       {/* Unified Header Component */}
       <Header />
 

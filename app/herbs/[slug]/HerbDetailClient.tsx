@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useEffect } from 'react'
 import Navigation from '../../../components/Navigation'
 import Breadcrumb from '../../../components/Breadcrumb'
 import { 
@@ -61,6 +62,8 @@ interface HerbDetailClientProps {
 export default function HerbDetailClient({ herbData, slug }: HerbDetailClientProps) {
   const [activeTab, setActiveTab] = useState('overview')
   const [bookmarked, setBookmarked] = useState(false)
+  const [relatedHerbs, setRelatedHerbs] = useState<string[]>([])
+  const [relatedArticles, setRelatedArticles] = useState<{ title: string; href: string }[]>([])
 
   // 获取体质匹配图标
   const getConstitutionIcon = (suitable: string) => {
@@ -81,6 +84,55 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
       default: return 'bg-gray-100 text-gray-800'
     }
   }
+
+  // 数据驱动的相关草药/文章匹配（基于功效/属性/关键词）
+  useEffect(() => {
+    const matchKeywords = new Set([
+      ...(herbData?.benefits || []),
+      ...(herbData?.properties || []),
+      ...(herbData?.seo_keywords || []),
+    ].map(k => k.toLowerCase()))
+
+    // 简化：从已知热门草药集合中做近似匹配（可替换为 /api/herbs/recommendations 实时接口）
+    const candidates = ['ginger','turmeric','ginseng','peppermint','chamomile','cinnamon','echinacea','ashwagandha']
+    const scored = candidates
+      .filter(name => name !== herbData?.name?.toLowerCase())
+      .map(name => {
+        const nameKeywords = new Set(
+          name === 'ginger' ? ['nausea','digestive','circulation','warming'] :
+          name === 'turmeric' ? ['inflammation','pain','joint','antioxidant'] :
+          name === 'ginseng' ? ['energy','focus','fatigue'] :
+          name === 'peppermint' ? ['ibs','spasm','digestive','cooling'] :
+          name === 'chamomile' ? ['sleep','anxiety','calming'] :
+          name === 'cinnamon' ? ['metabolic','blood sugar','warming'] :
+          name === 'echinacea' ? ['immune','cold','infection'] :
+          name === 'ashwagandha' ? ['stress','anxiety','sleep'] : []
+        )
+        let overlap = 0
+        nameKeywords.forEach((k) => { if (matchKeywords.has(k)) overlap += 1 })
+        return { name, score: overlap }
+      })
+      .filter(x => x.score > 0)
+      .sort((a,b) => b.score - a.score)
+      .slice(0, 3)
+
+    setRelatedHerbs(scored.map(s => s.name))
+
+    // 相关文章（可替换为 Notion 标签检索）
+    const articleBank = [
+      { title: 'Digestive Health Herbs: Natural Remedies for Gut Issues', href: '/blog/digestive-health-herbs' , tags: ['digestive','ginger','peppermint']},
+      { title: 'Best Herbs for Sleep: What Actually Works for Insomnia', href: '/blog/herbs-for-sleep-insomnia', tags: ['sleep','chamomile','anxiety']},
+      { title: 'Hidden Dangers: 5 Popular Herb-Medication Combinations to Avoid', href: '/blog/herb-drug-interactions', tags: ['safety','interaction']},
+      { title: 'Best Herbs for Anxiety: Natural Alternatives to Prescription Medications', href: '/blog/herbs-for-anxiety-natural-alternatives', tags: ['anxiety','ashwagandha']},
+    ]
+    const related = articleBank
+      .map(a => ({ a, score: a.tags.reduce((acc, t) => acc + (matchKeywords.has(t) ? 1 : 0), 0) }))
+      .filter(x => x.score > 0)
+      .sort((a,b) => b.score - a.score)
+      .slice(0, 3)
+      .map(x => ({ title: x.a.title, href: x.a.href }))
+    setRelatedArticles(related)
+  }, [herbData])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
@@ -637,6 +689,40 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
                 ))}
               </div>
             )}
+          </div>
+        </div>
+
+        {/* Related Links Section - 内链增强（数据驱动） */}
+        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Guides & Tools</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* 相关文章（根据标签/功效匹配） */}
+            {relatedArticles.map((a, idx) => (
+              <Link key={idx} href={a.href} className="block p-6 bg-gray-50 rounded-xl border hover:border-green-300 transition-colors">
+                <h3 className="font-semibold text-gray-900 mb-2">{a.title}</h3>
+                <p className="text-sm text-gray-600">Recommended reading based on your interest</p>
+                <span className="inline-block mt-3 text-green-600 text-sm">Read article →</span>
+              </Link>
+            ))}
+            {/* 相似草药（根据关键词匹配） */}
+            {relatedHerbs.slice(0, Math.max(0, 3 - relatedArticles.length)).map((name, idx) => (
+              <Link key={`rh-${idx}`} href={`/herbs/${name}`} className="block p-6 bg-gray-50 rounded-xl border hover:border-green-300 transition-colors">
+                <h3 className="font-semibold text-gray-900 mb-2">Related Herb: {name[0].toUpperCase() + name.slice(1)}</h3>
+                <p className="text-sm text-gray-600">Similar benefits and use cases</p>
+                <span className="inline-block mt-3 text-green-600 text-sm">View details →</span>
+              </Link>
+            ))}
+            {/* 工具入口 */}
+            <Link href={`/herb-finder?search=${encodeURIComponent(herbData.name)}`} className="block p-6 bg-gray-50 rounded-xl border hover:border-green-300 transition-colors">
+              <h3 className="font-semibold text-gray-900 mb-2">Find Related Herbs</h3>
+              <p className="text-sm text-gray-600">See herbs with similar benefits and safety profiles</p>
+              <span className="inline-block mt-3 text-green-600 text-sm">Open Herb Finder →</span>
+            </Link>
+            <Link href="/ingredient-checker" className="block p-6 bg-gray-50 rounded-xl border hover:border-green-300 transition-colors">
+              <h3 className="font-semibold text-gray-900 mb-2">Check Interactions</h3>
+              <p className="text-sm text-gray-600">Verify safety with your medications and current supplements</p>
+              <span className="inline-block mt-3 text-green-600 text-sm">Open Safety Checker →</span>
+            </Link>
           </div>
         </div>
 

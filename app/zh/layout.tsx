@@ -27,14 +27,7 @@ export const metadata: Metadata = {
   authors: [{ name: 'HerbScience团队' }],
   creator: 'HerbScience.shop',
   publisher: 'HerbScience.shop',
-  alternates: {
-    canonical: 'https://www.herbscience.shop/zh',
-    languages: {
-      'en': 'https://www.herbscience.shop',
-      'zh': 'https://www.herbscience.shop/zh',
-      'x-default': 'https://www.herbscience.shop',
-    },
-  },
+  // 不在区域布局设置 canonical/hreflang，避免与页面级设置冲突，交给各页面或 sitemap 处理
   openGraph: {
     type: 'website',
     locale: 'zh_CN',

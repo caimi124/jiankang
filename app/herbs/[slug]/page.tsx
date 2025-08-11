@@ -5,9 +5,9 @@ import HerbDetailClient from './HerbDetailClient'
 // 草药数据获取函数
 async function getHerbData(slug: string) {
   try {
-    // 优先使用生产环境URL，开发环境fallback到localhost
+    // 优先使用生产环境URL（规范为 www），开发环境 fallback 到 localhost
     const baseUrl = process.env.NODE_ENV === 'production' 
-      ? 'https://herbscience.shop' 
+      ? 'https://www.herbscience.shop' 
       : 'http://localhost:3000'
     
     console.log(`[DEBUG] Fetching herb data for slug: ${slug} from ${baseUrl}`)
@@ -90,6 +90,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description,
       images: ['/hero-bg.svg']
     },
+    // 仅在详情页设置 canonical，其他页避免全局覆盖
     alternates: {
       canonical: `https://www.herbscience.shop/herbs/${slug}`,
     },
@@ -227,6 +228,9 @@ export default async function HerbDetailPage({ params }: { params: Promise<{ slu
 
   return (
     <>
+      {/* 使用路由级 OpenGraph 生成图像（/herbs/[slug]/opengraph-image） */}
+      <meta property="og:image" content={`https://www.herbscience.shop/herbs/${slug}/opengraph-image`} />
+      <meta name="twitter:image" content={`https://www.herbscience.shop/herbs/${slug}/opengraph-image`} />
       {/* JSON-LD 结构化数据 */}
       <script
         type="application/ld+json"

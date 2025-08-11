@@ -14,7 +14,7 @@ interface BlogPostPageProps {
 // 从Notion获取博客文章数据
 async function getBlogPostFromNotion(slug: string) {
   try {
-    const response = await fetch(`${process.env.NODE_ENV === 'production' ? 'https://herbscience.shop' : 'http://localhost:3000'}/api/blog/sync-to-notion?action=get_post&slug=${slug}`, {
+    const response = await fetch(`${process.env.NODE_ENV === 'production' ? 'https://www.herbscience.shop' : 'http://localhost:3000'}/api/blog/sync-to-notion?action=get_post&slug=${slug}`, {
       cache: 'no-store'
     })
     
@@ -125,6 +125,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <>
+      {/* 使用路由级 OpenGraph 生成图像（/blog/[slug]/opengraph-image） */}
+      <meta property="og:image" content={`https://www.herbscience.shop/blog/${resolvedParams.slug}/opengraph-image`} />
+      <meta name="twitter:image" content={`https://www.herbscience.shop/blog/${resolvedParams.slug}/opengraph-image`} />
       {/* JSON-LD 结构化数据 */}
       <script
         type="application/ld+json"

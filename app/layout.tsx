@@ -53,14 +53,8 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  alternates: {
-    canonical: 'https://www.herbscience.shop',
-    languages: {
-      'en': 'https://www.herbscience.shop',
-      'zh': 'https://www.herbscience.shop/zh',
-      'x-default': 'https://www.herbscience.shop',
-    },
-  },
+  // 注意：不要在全局布局设置 canonical 或全局 hreflang。
+  // 由各页面自行生成或交由 sitemap 提供 alternateRefs，避免所有页面误指向首页。
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -127,10 +121,10 @@ export default function RootLayout({
               "@type": "WebSite",
               "name": "HerbScience.shop",
               "description": "Evidence-based herbal supplement guidance with TCM insights and safety analysis",
-              "url": "https://herbscience.shop",
+              "url": "https://www.herbscience.shop",
               "potentialAction": {
                 "@type": "SearchAction",
-                "target": "https://herbscience.shop/search?q={search_term_string}",
+                  "target": "https://www.herbscience.shop/search?q={search_term_string}",
                 "query-input": "required name=search_term_string"
               },
               "publisher": {
@@ -138,9 +132,36 @@ export default function RootLayout({
                 "name": "HerbScience.shop",
                 "logo": {
                   "@type": "ImageObject",
-                  "url": "https://herbscience.shop/logo.png"
+                    "url": "https://www.herbscience.shop/logo.png"
                 }
               }
+            })
+          }}
+        />
+
+        {/* Organization JSON-LD */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "HerbScience.shop",
+              "url": "https://www.herbscience.shop",
+              "logo": "https://www.herbscience.shop/logo.png",
+              "sameAs": [
+                "https://www.linkedin.com/company/herbscience-shop",
+                "https://twitter.com/herbscience_shop"
+              ],
+              "contactPoint": [
+                {
+                  "@type": "ContactPoint",
+                  "telephone": "+1-555-123-4567",
+                  "contactType": "customer support",
+                  "areaServed": "US, CN, GB, AU",
+                  "availableLanguage": ["en", "zh"]
+                }
+              ]
             })
           }}
         />

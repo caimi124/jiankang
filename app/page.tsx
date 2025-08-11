@@ -67,6 +67,9 @@ export default function Home() {
   const valueProps = getValueProposition()
   return (
     <main className="min-h-screen bg-white">
+      {/* 英文首页动态 OG 图 */}
+      <meta property="og:image" content="https://www.herbscience.shop/opengraph-image" />
+      <meta name="twitter:image" content="https://www.herbscience.shop/opengraph-image" />
       {/* Unified Header Component */}
       <Header />
 
