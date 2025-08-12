@@ -93,6 +93,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     // 仅在详情页设置 canonical，其他页避免全局覆盖
     alternates: {
       canonical: `https://www.herbscience.shop/herbs/${slug}`,
+      languages: {
+        'en': `https://www.herbscience.shop/herbs/${slug}`,
+        'x-default': `https://www.herbscience.shop/herbs/${slug}`,
+      },
     },
     other: {
       'article:author': 'HerbScience Team',
@@ -226,6 +230,46 @@ export default async function HerbDetailPage({ params }: { params: Promise<{ slu
     }))
   }
 
+  // FAQPage JSON-LD（仅在有FAQ时输出）
+  const faqJsonLd = Array.isArray(herbData.faqs) && herbData.faqs.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: herbData.faqs.map((faq: any) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer
+      }
+    }))
+  } : null
+
+  // 面包屑 JSON-LD
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://www.herbscience.shop/'
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Herbs',
+        item: 'https://www.herbscience.shop/herb-finder'
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: herbData.name,
+        item: `https://www.herbscience.shop/herbs/${slug}`
+      }
+    ]
+  }
+
   return (
     <>
       {/* 使用路由级 OpenGraph 生成图像（/herbs/[slug]/opengraph-image） */}
@@ -235,6 +279,16 @@ export default async function HerbDetailPage({ params }: { params: Promise<{ slu
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       
       {/* 客户端组件 */}

@@ -70,6 +70,10 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     },
     alternates: {
       canonical: `https://www.herbscience.shop/blog/${resolvedParams.slug}`,
+      languages: {
+        'en': `https://www.herbscience.shop/blog/${resolvedParams.slug}`,
+        'x-default': `https://www.herbscience.shop/blog/${resolvedParams.slug}`,
+      }
     }
   }
 }
@@ -123,6 +127,28 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     url: `https://www.herbscience.shop/blog/${resolvedParams.slug}`
   }
 
+  // 面包屑 JSON-LD
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.herbscience.shop/' },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://www.herbscience.shop/blog' },
+      { '@type': 'ListItem', position: 3, name: post.title, item: `https://www.herbscience.shop/blog/${resolvedParams.slug}` }
+    ]
+  }
+
+  // FAQPage JSON-LD（如果文章包含 faqs 字段）
+  const faqJsonLd = Array.isArray(post.faqs) && post.faqs.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: post.faqs.map((faq: any) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: { '@type': 'Answer', text: faq.answer }
+    }))
+  } : null
+
   return (
     <>
       {/* 使用路由级 OpenGraph 生成图像（/blog/[slug]/opengraph-image） */}
@@ -133,6 +159,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
       
       <div className="min-h-screen bg-gray-50">
         <Navigation />
