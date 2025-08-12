@@ -65,11 +65,27 @@ export default function Home() {
 
   const ctaConfig = getCtaConfig()
   const valueProps = getValueProposition()
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.herbscience.shop/' }
+    ]
+  }
   return (
     <main className="min-h-screen bg-white">
       {/* 英文首页动态 OG 图 */}
       <meta property="og:image" content="https://www.herbscience.shop/opengraph-image" />
       <meta name="twitter:image" content="https://www.herbscience.shop/opengraph-image" />
+      {/* hreflang alternates */}
+      <link rel="alternate" hrefLang="en" href="https://www.herbscience.shop/" />
+      <link rel="alternate" hrefLang="zh" href="https://www.herbscience.shop/zh" />
+      <link rel="alternate" hrefLang="x-default" href="https://www.herbscience.shop/" />
+      {/* BreadcrumbList JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       {/* Unified Header Component */}
       <Header />
 

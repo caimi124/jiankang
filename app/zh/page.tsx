@@ -12,12 +12,28 @@ export default function ZhHome() {
   const pathname = usePathname()
   const currentLocale = pathname.startsWith('/zh') ? 'zh' : 'en'
   const t = getTranslation(currentLocale)
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '首页', item: 'https://www.herbscience.shop/zh' }
+    ]
+  }
 
   return (
     <main className="min-h-screen bg-white">
       {/* 中文首页动态 OG 图 */}
       <meta property="og:image" content="https://www.herbscience.shop/zh/opengraph-image" />
       <meta name="twitter:image" content="https://www.herbscience.shop/zh/opengraph-image" />
+      {/* hreflang alternates */}
+      <link rel="alternate" hrefLang="en" href="https://www.herbscience.shop/" />
+      <link rel="alternate" hrefLang="zh" href="https://www.herbscience.shop/zh" />
+      <link rel="alternate" hrefLang="x-default" href="https://www.herbscience.shop/" />
+      {/* BreadcrumbList JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       {/* Unified Header Component */}
       <Header />
 
