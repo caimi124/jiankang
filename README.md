@@ -397,3 +397,27 @@ const t = getTranslation('en') // 或 'zh'
 - ✅ **可扩展的设计系统**
 
 所有页面现在都与您的实际网站 [https://www.herbscience.shop/](https://www.herbscience.shop/) 保持完美一致！🌿 
+
+## Notion 集成（Herbs 四库）
+
+1) 设置 .env.local：
+```
+NOTION_TOKEN=secret_xxx
+NOTION_PARENT_PAGE_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+2) 创建数据库并输出库 ID：
+```
+node scripts/create-notion-schema.js
+```
+3) 将输出填入环境变量：
+```
+NOTION_HERBS_DB_ID=
+NOTION_DOSAGES_DB_ID=
+NOTION_STUDIES_DB_ID=
+NOTION_FAQS_DB_ID=
+```
+4) 生成 Cinnamon 示例：
+```
+node scripts/seed-cinnamon.js
+```
+5) API 已自动优先读取 Notion（`app/api/herbs/[slug]/route.ts`）。

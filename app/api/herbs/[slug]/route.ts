@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { fetchHerbFromNotionBySlug } from '../../../../lib/notion-herbs'
 
 // 完整的草药详情数据
 const HERB_DETAIL_DATA = {
@@ -441,8 +442,14 @@ export async function GET(
     
     console.log(`[API] 查询草药详情: ${normalizedSlug}`)
     
-    // 首先尝试从详细数据中查找
-    let herbData = HERB_DETAIL_DATA[normalizedSlug as keyof typeof HERB_DETAIL_DATA]
+    // 优先从 Notion 读取
+    let herbData = await fetchHerbFromNotionBySlug(normalizedSlug)
+      .catch(() => null) as any
+    
+    // 兼容旧数据：未命中 Notion 时回退到内置常量
+    if (!herbData) {
+      herbData = HERB_DETAIL_DATA[normalizedSlug as keyof typeof HERB_DETAIL_DATA]
+    }
     
     // 如果没找到，尝试从完整数据库中查找并生成基础数据
     if (!herbData) {
@@ -460,7 +467,7 @@ export async function GET(
                herb.chinese_name.includes(normalizedSlug)
       })
       
-      if (matchedHerb) {
+      if (!herbData && matchedHerb) {
         // 为数据库中的草药生成基础详情页数据
         herbData = {
           id: matchedHerb.id,
