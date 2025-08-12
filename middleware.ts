@@ -4,13 +4,6 @@ import type { NextRequest } from 'next/server'
 export function middleware(request: NextRequest) {
   const url = request.nextUrl
 
-  // 域名规范化：将 apex 域名重定向到 www，避免重复内容和索引分裂
-  if (url.hostname === 'herbscience.shop') {
-    const redirectUrl = new URL(url.toString())
-    redirectUrl.hostname = 'www.herbscience.shop'
-    return NextResponse.redirect(redirectUrl, 308)
-  }
-
   const response = NextResponse.next()
 
   // 添加安全相关的响应头
