@@ -1,0 +1,4 @@
+Herb(Title or ID),Title,Year,StudyType,Outcomes,EffectDirection,RiskOfBias,Link,Takeaway,EvidenceWeight
+Cinnamon,Meta-analysis: Cinnamon improves fasting glucose in T2D,2021,Meta-analysis,"FPG;HOMA-IR",Positive,Low,,Significant improvement in fasting glucose and insulin sensitivity,5
+Cinnamon,Cinnamon lowers CRP and IL-6 (1–2 g/day, 8 weeks),2020,RCT,"CRP;IL-6",Positive,Some concerns,,Inflammation markers reduced after 8 weeks,3
+
