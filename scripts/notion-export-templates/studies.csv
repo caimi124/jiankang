@@ -1,0 +1,6 @@
+Herb(Title or ID),Title,Year,StudyType,Outcomes,EffectDirection,RiskOfBias,Link,Takeaway,EvidenceWeight
+Cinnamon,Meta-analysis: Cinnamon improves fasting glucose in T2D,2021,Meta-analysis,"FPG;HOMA-IR",Positive,Low,,Significant improvement in FPG and insulin sensitivity,5
+Cinnamon,Cinnamon lowers CRP and IL-6 (1–2 g/day, 8 weeks),2020,RCT,"CRP;IL-6",Positive,Some concerns,,Inflammation markers reduced,3
+Turmeric,Curcumin reduces knee OA pain (meta-analysis),2019,Meta-analysis,"Pain;Function",Positive,Low,,Clinically meaningful reductions in pain,5
+Ginger,Ginger reduces nausea in pregnancy (systematic review),2016,Systematic review,"Nausea;Vomiting",Positive,Low,,Consistent benefit with good safety,4
+
