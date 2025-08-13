@@ -1,124 +1,127 @@
 #!/usr/bin/env node
 const { Client } = require('@notionhq/client')
 
-const token = process.env.NOTION_TOKEN
-const herbsDbId = process.env.NOTION_HERBS_DB_ID
-const dosagesDbId = process.env.NOTION_DOSAGES_DB_ID
-const studiesDbId = process.env.NOTION_STUDIES_DB_ID
-const faqsDbId = process.env.NOTION_FAQS_DB_ID
+const {
+  NOTION_TOKEN,
+  NOTION_HERBS_DB_ID,
+  NOTION_DOSAGES_DB_ID,
+  NOTION_STUDIES_DB_ID,
+  NOTION_FAQS_DB_ID,
+} = process.env
 
-if (!token || !herbsDbId || !dosagesDbId || !studiesDbId || !faqsDbId) {
-  console.error('Missing NOTION_TOKEN or one of DB IDs (HERBS/DOSAGES/STUDIES/FAQS)')
+if (!NOTION_TOKEN) {
+  console.error('❌ Missing NOTION_TOKEN')
   process.exit(1)
 }
 
-const notion = new Client({ auth: token })
+const notion = new Client({ auth: NOTION_TOKEN })
 
-async function createHerbsTemplate() {
-  const res = await notion.pages.create({
-    parent: { database_id: herbsDbId },
+async function createHerbTemplate() {
+  if (!NOTION_HERBS_DB_ID) return
+  await notion.pages.create({
+    parent: { database_id: NOTION_HERBS_DB_ID },
     properties: {
-      'Herb Name': { title: [{ text: { content: 'TEMPLATE - Herb Name' } }] },
-      'LatinName': { rich_text: [{ text: { content: 'Latin name here' } }] },
-      'Slug': { rich_text: [{ text: { content: 'herb-slug-here' } }] },
+      'Herb Name': { title: [{ text: { content: 'Template — Herb (EN)' } }] },
+      'LatinName': { rich_text: [{ text: { content: 'Latin binomial' } }] },
+      'Slug': { rich_text: [{ text: { content: 'your-herb-slug' } }] },
       'Category': { select: { name: 'Circulation' } },
-      'Overview': { rich_text: [{ text: { content: '1) Who benefits 2) What to expect 3) Safety head-up 4) Short mechanism (2–3 sentences).' } }] },
-      'ActiveCompounds': { multi_select: ['Compound A','Compound B'].map((n)=>({name:n})) },
-      'Benefits': { multi_select: ['Benefit A','Benefit B'].map((n)=>({name:n})) },
-      'RecommendedFor': { multi_select: ['Cold sensitivity','Low energy'].map((n)=>({name:n})) },
-      'NotRecommendedFor': { multi_select: ['Heat signs'].map((n)=>({name:n})) },
-      'InteractsWithDrugs': { multi_select: ['Warfarin/Anticoagulants'].map((n)=>({name:n})) },
+      'Overview': { rich_text: [{ text: { content: 'Who it helps; what it solves; key safety; brief mechanism in 1–2 lines.' } }] },
+      'ActiveCompounds': { multi_select: ['Compound A','Compound B'].map((n)=>({ name: n })) },
+      'Benefits': { multi_select: ['Use case 1','Use case 2'].map((n)=>({ name: n })) },
+      'RecommendedFor': { multi_select: ['Persona 1','Persona 2'].map((n)=>({ name: n })) },
+      'NotRecommendedFor': { multi_select: ['Avoid group 1','Avoid group 2'].map((n)=>({ name: n })) },
+      'InteractsWithDrugs': { multi_select: ['Warfarin/Anticoagulants'].map((n)=>({ name: n })) },
       'SafetyRating': { select: { name: 'Yellow' } },
-      'Contraindications': { multi_select: ['Pregnancy'].map((n)=>({name:n})) },
+      'Contraindications': { multi_select: ['Pregnancy'].map((n)=>({ name: n })) },
       'Pregnancy': { select: { name: 'Caution' } },
       'Lactation': { select: { name: 'Caution' } },
-      'Tags': { multi_select: ['Tag A','Tag B'].map((n)=>({name:n})) },
+      'Tags': { multi_select: ['Tag A','Tag B'].map((n)=>({ name: n })) },
       'Publish': { checkbox: false },
     },
     children: [
-      { object: 'block', type: 'heading_2', heading_2: { rich_text: [{ type: 'text', text: { content: 'Overview' } }] } },
-      { object: 'block', type: 'paragraph', paragraph: { rich_text: [{ type: 'text', text: { content: 'Short intro tailored to user pain points and safety.' } }] } },
-      { object: 'block', type: 'heading_2', heading_2: { rich_text: [{ type: 'text', text: { content: 'Mechanism (Brief)' } }] } },
-      { object: 'block', type: 'paragraph', paragraph: { rich_text: [{ type: 'text', text: { content: '2–3 sentences about why it may work.' } }] } },
-      { object: 'block', type: 'heading_2', heading_2: { rich_text: [{ type: 'text', text: { content: 'Key Safety Notes' } }] } },
-      { object: 'block', type: 'bulleted_list_item', bulleted_list_item: { rich_text: [{ type: 'text', text: { content: 'Safety rating & top contraindications.' } }] } },
-      { object: 'block', type: 'heading_2', heading_2: { rich_text: [{ type: 'text', text: { content: 'What to expect' } }] } },
-      { object: 'block', type: 'paragraph', paragraph: { rich_text: [{ type: 'text', text: { content: 'Expected effects and time window; cycle usage if needed.' } }] } },
-      { object: 'block', type: 'heading_2', heading_2: { rich_text: [{ type: 'text', text: { content: 'References' } }] } },
-      { object: 'block', type: 'bulleted_list_item', bulleted_list_item: { rich_text: [{ type: 'text', text: { content: 'Key meta-analysis / RCT links (add in Studies DB).' } }] } },
-      { object: 'block', type: 'toggle', toggle: { rich_text: [{ type: 'text', text: { content: 'Checklist before Publish' } }], children: [
-        { object: 'block', type: 'to_do', to_do: { rich_text: [{ type: 'text', text: { content: 'Benefits/RecommendedFor/NotRecommendedFor filled' } }] } },
-        { object: 'block', type: 'to_do', to_do: { rich_text: [{ type: 'text', text: { content: 'InteractsWithDrugs/SafetyRating/Pregnancy/Lactation set' } }] } },
-        { object: 'block', type: 'to_do', to_do: { rich_text: [{ type: 'text', text: { content: 'Dosages / Studies / FAQs added via related DBs' } }] } },
-      ] } },
+      { object: 'block', heading_2: { rich_text: [{ text: { content: 'Overview' } }] } },
+      { object: 'block', paragraph: { rich_text: [{ text: { content: 'Short, user-first summary (who it helps, what to expect).' } }] } },
+      { object: 'block', heading_2: { rich_text: [{ text: { content: 'Mechanism (brief)' } }] } },
+      { object: 'block', paragraph: { rich_text: [{ text: { content: '2–3 sentences: insulin sensitivity, circulation, inflammation, digestion (example).' } }] } },
+      { object: 'block', heading_2: { rich_text: [{ text: { content: 'Key Safety Notes' } }] } },
+      { object: 'block', bulleted_list_item: { rich_text: [{ text: { content: 'Safety rating; contraindications; interactions' } }] } },
+      { object: 'block', heading_2: { rich_text: [{ text: { content: 'What to Expect' } }] } },
+      { object: 'block', paragraph: { rich_text: [{ text: { content: 'Time-to-benefit, cycles (e.g., 7–14 days), when to stop/seek care.' } }] } },
+      { object: 'block', heading_2: { rich_text: [{ text: { content: 'References' } }] } },
+      { object: 'block', bulleted_list_item: { rich_text: [{ text: { content: 'PubMed/NCCIH/WHO links' } }] } },
     ],
   })
-  console.log('Created Herbs template:', res.id)
+  console.log('✅ Herb template created')
 }
 
-async function createDosagesTemplate() {
-  const res = await notion.pages.create({
-    parent: { database_id: dosagesDbId },
+async function createDosageTemplate() {
+  if (!NOTION_DOSAGES_DB_ID) return
+  await notion.pages.create({
+    parent: { database_id: NOTION_DOSAGES_DB_ID },
     properties: {
       'Form': { select: { name: 'Bark tea' } },
       'TypicalDose': { rich_text: [{ text: { content: '1.5–3 g/day' } }] },
       'Frequency': { rich_text: [{ text: { content: '1–2 times/day' } }] },
       'Duration': { rich_text: [{ text: { content: '7–14 days/cycle' } }] },
       'Standardization': { rich_text: [{ text: { content: '' } }] },
-      'Notes': { rich_text: [{ text: { content: 'Kitchen measure, pairings, timing, with/without food.' } }] },
+      'Notes': { rich_text: [{ text: { content: 'Kitchen unit / pairing suggestions' } }] },
     },
     children: [
-      { object: 'block', type: 'heading_3', heading_3: { rich_text: [{ type: 'text', text: { content: 'Dosing Notes' } }] } },
-      { object: 'block', type: 'paragraph', paragraph: { rich_text: [{ type: 'text', text: { content: 'Add alternative forms as separate rows (Powder, Standardized extract, Foot soak...).'} }] } },
+      { object: 'block', heading_2: { rich_text: [{ text: { content: 'Dosing Notes' } }] } },
+      { object: 'block', paragraph: { rich_text: [{ text: { content: 'How to take; with meals; pairing; cautions for special groups.' } }] } },
     ],
   })
-  console.log('Created Dosages template:', res.id)
+  console.log('✅ Dosage template created')
 }
 
-async function createStudiesTemplate() {
-  const res = await notion.pages.create({
-    parent: { database_id: studiesDbId },
+async function createStudyTemplate() {
+  if (!NOTION_STUDIES_DB_ID) return
+  await notion.pages.create({
+    parent: { database_id: NOTION_STUDIES_DB_ID },
     properties: {
-      'Title': { title: [{ text: { content: 'TEMPLATE - Study Title' } }] },
-      'Year': { number: 2021 },
+      'Title': { title: [{ text: { content: 'Template — Study' } }] },
+      'Year': { number: 2024 },
       'StudyType': { select: { name: 'Meta-analysis' } },
-      'Population': { rich_text: [{ text: { content: 'Adults with condition X, n=120' } }] },
-      'DosageAndDuration': { rich_text: [{ text: { content: '1–2 g/day for 8 weeks' } }] },
-      'Outcomes': { multi_select: ['FPG','HOMA-IR'].map((n)=>({name:n})) },
+      'Population': { rich_text: [{ text: { content: 'Adults with condition X, n=...' } }] },
+      'DosageAndDuration': { rich_text: [{ text: { content: 'Dose range; duration' } }] },
+      'Outcomes': { multi_select: ['FPG','CRP'].map((n)=>({ name: n })) },
       'EffectDirection': { select: { name: 'Positive' } },
       'RiskOfBias': { select: { name: 'Low' } },
-      'Link': { url: 'https://pubmed.ncbi.nlm.nih.gov/' },
-      'Takeaway': { rich_text: [{ text: { content: 'One-sentence conclusion for non-expert readers.' } }] },
-      'EvidenceWeight': { number: 5 },
+      'Link': { url: 'https://pubmed.ncbi.nlm.nih.gov' },
+      'Takeaway': { rich_text: [{ text: { content: 'One-line conclusion for lay readers.' } }] },
+      'EvidenceWeight': { number: 4 },
     },
     children: [
-      { object: 'block', type: 'heading_3', heading_3: { rich_text: [{ type: 'text', text: { content: 'Outcome Summary' } }] } },
-      { object: 'block', type: 'bulleted_list_item', bulleted_list_item: { rich_text: [{ type: 'text', text: { content: 'Primary outcomes:' } }] } },
-      { object: 'block', type: 'bulleted_list_item', bulleted_list_item: { rich_text: [{ type: 'text', text: { content: 'Population and limitations:' } }] } },
+      { object: 'block', heading_2: { rich_text: [{ text: { content: 'Outcome Summary' } }] } },
+      { object: 'block', bulleted_list_item: { rich_text: [{ text: { content: 'Effect size; key endpoints; applicable population' } }] } },
     ],
   })
-  console.log('Created Studies template:', res.id)
+  console.log('✅ Study template created')
 }
 
-async function createFaqsTemplate() {
-  const res = await notion.pages.create({
-    parent: { database_id: faqsDbId },
+async function createFaqTemplate() {
+  if (!NOTION_FAQS_DB_ID) return
+  await notion.pages.create({
+    parent: { database_id: NOTION_FAQS_DB_ID },
     properties: {
-      'Question': { title: [{ text: { content: 'TEMPLATE - Common question?' } }] },
-      'Answer': { rich_text: [{ text: { content: 'Short, direct answer that can stand alone.' } }] },
+      'Question': { title: [{ text: { content: 'Template — Question?' } }] },
+      'Answer': { rich_text: [{ text: { content: 'Short, direct answer in one sentence.' } }] },
     },
   })
-  console.log('Created FAQs template:', res.id)
+  console.log('✅ FAQ template created')
 }
 
 async function main() {
-  await createHerbsTemplate()
-  await createDosagesTemplate()
-  await createStudiesTemplate()
-  await createFaqsTemplate()
-  console.log('All templates created.')
+  await createHerbTemplate()
+  await createDosageTemplate()
+  await createStudyTemplate()
+  await createFaqTemplate()
+  console.log('🎉 All templates created')
 }
 
-main().catch((e) => { console.error(e); process.exit(1) })
+main().catch((e) => {
+  console.error(e)
+  process.exit(1)
+})
 
 
