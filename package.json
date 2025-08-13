@@ -17,6 +17,7 @@
     "manage-database": "node notion-database-manager.js",
     "notion:create-schema": "node scripts/create-notion-schema.js",
     "notion:seed-cinnamon": "node scripts/seed-cinnamon.js",
+    "notion:create-templates": "node scripts/create-notion-templates.js",
     "notion:migrate-csv": "node scripts/migrate-herbs-to-notion-csv.js scripts/notion-export-templates/generated/herbs.csv",
     "export-data": "node -e \"const {NotionDatabaseManager} = require('./notion-database-manager.js'); new NotionDatabaseManager().exportToCSV()\"",
     "stats": "node -e \"const {NotionDatabaseManager} = require('./notion-database-manager.js'); new NotionDatabaseManager().getStatsByCategory()\"",
