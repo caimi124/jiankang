@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 const { Client } = require('@notionhq/client')
+try {
+  require('dotenv').config({ path: '.env.local' })
+} catch (_) {}
 
 const token = process.env.NOTION_TOKEN
 const parentPageId = process.env.NOTION_PARENT_PAGE_ID // 作为父页面

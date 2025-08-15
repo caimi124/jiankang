@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 const { Client } = require('@notionhq/client')
+// 允许从 .env.local 载入环境变量（本地开发更方便）
+try {
+  require('dotenv').config({ path: '.env.local' })
+} catch (_) {}
 
 const token = process.env.NOTION_TOKEN
 const herbsDbId = process.env.NOTION_HERBS_DB_ID
