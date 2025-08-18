@@ -33,7 +33,9 @@
     "sanity": "sanity dev",
     "sanity:build": "sanity build",
     "sanity:deploy": "sanity deploy",
-    "sanity:start": "sanity start"
+    "sanity:start": "sanity start",
+    "migrate-herbs": "node scripts/migrate-herbs-to-sanity.js",
+    "migrate-all": "node scripts/migrate-to-sanity.js"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
@@ -49,7 +51,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "critters": "^0.0.23",
-    "dotenv": "^16.5.0",
+    "dotenv": "^16.6.1",
     "lru-cache": "^11.1.0",
     "lucide-react": "^0.516.0",
     "next": "^15.3.3",
@@ -78,5 +80,16 @@
     "eslint": "^9.29.0",
     "eslint-config-next": "^15.3.3",
     "typescript": "^5.8.3"
-  }
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caimi124/jiankang.git"
+  },
+  "bugs": {
+    "url": "https://github.com/caimi124/jiankang/issues"
+  },
+  "homepage": "https://github.com/caimi124/jiankang#readme"
 }

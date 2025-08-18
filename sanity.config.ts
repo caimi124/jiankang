@@ -16,6 +16,16 @@ export default defineConfig({
         S.list()
           .title('Content')
           .items([
+            // 草药数据库
+            S.listItem()
+              .title('Herbs Database')
+              .icon(() => '🌿')
+              .child(
+                S.documentTypeList('herb')
+                  .title('Herbs Database')
+                  .filter('_type == "herb"')
+              ),
+            
             // 博客文章
             S.listItem()
               .title('Blog Posts')
