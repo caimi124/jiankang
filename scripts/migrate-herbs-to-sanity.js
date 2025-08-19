@@ -1,3 +1,4 @@
+require('dotenv').config({ path: '.env.local' });
 const { createClient } = require('@sanity/client');
 const fs = require('fs');
 const path = require('path');
