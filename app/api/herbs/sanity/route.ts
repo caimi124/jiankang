@@ -5,10 +5,26 @@ export async function GET(request: NextRequest) {
 	try {
 		const { searchParams } = new URL(request.url)
 		const limitParam = searchParams.get('limit')
-		const limit = Math.min(Number(limitParam) || 100, 500)
+		const pageParam = searchParams.get('page')
+		const q = (searchParams.get('q') || '').trim().toLowerCase()
+		const safety = searchParams.get('safety') || ''
+		const constitution = searchParams.get('constitution') || ''
+		const limit = Math.min(Number(limitParam) || 24, 100)
+		const page = Math.max(Number(pageParam) || 1, 1)
+		const start = (page - 1) * limit
+		const end = start + limit
 
-		const query = `
-		  *[_type == "herb"] | order(publishedAt desc) [0...$limit] {
+		const baseFilter = `*[_type == "herb"${constitution ? ' && constitutionType == $constitution' : ''}${safety ? ' && safetyLevel == $safety' : ''}]`
+		const searchFilter = q ? ` && (
+		  title match $q ||
+		  chineseName match $q ||
+		  latinName match $q ||
+		  description match $q ||
+		  count(primaryEffects[@ match $q]) > 0
+		)` : ''
+		const fullFilter = `${baseFilter}${searchFilter}`
+		const countQuery = `${fullFilter} | order(publishedAt desc)`
+		const pageQuery = `${fullFilter} | order(publishedAt desc) [${start}...${end}] {
 		    _id,
 		    "id": _id,
 		    "slug": slug.current,
@@ -24,10 +40,12 @@ export async function GET(request: NextRequest) {
 		    contraindications,
 		    description,
 		    traditionalUse,
-		    modernApplications
-		  }
-		`
-		const herbsRaw = await sanityFetch<any[]>(query, { limit }, { next: { revalidate: 60 } })
+		    modernApplications,
+		    featuredImage,
+		    gallery
+		  }`
+		const totalItems = await sanityFetch<any[]>(countQuery, { q: q ? `*${q}*` : undefined, safety: safety || undefined, constitution: constitution || undefined }, { next: { revalidate: 30 } })
+		const herbsRaw = await sanityFetch<any[]>(pageQuery, { q: q ? `*${q}*` : undefined, safety: safety || undefined, constitution: constitution || undefined }, { next: { revalidate: 30 } })
 
 		const herbs = (herbsRaw || []).map((h) => ({
 			id: h.id || h.slug || h._id,
@@ -59,10 +77,12 @@ export async function GET(request: NextRequest) {
 				? h.activeCompounds
 				: h.activeCompounds
 				? [h.activeCompounds]
-				: []
+				: [],
+			image_url: h.featuredImage?.asset?._ref || null,
+			gallery: Array.isArray(h.gallery) ? h.gallery.map((g:any)=>g.asset?._ref).filter(Boolean) : []
 		}))
 
-		return NextResponse.json({ success: true, data: herbs })
+		return NextResponse.json({ success: true, data: herbs, meta: { page, limit, total: (totalItems || []).length } })
 	} catch (error: any) {
 		console.error('Sanity herbs API error:', error)
 		return NextResponse.json(

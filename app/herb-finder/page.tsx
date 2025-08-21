@@ -72,6 +72,9 @@ export default function HerbFinderPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [showFilters, setShowFilters] = useState(false)
+  const [page, setPage] = useState(1)
+  const [limit] = useState(24)
+  const [total, setTotal] = useState(0)
   
   const [filters, setFilters] = useState<FilterState>({
     constitution: '',
@@ -101,19 +104,43 @@ export default function HerbFinderPage() {
   // 获取草药数据（Sanity优先，回退到Notion，再回退到本地API）
   useEffect(() => {
     fetchHerbsData()
-  }, [])
+  }, [page, filters])
+
+  const cnToSanityConstitution = (cn: string) => {
+    const map: Record<string, string> = {
+      '平和质': 'balanced',
+      '气虚质': 'qi-deficiency',
+      '血虚质': 'blood-deficiency',
+      '阳虚质': 'yang-deficiency',
+      '阴虚质': 'yin-deficiency',
+      '痰湿质': 'phlegm-dampness',
+      '湿热质': 'damp-heat',
+      '血瘀质': 'blood-stasis',
+      '气郁质': 'qi-stagnation',
+      '特禀质': 'special-constitution',
+    }
+    return map[cn] || ''
+  }
 
   const fetchHerbsData = async () => {
     try {
       setIsLoading(true)
       setError(null)
 
-      // 1) Sanity 列表API
-      let response = await fetch('/api/herbs/sanity?limit=200', { cache: 'no-store' })
+      // 1) Sanity 列表API（分页 + 过滤 + 搜索）
+      const params = new URLSearchParams()
+      params.set('limit', String(limit))
+      params.set('page', String(page))
+      if (filters.search) params.set('q', filters.search)
+      if (filters.safety) params.set('safety', filters.safety)
+      if (filters.constitution) params.set('constitution', cnToSanityConstitution(filters.constitution))
+
+      let response = await fetch(`/api/herbs/sanity?${params.toString()}`, { cache: 'no-store' })
       if (response.ok) {
         const json = await response.json()
-        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+        if (json.success && Array.isArray(json.data)) {
           setHerbs(json.data)
+          if (json.meta?.total !== undefined) setTotal(json.meta.total)
           setIsLoading(false)
           return
         }
@@ -286,6 +313,8 @@ export default function HerbFinderPage() {
       </div>
     )
   }
+
+  const totalPages = Math.max(1, Math.ceil(total / limit))
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100">
@@ -520,6 +549,38 @@ export default function HerbFinderPage() {
                   showDetailed={true}
                 />
               ))}
+            </div>
+          )}
+
+          {/* Pagination */}
+          {!error && total > 0 && (
+            <div className="flex items-center justify-center gap-2 mt-8">
+              <button
+                onClick={() => setPage(p => Math.max(1, p - 1))}
+                disabled={page <= 1}
+                className={`px-3 py-2 rounded border ${page <= 1 ? 'text-gray-400 border-gray-200' : 'text-gray-700 border-gray-300 hover:bg-gray-100'}`}
+              >Prev</button>
+              {Array.from({ length: Math.min(7, totalPages) }).map((_, idx) => {
+                // Simple windowed pager around current page
+                const half = 3
+                let start = Math.max(1, page - half)
+                let end = Math.min(totalPages, start + 6)
+                start = Math.max(1, end - 6)
+                const pageNum = start + idx
+                if (pageNum > end) return null
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => setPage(pageNum)}
+                    className={`px-3 py-2 rounded border ${pageNum === page ? 'bg-green-600 text-white border-green-600' : 'text-gray-700 border-gray-300 hover:bg-gray-100'}`}
+                  >{pageNum}</button>
+                )
+              })}
+              <button
+                onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                disabled={page >= totalPages}
+                className={`px-3 py-2 rounded border ${page >= totalPages ? 'text-gray-400 border-gray-200' : 'text-gray-700 border-gray-300 hover:bg-gray-100'}`}
+              >Next</button>
             </div>
           )}
 

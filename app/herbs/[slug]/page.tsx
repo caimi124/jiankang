@@ -22,7 +22,10 @@ async function getHerbData(slug: string) {
 		    contraindications,
 		    seoKeywords,
 		    category,
-		    constitutionType
+		    constitutionType,
+		    "faqs": *[_type == "faq" && references(^._id)]{question,answer},
+		    "dosages": *[_type == "dosage" && references(^._id)]{form,dosage,usage},
+		    "studies": *[_type == "study" && references(^._id)]{title,summary,link,evidenceLevel}
 		  }
 		`
 		const herb = await sanityFetch<any>(query, { slug }, { next: { revalidate: 300 } })
@@ -40,14 +43,18 @@ async function getHerbData(slug: string) {
 			traditional_uses: herb.traditionalUse || '',
 			suitable_for: [],
 			not_suitable_for: [],
-			dosage_forms: herb.dosage ? [{ form: 'extract', dosage: herb.dosage, usage: 'Follow label or practitioner guidance' }] : [],
+			dosage_forms: Array.isArray(herb.dosages) && herb.dosages.length > 0
+				? herb.dosages.map((d: any) => ({ form: d.form || 'extract', dosage: d.dosage || '', usage: d.usage || '' }))
+				: (herb.dosage ? [{ form: 'extract', dosage: herb.dosage, usage: 'Follow label or practitioner guidance' }] : []),
 			safety_warnings: herb.contraindications ? String(herb.contraindications).split(/，|,|；|;|\n/).map((s: string) => s.trim()).filter(Boolean) : [],
 			interactions: [],
-			scientific_evidence: '',
+			scientific_evidence: Array.isArray(herb.studies) && herb.studies.length > 0
+				? herb.studies.map((s: any) => `[${s.evidenceLevel || 'Moderate'}] ${s.title}${s.link ? ` (${s.link})` : ''}`).join('\n')
+				: '',
 			constitution_match: herb.constitutionType ? [{ type: herb.constitutionType, suitable: 'warning', description: 'Suitability varies by individual condition' }] : [],
 			pairs_well_with: [],
 			user_stories: [],
-			faqs: [],
+			faqs: Array.isArray(herb.faqs) ? herb.faqs : [],
 			seo_keywords: Array.isArray(herb.seoKeywords) ? herb.seoKeywords : [],
 			evidence_level: 'Moderate',
 			category: herb.category || '',

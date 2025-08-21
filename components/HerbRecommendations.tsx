@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { Herb } from '../lib/herbs-recommendation'
+import { urlFor } from '@/lib/sanity'
 import { 
   Leaf, 
   Shield, 
@@ -133,8 +134,18 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
 
   const formattedName = formatHerbName(herb.english_name, herb.chinese_name)
 
+  const imageSrc = (herb as any).image_url
+    ? urlFor({ _ref: (herb as any).image_url } as any).width(600).height(400).fit('crop').url()
+    : undefined
+
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 group">
+      {/* Cover Image */}
+      {imageSrc && (
+        <div className="mb-4 -mt-2 -mx-2">
+          <img src={imageSrc} alt={formattedName} className="w-full h-40 object-cover rounded-lg" />
+        </div>
+      )}
       {/* Header - Herb Name with emoji */}
       <div className="mb-4">
         <h3 className="text-lg font-semibold text-gray-900 group-hover:text-green-700 transition-colors flex items-center">
