@@ -72,6 +72,9 @@ export default function HerbFinderPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [showFilters, setShowFilters] = useState(false)
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(24)
+  const [total, setTotal] = useState(0)
   
   const [filters, setFilters] = useState<FilterState>({
     constitution: '',
@@ -101,19 +104,27 @@ export default function HerbFinderPage() {
   // 获取草药数据（Sanity优先，回退到Notion，再回退到本地API）
   useEffect(() => {
     fetchHerbsData()
-  }, [])
+  }, [page, pageSize, filters.search, filters.safety, filters.constitution])
 
   const fetchHerbsData = async () => {
     try {
       setIsLoading(true)
       setError(null)
 
-      // 1) Sanity 列表API
-      let response = await fetch('/api/herbs/sanity?limit=200', { cache: 'no-store' })
+      // 1) Sanity 列表API（带分页与过滤）
+      const params = new URLSearchParams()
+      params.set('limit', String(pageSize))
+      params.set('page', String(page))
+      if (filters.search) params.set('q', filters.search)
+      if (filters.safety) params.set('safety', filters.safety)
+      if (filters.constitution) params.set('constitution', filters.constitution)
+
+      let response = await fetch(`/api/herbs/sanity?${params.toString()}`, { cache: 'no-store' })
       if (response.ok) {
         const json = await response.json()
-        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
-          setHerbs(json.data)
+        if (json.success && Array.isArray(json.data)) {
+          setHerbs(json.data || [])
+          setTotal(json.meta?.total || json.data?.length || 0)
           setIsLoading(false)
           return
         }
@@ -149,6 +160,7 @@ export default function HerbFinderPage() {
           availability: notionHerb.availability || 'common'
         }))
         setHerbs(notionHerbs)
+        setTotal(notionHerbs.length)
         setIsLoading(false)
         return
       }
@@ -159,6 +171,7 @@ export default function HerbFinderPage() {
       data = await response.json()
       if (data.herbs) {
         setHerbs(data.herbs)
+        setTotal(data.herbs.length)
       } else {
         throw new Error(data.error || 'Failed to fetch herbs')
       }
@@ -244,6 +257,7 @@ export default function HerbFinderPage() {
 
   const handleFilterChange = (key: keyof FilterState, value: string) => {
     setFilters(prev => ({ ...prev, [key]: value }))
+    setPage(1)
   }
 
   const handleCategorySelect = (categoryLabel: string) => {
@@ -261,6 +275,7 @@ export default function HerbFinderPage() {
       search: '',
       category: ''
     })
+    setPage(1)
   }
 
   const refreshData = () => {
@@ -452,20 +467,43 @@ export default function HerbFinderPage() {
               <h2 className="text-2xl font-bold text-gray-900">
                 {error ? 'Error Loading Herbs' : (
                   <>
-                    <span className="text-green-600">{filteredHerbs.length}</span> Herbs Found
+                    <span className="text-green-600">{total || filteredHerbs.length}</span> Herbs Found
                   </>
                 )}
               </h2>
               {!error && (
                 <p className="text-gray-600 mt-1">
                   {hasActiveFilters ? (
-                    <>Filtered from {herbs.length} total herbs • Sorted by quality & popularity</>
+                    <>Filtered • Page {page} of {Math.max(1, Math.ceil((total || herbs.length) / pageSize))}</>
                   ) : (
-                    <>Showing all available herbs • Use filters to find specific remedies</>
+                    <>Page {page} of {Math.max(1, Math.ceil((total || herbs.length) / pageSize))} • Use filters to find specific remedies</>
                   )}
                 </p>
               )}
             </div>
+            {/* Pagination Controls */}
+            {!error && (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setPage(p => Math.max(1, p - 1))}
+                  disabled={page <= 1}
+                  className="px-3 py-2 rounded-lg border disabled:opacity-50"
+                >Prev</button>
+                <div className="text-sm text-gray-600">{page}</div>
+                <button
+                  onClick={() => setPage(p => p + 1)}
+                  disabled={page >= Math.max(1, Math.ceil((total || herbs.length) / pageSize))}
+                  className="px-3 py-2 rounded-lg border disabled:opacity-50"
+                >Next</button>
+                <select
+                  value={pageSize}
+                  onChange={e => { setPageSize(Number(e.target.value)); setPage(1) }}
+                  className="ml-2 border rounded-lg p-2 text-sm"
+                >
+                  {[12,24,36,48].map(sz => (<option key={sz} value={sz}>{sz}/page</option>))}
+                </select>
+              </div>
+            )}
           </div>
 
           {/* Error State */}

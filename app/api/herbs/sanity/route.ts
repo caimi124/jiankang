@@ -49,7 +49,6 @@ export async function GET(request: NextRequest) {
 
 		const herbs = (herbsRaw || []).map((h) => ({
 			id: h.id || h.slug || h._id,
-			slug: h.slug,
 			chinese_name: h.chineseName || h.title || '',
 			english_name: h.title || '',
 			latin_name: h.latinName || '',

@@ -34,6 +34,10 @@
     "sanity:build": "sanity build",
     "sanity:deploy": "sanity deploy",
     "sanity:start": "sanity start",
+    "sanity:upload-images": "node scripts/batch-upload-herb-images.js",
+    "migrate:faqs": "node scripts/migrate-faqs-to-sanity.js",
+    "migrate:dosages": "node scripts/migrate-dosages-to-sanity.js",
+    "migrate:studies": "node scripts/migrate-studies-to-sanity.js",
     "migrate-herbs": "node scripts/migrate-herbs-to-sanity.js",
     "migrate-all": "node scripts/migrate-to-sanity.js"
   },
