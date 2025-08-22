@@ -25,33 +25,6 @@ export default defineConfig({
                   .title('Herbs Database')
                   .filter('_type == "herb"')
               ),
-            // Dosages
-            S.listItem()
-              .title('Dosages')
-              .icon(() => '💊')
-              .child(
-                S.documentTypeList('dosage')
-                  .title('Dosages')
-                  .filter('_type == "dosage"')
-              ),
-            // Studies
-            S.listItem()
-              .title('Studies')
-              .icon(() => '📚')
-              .child(
-                S.documentTypeList('study')
-                  .title('Studies')
-                  .filter('_type == "study"')
-              ),
-            // FAQs
-            S.listItem()
-              .title('FAQs')
-              .icon(() => '❓')
-              .child(
-                S.documentTypeList('faq')
-                  .title('FAQs')
-                  .filter('_type == "faq"')
-              ),
             
             // 博客文章
             S.listItem()

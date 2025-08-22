@@ -1,80 +1,70 @@
-require('dotenv').config({ path: '.env.local' });
-const { createClient } = require('@sanity/client');
-const fs = require('fs');
-const { Client: Notion } = require('@notionhq/client')
+require('dotenv').config({ path: '.env.local' })
+const { Client } = require('@notionhq/client')
+const { createClient } = require('@sanity/client')
 
-const client = createClient({
+const notion = new Client({ auth: process.env.NOTION_TOKEN })
+const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2024-01-01',
   token: process.env.SANITY_API_TOKEN,
-  useCdn: false
+  useCdn: false,
 })
 
-async function loadDosages() {
-  if (process.env.NOTION_TOKEN && process.env.NOTION_DOSAGES_DB_ID) {
-    const notion = new Notion({ auth: process.env.NOTION_TOKEN })
-    const dbId = process.env.NOTION_DOSAGES_DB_ID
-    const items = []
-    let cursor
-    do {
-      const resp = await notion.databases.query({ database_id: dbId, start_cursor: cursor })
-      for (const page of resp.results) {
-        const props = page.properties || {}
-        const getText = (p) => (p?.rich_text || p?.title || []).map(t=>t.plain_text).join(' ').trim()
-        items.push({
-          herbSlug: getText(props.HerbSlug || props.slug || props.Herb || {}),
-          form: getText(props.Form || props.form || {}),
-          dosage: getText(props.Dosage || props.dosage || {}),
-          usage: getText(props.Usage || props.usage || {}),
-        })
-      }
-      cursor = resp.has_more ? resp.next_cursor : undefined
-    } while (cursor)
-    return items
+const DOSAGE_DATABASE_ID = process.env.NOTION_DOSAGE_DB_ID
+
+function getPlainText(rich = []) { return rich.map(r => r.plain_text).join('').trim() }
+
+async function fetchAll() {
+  const res = []
+  let cursor
+  while (true) {
+    const resp = await notion.databases.query({ database_id: DOSAGE_DATABASE_ID, start_cursor: cursor })
+    res.push(...resp.results)
+    if (!resp.has_more) break
+    cursor = resp.next_cursor
   }
-  try {
-    const raw = fs.readFileSync('notion-dosages-export.json', 'utf8')
-    return JSON.parse(raw)
-  } catch {
-    return [
-      { herbSlug: 'ginkgo-leaf', form: 'extract', dosage: '120-240mg/day', usage: 'Split doses with meals' }
-    ]
-  }
+  return res
 }
 
-async function resolveHerbIdBySlug(slug) {
-  const doc = await client.fetch('*[_type=="herb" && slug.current==$slug][0]{ _id }', { slug })
-  return doc?._id || null
-}
-
-async function migrateDosages() {
-  const items = await loadDosages()
+async function migrate() {
+  if (!DOSAGE_DATABASE_ID) { console.error('❌ 缺少 NOTION_DOSAGE_DB_ID'); process.exit(1) }
+  console.log('🌿 开始迁移 Notion Dosages 到 Sanity...')
+  const items = await fetchAll()
   let created=0, updated=0, failed=0
 
-  for (const item of items) {
+  for (const page of items) {
     try {
-      const herbId = await resolveHerbIdBySlug(item.herbSlug)
-      if (!herbId) throw new Error('Herb not found for slug: ' + item.herbSlug)
+      const p = page.properties
+      const herbSlug = p.Herb?.rich_text?.[0]?.plain_text?.trim() || ''
+      const form = getPlainText(p.Form?.rich_text) || 'extract'
+      const dosage = getPlainText(p.Dosage?.rich_text)
+      const usage = getPlainText(p.Usage?.rich_text)
+      const notes = getPlainText(p.Notes?.rich_text)
 
-      const doc = { _type: 'dosage', herb: { _type: 'reference', _ref: herbId }, form: item.form, dosage: item.dosage, usage: item.usage }
-      const existing = await client.fetch('*[_type=="dosage" && form==$f && dosage==$d && references($hid)][0]{ _id }', { f: item.form, d: item.dosage, hid: herbId })
-      if (existing?._id) {
-        await client.patch(existing._id).set(doc).commit()
-        updated++
-      } else {
-        await client.create(doc)
-        created++
+      let herbRefId
+      if (herbSlug) {
+        const herb = await sanity.fetch('*[_type=="herb" && slug.current==$s][0]{_id}', { s: herbSlug })
+        herbRefId = herb?._id
       }
+
+      const doc = {
+        _type: 'dosage',
+        form, dosage, usage, notes,
+        ...(herbRefId ? { herb: { _type: 'reference', _ref: herbRefId } } : {})
+      }
+
+      const existing = await sanity.fetch('*[_type=="dosage" && form==$f && dosage==$d && usage==$u][0]{_id}', { f: form, d: dosage, u: usage })
+      if (existing) { await sanity.patch(existing._id).set(doc).commit(); updated++; console.log(`🔄 更新 Dosage: ${form}`) }
+      else { await sanity.create(doc); created++; console.log(`✅ 创建 Dosage: ${form}`) }
       await new Promise(r=>setTimeout(r,150))
     } catch(e) {
-      failed++
-      console.error('Dosage migrate error:', e.message)
+      failed++; console.error('❌ 迁移Dosage失败:', e.message)
     }
   }
-  console.log(`Dosages -> created:${created} updated:${updated} failed:${failed}`)
+  console.log(`\n📊 Dosage 迁移完成: 新建 ${created}, 更新 ${updated}, 失败 ${failed}`)
 }
 
-if (require.main === module) {
-  migrateDosages().catch(e=>{ console.error(e); process.exit(1) })
-}
+if (require.main === module) migrate().catch(e=>{ console.error(e); process.exit(1) })
+
+

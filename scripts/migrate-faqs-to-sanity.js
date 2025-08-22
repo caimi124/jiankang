@@ -1,82 +1,85 @@
-require('dotenv').config({ path: '.env.local' });
-const { createClient } = require('@sanity/client');
-const fs = require('fs');
-const { Client: Notion } = require('@notionhq/client')
+require('dotenv').config({ path: '.env.local' })
+const { Client } = require('@notionhq/client')
+const { createClient } = require('@sanity/client')
 
-const client = createClient({
+const notion = new Client({ auth: process.env.NOTION_TOKEN })
+const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2024-01-01',
   token: process.env.SANITY_API_TOKEN,
-  useCdn: false
+  useCdn: false,
 })
 
-// 示例：请替换为从 Notion API 读取的数据
-async function loadFaqs() {
-  // 优先使用 Notion API
-  if (process.env.NOTION_TOKEN && process.env.NOTION_FAQ_DB_ID) {
-    const notion = new Notion({ auth: process.env.NOTION_TOKEN })
-    const dbId = process.env.NOTION_FAQ_DB_ID
-    const results = []
-    let cursor
-    do {
-      const resp = await notion.databases.query({ database_id: dbId, start_cursor: cursor })
-      for (const page of resp.results) {
-        const props = page.properties || {}
-        const getText = (p) => (p?.rich_text || p?.title || []).map(t=>t.plain_text).join(' ').trim()
-        const herbSlug = getText(props.HerbSlug || props.slug || props.Herb || {})
-        const question = getText(props.Question || props.question || props.Q || {})
-        const answer = getText(props.Answer || props.answer || props.A || {})
-        if (question) results.push({ herbSlug, question, answer })
-      }
-      cursor = resp.has_more ? resp.next_cursor : undefined
-    } while (cursor)
-    return results
-  }
-  try {
-    const raw = fs.readFileSync('notion-faq-export.json', 'utf8')
-    const arr = JSON.parse(raw)
-    return Array.isArray(arr) ? arr : []
-  } catch {
-    // fallback 示例数据
-    return [
-      { herbSlug: 'ginkgo-leaf', question: 'Is Ginkgo safe during pregnancy?', answer: 'Consult a healthcare provider; generally not recommended.' }
-    ]
-  }
+const FAQ_DATABASE_ID = process.env.NOTION_FAQ_DB_ID // 请在环境变量中配置
+
+function getPlainText(richText = []) {
+  return richText.map(rt => rt.plain_text).join('').trim()
 }
 
-async function resolveHerbIdBySlug(slug) {
-  const doc = await client.fetch('*[_type=="herb" && slug.current==$slug][0]{ _id }', { slug })
-  return doc?._id || null
+async function fetchAllNotionFAQs() {
+  const results = []
+  let cursor
+  while (true) {
+    const resp = await notion.databases.query({ database_id: FAQ_DATABASE_ID, start_cursor: cursor })
+    results.push(...resp.results)
+    if (!resp.has_more) break
+    cursor = resp.next_cursor
+  }
+  return results
 }
 
-async function migrateFaqs() {
-  const faqs = await loadFaqs()
-  let created=0, updated=0, failed=0
+async function migrate() {
+  if (!FAQ_DATABASE_ID) {
+    console.error('❌ 缺少 NOTION_FAQ_DB_ID 环境变量')
+    process.exit(1)
+  }
+  console.log('🌿 开始迁移 Notion FAQs 到 Sanity...')
+  const items = await fetchAllNotionFAQs()
+  let created = 0, updated = 0, failed = 0
 
-  for (const item of faqs) {
+  for (const page of items) {
     try {
-      const herbId = await resolveHerbIdBySlug(item.herbSlug)
-      if (!herbId) throw new Error('Herb not found for slug: ' + item.herbSlug)
+      const props = page.properties || {}
+      const question = getPlainText(props.Question?.title)
+      const answer = getPlainText(props.Answer?.rich_text)
+      const herbSlug = props.Herb?.rich_text?.[0]?.plain_text?.trim() || ''
 
-      const doc = { _type: 'faq', question: item.question, answer: item.answer, herb: { _type: 'reference', _ref: herbId } }
-      const existing = await client.fetch('*[_type=="faq" && question==$q && references($hid)][0]{ _id }', { q: item.question, hid: herbId })
-      if (existing?._id) {
-        await client.patch(existing._id).set(doc).commit()
-        updated++
-      } else {
-        await client.create(doc)
-        created++
+      let herbRefId = undefined
+      if (herbSlug) {
+        const herb = await sanity.fetch('*[_type=="herb" && slug.current==$slug][0]{_id}', { slug: herbSlug })
+        herbRefId = herb?._id
       }
-      await new Promise(r=>setTimeout(r,150))
-    } catch(e) {
+
+      const doc = {
+        _type: 'faq',
+        question,
+        answer,
+        ...(herbRefId ? { herb: { _type: 'reference', _ref: herbRefId } } : {}),
+        language: 'en'
+      }
+
+      const existing = await sanity.fetch('*[_type=="faq" && question==$q && answer==$a][0]{_id}', { q: question, a: answer })
+      if (existing) {
+        await sanity.patch(existing._id).set(doc).commit()
+        updated++
+        console.log(`🔄 更新 FAQ: ${question}`)
+      } else {
+        await sanity.create(doc)
+        created++
+        console.log(`✅ 创建 FAQ: ${question}`)
+      }
+      await new Promise(r => setTimeout(r, 150))
+    } catch (e) {
       failed++
-      console.error('FAQ migrate error:', e.message)
+      console.error('❌ 迁移FAQ失败:', e.message)
     }
   }
-  console.log(`FAQs -> created:${created} updated:${updated} failed:${failed}`)
+  console.log(`\n📊 FAQ 迁移完成: 新建 ${created}, 更新 ${updated}, 失败 ${failed}`)
 }
 
 if (require.main === module) {
-  migrateFaqs().catch(e=>{ console.error(e); process.exit(1) })
+  migrate().catch(err => { console.error(err); process.exit(1) })
 }
+
+
