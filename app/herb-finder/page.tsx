@@ -72,9 +72,6 @@ export default function HerbFinderPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [showFilters, setShowFilters] = useState(false)
-  const [page, setPage] = useState(1)
-  const [limit] = useState(24)
-  const [total, setTotal] = useState(0)
   
   const [filters, setFilters] = useState<FilterState>({
     constitution: '',
@@ -104,45 +101,19 @@ export default function HerbFinderPage() {
   // 获取草药数据（Sanity优先，回退到Notion，再回退到本地API）
   useEffect(() => {
     fetchHerbsData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, filters.search, filters.safety, filters.constitution])
-
-  const constitutionMap: Record<string, string> = {
-    '平和质': 'balanced',
-    '气虚质': 'qi-deficiency',
-    '血虚质': 'blood-deficiency',
-    '阳虚质': 'yang-deficiency',
-    '阴虚质': 'yin-deficiency',
-    '痰湿质': 'phlegm-dampness',
-    '湿热质': 'damp-heat',
-    '血瘀质': 'blood-stasis',
-    '气郁质': 'qi-stagnation',
-    '特禀质': 'special-constitution'
-  }
+  }, [])
 
   const fetchHerbsData = async () => {
     try {
       setIsLoading(true)
       setError(null)
 
-      // 1) Sanity 列表API（分页+筛选）
-      const params = new URLSearchParams()
-      params.set('page', String(page))
-      params.set('limit', String(limit))
-      if (filters.search) params.set('q', filters.search)
-      if (filters.safety) params.set('safety', filters.safety)
-      if (filters.constitution) {
-        const mapped = constitutionMap[filters.constitution] || ''
-        if (mapped) params.set('constitution', mapped)
-      }
-
-      let response = await fetch(`/api/herbs/sanity?${params.toString()}`, { cache: 'no-store' })
+      // 1) Sanity 列表API
+      let response = await fetch('/api/herbs/sanity?limit=200', { cache: 'no-store' })
       if (response.ok) {
         const json = await response.json()
         if (json.success && Array.isArray(json.data) && json.data.length > 0) {
           setHerbs(json.data)
-          setFilteredHerbs(json.data)
-          setTotal(json.meta?.total || json.data.length)
           setIsLoading(false)
           return
         }
@@ -178,7 +149,6 @@ export default function HerbFinderPage() {
           availability: notionHerb.availability || 'common'
         }))
         setHerbs(notionHerbs)
-        setFilteredHerbs(notionHerbs)
         setIsLoading(false)
         return
       }
@@ -189,7 +159,6 @@ export default function HerbFinderPage() {
       data = await response.json()
       if (data.herbs) {
         setHerbs(data.herbs)
-        setFilteredHerbs(data.herbs)
       } else {
         throw new Error(data.error || 'Failed to fetch herbs')
       }
@@ -197,7 +166,6 @@ export default function HerbFinderPage() {
       console.error('Error fetching herbs:', err)
       setError(err instanceof Error ? err.message : 'Failed to load herbs data')
       setHerbs([])
-      setFilteredHerbs([])
     } finally {
       setIsLoading(false)
     }
@@ -293,11 +261,9 @@ export default function HerbFinderPage() {
       search: '',
       category: ''
     })
-    setPage(1)
   }
 
   const refreshData = () => {
-    setPage(1)
     fetchHerbsData()
   }
 
@@ -495,26 +461,11 @@ export default function HerbFinderPage() {
                   {hasActiveFilters ? (
                     <>Filtered from {herbs.length} total herbs • Sorted by quality & popularity</>
                   ) : (
-                    <>Showing {Math.min((page - 1) * limit + 1, total)}–{Math.min(page * limit, total)} of {total} • Use filters or search</>
+                    <>Showing all available herbs • Use filters to find specific remedies</>
                   )}
                 </p>
               )}
             </div>
-            {!error && total > limit && (
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setPage(prev => Math.max(prev - 1, 1))}
-                  disabled={page === 1}
-                  className={`px-3 py-2 rounded border ${page === 1 ? 'text-gray-300 border-gray-200' : 'text-gray-700 hover:bg-gray-50 border-gray-300'}`}
-                >Prev</button>
-                <span className="text-sm text-gray-600">Page {page} / {Math.max(1, Math.ceil(total / limit))}</span>
-                <button
-                  onClick={() => setPage(prev => (prev * limit < total ? prev + 1 : prev))}
-                  disabled={page * limit >= total}
-                  className={`px-3 py-2 rounded border ${page * limit >= total ? 'text-gray-300 border-gray-200' : 'text-gray-700 hover:bg-gray-50 border-gray-300'}`}
-                >Next</button>
-              </div>
-            )}
           </div>
 
           {/* Error State */}
