@@ -108,7 +108,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 			siteName: 'HerbScience',
 			images: [
 				{
-					url: '/hero-bg.svg',
+					url: `https://www.herbscience.shop/herbs/${slug}/opengraph-image`,
 					width: 1200,
 					height: 630,
 					alt: `${herbData.name} - Natural Herb Benefits & Uses`

@@ -10,7 +10,7 @@ const nextConfig = {
     // Image sizes for different viewports
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     // Domains for external images
-    domains: ['images.unsplash.com', 'via.placeholder.com', 'herbscience.shop'],
+    domains: ['images.unsplash.com', 'via.placeholder.com', 'herbscience.shop', 'cdn.sanity.io'],
     // Minimize image size for better loading
     minimumCacheTTL: 31536000, // 1 year
     // Remote patterns for security
@@ -18,6 +18,11 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
+        pathname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
         pathname: '**',
       },
     ],

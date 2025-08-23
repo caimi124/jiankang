@@ -1,3 +1,25 @@
+require('dotenv').config()
+const { createClient } = require('@sanity/client')
+
+const sanity = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+  apiVersion: '2024-01-01',
+  useCdn: true,
+})
+
+async function getHerbPaths(config) {
+  try {
+    const slugs = await sanity.fetch(`*[_type == "herb" && defined(slug.current)]{ "slug": slug.current }`)
+    const paths = await Promise.all(
+      (slugs || []).map(s => config.transform(config, `/herbs/${s.slug}`))
+    )
+    return paths
+  } catch (e) {
+    return []
+  }
+}
+
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
   siteUrl: 'https://www.herbscience.shop',
@@ -48,30 +70,13 @@ module.exports = {
       await config.transform(config, '/privacy'),
       await config.transform(config, '/zh/privacy'),
       
-      // 主要草药详情页面（统一模版）
-      await config.transform(config, '/herbs/ginseng'),
-      await config.transform(config, '/herbs/ginger'),
-      await config.transform(config, '/herbs/turmeric'),
-      await config.transform(config, '/herbs/valerian'),
-      await config.transform(config, '/herbs/echinacea'),
-      await config.transform(config, '/herbs/ashwagandha'),
-      await config.transform(config, '/herbs/chamomile'),
-      await config.transform(config, '/herbs/peppermint'),
-      await config.transform(config, '/herbs/licorice'),
-      await config.transform(config, '/herbs/milk-thistle'),
-      await config.transform(config, '/herbs/cinnamon'),
-      await config.transform(config, '/herbs/clove'),
-      await config.transform(config, '/herbs/fenugreek'),
-      await config.transform(config, '/herbs/cranberry'),
-      await config.transform(config, '/herbs/green-tea'),
-      await config.transform(config, '/herbs/pumpkin-seed'),
-      await config.transform(config, '/herbs/rhubarb'),
-      
       // 博客文章页面
       await config.transform(config, '/blog/turmeric-gut-relief-guide'),
     ];
 
-    return extraPaths;
+    // 动态注入所有 Sanity herbs 详情页
+    const herbPaths = await getHerbPaths(config)
+    return [...extraPaths, ...herbPaths]
   },
 
   // 为不同类型的页面设置不同的优先级

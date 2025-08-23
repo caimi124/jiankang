@@ -548,6 +548,23 @@ export default function HerbFinderPage() {
             </div>
           )}
 
+          {/* ItemList JSON-LD for SEO (前10条) */}
+          {!error && filteredHerbs.length > 0 && (
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'ItemList',
+                itemListElement: filteredHerbs.slice(0, 10).map((h, i) => ({
+                  '@type': 'ListItem',
+                  position: i + 1,
+                  url: `https://www.herbscience.shop/herbs/${(h as any).slug || h.english_name?.toLowerCase()?.replace(/\s+/g,'-')}`,
+                  name: `${h.english_name} (${h.chinese_name})`
+                }))
+              }) }}
+            />
+          )}
+
           {/* Enhanced Herbs Grid */}
           {!error && filteredHerbs.length > 0 && (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
