@@ -25,6 +25,26 @@ module.exports = {
   
   // 添加额外的路径或自定义页面
   additionalPaths: async (config) => {
+    // 从 Sanity 动态拉取 slug，确保所有草药详情/博客被发现
+    async function fetchSanitySlugs() {
+      try {
+        const { createClient } = require('@sanity/client')
+        const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
+        const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
+        const token = process.env.SANITY_API_TOKEN
+        if (!projectId || !dataset) return { herbs: [], posts: [] }
+        const client = createClient({ projectId, dataset, apiVersion: '2024-01-01', token, useCdn: true })
+        const herbs = await client.fetch(`*[_type == "herb" && defined(slug.current)]{ "slug": slug.current }`)
+        const posts = await client.fetch(`*[_type == "blogPost" && defined(slug.current)]{ "slug": slug.current }`).catch(() => [])
+        return { herbs: herbs || [], posts: posts || [] }
+      } catch (e) {
+        console.warn('[sitemap] Sanity slug fetch failed:', e?.message)
+        return { herbs: [], posts: [] }
+      }
+    }
+
+    const { herbs, posts } = await fetchSanitySlugs()
+
     const extraPaths = [
       // 核心功能页面
       await config.transform(config, '/knowledge-center'),
@@ -48,50 +68,16 @@ module.exports = {
       await config.transform(config, '/privacy'),
       await config.transform(config, '/zh/privacy'),
       
-      // 主要草药详情页面（统一模版）
-      await config.transform(config, '/herbs/ginseng'),
-      await config.transform(config, '/herbs/ginger'),
-      await config.transform(config, '/herbs/turmeric'),
-      await config.transform(config, '/herbs/valerian'),
-      await config.transform(config, '/herbs/echinacea'),
-      await config.transform(config, '/herbs/ashwagandha'),
-      await config.transform(config, '/herbs/chamomile'),
-      await config.transform(config, '/herbs/peppermint'),
-      await config.transform(config, '/herbs/licorice'),
-      await config.transform(config, '/herbs/milk-thistle'),
-      await config.transform(config, '/herbs/cinnamon'),
-      await config.transform(config, '/herbs/clove'),
-      await config.transform(config, '/herbs/fenugreek'),
-      await config.transform(config, '/herbs/cranberry'),
-      await config.transform(config, '/herbs/green-tea'),
-      await config.transform(config, '/herbs/pumpkin-seed'),
-      await config.transform(config, '/herbs/rhubarb'),
+      // 动态草药详情（来自 Sanity）
+      ...await Promise.all(
+        herbs.map(h => config.transform(config, `/herbs/${h.slug}`))
+      ),
       
-      // 博客文章页面
-      await config.transform(config, '/blog/turmeric-gut-relief-guide'),
+      // 博客文章页面（来自 Sanity）
+      ...await Promise.all(
+        posts.map(p => config.transform(config, `/blog/${p.slug}`))
+      ),
     ];
-
-    // 动态拉取 Sanity herb/blog slugs
-    try {
-      const { createClient } = require('@sanity/client')
-      const client = createClient({
-        projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-        dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
-        apiVersion: '2024-01-01',
-        token: process.env.SANITY_API_TOKEN,
-        useCdn: true,
-      })
-      const herbSlugs = await client.fetch(`*[_type=="herb" && defined(slug.current)]{ "slug": slug.current }`)
-      for (const h of herbSlugs) {
-        extraPaths.push(await config.transform(config, `/herbs/${h.slug}`))
-      }
-      const blogSlugs = await client.fetch(`*[_type=="blogPost" && defined(slug.current)]{ "slug": slug.current }`)
-      for (const b of blogSlugs) {
-        extraPaths.push(await config.transform(config, `/blog/${b.slug}`))
-      }
-    } catch (e) {
-      console.warn('next-sitemap sanity slugs fetch warning:', e.message)
-    }
 
     return extraPaths;
   },

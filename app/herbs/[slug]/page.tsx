@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import HerbDetailClient from './HerbDetailClient'
-import { sanityFetch, urlFor } from '@/lib/sanity'
+import { sanityFetch } from '@/lib/sanity'
 
 // 从Sanity获取并映射草药数据到客户端所需结构
 async function getHerbData(slug: string) {
@@ -23,7 +23,6 @@ async function getHerbData(slug: string) {
 		    seoKeywords,
 		    category,
 		    constitutionType,
-		    featuredImage,
 		    "faqs": *[_type == "faq" && references(^._id)]{question,answer},
 		    "dosages": *[_type == "dosage" && references(^._id)]{form,dosage,usage},
 		    "studies": *[_type == "study" && references(^._id)]{title,summary,link,evidenceLevel}
@@ -59,8 +58,7 @@ async function getHerbData(slug: string) {
 			seo_keywords: Array.isArray(herb.seoKeywords) ? herb.seoKeywords : [],
 			evidence_level: 'Moderate',
 			category: herb.category || '',
-			properties: Array.isArray(herb.primaryEffects) ? herb.primaryEffects : [],
-			featured_image_ref: herb.featuredImage?.asset?._ref || null
+			properties: Array.isArray(herb.primaryEffects) ? herb.primaryEffects : []
 		}
 		return mapped
 	} catch (error) {
@@ -110,9 +108,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 			siteName: 'HerbScience',
 			images: [
 				{
-					url: herbData.featured_image_ref
-						? urlFor({ _ref: herbData.featured_image_ref } as any).width(1200).height(630).fit('crop').url()
-						: 'https://www.herbscience.shop/hero-bg.svg',
+					url: `https://www.herbscience.shop/herbs/${slug}/opengraph-image`,
 					width: 1200,
 					height: 630,
 					alt: `${herbData.name} - Natural Herb Benefits & Uses`
