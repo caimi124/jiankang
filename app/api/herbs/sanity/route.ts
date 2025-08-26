@@ -23,8 +23,9 @@ export async function GET(request: NextRequest) {
 		  count(primaryEffects[@ match $q]) > 0
 		)` : ''
 		const fullFilter = `${baseFilter}${searchFilter}`
-		const countQuery = `${fullFilter} | order(publishedAt desc)`
-		const pageQuery = `${fullFilter} | order(publishedAt desc) [${start}...${end}] {
+		// 🚀 优化：单次查询获取数据和总数
+		const optimizedQuery = `{
+		  "items": ${fullFilter} | order(_createdAt desc) [${start}...${end}] {
 		    _id,
 		    "id": _id,
 		    "slug": slug.current,
@@ -43,9 +44,18 @@ export async function GET(request: NextRequest) {
 		    modernApplications,
 		    featuredImage,
 		    gallery
-		  }`
-		const totalItems = await sanityFetch<any[]>(countQuery, { q: q ? `*${q}*` : undefined, safety: safety || undefined, constitution: constitution || undefined }, { next: { revalidate: 30 } })
-		const herbsRaw = await sanityFetch<any[]>(pageQuery, { q: q ? `*${q}*` : undefined, safety: safety || undefined, constitution: constitution || undefined }, { next: { revalidate: 30 } })
+		  },
+		  "total": count(${fullFilter})
+		}`
+		
+		const result = await sanityFetch<{items: any[], total: number}>(
+			optimizedQuery, 
+			{ q: q ? `*${q}*` : undefined, safety: safety || undefined, constitution: constitution || undefined }, 
+			{ next: { revalidate: 60 } } // 🚀 增加缓存时间
+		)
+		
+		const herbsRaw = result?.items || []
+		const totalItems = result?.total || 0
 
 		const herbs = (herbsRaw || []).map((h) => ({
 			id: h.id || h.slug || h._id,
@@ -83,7 +93,7 @@ export async function GET(request: NextRequest) {
 			gallery: Array.isArray(h.gallery) ? h.gallery.map((g:any)=>g.asset?._ref).filter(Boolean) : []
 		}))
 
-		return NextResponse.json({ success: true, data: herbs, meta: { page, limit, total: (totalItems || []).length } })
+		return NextResponse.json({ success: true, data: herbs, meta: { page, limit, total: totalItems } })
 	} catch (error: any) {
 		console.error('Sanity herbs API error:', error)
 		return NextResponse.json(

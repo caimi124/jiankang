@@ -119,7 +119,10 @@ export default function HerbFinderPage() {
       if (filters.safety) params.set('safety', filters.safety)
       if (filters.constitution) params.set('constitution', filters.constitution)
 
-      let response = await fetch(`/api/herbs/sanity?${params.toString()}`, { cache: 'no-store' })
+      let response = await fetch(`/api/herbs/sanity?${params.toString()}`, { 
+        next: { revalidate: 60 }, // 🚀 启用缓存
+        cache: 'force-cache' 
+      })
       if (response.ok) {
         const json = await response.json()
         if (json.success && Array.isArray(json.data)) {
@@ -294,8 +297,21 @@ export default function HerbFinderPage() {
               <Leaf className="w-20 h-20 text-green-600 mx-auto mb-4 animate-pulse" />
               <div className="absolute inset-0 bg-green-200 rounded-full animate-ping opacity-25"></div>
             </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Loading Herb Database</h2>
-            <p className="text-gray-600">Fetching the latest herb information...</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">🌿 Loading Herb Database</h2>
+            <p className="text-gray-600">Fetching from Sanity CMS... Almost there! 🚀</p>
+            <div className="mt-8 max-w-4xl mx-auto">
+              {/* 🚀 骨架屏预览 */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {[...Array(8)].map((_, i) => (
+                  <div key={i} className="bg-white rounded-xl shadow-md p-4 animate-pulse">
+                    <div className="h-40 bg-gray-200 rounded-lg mb-4"></div>
+                    <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                    <div className="h-3 bg-gray-200 rounded mb-2 w-3/4"></div>
+                    <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
