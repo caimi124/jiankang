@@ -115,10 +115,7 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
       .replace(/[^\w\-]+/g, '')
   }
 
-  // 🚀 优先使用Sanity返回的正确slug，确保链接匹配
-  const herbSlug = (herb as any).slug || 
-                   herb.slug || 
-                   generateSlug(herb.chinese_name, herb.english_name)
+  const herbSlug = herb.slug || generateSlug(herb.chinese_name, herb.english_name)
   const safetyBadge = getSafetyBadge(herb.safety_level)
   const evidenceLevel = getEvidenceLevel(herb)
   const bestForScenario = getBestForScenario(herb)

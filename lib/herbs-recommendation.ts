@@ -7,6 +7,7 @@ import { HERBS_DATABASE } from './herbs-data-complete';
 // Updated Herb interface matching Notion database structure
 export interface Herb {
   id: string;
+  slug?: string; // 🚀 添加slug属性以修复TypeScript错误
   chinese_name: string;
   english_name: string;
   latin_name: string;
@@ -32,6 +33,8 @@ export interface Herb {
   popularity_score: number;
   usage_suggestions: string;
   ingredients: string[];
+  image_url?: string; // 🚀 添加图片URL属性
+  gallery?: string[]; // 🚀 添加图片画廊属性
 }
 
 // Constitution type mapping for herb recommendations
