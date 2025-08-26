@@ -15,12 +15,12 @@ const NOTION_FAQ_DB = process.env.NOTION_FAQ_DB
 
 async function fetchAllPages(databaseId) {
   const pages = []
-  let cursor
-  do {
+    let cursor
+    do {
     const res = await notion.databases.query({ database_id: databaseId, start_cursor: cursor })
     pages.push(...res.results)
     cursor = res.has_more ? res.next_cursor : undefined
-  } while (cursor)
+    } while (cursor)
   return pages
 }
 
