@@ -115,7 +115,7 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
       .replace(/[^\w\-]+/g, '')
   }
 
-  const herbSlug = herb.slug || generateSlug(herb.chinese_name, herb.english_name)
+  const herbSlug = (herb as any).slug || generateSlug(herb.chinese_name, herb.english_name)
   const safetyBadge = getSafetyBadge(herb.safety_level)
   const evidenceLevel = getEvidenceLevel(herb)
   const bestForScenario = getBestForScenario(herb)
