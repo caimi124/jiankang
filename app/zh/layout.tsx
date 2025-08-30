@@ -6,7 +6,7 @@ import GoogleAnalytics, { GoogleTagManagerNoScript } from '@/components/GoogleAn
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.herbscience.shop'),
+  metadataBase: new URL('https://herbscience.shop'),
   title: {
     default: 'HerbScience.shop | 基于科学证据的草药医学指南',
     template: '%s | HerbScience.shop'
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'zh_CN',
     alternateLocale: ['en_US'],
-    url: 'https://www.herbscience.shop/zh',
+    url: 'https://herbscience.shop/zh',
     siteName: 'HerbScience.shop',
     title: 'HerbScience.shop | 基于科学证据的草药医学指南',
     description: '探索草药医学的力量，获取基于科学证据的个性化草药建议、安全信息和专家见解。传统中医与现代科学的完美结合。',

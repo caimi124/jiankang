@@ -27,7 +27,7 @@ const notoSansSC = Noto_Sans_SC({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.herbscience.shop'),
+  metadataBase: new URL('https://herbscience.shop'),
   title: {
     default: 'HerbScience.shop | Evidence-Based Herbal Medicine Guide',
     template: '%s | HerbScience.shop'
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     alternateLocale: ['zh_CN'],
-    url: 'https://www.herbscience.shop',
+    url: 'https://herbscience.shop',
     siteName: 'HerbScience.shop',
     title: 'HerbScience.shop | Evidence-Based Herbal Medicine Guide',
     description: 'Discover the power of herbal medicine with our evidence-based guide. Get personalized herb recommendations, safety information, and expert insights backed by scientific research.',
@@ -121,10 +121,10 @@ export default function RootLayout({
               "@type": "WebSite",
               "name": "HerbScience.shop",
               "description": "Evidence-based herbal supplement guidance with TCM insights and safety analysis",
-              "url": "https://www.herbscience.shop",
+              "url": "https://herbscience.shop",
               "potentialAction": {
                 "@type": "SearchAction",
-                  "target": "https://www.herbscience.shop/search?q={search_term_string}",
+                  "target": "https://herbscience.shop/search?q={search_term_string}",
                 "query-input": "required name=search_term_string"
               },
               "publisher": {
@@ -132,7 +132,7 @@ export default function RootLayout({
                 "name": "HerbScience.shop",
                 "logo": {
                   "@type": "ImageObject",
-                    "url": "https://www.herbscience.shop/logo.png"
+                    "url": "https://herbscience.shop/logo.png"
                 }
               }
             })
@@ -147,8 +147,8 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Organization",
               "name": "HerbScience.shop",
-              "url": "https://www.herbscience.shop",
-              "logo": "https://www.herbscience.shop/logo.png",
+              "url": "https://herbscience.shop",
+              "logo": "https://herbscience.shop/logo.png",
               "sameAs": [
                 "https://www.linkedin.com/company/herbscience-shop",
                 "https://twitter.com/herbscience_shop"

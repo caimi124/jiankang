@@ -574,7 +574,7 @@ export default function HerbFinderPage() {
                 itemListElement: filteredHerbs.slice(0, 10).map((h, i) => ({
                   '@type': 'ListItem',
                   position: i + 1,
-                  url: `https://www.herbscience.shop/herbs/${(h as any).slug || h.english_name?.toLowerCase()?.replace(/\s+/g,'-')}`,
+                  url: `https://herbscience.shop/herbs/${(h as any).slug || h.english_name?.toLowerCase()?.replace(/\s+/g,'-')}`,
                   name: `${h.english_name} (${h.chinese_name})`
                 }))
               }) }}

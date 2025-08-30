@@ -1,0 +1,17 @@
+warning: in the working copy of 'app/herb-finder/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/herbs/[slug]/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/layout.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/zh/layout.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'next-sitemap.config.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'public/robots.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'public/sitemap-0.xml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'public/sitemap.xml', LF will be replaced by CRLF the next time Git touches it
+app/blog/[slug]/page.tsx
+app/herb-finder/page.tsx
+app/herbs/[slug]/page.tsx
+app/layout.tsx
+app/zh/layout.tsx
+next-sitemap.config.js
+public/robots.txt
+public/sitemap-0.xml
+public/sitemap.xml

@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: 'https://www.herbscience.shop',
+  siteUrl: 'https://herbscience.shop',
   generateRobotsTxt: true,
   sitemapSize: 5000,
   changefreq: 'weekly',
@@ -94,15 +94,15 @@ module.exports = {
         // 添加多语言替代版本
         alternateRefs: [
           {
-            href: 'https://www.herbscience.shop/',
+            href: 'https://herbscience.shop/',
             hreflang: 'en',
           },
           {
-            href: 'https://www.herbscience.shop/zh',
+            href: 'https://herbscience.shop/zh',
             hreflang: 'zh',
           },
           {
-            href: 'https://www.herbscience.shop/',
+            href: 'https://herbscience.shop/',
             hreflang: 'x-default',
           },
         ],
@@ -129,15 +129,15 @@ module.exports = {
         // 多语言替代版本：对成对存在的页面输出 hreflang
         ...(path.startsWith('/zh/') ? {
           alternateRefs: [
-            { href: `https://www.herbscience.shop${path.replace('/zh', '')}`, hreflang: 'en' },
-            { href: `https://www.herbscience.shop${path}`, hreflang: 'zh' },
-            { href: `https://www.herbscience.shop${path.replace('/zh', '')}`, hreflang: 'x-default' }
+            { href: `https://herbscience.shop${path.replace('/zh', '')}`, hreflang: 'en' },
+            { href: `https://herbscience.shop${path}`, hreflang: 'zh' },
+            { href: `https://herbscience.shop${path.replace('/zh', '')}`, hreflang: 'x-default' }
           ]
         } : {
           alternateRefs: [
-            { href: `https://www.herbscience.shop${path}`, hreflang: 'en' },
-            { href: `https://www.herbscience.shop/zh${path}`, hreflang: 'zh' },
-            { href: `https://www.herbscience.shop${path}`, hreflang: 'x-default' }
+            { href: `https://herbscience.shop${path}`, hreflang: 'en' },
+            { href: `https://herbscience.shop/zh${path}`, hreflang: 'zh' },
+            { href: `https://herbscience.shop${path}`, hreflang: 'x-default' }
           ]
         }),
       }
@@ -154,15 +154,15 @@ module.exports = {
       ...(path === '/' || path === '/zh' ? {} : {
         ...(hasZh ? {
           alternateRefs: [
-            { href: `https://www.herbscience.shop${basePath}`, hreflang: 'en' },
-            { href: `https://www.herbscience.shop${path}`, hreflang: 'zh' },
-            { href: `https://www.herbscience.shop${basePath}`, hreflang: 'x-default' }
+            { href: `https://herbscience.shop${basePath}`, hreflang: 'en' },
+            { href: `https://herbscience.shop${path}`, hreflang: 'zh' },
+            { href: `https://herbscience.shop${basePath}`, hreflang: 'x-default' }
           ]
         } : {
           alternateRefs: [
-            { href: `https://www.herbscience.shop${path}`, hreflang: 'en' },
-            { href: `https://www.herbscience.shop/zh${path}`, hreflang: 'zh' },
-            { href: `https://www.herbscience.shop${path}`, hreflang: 'x-default' }
+            { href: `https://herbscience.shop${path}`, hreflang: 'en' },
+            { href: `https://herbscience.shop/zh${path}`, hreflang: 'zh' },
+            { href: `https://herbscience.shop${path}`, hreflang: 'x-default' }
           ]
         })
       })
@@ -178,7 +178,7 @@ module.exports = {
       }
     ],
     additionalSitemaps: [
-      'https://www.herbscience.shop/sitemap-0.xml'
+      'https://herbscience.shop/sitemap-0.xml'
     ]
   }
 } 

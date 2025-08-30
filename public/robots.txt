@@ -7,8 +7,8 @@ Disallow: /_next/
 Disallow: /zh/test
 
 # Host
-Host: https://www.herbscience.shop
+Host: https://herbscience.shop
 
 # Sitemaps
-Sitemap: https://www.herbscience.shop/sitemap.xml
-Sitemap: https://www.herbscience.shop/sitemap-0.xml
+Sitemap: https://herbscience.shop/sitemap.xml
+Sitemap: https://herbscience.shop/sitemap-0.xml

@@ -14,7 +14,7 @@ interface BlogPostPageProps {
 // 从Notion获取博客文章数据
 async function getBlogPostFromNotion(slug: string) {
   try {
-    const response = await fetch(`${process.env.NODE_ENV === 'production' ? 'https://www.herbscience.shop' : 'http://localhost:3000'}/api/blog/sync-to-notion?action=get_post&slug=${slug}`, {
+    const response = await fetch(`${process.env.NODE_ENV === 'production' ? 'https://herbscience.shop' : 'http://localhost:3000'}/api/blog/sync-to-notion?action=get_post&slug=${slug}`, {
       cache: 'no-store'
     })
     
@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       title: post.title,
       description: post.excerpt || post.description,
       type: 'article',
-      url: `https://www.herbscience.shop/blog/${resolvedParams.slug}`,
+      url: `https://herbscience.shop/blog/${resolvedParams.slug}`,
       siteName: 'HerbScience',
       images: [
         {
@@ -69,10 +69,10 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       images: ['/hero-bg.svg']
     },
     alternates: {
-      canonical: `https://www.herbscience.shop/blog/${resolvedParams.slug}`,
+      canonical: `https://herbscience.shop/blog/${resolvedParams.slug}`,
       languages: {
-        'en': `https://www.herbscience.shop/blog/${resolvedParams.slug}`,
-        'x-default': `https://www.herbscience.shop/blog/${resolvedParams.slug}`,
+        'en': `https://herbscience.shop/blog/${resolvedParams.slug}`,
+        'x-default': `https://herbscience.shop/blog/${resolvedParams.slug}`,
       }
     }
   }
@@ -118,7 +118,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       name: 'HerbScience',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://www.herbscience.shop/logo.png'
+        url: 'https://herbscience.shop/logo.png'
       }
     },
     datePublished: post.published_date || post.date,
@@ -132,9 +132,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.herbscience.shop/' },
-      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://www.herbscience.shop/blog' },
-      { '@type': 'ListItem', position: 3, name: post.title, item: `https://www.herbscience.shop/blog/${resolvedParams.slug}` }
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://herbscience.shop/' },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://herbscience.shop/blog' },
+      { '@type': 'ListItem', position: 3, name: post.title, item: `https://herbscience.shop/blog/${resolvedParams.slug}` }
     ]
   }
 
@@ -152,8 +152,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <>
       {/* 使用路由级 OpenGraph 生成图像（/blog/[slug]/opengraph-image） */}
-      <meta property="og:image" content={`https://www.herbscience.shop/blog/${resolvedParams.slug}/opengraph-image`} />
-      <meta name="twitter:image" content={`https://www.herbscience.shop/blog/${resolvedParams.slug}/opengraph-image`} />
+      <meta property="og:image" content={`https://herbscience.shop/blog/${resolvedParams.slug}/opengraph-image`} />
+      <meta name="twitter:image" content={`https://herbscience.shop/blog/${resolvedParams.slug}/opengraph-image`} />
       {/* JSON-LD 结构化数据 */}
       <script
         type="application/ld+json"

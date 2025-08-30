@@ -49,7 +49,21 @@ async function getHerbData(slug: string) {
 		console.log('📝 Sanity未配置或配置无效，直接使用静态数据库')
 	}
 
-	// 2. 回退到静态数据库
+	// 2. 回退到内部API（内置详情+Notion/静态数据库聚合）
+	try {
+		const baseUrl = process.env.NODE_ENV === 'production' ? 'https://herbscience.shop' : 'http://localhost:3000'
+		const res = await fetch(`${baseUrl}/api/herbs/${slug}`, { cache: 'no-store' })
+		if (res.ok) {
+			const json = await res.json()
+			if (json?.success && json?.data) {
+				return json.data
+			}
+		}
+	} catch (error) {
+		console.warn('⚠️ 内部API回退失败，继续尝试本地静态数据库:', error)
+	}
+
+	// 3. 回退到静态数据库
 	try {
 		const { HERBS_DATABASE } = await import('@/lib/herbs-data-complete')
 		const staticHerb = HERBS_DATABASE.find(herb => {
@@ -167,11 +181,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 			title,
 			description,
 			type: 'article',
-			url: `https://www.herbscience.shop/herbs/${slug}`,
+			url: `https://herbscience.shop/herbs/${slug}`,
 			siteName: 'HerbScience',
 			images: [
 				{
-					url: `https://www.herbscience.shop/herbs/${slug}/opengraph-image`,
+					url: `https://herbscience.shop/herbs/${slug}/opengraph-image`,
 					width: 1200,
 					height: 630,
 					alt: `${herbData.name} - Natural Herb Benefits & Uses`
@@ -186,10 +200,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 		},
 		// 仅在详情页设置 canonical，其他页避免全局覆盖
 		alternates: {
-			canonical: `https://www.herbscience.shop/herbs/${slug}`,
+			canonical: `https://herbscience.shop/herbs/${slug}`,
 			languages: {
-				'en': `https://www.herbscience.shop/herbs/${slug}`,
-				'x-default': `https://www.herbscience.shop/herbs/${slug}`,
+				'en': `https://herbscience.shop/herbs/${slug}`,
+				'x-default': `https://herbscience.shop/herbs/${slug}`,
 			},
 		},
 		other: {
@@ -273,14 +287,14 @@ export default async function HerbDetailPage({ params }: { params: Promise<{ slu
 		author: {
 			'@type': 'Organization',
 			name: 'HerbScience',
-			url: 'https://www.herbscience.shop'
+			url: 'https://herbscience.shop'
 		},
 		publisher: {
 			'@type': 'Organization',
 			name: 'HerbScience',
 			logo: {
 				'@type': 'ImageObject',
-				url: 'https://www.herbscience.shop/logo.png'
+				url: 'https://herbscience.shop/logo.png'
 			}
 		},
 		datePublished: new Date().toISOString(),
@@ -325,17 +339,17 @@ export default async function HerbDetailPage({ params }: { params: Promise<{ slu
 		'@context': 'https://schema.org',
 		'@type': 'BreadcrumbList',
 		itemListElement: [
-			{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.herbscience.shop/' },
-			{ '@type': 'ListItem', position: 2, name: 'Herbs', item: 'https://www.herbscience.shop/herb-finder' },
-			{ '@type': 'ListItem', position: 3, name: herbData.name, item: `https://www.herbscience.shop/herbs/${slug}` }
+			{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://herbscience.shop/' },
+			{ '@type': 'ListItem', position: 2, name: 'Herbs', item: 'https://herbscience.shop/herb-finder' },
+			{ '@type': 'ListItem', position: 3, name: herbData.name, item: `https://herbscience.shop/herbs/${slug}` }
 		]
 	}
 
 	return (
 		<>
 			{/* 使用路由级 OpenGraph 生成图像（/herbs/[slug]/opengraph-image） */}
-			<meta property="og:image" content={`https://www.herbscience.shop/herbs/${slug}/opengraph-image`} />
-			<meta name="twitter:image" content={`https://www.herbscience.shop/herbs/${slug}/opengraph-image`} />
+			<meta property="og:image" content={`https://herbscience.shop/herbs/${slug}/opengraph-image`} />
+			<meta name="twitter:image" content={`https://herbscience.shop/herbs/${slug}/opengraph-image`} />
 			{/* JSON-LD 结构化数据 */}
 			<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 			{faqJsonLd && (
