@@ -6,6 +6,10 @@ export const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'your-proj
 export const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
 export const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2024-01-01'
 
+// 检查Sanity配置是否有效
+const isValidConfig = 
+  projectId && projectId !== 'your-project-id' && projectId !== 'your-project-id-here' && projectId.length > 8
+
 // Sanity客户端
 export const client = createClient({
   projectId,
@@ -41,6 +45,11 @@ export async function sanityFetch<T = any>(
   } = {}
 ): Promise<T> {
   const { next = { revalidate: 60 }, cache = 'force-cache' } = options
+  
+  // 检查配置是否有效，无效则直接抛出错误
+  if (!isValidConfig) {
+    throw new Error('Sanity configuration is invalid or missing. Please set up valid environment variables.')
+  }
   
   try {
     return await client.fetch<T>(query, params, {

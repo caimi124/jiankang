@@ -1,0 +1,24 @@
+User-agent: *
+Allow: /
+
+# 网站地图
+Sitemap: https://www.acaboost.com/sitemap.xml
+Sitemap: https://www.acaboost.com/sitemap-en.xml
+Sitemap: https://www.acaboost.com/sitemap-zh.xml
+
+# 禁止抓取的目录（根据实际情况调整）
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /tmp/
+Disallow: /*.json$
+Disallow: /*?*
+
+# 允许重要资源
+Allow: /css/
+Allow: /js/
+Allow: /images/
+Allow: /fonts/
+
+# 抓取延迟（可选，防止服务器过载）
+Crawl-delay: 1

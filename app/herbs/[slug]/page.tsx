@@ -3,67 +3,130 @@ import { notFound } from 'next/navigation'
 import HerbDetailClient from './HerbDetailClient'
 import { sanityFetch } from '@/lib/sanity'
 
-// 从Sanity获取并映射草药数据到客户端所需结构
+// 从多个数据源获取草药数据（智能检测Sanity配置状态）
 async function getHerbData(slug: string) {
-	try {
-		const query = `
-		  *[_type == "herb" && slug.current == $slug][0] {
-		    _id,
-		    title,
-		    "slug": slug.current,
-		    latinName,
-		    description,
-		    modernApplications,
-		    traditionalUse,
-		    primaryEffects,
-		    activeCompounds,
-		    dosage,
-		    safetyLevel,
-		    contraindications,
-		    seoKeywords,
-		    category,
-		    constitutionType,
-		    "faqs": *[_type == "faq" && references(^._id)]{question,answer},
-		    "dosages": *[_type == "dosage" && references(^._id)]{form,dosage,usage},
-		    "studies": *[_type == "study" && references(^._id)]{title,summary,link,evidenceLevel}
-		  }
-		`
-		const herb = await sanityFetch<any>(query, { slug }, { next: { revalidate: 300 } })
-		if (!herb) return null
-
-		// 字段映射到 HerbDetailClient 期望的数据结构
-		const mapped = {
-			id: herb._id,
-			name: herb.title,
-			latin_name: herb.latinName || '',
-			slug: herb.slug,
-			overview: herb.description || herb.modernApplications || '',
-			benefits: Array.isArray(herb.primaryEffects) ? herb.primaryEffects : [],
-			active_compounds: Array.isArray(herb.activeCompounds) ? herb.activeCompounds.join(', ') : (herb.activeCompounds || ''),
-			traditional_uses: herb.traditionalUse || '',
-			suitable_for: [],
-			not_suitable_for: [],
-			dosage_forms: Array.isArray(herb.dosages) && herb.dosages.length > 0
-				? herb.dosages.map((d: any) => ({ form: d.form || 'extract', dosage: d.dosage || '', usage: d.usage || '' }))
-				: (herb.dosage ? [{ form: 'extract', dosage: herb.dosage, usage: 'Follow label or practitioner guidance' }] : []),
-			safety_warnings: herb.contraindications ? String(herb.contraindications).split(/，|,|；|;|\n/).map((s: string) => s.trim()).filter(Boolean) : [],
-			interactions: [],
-			scientific_evidence: Array.isArray(herb.studies) && herb.studies.length > 0
-				? herb.studies.map((s: any) => `[${s.evidenceLevel || 'Moderate'}] ${s.title}${s.link ? ` (${s.link})` : ''}`).join('\n')
-				: '',
-			constitution_match: herb.constitutionType ? [{ type: herb.constitutionType, suitable: 'warning', description: 'Suitability varies by individual condition' }] : [],
-			pairs_well_with: [],
-			user_stories: [],
-			faqs: Array.isArray(herb.faqs) ? herb.faqs : [],
-			seo_keywords: Array.isArray(herb.seoKeywords) ? herb.seoKeywords : [],
-			evidence_level: 'Moderate',
-			category: herb.category || '',
-			properties: Array.isArray(herb.primaryEffects) ? herb.primaryEffects : []
+	// 🔍 检查Sanity是否正确配置
+	const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
+	const isValidSanityConfig = projectId && 
+		projectId !== 'your-project-id' && 
+		projectId !== 'your-project-id-here' && 
+		projectId.length > 8
+	
+	// 1. 仅在Sanity正确配置时尝试获取数据
+	if (isValidSanityConfig) {
+		try {
+			const query = `
+			  *[_type == "herb" && slug.current == $slug][0] {
+			    _id,
+			    title,
+			    "slug": slug.current,
+			    latinName,
+			    description,
+			    modernApplications,
+			    traditionalUse,
+			    primaryEffects,
+			    activeCompounds,
+			    dosage,
+			    safetyLevel,
+			    contraindications,
+			    seoKeywords,
+			    category,
+			    constitutionType,
+			    "faqs": *[_type == "faq" && references(^._id)]{question,answer},
+			    "dosages": *[_type == "dosage" && references(^._id)]{form,dosage,usage},
+			    "studies": *[_type == "study" && references(^._id)]{title,summary,link,evidenceLevel}
+			  }
+			`
+			const herb = await sanityFetch<any>(query, { slug }, { next: { revalidate: 300 } })
+			if (herb) {
+				console.log('✅ 从Sanity获取草药数据:', herb.title)
+				return mapSanityHerbData(herb)
+			}
+		} catch (error) {
+			console.warn('⚠️ Sanity查询失败，回退到静态数据:', error)
 		}
-		return mapped
+	} else {
+		console.log('📝 Sanity未配置或配置无效，直接使用静态数据库')
+	}
+
+	// 2. 回退到静态数据库
+	try {
+		const { HERBS_DATABASE } = await import('@/lib/herbs-data-complete')
+		const staticHerb = HERBS_DATABASE.find(herb => {
+			const herbSlug = herb.english_name.toLowerCase()
+				.replace(/[^a-z0-9]+/g, '-')
+				.replace(/^-|-$/g, '')
+			return herbSlug === slug
+		})
+		
+		if (staticHerb) {
+			console.log('✅ 从静态数据获取草药:', staticHerb.english_name)
+			return mapStaticHerbData(staticHerb, slug)
+		}
 	} catch (error) {
-		console.error('Error fetching herb data from Sanity:', error)
-		return null
+		console.error('❌ 静态数据查询失败:', error)
+	}
+
+	return null
+}
+
+// 映射Sanity数据结构
+function mapSanityHerbData(herb: any) {
+	return {
+		id: herb._id,
+		name: herb.title,
+		latin_name: herb.latinName || '',
+		slug: herb.slug,
+		overview: herb.description || herb.modernApplications || '',
+		benefits: Array.isArray(herb.primaryEffects) ? herb.primaryEffects : [],
+		active_compounds: Array.isArray(herb.activeCompounds) ? herb.activeCompounds.join(', ') : (herb.activeCompounds || ''),
+		traditional_uses: herb.traditionalUse || '',
+		suitable_for: [],
+		not_suitable_for: [],
+		dosage_forms: Array.isArray(herb.dosages) && herb.dosages.length > 0
+			? herb.dosages.map((d: any) => ({ form: d.form || 'extract', dosage: d.dosage || '', usage: d.usage || '' }))
+			: (herb.dosage ? [{ form: 'extract', dosage: herb.dosage, usage: 'Follow label or practitioner guidance' }] : []),
+		safety_warnings: herb.contraindications ? String(herb.contraindications).split(/，|,|；|;|\n/).map((s: string) => s.trim()).filter(Boolean) : [],
+		interactions: [],
+		scientific_evidence: Array.isArray(herb.studies) && herb.studies.length > 0
+			? herb.studies.map((s: any) => `[${s.evidenceLevel || 'Moderate'}] ${s.title}${s.link ? ` (${s.link})` : ''}`).join('\n')
+			: '',
+		constitution_match: herb.constitutionType ? [{ type: herb.constitutionType, suitable: 'warning', description: 'Suitability varies by individual condition' }] : [],
+		pairs_well_with: [],
+		user_stories: [],
+		faqs: Array.isArray(herb.faqs) ? herb.faqs : [],
+		seo_keywords: Array.isArray(herb.seoKeywords) ? herb.seoKeywords : [],
+		evidence_level: 'Moderate' as const,
+		category: herb.category || '',
+		properties: Array.isArray(herb.primaryEffects) ? herb.primaryEffects : []
+	}
+}
+
+// 映射静态数据结构
+function mapStaticHerbData(herb: any, slug: string) {
+	return {
+		id: herb.id,
+		name: herb.english_name,
+		latin_name: herb.latin_name || '',
+		slug: slug,
+		overview: herb.description || herb.modern_applications || '',
+		benefits: Array.isArray(herb.primary_effects) ? herb.primary_effects : [],
+		active_compounds: Array.isArray(herb.ingredients) ? herb.ingredients.join(', ') : (herb.ingredients || ''),
+		traditional_uses: herb.traditional_use || '',
+		suitable_for: [],
+		not_suitable_for: [],
+		dosage_forms: herb.dosage ? [{ form: 'extract', dosage: herb.dosage, usage: 'Follow label or practitioner guidance' }] : [],
+		safety_warnings: herb.contraindications ? String(herb.contraindications).split(/，|,|；|;|\n/).map((s: string) => s.trim()).filter(Boolean) : [],
+		interactions: [],
+		scientific_evidence: '',
+		constitution_match: herb.constitution_type ? [{ type: herb.constitution_type, suitable: 'warning', description: 'Suitability varies by individual condition' }] : [],
+		pairs_well_with: [],
+		user_stories: [],
+		faqs: [],
+		seo_keywords: [herb.english_name, herb.chinese_name, herb.latin_name].filter(Boolean),
+		evidence_level: 'Moderate' as const,
+		category: herb.category || '',
+		properties: Array.isArray(herb.primary_effects) ? herb.primary_effects : []
 	}
 }
 
@@ -139,20 +202,55 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 	}
 }
 
-// 生成静态参数（从Sanity获取slug）
+// 生成静态参数（智能检测Sanity配置状态）
 export async function generateStaticParams() {
+	// 🔍 检查Sanity是否正确配置
+	const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
+	const isValidSanityConfig = projectId && 
+		projectId !== 'your-project-id' && 
+		projectId !== 'your-project-id-here' && 
+		projectId.length > 8
+	
+	// 仅在Sanity正确配置时尝试获取
+	if (isValidSanityConfig) {
+		try {
+			const slugs = await sanityFetch<Array<{ slug: string }>>(
+				`*[_type == "herb" && defined(slug.current)]{ "slug": slug.current }`,
+				{},
+				{ next: { revalidate: 3600 } }
+			)
+			
+			if (slugs && slugs.length > 0) {
+				console.log('✅ 从Sanity生成', slugs.length, '个草药页面')
+				return slugs.map((s) => ({ slug: s.slug }))
+			}
+		} catch (error) {
+			console.warn('⚠️ Sanity连接失败，使用静态数据回退:', error)
+		}
+	} else {
+		console.log('📝 Sanity未配置，直接从静态数据生成路由')
+	}
+
+	// 回退到静态数据库
 	try {
-		const slugs = await sanityFetch<Array<{ slug: string }>>(
-			`*[_type == "herb" && defined(slug.current)]{ "slug": slug.current }`,
-			{},
-			{ next: { revalidate: 3600 } }
-		)
-		return (slugs || []).map((s) => ({ slug: s.slug }))
+		const { HERBS_DATABASE } = await import('@/lib/herbs-data-complete')
+		const staticSlugs = HERBS_DATABASE.map(herb => ({
+			slug: herb.english_name.toLowerCase()
+				.replace(/[^a-z0-9]+/g, '-')
+				.replace(/^-|-$/g, '')
+		}))
+		
+		console.log('✅ 从静态数据生成', staticSlugs.length, '个草药页面')
+		return staticSlugs
 	} catch (error) {
+		console.error('❌ 静态数据加载失败:', error)
+		// 最后的回退选项
 		return [
 			{ slug: 'ginseng' },
 			{ slug: 'ginger' },
-			{ slug: 'turmeric' }
+			{ slug: 'turmeric' },
+			{ slug: 'ashwagandha' },
+			{ slug: 'echinacea' }
 		]
 	}
 }
