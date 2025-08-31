@@ -76,20 +76,27 @@ export default function PerformanceMonitor() {
           })
         }
 
-        if (entry.entryType === 'first-input') {
-          sendToAnalytics({
-            name: 'FID',
-            value: (entry as any).processingStart - entry.startTime,
-            rating: getRating('FID', (entry as any).processingStart - entry.startTime)
-          })
+        // First Input Delay
+        let fid = null
+        if ('PerformanceObserver' in window) {
+          new PerformanceObserver((list) => {
+            const entries = list.getEntries()
+            const entry = entries[0] as any
+            fid = entry.processingStart - entry.startTime
+          }).observe({ entryTypes: ['first-input'] })
         }
 
-        if (entry.entryType === 'layout-shift' && !(entry as any).hadRecentInput) {
-          sendToAnalytics({
-            name: 'CLS',
-            value: (entry as any).value,
-            rating: getRating('CLS', (entry as any).value)
-          })
+        // Cumulative Layout Shift
+        let cls = 0
+        if ('PerformanceObserver' in window) {
+          new PerformanceObserver((list) => {
+            for (const entry of list.getEntries()) {
+              const layoutShiftEntry = entry as any
+              if (!layoutShiftEntry.hadRecentInput) {
+                cls += layoutShiftEntry.value
+              }
+            }
+          }).observe({ entryTypes: ['layout-shift'] })
         }
       }
     })

@@ -1,70 +1,35 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import Header from '../components/Header'
 import SmartSearch from '../components/SmartSearch'
 import TrustIndicators from '../components/TrustIndicators'
 import PersonalizedRecommendations from '../components/PersonalizedRecommendations'
 import { getTranslation } from '../lib/i18n'
-import { useABTest } from '../lib/ab-testing'
+
+// 注意：客户端组件不能导出metadata，metadata应该在layout.tsx中定义
 
 export default function Home() {
-  const pathname = usePathname()
-  const currentLocale = pathname.startsWith('/zh') ? 'zh' : 'en'
-  const t = getTranslation(currentLocale)
-  
-  // A/B 测试 Hook
-  const { variant: ctaVariant, trackConversion } = useABTest('hero-cta-buttons')
-  const { variant: valuePropositionVariant } = useABTest('value-proposition')
+  // 获取翻译（在服务器端）
+  const t = getTranslation('en')
   
   // 添加语言前缀的函数
   const addLocalePrefix = (href: string) => {
-    if (currentLocale === 'zh') {
-      return `/zh${href}`
-    }
-    return href
+    return href // 英文首页不需要前缀
   }
 
-  // CTA 按钮配置根据A/B测试变体
-  const getCtaConfig = () => {
-    switch (ctaVariant) {
-      case 'variant-a':
-        return {
-          primary: { text: '🎯 Discover Your Perfect Herbs', emoji: '→' },
-          secondary: { text: '🔍 Search Our Database', emoji: '→' }
-        }
-      case 'variant-b':
-        return {
-          primary: { text: '⚡ Get Instant Herb Guidance', emoji: '💫' },
-          secondary: { text: '🛡️ Check Safety First', emoji: '→' }
-        }
-      default:
-        return {
-          primary: { text: '🎯 Start Your Herb Journey', emoji: '→' },
-          secondary: { text: '🔍 Explore Herb Database', emoji: '→' }
-        }
-    }
+  // CTA 按钮配置
+  const ctaConfig = {
+    primary: { text: '🎯 Start Your Herb Journey', emoji: '→' },
+    secondary: { text: '🔍 Explore Herb Database', emoji: '→' }
   }
 
-  // 价值主张根据A/B测试变体
-  const getValueProposition = () => {
-    switch (valuePropositionVariant) {
-      case 'variant-a':
-        return {
-          title: 'Your Safe Path to Herbal Wellness',
-          subtitle: 'Safety-First Approach to Traditional Medicine'
-        }
-      default:
-        return {
-          title: 'Your Herbal Companion',
-          subtitle: 'Backed by Science'
-        }
-    }
+  // 价值主张
+  const valueProps = {
+    title: 'Your Herbal Companion',
+    subtitle: 'Backed by Science'
   }
 
-  const ctaConfig = getCtaConfig()
-  const valueProps = getValueProposition()
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -122,7 +87,7 @@ export default function Home() {
             {/* Enhanced Search Bar */}
             <div className="mb-8">
               <SmartSearch 
-                placeholder={currentLocale === 'zh' ? '搜索草药、症状或获取安全信息...' : 'Search herbs, symptoms, or get safety information...'}
+                placeholder="Search herbs, symptoms, or get safety information..."
                 onSearch={(query, filters) => {
                   // Handle search - could redirect to search results page
                   console.log('Search:', query, filters);
@@ -130,12 +95,11 @@ export default function Home() {
               />
             </div>
 
-            {/* Enhanced Action Buttons with A/B Testing */}
+            {/* Enhanced Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <Link 
                 href={addLocalePrefix("/constitution-test")} 
                 className="group bg-green-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-green-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                onClick={() => trackConversion('hero_primary_cta')}
               >
                 <span className="flex items-center justify-center">
                   {ctaConfig.primary.text}
@@ -145,7 +109,6 @@ export default function Home() {
               <Link 
                 href={addLocalePrefix("/herb-finder")} 
                 className="group border-2 border-green-600 text-green-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-green-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                onClick={() => trackConversion('hero_secondary_cta')}
               >
                 <span className="flex items-center justify-center">
                   {ctaConfig.secondary.text}

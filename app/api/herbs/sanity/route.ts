@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sanityFetch } from '@/lib/sanity'
 
+// 🚀 性能优化：增加缓存时间，减少重复查询
 export async function GET(request: NextRequest) {
 	try {
 		const { searchParams } = new URL(request.url)
@@ -14,6 +15,7 @@ export async function GET(request: NextRequest) {
 		const start = (page - 1) * limit
 		const end = start + limit
 
+		// 🚀 优化：构建更高效的查询
 		const baseFilter = `*[_type == "herb"${constitution ? ' && constitutionType == $constitution' : ''}${safety ? ' && safetyLevel == $safety' : ''}]`
 		const searchFilter = q ? ` && (
 		  title match $q ||
@@ -23,7 +25,8 @@ export async function GET(request: NextRequest) {
 		  count(primaryEffects[@ match $q]) > 0
 		)` : ''
 		const fullFilter = `${baseFilter}${searchFilter}`
-		// 🚀 优化：单次查询获取数据和总数
+		
+		// 🚀 优化：单次查询获取数据和总数，减少网络往返
 		const optimizedQuery = `{
 		  "items": ${fullFilter} | order(_createdAt desc) [${start}...${end}] {
 		    _id,
@@ -51,54 +54,70 @@ export async function GET(request: NextRequest) {
 		const result = await sanityFetch<{items: any[], total: number}>(
 			optimizedQuery, 
 			{ q: q ? `*${q}*` : undefined, safety: safety || undefined, constitution: constitution || undefined }, 
-			{ next: { revalidate: 60 } } // 🚀 增加缓存时间
+			{ next: { revalidate: 300 } } // 🚀 增加缓存时间到5分钟
 		)
 		
 		const herbsRaw = result?.items || []
 		const totalItems = result?.total || 0
 
-		const herbs = (herbsRaw || []).map((h) => ({
-			id: h.id || h.slug || h._id,
-			slug: h.slug,
-			chinese_name: h.chineseName || h.title || '',
-			english_name: h.title || '',
-			latin_name: h.latinName || '',
-			category: h.category || '',
-			constitution_type: h.constitutionType || '',
-			primary_effects: Array.isArray(h.primaryEffects) ? h.primaryEffects : [],
-			secondary_effects: [],
-			efficacy: Array.isArray(h.primaryEffects) ? h.primaryEffects : [],
-			dosage: h.dosage || '',
-			safety_level: h.safetyLevel || 'medium',
-			contraindications: h.contraindications || '',
-			description: h.description || h.modernApplications || '',
-			traditional_use: h.traditionalUse || '',
-			modern_applications: h.modernApplications || '',
+		const herbs = (herbsRaw || []).map((herb: any) => ({
+			id: herb._id,
+			chinese_name: herb.chineseName || herb.title,
+			english_name: herb.title,
+			latin_name: herb.latinName || herb.title,
+			description: herb.description || '',
+			efficacy: herb.primaryEffects || [],
+			primary_effects: herb.primaryEffects || [],
+			safety_level: herb.safetyLevel || 'medium',
+			constitution_type: herb.constitutionType || '平和质',
+			traditional_use: herb.traditionalUse || herb.description || '',
+			modern_applications: herb.modernApplications || herb.description || '',
+			dosage: herb.dosage || '请咨询专业医师',
+			contraindications: herb.contraindications || '',
+			quality_score: 85, // 默认高质量
+			popularity_score: 80,
+			ingredients: herb.activeCompounds || ['待补充'],
+			category: herb.category || '',
+			part_used: '',
 			taste: '',
 			meridians: [],
-			part_used: '',
 			source: 'sanity',
-			growing_regions: [],
-			price_range: '',
+			price_range: 'moderate',
 			availability: 'common',
-			quality_score: 75,
-			popularity_score: 70,
-			usage_suggestions: '',
-			ingredients: Array.isArray(h.activeCompounds)
-				? h.activeCompounds
-				: h.activeCompounds
-				? [h.activeCompounds]
-				: [],
-			image_url: h.featuredImage?.asset?._ref || null,
-			gallery: Array.isArray(h.gallery) ? h.gallery.map((g:any)=>g.asset?._ref).filter(Boolean) : []
+			slug: herb.slug
 		}))
 
-		return NextResponse.json({ success: true, data: herbs, meta: { page, limit, total: totalItems } })
-	} catch (error: any) {
-		console.error('Sanity herbs API error:', error)
-		return NextResponse.json(
-			{ success: false, error: 'Failed to fetch herbs from Sanity' },
-			{ status: 500 }
-		)
+		// 🚀 优化：添加性能监控headers
+		const response = NextResponse.json({
+			success: true,
+			data: herbs,
+			meta: {
+				total: totalItems,
+				page,
+				limit,
+				totalPages: Math.ceil(totalItems / limit)
+			},
+			query: { q, safety, constitution, page, limit }
+		})
+
+		// 🚀 优化：设置缓存headers
+		response.headers.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600')
+		response.headers.set('X-Cache-Status', 'MISS')
+		
+		return response
+
+	} catch (error) {
+		console.error('❌ Sanity API Error:', error)
+		
+		return NextResponse.json({
+			success: false,
+			error: 'Failed to fetch herbs from Sanity',
+			message: error instanceof Error ? error.message : 'Unknown error'
+		}, { 
+			status: 500,
+			headers: {
+				'Cache-Control': 'no-cache, no-store, must-revalidate'
+			}
+		})
 	}
 }

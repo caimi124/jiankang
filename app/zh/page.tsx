@@ -1,17 +1,17 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import Header from '../../components/Header'
 import SmartSearch from '../../components/SmartSearch'
 import TrustIndicators from '../../components/TrustIndicators'
 import PersonalizedRecommendations from '../../components/PersonalizedRecommendations'
 import { getTranslation } from '../../lib/i18n'
 
+// 注意：客户端组件不能导出metadata，metadata应该在layout.tsx中定义
+
 export default function ZhHome() {
-  const pathname = usePathname()
-  const currentLocale = pathname.startsWith('/zh') ? 'zh' : 'en'
-  const t = getTranslation(currentLocale)
+  // 获取中文翻译
+  const t = getTranslation('zh')
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -70,7 +70,7 @@ export default function ZhHome() {
             {/* Enhanced Search Bar */}
             <div className="mb-8">
               <SmartSearch 
-                placeholder={currentLocale === 'zh' ? '搜索草药、症状或获取安全信息...' : 'Search herbs, symptoms, or get safety information...'}
+                placeholder="搜索草药、症状或获取安全信息..."
                 onSearch={(query, filters) => {
                   // Handle search - could redirect to search results page
                   console.log('Search:', query, filters);

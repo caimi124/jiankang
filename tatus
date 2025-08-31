@@ -1,1 +1,11 @@
 [33mc4b5741[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m  完整修复草药详情页面404问题和SEO优化
+[33md4b6471[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m 新增 Sanity/SEO 脚本和数据库优化文件
+[33m7128e9e[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Update pages, sitemap, robots and add middleware
+[33m61d7dc7[m add tatus file
+[33mc4b5741[m  完整修复草药详情页面404问题和SEO优化
+[33m822e358[m 修复TypeScript错误：为Herb接口添加slug属性支持Sanity数据
+[33m74d2d23[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32msafe-push[m[33m)[m 安全更新：移除敏感API密钥，使用环境变量
+[33m22a775c[m feat: 完成Cinnamon草药数据更新和SEO优化
+[33m46a533c[m[33m ([m[1;31morigin/safe-push[m[33m)[m  Fix: Resolve Next.js build errors and client/server component issues - Add 'use client' directive to pages using React hooks - Move metadata exports to layout.tsx files - Create new layout files for proper metadata handling - Add Git token cleanup scripts and guide - Fix component architecture for proper Next.js 13+ compatibility
+[33mba2a951[m 更新文件：添加SEO优化报告、集成报告和更新现有文件
+[33ma581067[m 添加项目文件并移除敏感信息

@@ -1,25 +1,20 @@
-// Next.js Configuration - Force Deployment Update: 2025-01-19 18:52:00
+// Next.js Configuration - Performance Optimized: 2025-01-19
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Image Optimization
+  // 🚀 性能优化：简化图片配置
   images: {
-    // Enable modern image formats
+    // 启用现代图片格式
     formats: ['image/webp', 'image/avif'],
-    // Device sizes for responsive images
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    // Image sizes for different viewports
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    // Domains for external images
-    domains: ['images.unsplash.com', 'via.placeholder.com', 'herbscience.shop', 'cdn.sanity.io'],
-    // Minimize image size for better loading
-    minimumCacheTTL: 31536000, // 1 year
-    // Remote patterns for security
+    // 优化设备尺寸
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    // 优化图片尺寸
+    imageSizes: [16, 32, 48, 64, 96, 128, 256],
+    // 外部图片域名
+    domains: ['images.unsplash.com', 'cdn.sanity.io'],
+    // 最小缓存时间
+    minimumCacheTTL: 31536000, // 1年
+    // 远程模式
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        pathname: '**',
-      },
       {
         protocol: 'https',
         hostname: 'cdn.sanity.io',
@@ -28,25 +23,33 @@ const nextConfig = {
     ],
   },
 
-  // Compression
+  // 启用压缩
   compress: true,
 
-  // Power pack optimization
+  // 隐藏Powered By头
   poweredByHeader: false,
 
-  // 实验性性能优化
+  // 🚀 实验性性能优化
   experimental: {
-    // CSS 优化
+    // CSS优化
     optimizeCss: true,
     // 预构建优化
     optimizePackageImports: ['lucide-react'],
     // 优化字体加载
     optimizeServerReact: true,
-    // 减少 JavaScript bundle
+    // 减少JavaScript bundle
     serverMinification: true,
+    // 🚀 新增：启用SWC压缩
+    swcMinify: true,
+    // 🚀 新增：启用模块联邦
+    modularizeImports: {
+      'lucide-react': {
+        transform: 'lucide-react/dist/esm/icons/{{kebabCase member}}'
+      }
+    }
   },
 
-  // Headers for security and performance
+  // 🚀 性能优化headers
   async headers() {
     return [
       {
@@ -76,14 +79,14 @@ const nextConfig = {
             key: 'Referrer-Policy',
             value: 'origin-when-cross-origin'
           },
-          // 性能优化 headers
+          // 🚀 优化：更长的缓存时间
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable'
+            value: 'public, max-age=3600, stale-while-revalidate=86400'
           }
         ]
       },
-      // 静态资源缓存优化
+      // 🚀 优化：静态资源缓存
       {
         source: '/(.*)\\.(js|css|woff|woff2|ico|png|jpg|jpeg|gif|svg|webp|avif)',
         headers: [
@@ -92,24 +95,28 @@ const nextConfig = {
             value: 'public, max-age=31536000, immutable'
           }
         ]
+      },
+      // 🚀 新增：API缓存优化
+      {
+        source: '/api/herbs/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=300, stale-while-revalidate=600'
+          }
+        ]
       }
     ]
   },
 
-  // Redirects for SEO
+  // 重定向配置
   async redirects() {
     return [
-      // Remove HTTP to HTTPS redirect (handled by Vercel)
-      // Remove Non-www to www redirect (handled by Vercel)
-      
-      // Only keep internal redirects
-      // 规范化：防止 /index.html 被索引
       {
         source: '/index.html',
         destination: '/',
         permanent: true,
       },
-      // Legacy redirects
       {
         source: '/home',
         destination: '/',
@@ -120,19 +127,26 @@ const nextConfig = {
         destination: '/constitution-test',
         permanent: true,
       },
-      // 注意：不要将功能目录整体重定向到新路径，以免 Google 记录“网页会自动重定向”。
-      // 若需要，请仅对旧具体URL做一对一 301。
+      {
+        source: '/test-enhanced',
+        destination: '/constitution-test',
+        permanent: true,
+      },
+      {
+        source: '/test-cms',
+        destination: '/admin',
+        permanent: true,
+      },
     ]
   },
 
-  // Rewrites for clean URLs
+  // 重写配置
   async rewrites() {
     return [
       {
         source: '/search',
         destination: '/api/search',
       },
-      // API 优化重写
       {
         source: '/api/v2/:path*',
         destination: '/api/:path*',
@@ -140,34 +154,33 @@ const nextConfig = {
     ]
   },
 
-  // Environment variables
+  // 环境变量
   env: {
     CUSTOM_KEY: 'herbscience-app',
   },
 
-  // Enable TypeScript strict mode
+  // TypeScript配置
   typescript: {
     ignoreBuildErrors: false,
   },
 
-  // ESLint configuration
+  // ESLint配置
   eslint: {
     ignoreDuringBuilds: true,
   },
 
-  // Enable static optimization
+  // 静态优化
   trailingSlash: false,
 
-  // 编译器优化
+  // 🚀 编译器优化
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
-    // SWC 优化
     styledComponents: false,
   },
 
-  // Bundle 分析优化
+  // 🚀 Webpack优化
   webpack: (config, { dev, isServer, webpack }) => {
-    // 生产环境 bundle 优化
+    // 生产环境bundle优化
     if (!dev && !isServer) {
       config.optimization.splitChunks = {
         chunks: 'all',
@@ -185,6 +198,13 @@ const nextConfig = {
             priority: 5,
             reuseExistingChunk: true,
           },
+          // 🚀 新增：草药相关组件单独打包
+          herbs: {
+            test: /[\\/]components[\\/]Herb/,
+            name: 'herbs',
+            chunks: 'all',
+            priority: 3,
+          }
         },
       }
     }
@@ -193,6 +213,29 @@ const nextConfig = {
     config.resolve.alias = {
       ...config.resolve.alias,
       '@': require('path').resolve(__dirname),
+    }
+
+    // 🚀 新增：启用模块联邦
+    if (!isServer) {
+      config.plugins.push(
+        new webpack.container.ModuleFederationPlugin({
+          name: 'herbscience',
+          filename: 'remoteEntry.js',
+          exposes: {
+            './HerbCard': './components/HerbRecommendations/HerbCard.tsx',
+          },
+          shared: {
+            react: {
+              singleton: true,
+              requiredVersion: false,
+            },
+            'react-dom': {
+              singleton: true,
+              requiredVersion: false,
+            },
+          },
+        })
+      )
     }
 
     return config
