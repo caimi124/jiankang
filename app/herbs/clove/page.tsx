@@ -166,7 +166,108 @@ export default async function ClovePage() {
           
           {/* 草药详情标签页 */}
           <HerbDetailTabs
-            herbData={herbData}
+            tabs={[
+              {
+                id: 'overview',
+                label: 'Overview',
+                content: (
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-3">Traditional Use</h3>
+                      <p className="text-gray-700 leading-relaxed">
+                        In Traditional Chinese Medicine, clove is known for warming the stomach, stopping vomiting, and boosting kidney yang energy. It has been used for centuries to relieve digestive discomfort, freshen breath, ease pain, and support men's reproductive health. Clove's warming nature makes it particularly effective for cold-type conditions and yang deficiency patterns.
+                      </p>
+                    </div>
+                    
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-3">Modern Applications</h3>
+                      <p className="text-gray-700 leading-relaxed">
+                        Modern science confirms clove's strong antibacterial, anti-inflammatory, and antioxidant activities. Research supports its use in oral care, digestive health, pain management, and infection control. Clinical studies demonstrate effectiveness in reducing halitosis, managing digestive discomfort, and providing natural pain relief.
+                      </p>
+                    </div>
+                    
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-3">Mechanism of Action</h3>
+                      <p className="text-gray-700 leading-relaxed">
+                        Eugenol, clove's main compound, exerts local anesthetic effects by blocking nerve transmission, explaining its effectiveness in toothache relief. It inhibits inflammatory mediators like COX-2, reducing pain and swelling. Eugenol neutralizes free radicals through antioxidant activity and combats microbial overgrowth through direct antimicrobial action.
+                      </p>
+                    </div>
+                  </div>
+                )
+              },
+              {
+                id: 'benefits',
+                label: 'Benefits & Uses',
+                content: <HerbBenefits benefits={herbData.primaryEffects} />
+              },
+              {
+                id: 'safety',
+                label: 'Safety & Dosage',
+                content: (
+                  <HerbSafety
+                    dosage={herbData.dosage}
+                    safetyLevel={herbData.safetyLevel}
+                    contraindications={herbData.contraindications}
+                    pregnancySafety="Avoid"
+                    lactationSafety="Caution"
+                    childrenSafety="Avoid under 12"
+                  />
+                )
+              },
+              {
+                id: 'usage',
+                label: 'Usage Tips',
+                content: (
+                  <HerbUsage
+                    tips={[
+                      'Clove tea: Steep 2-3 whole cloves with black or red tea before meals for better digestion',
+                      'Toothache relief: Apply diluted clove oil (1:5 with carrier oil) on cotton ball to affected tooth',
+                      'Aromatherapy: Inhale clove essential oil to lift mood and fight fatigue',
+                      'Digestive blend: Mix ground clove with dried ginger and fennel seed for warming tonic'
+                    ]}
+                  />
+                )
+              },
+              {
+                id: 'research',
+                label: 'Research & Studies',
+                content: (
+                  <HerbResearch
+                    studies={[
+                      'A 2022 randomized trial found clove mouthwash significantly reduced halitosis and oral bacteria in patients with gingivitis',
+                      'In vitro studies confirm eugenol\'s antimicrobial effect against Streptococcus mutans and Candida albicans',
+                      'A meta-analysis in 2021 highlighted clove\'s anti-ulcer and anti-inflammatory actions via modulation of gastric enzymes and prostaglandins'
+                    ]}
+                  />
+                )
+              },
+              {
+                id: 'faq',
+                label: 'FAQ',
+                content: (
+                  <HerbFAQ
+                    faqs={[
+                      {
+                        question: 'Is clove safe for daily use?',
+                        answer: 'Small culinary amounts are safe. Therapeutic doses (e.g., clove oil) should not be used long-term without supervision.'
+                      },
+                      {
+                        question: 'Can I use clove oil for gum pain?',
+                        answer: 'Yes, but always dilute it and avoid direct contact with sensitive tissue.'
+                      },
+                      {
+                        question: 'Does clove help with bad breath?',
+                        answer: 'Yes, its antimicrobial and aromatic compounds make it a powerful breath freshener.'
+                      },
+                      {
+                        question: 'Can clove help with fertility?',
+                        answer: 'Traditionally yes, especially in men with cold-type sexual weakness. Modern evidence is limited but promising.'
+                      }
+                    ]}
+                  />
+                )
+              }
+            ]}
           />
         </div>
       </div>

@@ -166,7 +166,111 @@ export default async function PumpkinSeedsPage() {
           
           {/* 草药详情标签页 */}
           <HerbDetailTabs
-            herbData={herbData}
+            tabs={[
+              {
+                id: 'overview',
+                label: 'Overview',
+                content: (
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-3">Traditional Use</h3>
+                      <p className="text-gray-700 leading-relaxed">
+                        In Traditional Chinese Medicine, pumpkin seeds are warm and tonifying, suitable for people with fatigue, frequent urination, or hormonal imbalance. They have been traditionally used for prostate support, intestinal parasites, and women's hormonal balance, particularly during menopause.
+                      </p>
+                    </div>
+                    
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-3">Modern Applications</h3>
+                      <p className="text-gray-700 leading-relaxed">
+                        Modern studies confirm pumpkin seeds' effectiveness for prostate health (BPH), hair loss prevention, menopause relief, and parasite treatment. Clinical trials show positive results for urinary symptoms, hair regrowth, hot flash reduction, and sleep quality improvement.
+                      </p>
+                    </div>
+                    
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-3">Mechanism of Action</h3>
+                      <p className="text-gray-700 leading-relaxed">
+                        Hormone Modulation: Phytosterols may block 5-alpha-reductase, protecting the prostate and reducing hair loss. Antioxidant Defense: Vitamin E, selenium, and carotenoids fight oxidative stress and aging. Anti-Parasitic: Cucurbitin paralyzes intestinal worms, making them easier to expel. Cardiovascular Support: Magnesium + unsaturated fats help relax vessels and lower cholesterol. Sleep Enhancement: Tryptophan → serotonin → melatonin, supporting restful sleep.
+                      </p>
+                    </div>
+                  </div>
+                )
+              },
+              {
+                id: 'benefits',
+                label: 'Benefits & Uses',
+                content: <HerbBenefits benefits={herbData.primaryEffects} />
+              },
+              {
+                id: 'safety',
+                label: 'Safety & Dosage',
+                content: (
+                  <HerbSafety
+                    dosage={herbData.dosage}
+                    safetyLevel={herbData.safetyLevel}
+                    contraindications={herbData.contraindications}
+                    pregnancySafety="Safe"
+                    lactationSafety="Safe"
+                    childrenSafety="Safe in moderation"
+                  />
+                )
+              },
+              {
+                id: 'usage',
+                label: 'Usage Tips',
+                content: (
+                  <HerbUsage
+                    tips={[
+                      'Snack: Eat raw or lightly roasted seeds to preserve nutrients',
+                      'Smoothie Boost: Blend into shakes for zinc and protein',
+                      'Prostate Support: Take pumpkin seed oil daily',
+                      'Parasite Cleanse: Grind raw seeds into powder, consume on empty stomach',
+                      'Hormone Balance: Combine with flaxseeds or sesame'
+                    ]}
+                  />
+                )
+              },
+              {
+                id: 'research',
+                label: 'Research & Studies',
+                content: (
+                  <HerbResearch
+                    studies={[
+                      'Prostate Health: Pumpkin seed oil reduced urinary symptoms in men with BPH',
+                      'Hair Loss: 40% hair regrowth after 6 months of pumpkin seed extract (clinical trial)',
+                      'Menopause Relief: Women taking pumpkin seed oil had fewer hot flashes & better HDL cholesterol',
+                      'Parasite Treatment: Cucurbitin confirmed effective against hookworms & tapeworms',
+                      'Sleep Quality: Tryptophan-rich pumpkin seeds improved sleep onset and duration'
+                    ]}
+                  />
+                )
+              },
+              {
+                id: 'faq',
+                label: 'FAQ',
+                content: (
+                  <HerbFAQ
+                    faqs={[
+                      {
+                        question: 'Can pumpkin seeds help with hair loss?',
+                        answer: 'Yes, they block 5-alpha-reductase and support hormone balance, reducing thinning hair.'
+                      },
+                      {
+                        question: 'How do I use pumpkin seeds for parasites?',
+                        answer: 'Take 30-50 g of ground raw seeds daily for about a week, ideally on an empty stomach.'
+                      },
+                      {
+                        question: 'Are pumpkin seeds good for women in menopause?',
+                        answer: 'Absolutely. They reduce hot flashes, improve sleep, and support healthy cholesterol.'
+                      },
+                      {
+                        question: 'Can kids eat pumpkin seeds for worms?',
+                        answer: 'Yes, in small amounts. Mix ground seeds with honey or porridge for safe deworming.'
+                      }
+                    ]}
+                  />
+                )
+              }
+            ]}
           />
         </div>
       </div>
