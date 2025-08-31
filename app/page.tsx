@@ -1,59 +1,13 @@
+'use client'
+
 import Link from 'next/link'
-import type { Metadata } from 'next'
 import Header from '../components/Header'
 import SmartSearch from '../components/SmartSearch'
 import TrustIndicators from '../components/TrustIndicators'
 import PersonalizedRecommendations from '../components/PersonalizedRecommendations'
 import { getTranslation } from '../lib/i18n'
 
-// 生成首页metadata
-export const metadata: Metadata = {
-  title: 'HerbScience.shop | Evidence-Based Herbal Medicine Guide',
-  description: 'Discover the power of herbal medicine with our evidence-based guide. Get personalized herb recommendations, safety information, and expert insights backed by scientific research.',
-  keywords: [
-    'herbal medicine',
-    'natural remedies',
-    'herbs for health',
-    'traditional chinese medicine',
-    'herbal supplements',
-    'plant medicine',
-    'alternative medicine',
-    'natural healing',
-    'herb safety',
-    'evidence-based herbalism'
-  ],
-  openGraph: {
-    title: 'HerbScience.shop | Evidence-Based Herbal Medicine Guide',
-    description: 'Discover the power of herbal medicine with our evidence-based guide. Get personalized herb recommendations, safety information, and expert insights.',
-    type: 'website',
-    url: 'https://herbscience.shop',
-    siteName: 'HerbScience.shop',
-    images: [
-      {
-        url: 'https://herbscience.shop/opengraph-image',
-        width: 1200,
-        height: 630,
-        alt: 'HerbScience.shop - Evidence-Based Herbal Medicine Guide'
-      }
-    ],
-    locale: 'en_US',
-    alternateLocale: ['zh_CN']
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'HerbScience.shop | Evidence-Based Herbal Medicine Guide',
-    description: 'Discover the power of herbal medicine with our evidence-based guide.',
-    images: ['https://herbscience.shop/opengraph-image']
-  },
-  alternates: {
-    canonical: 'https://herbscience.shop/',
-    languages: {
-      'en': 'https://herbscience.shop/',
-      'zh': 'https://herbscience.shop/zh',
-      'x-default': 'https://herbscience.shop/'
-    }
-  }
-}
+// 注意：客户端组件不能导出metadata，metadata应该在layout.tsx中定义
 
 export default function Home() {
   // 获取翻译（在服务器端）
