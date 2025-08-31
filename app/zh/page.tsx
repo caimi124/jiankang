@@ -1,17 +1,63 @@
-'use client'
-
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import type { Metadata } from 'next'
 import Header from '../../components/Header'
 import SmartSearch from '../../components/SmartSearch'
 import TrustIndicators from '../../components/TrustIndicators'
 import PersonalizedRecommendations from '../../components/PersonalizedRecommendations'
 import { getTranslation } from '../../lib/i18n'
 
+// 生成中文首页metadata
+export const metadata: Metadata = {
+  title: 'HerbScience.shop | 循证草药医学指南',
+  description: '发现草药医学的力量，获得循证指南。获取个性化草药推荐、安全信息和专家见解，基于科学研究的传统医学智慧。',
+  keywords: [
+    '草药医学',
+    '天然疗法',
+    '健康草药',
+    '中医传统',
+    '草药补充剂',
+    '植物医学',
+    '替代医学',
+    '自然疗法',
+    '草药安全',
+    '循证草药学'
+  ],
+  openGraph: {
+    title: 'HerbScience.shop | 循证草药医学指南',
+    description: '发现草药医学的力量，获得循证指南。获取个性化草药推荐、安全信息和专家见解。',
+    type: 'website',
+    url: 'https://herbscience.shop/zh',
+    siteName: 'HerbScience.shop',
+    images: [
+      {
+        url: 'https://herbscience.shop/zh/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'HerbScience.shop - 循证草药医学指南'
+      }
+    ],
+    locale: 'zh_CN',
+    alternateLocale: ['en_US']
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'HerbScience.shop | 循证草药医学指南',
+    description: '发现草药医学的力量，获得循证指南。',
+    images: ['https://herbscience.shop/zh/opengraph-image']
+  },
+  alternates: {
+    canonical: 'https://herbscience.shop/zh',
+    languages: {
+      'en': 'https://herbscience.shop/',
+      'zh': 'https://herbscience.shop/zh',
+      'x-default': 'https://herbscience.shop/'
+    }
+  }
+}
+
 export default function ZhHome() {
-  const pathname = usePathname()
-  const currentLocale = pathname.startsWith('/zh') ? 'zh' : 'en'
-  const t = getTranslation(currentLocale)
+  // 获取中文翻译
+  const t = getTranslation('zh')
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -70,7 +116,7 @@ export default function ZhHome() {
             {/* Enhanced Search Bar */}
             <div className="mb-8">
               <SmartSearch 
-                placeholder={currentLocale === 'zh' ? '搜索草药、症状或获取安全信息...' : 'Search herbs, symptoms, or get safety information...'}
+                placeholder="搜索草药、症状或获取安全信息..."
                 onSearch={(query, filters) => {
                   // Handle search - could redirect to search results page
                   console.log('Search:', query, filters);

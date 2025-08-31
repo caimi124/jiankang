@@ -120,6 +120,16 @@ const nextConfig = {
         destination: '/constitution-test',
         permanent: true,
       },
+      {
+        source: '/test-enhanced',
+        destination: '/constitution-test',
+        permanent: true,
+      },
+      {
+        source: '/test-cms',
+        destination: '/admin',
+        permanent: true,
+      },
       // 注意：不要将功能目录整体重定向到新路径，以免 Google 记录“网页会自动重定向”。
       // 若需要，请仅对旧具体URL做一对一 301。
     ]

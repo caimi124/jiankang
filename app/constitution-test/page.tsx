@@ -2,9 +2,8 @@
 // CRITICAL: Website still shows 8 questions - forcing CDN refresh
 // Expected: 20 questions TCM system should be live after this commit
 // Force deployment: This should show 20 questions in Chinese, not 8 questions in English
-'use client'
-
 import React, { useState } from 'react'
+import type { Metadata } from 'next'
 import Navigation from '../../components/Navigation'
 import Breadcrumb from '../../components/Breadcrumb'
 import { 
@@ -28,6 +27,51 @@ import {
   Download,
   Share2
 } from 'lucide-react'
+
+// 生成体质测试页metadata
+export const metadata: Metadata = {
+  title: 'TCM Constitution Test | Discover Your Body Type | HerbScience',
+  description: 'Take our comprehensive TCM constitution test to discover your body type and get personalized herbal recommendations. 20-question assessment based on traditional Chinese medicine.',
+  keywords: [
+    'TCM constitution test',
+    'body type test',
+    'traditional chinese medicine',
+    'herbal recommendations',
+    'personalized medicine',
+    'qi deficiency',
+    'yin yang balance',
+    'herbal consultation'
+  ],
+  openGraph: {
+    title: 'TCM Constitution Test | Discover Your Body Type',
+    description: 'Take our comprehensive TCM constitution test to discover your body type and get personalized herbal recommendations.',
+    type: 'website',
+    url: 'https://herbscience.shop/constitution-test',
+    siteName: 'HerbScience.shop',
+    images: [
+      {
+        url: 'https://herbscience.shop/constitution-test/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'TCM Constitution Test - Discover Your Body Type'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'TCM Constitution Test | Discover Your Body Type',
+    description: 'Take our comprehensive TCM constitution test to discover your body type.',
+    images: ['https://herbscience.shop/constitution-test/opengraph-image']
+  },
+  alternates: {
+    canonical: 'https://herbscience.shop/constitution-test',
+    languages: {
+      'en': 'https://herbscience.shop/constitution-test',
+      'zh': 'https://herbscience.shop/zh/constitution-test',
+      'x-default': 'https://herbscience.shop/constitution-test'
+    }
+  }
+}
 
 export default function ConstitutionTestPage() {
   const [currentStep, setCurrentStep] = useState<'welcome' | 'test' | 'results'>('welcome')
