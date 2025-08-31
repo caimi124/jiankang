@@ -1,1 +1,6 @@
 [33mc4b5741[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m  完整修复草药详情页面404问题和SEO优化
+[33md4b6471[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m 新增 Sanity/SEO 脚本和数据库优化文件
+[33m7128e9e[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Update pages, sitemap, robots and add middleware
+[33m61d7dc7[m add tatus file
+[33mc4b5741[m  完整修复草药详情页面404问题和SEO优化
+[33m822e358[m 修复TypeScript错误：为Herb接口添加slug属性支持Sanity数据
