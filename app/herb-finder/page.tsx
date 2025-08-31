@@ -25,39 +25,6 @@ import {
 import type { Herb } from '../../lib/herbs-recommendation'
 import { sanityFetch } from '@/lib/sanity'
 
-// 🚀 优化：使用静态生成 + 增量静态再生
-export const revalidate = 3600 // 1小时更新一次
-
-// 预生成静态页面
-export async function generateStaticParams() {
-  try {
-    const herbs = await sanityFetch(`*[_type == "herb"] | order(_createdAt desc) [0...100] {
-      "slug": slug.current,
-      title,
-      chineseName,
-      category,
-      constitutionType,
-      safetyLevel
-    }`)
-    
-    return herbs.map((herb: {
-      slug: { current: string }
-      title: string
-      chineseName?: string
-      category?: string
-      constitutionType?: string
-      safetyLevel?: string
-    }) => ({
-      category: herb.category || 'general',
-      constitution: herb.constitutionType || 'general',
-      safety: herb.safetyLevel || 'medium'
-    }))
-  } catch (error) {
-    console.warn('Failed to generate static params:', error)
-    return []
-  }
-}
-
 // 获取草药数据（优化版本：单一数据源 + 静态生成）
 async function getHerbsData(filters: any = {}) {
   try {

@@ -39,14 +39,6 @@ const nextConfig = {
     optimizeServerReact: true,
     // 减少JavaScript bundle
     serverMinification: true,
-    // 🚀 新增：启用SWC压缩
-    swcMinify: true,
-    // 🚀 新增：启用模块联邦
-    modularizeImports: {
-      'lucide-react': {
-        transform: 'lucide-react/dist/esm/icons/{{kebabCase member}}'
-      }
-    }
   },
 
   // 🚀 性能优化headers
@@ -213,29 +205,6 @@ const nextConfig = {
     config.resolve.alias = {
       ...config.resolve.alias,
       '@': require('path').resolve(__dirname),
-    }
-
-    // 🚀 新增：启用模块联邦
-    if (!isServer) {
-      config.plugins.push(
-        new webpack.container.ModuleFederationPlugin({
-          name: 'herbscience',
-          filename: 'remoteEntry.js',
-          exposes: {
-            './HerbCard': './components/HerbRecommendations/HerbCard.tsx',
-          },
-          shared: {
-            react: {
-              singleton: true,
-              requiredVersion: false,
-            },
-            'react-dom': {
-              singleton: true,
-              requiredVersion: false,
-            },
-          },
-        })
-      )
     }
 
     return config
