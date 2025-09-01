@@ -3,10 +3,10 @@ const fs = require('fs');
 
 // 模拟导入 TypeScript 模块（在实际 TypeScript 环境中会自动工作）
 function loadHerbsDatabase() {
-  const content = fs.readFileSync('./lib/herbs-data.ts', 'utf8');
+  const content = fs.readFileSync('./lib/herbs-data-complete.ts', 'utf8');
   
   // 提取草药数据数组（简化处理）
-  const herbsMatch = content.match(/export const herbsDatabase: Herb\[\] = \[([\s\S]*?)\];/);
+  const herbsMatch = content.match(/export const HERBS_DATABASE: Herb\[\] = \[([\s\S]*?)\];/);
   if (!herbsMatch) {
     throw new Error('无法解析草药数据');
   }
@@ -162,7 +162,7 @@ try {
   demonstrateDatabase();
   
   console.log('\n🎉 恭喜！您的草药数据库已经成功更新并可以使用了！');
-  console.log('📦 数据库文件位置: ./lib/herbs-data.ts');
+  console.log('📦 数据库文件位置: ./lib/herbs-data-complete.ts');
   console.log('🔧 可以在您的Next.js应用中直接导入使用');
   
 } catch (error) {
