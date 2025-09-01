@@ -33,8 +33,6 @@ const nextConfig = {
   experimental: {
     // CSS优化
     optimizeCss: true,
-    // 预构建优化
-    optimizePackageImports: ['lucide-react']
   },
 
   // 🚀 性能优化headers
