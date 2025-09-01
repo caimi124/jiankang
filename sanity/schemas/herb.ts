@@ -4,38 +4,6 @@ export default defineType({
   name: 'herb',
   title: '草药',
   type: 'document',
-  // 🚀 优化：添加索引提升搜索性能
-  indexes: [
-    {
-      name: 'herb-search-index',
-      title: 'Herb Search Index',
-      fields: [
-        { name: 'title', type: 'string' },
-        { name: 'chineseName', type: 'string' },
-        { name: 'latinName', type: 'string' },
-        { name: 'category', type: 'string' },
-        { name: 'constitutionType', type: 'string' },
-        { name: 'safetyLevel', type: 'string' },
-        { name: 'primaryEffects', type: 'array' }
-      ]
-    },
-    {
-      name: 'herb-category-index',
-      title: 'Herb Category Index',
-      fields: [
-        { name: 'category', type: 'string' },
-        { name: '_createdAt', type: 'datetime' }
-      ]
-    },
-    {
-      name: 'herb-constitution-index',
-      title: 'Herb Constitution Index',
-      fields: [
-        { name: 'constitutionType', type: 'string' },
-        { name: 'safetyLevel', type: 'string' }
-      ]
-    }
-  ],
   fields: [
     defineField({
       name: 'title',

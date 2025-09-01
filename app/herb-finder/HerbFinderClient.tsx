@@ -25,7 +25,7 @@ import {
 import type { Herb } from '../../lib/herbs-recommendation'
 import { sanityFetch } from '@/lib/sanity'
 
-// 获取草药数据（优化版本：单一数据源 + 静态生成）
+// 获取草药数据（优化版本：单一数据源）
 async function getHerbsData(filters: any = {}) {
   try {
     const { search = '', category = '', constitution = '', safety = '', page = 1, limit = 24 } = filters

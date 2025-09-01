@@ -4,23 +4,18 @@ import Navigation from '../../../components/Navigation'
 import Breadcrumb from '../../../components/Breadcrumb'
 import { HerbDetailTabs } from '../../../components/HerbDetailTabs'
 import { HerbHero } from '../../../components/HerbHero'
-import { HerbBenefits } from '../../../components/HerbBenefits'
-import { HerbSafety } from '../../../components/HerbSafety'
-import { HerbUsage } from '../../../components/HerbUsage'
-import { HerbResearch } from '../../../components/HerbResearch'
-import { HerbFAQ } from '../../../components/HerbFAQ'
 
 // 🚀 SEO优化：生成动态metadata
 export async function generateMetadata(): Promise<Metadata> {
   const herbData = await getCloveData()
   
   return {
-    title: herbData.seoTitle || 'Clove Benefits: Oral Health, Digestive Support & Anti-inflammatory Effects | HerbScience',
-    description: herbData.seoDescription || 'Discover clove (Syzygium aromaticum) benefits for oral health, digestive support, and pain relief. Learn about eugenol\'s antimicrobial properties, usage tips, and safety guidelines.',
-    keywords: herbData.seoKeywords?.join(', ') || 'clove benefits, clove oil toothache, clove for bad breath, clove digestive health, eugenol benefits, clove anti-inflammatory, clove antimicrobial, clove men\'s health',
+    title: herbData.seoTitle || 'Clove Benefits for Dental Health, Digestive Support & Pain Relief | HerbScience',
+    description: herbData.seoDescription || 'Discover the benefits of clove (Syzygium aromaticum) for dental health, digestive support, pain relief, and antimicrobial properties. Learn safe dosage and uses.',
+    keywords: herbData.seoKeywords?.join(', ') || 'clove benefits, clove for toothache, clove for digestion, clove oil, clove antimicrobial, clove pain relief',
     openGraph: {
-      title: herbData.seoTitle || 'Clove Benefits: Oral Health, Digestive Support & Anti-inflammatory Effects',
-      description: herbData.seoDescription || 'Discover clove (Syzygium aromaticum) benefits for oral health, digestive support, and pain relief.',
+      title: herbData.seoTitle || 'Clove Benefits for Dental Health, Digestive Support & Pain Relief',
+      description: herbData.seoDescription || 'Discover the benefits of clove (Syzygium aromaticum) for dental health, digestive support, pain relief, and antimicrobial properties.',
       type: 'article',
       url: 'https://herbscience.shop/herbs/clove',
       images: [
@@ -28,14 +23,14 @@ export async function generateMetadata(): Promise<Metadata> {
           url: '/images/herbs/clove-og.jpg',
           width: 1200,
           height: 630,
-          alt: 'Clove (Syzygium aromaticum) - Oral Health and Digestive Support'
+          alt: 'Clove (Syzygium aromaticum) - Dental Health, Digestive Support & Pain Relief'
         }
       ]
     },
     twitter: {
       card: 'summary_large_image',
-      title: herbData.seoTitle || 'Clove Benefits: Oral Health, Digestive Support & Anti-inflammatory Effects',
-      description: herbData.seoDescription || 'Discover clove (Syzygium aromaticum) benefits for oral health, digestive support, and pain relief.',
+      title: herbData.seoTitle || 'Clove Benefits for Dental Health, Digestive Support & Pain Relief',
+      description: herbData.seoDescription || 'Discover the benefits of clove (Syzygium aromaticum) for dental health, digestive support, pain relief, and antimicrobial properties.',
       images: ['/images/herbs/clove-og.jpg']
     },
     alternates: {
@@ -60,15 +55,15 @@ async function getCloveData() {
         title: 'Clove',
         chineseName: '丁香',
         latinName: 'Syzygium aromaticum',
-        description: 'Clove (Syzygium aromaticum) is a powerful aromatic spice native to Indonesia with exceptional medicinal properties.',
-        primaryEffects: ['Oral health and toothache relief', 'Digestive support and nausea relief', 'Anti-inflammatory and pain relief'],
-        activeCompounds: ['Eugenol', 'Tannins', 'Flavonoids', 'Volatile oils'],
-        dosage: 'Whole Cloves (tea): 1-3 grams/day. Clove Powder: 0.5-1 gram/day.',
+        description: 'Clove (Syzygium aromaticum) is a powerful warming spice with exceptional antimicrobial and pain-relieving properties. Used in traditional medicine for dental health, digestive support, and pain management.',
+        primaryEffects: ['Dental health and toothache relief', 'Digestive support and warming', 'Antimicrobial and antibacterial effects'],
+        activeCompounds: ['Eugenol', 'Caryophyllene', 'Acetyl eugenol', 'Essential oils'],
+        dosage: 'Whole cloves: 1-3 pieces/day. Powder: 0.5-1 gram/day. Essential oil: 1-2 drops diluted.',
         safetyLevel: 'medium',
-        contraindications: ['Not recommended for acid reflux, stomach ulcers, or "hot" conditions', 'Avoid during pregnancy and for children under 12'],
-        seoTitle: 'Clove Benefits: Oral Health, Digestive Support & Anti-inflammatory Effects',
-        seoDescription: 'Discover clove (Syzygium aromaticum) benefits for oral health, digestive support, and pain relief.',
-        seoKeywords: ['clove benefits', 'clove oil toothache', 'clove for bad breath', 'clove digestive health']
+        contraindications: ['Avoid during pregnancy', 'Not suitable for hot conditions', 'May irritate sensitive skin'],
+        seoTitle: 'Clove Benefits for Dental Health, Digestive Support & Pain Relief | HerbScience',
+        seoDescription: 'Discover the benefits of clove (Syzygium aromaticum) for dental health, digestive support, pain relief, and antimicrobial properties.',
+        seoKeywords: ['clove benefits', 'clove for toothache', 'clove for digestion', 'clove oil']
       }
     }
     
@@ -80,15 +75,15 @@ async function getCloveData() {
       title: 'Clove',
       chineseName: '丁香',
       latinName: 'Syzygium aromaticum',
-      description: 'Clove (Syzygium aromaticum) is a powerful aromatic spice native to Indonesia with exceptional medicinal properties.',
-      primaryEffects: ['Oral health and toothache relief', 'Digestive support and nausea relief', 'Anti-inflammatory and pain relief'],
-      activeCompounds: ['Eugenol', 'Tannins', 'Flavonoids', 'Volatile oils'],
-      dosage: 'Whole Cloves (tea): 1-3 grams/day. Clove Powder: 0.5-1 gram/day.',
+      description: 'Clove (Syzygium aromaticum) is a powerful warming spice with exceptional antimicrobial and pain-relieving properties. Used in traditional medicine for dental health, digestive support, and pain management.',
+      primaryEffects: ['Dental health and toothache relief', 'Digestive support and warming', 'Antimicrobial and antibacterial effects'],
+      activeCompounds: ['Eugenol', 'Caryophyllene', 'Acetyl eugenol', 'Essential oils'],
+      dosage: 'Whole cloves: 1-3 pieces/day. Powder: 0.5-1 gram/day. Essential oil: 1-2 drops diluted.',
       safetyLevel: 'medium',
-      contraindications: ['Not recommended for acid reflux, stomach ulcers, or "hot" conditions', 'Avoid during pregnancy and for children under 12'],
-      seoTitle: 'Clove Benefits: Oral Health, Digestive Support & Anti-inflammatory Effects',
-      seoDescription: 'Discover clove (Syzygium aromaticum) benefits for oral health, digestive support, and pain relief.',
-      seoKeywords: ['clove benefits', 'clove oil toothache', 'clove for bad breath', 'clove digestive health']
+      contraindications: ['Avoid during pregnancy', 'Not suitable for hot conditions', 'May irritate sensitive skin'],
+      seoTitle: 'Clove Benefits for Dental Health, Digestive Support & Pain Relief | HerbScience',
+      seoDescription: 'Discover the benefits of clove (Syzygium aromaticum) for dental health, digestive support, pain relief, and antimicrobial properties.',
+      seoKeywords: ['clove benefits', 'clove for toothache', 'clove for digestion', 'clove oil']
     }
   }
 }
@@ -100,8 +95,8 @@ export default async function ClovePage() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
-    headline: herbData.seoTitle || 'Clove Benefits: Oral Health, Digestive Support & Anti-inflammatory Effects',
-    description: herbData.seoDescription || 'Discover clove (Syzygium aromaticum) benefits for oral health, digestive support, and pain relief.',
+    headline: herbData.seoTitle || 'Clove Benefits for Dental Health, Digestive Support & Pain Relief',
+    description: herbData.seoDescription || 'Discover the benefits of clove (Syzygium aromaticum) for dental health, digestive support, pain relief, and antimicrobial properties.',
     image: '/images/herbs/clove-og.jpg',
     author: {
       '@type': 'Organization',
@@ -119,18 +114,50 @@ export default async function ClovePage() {
     mainEntity: {
       '@type': 'Drug',
       name: 'Clove',
-      alternateName: ['丁香', 'Syzygium aromaticum'],
+      alternateName: ['丁香', 'Syzygium aromaticum', 'Ding Xiang'],
       description: herbData.description,
       activeIngredient: herbData.activeCompounds,
-      dosageForm: ['Whole cloves', 'Powder', 'Essential oil'],
+      dosageForm: ['Whole cloves', 'Powder', 'Essential oil', 'Tincture'],
       indication: herbData.primaryEffects,
       contraindication: herbData.contraindications,
       drugClass: 'Herbal supplement',
-      mechanismOfAction: 'Eugenol exerts local anesthetic effects by blocking nerve transmission and inhibits inflammatory mediators like COX-2',
-      clinicalPharmacology: 'Clove contains eugenol as the primary bioactive compound, providing antiseptic, analgesic, and antimicrobial activities'
+      mechanismOfAction: 'Eugenol provides local anesthetic effects, antimicrobial activity, and anti-inflammatory properties',
+      clinicalPharmacology: 'Clove contains eugenol, caryophyllene, and other compounds that provide dental health benefits, digestive support, and pain relief'
     },
     datePublished: '2025-01-19',
     dateModified: new Date().toISOString().split('T')[0]
+  }
+
+  // 🚀 FAQ结构化数据
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'Is clove good for toothache?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes, clove oil is very effective for toothache relief due to its eugenol content which has local anesthetic properties.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'Can clove help with digestion?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes, clove is warming and helps stimulate digestive enzymes, making it useful for cold-type digestive issues.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'Is clove safe during pregnancy?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'No, clove should be avoided during pregnancy as it may stimulate uterine contractions.'
+        }
+      }
+    ]
   }
 
   return (
@@ -141,7 +168,13 @@ export default async function ClovePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100">
+      {/* 🚀 FAQ结构化数据 */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100">
         <Navigation />
         
         <div className="container mx-auto px-4 py-8">
@@ -155,119 +188,30 @@ export default async function ClovePage() {
           
           {/* 草药英雄区域 */}
           <HerbHero
-            title={herbData.title}
-            chineseName={herbData.chineseName}
-            latinName={herbData.latinName}
-            description={herbData.description}
-            primaryEffects={herbData.primaryEffects}
-            activeCompounds={herbData.activeCompounds}
-            safetyLevel={herbData.safetyLevel}
+            herbData={{
+              title: herbData.title,
+              chineseName: herbData.chineseName,
+              latinName: herbData.latinName,
+              description: herbData.description,
+              safetyLevel: herbData.safetyLevel
+            }}
           />
           
           {/* 草药详情标签页 */}
           <HerbDetailTabs
-            tabs={[
-              {
-                id: 'overview',
-                label: 'Overview',
-                content: (
-                  <div className="space-y-6">
-                    <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-3">Traditional Use</h3>
-                      <p className="text-gray-700 leading-relaxed">
-                        In Traditional Chinese Medicine, clove is known for warming the stomach, stopping vomiting, and boosting kidney yang energy. It has been used for centuries to relieve digestive discomfort, freshen breath, ease pain, and support men's reproductive health. Clove's warming nature makes it particularly effective for cold-type conditions and yang deficiency patterns.
-                      </p>
-                    </div>
-                    
-                    <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-3">Modern Applications</h3>
-                      <p className="text-gray-700 leading-relaxed">
-                        Modern science confirms clove's strong antibacterial, anti-inflammatory, and antioxidant activities. Research supports its use in oral care, digestive health, pain management, and infection control. Clinical studies demonstrate effectiveness in reducing halitosis, managing digestive discomfort, and providing natural pain relief.
-                      </p>
-                    </div>
-                    
-                    <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-3">Mechanism of Action</h3>
-                      <p className="text-gray-700 leading-relaxed">
-                        Eugenol, clove's main compound, exerts local anesthetic effects by blocking nerve transmission, explaining its effectiveness in toothache relief. It inhibits inflammatory mediators like COX-2, reducing pain and swelling. Eugenol neutralizes free radicals through antioxidant activity and combats microbial overgrowth through direct antimicrobial action.
-                      </p>
-                    </div>
-                  </div>
-                )
-              },
-              {
-                id: 'benefits',
-                label: 'Benefits & Uses',
-                content: <HerbBenefits benefits={herbData.primaryEffects} />
-              },
-              {
-                id: 'safety',
-                label: 'Safety & Dosage',
-                content: (
-                  <HerbSafety
-                    dosage={herbData.dosage}
-                    safetyLevel={herbData.safetyLevel}
-                    contraindications={herbData.contraindications}
-                    pregnancySafety="Avoid"
-                    lactationSafety="Caution"
-                    childrenSafety="Avoid under 12"
-                  />
-                )
-              },
-              {
-                id: 'usage',
-                label: 'Usage Tips',
-                content: (
-                  <HerbUsage
-                    tips={[
-                      'Clove tea: Steep 2-3 whole cloves with black or red tea before meals for better digestion',
-                      'Toothache relief: Apply diluted clove oil (1:5 with carrier oil) on cotton ball to affected tooth',
-                      'Aromatherapy: Inhale clove essential oil to lift mood and fight fatigue',
-                      'Digestive blend: Mix ground clove with dried ginger and fennel seed for warming tonic'
-                    ]}
-                  />
-                )
-              },
-              {
-                id: 'research',
-                label: 'Research & Studies',
-                content: (
-                  <HerbResearch
-                    studies={[
-                      'A 2022 randomized trial found clove mouthwash significantly reduced halitosis and oral bacteria in patients with gingivitis',
-                      'In vitro studies confirm eugenol\'s antimicrobial effect against Streptococcus mutans and Candida albicans',
-                      'A meta-analysis in 2021 highlighted clove\'s anti-ulcer and anti-inflammatory actions via modulation of gastric enzymes and prostaglandins'
-                    ]}
-                  />
-                )
-              },
-              {
-                id: 'faq',
-                label: 'FAQ',
-                content: (
-                  <HerbFAQ
-                    faqs={[
-                      {
-                        question: 'Is clove safe for daily use?',
-                        answer: 'Small culinary amounts are safe. Therapeutic doses (e.g., clove oil) should not be used long-term without supervision.'
-                      },
-                      {
-                        question: 'Can I use clove oil for gum pain?',
-                        answer: 'Yes, but always dilute it and avoid direct contact with sensitive tissue.'
-                      },
-                      {
-                        question: 'Does clove help with bad breath?',
-                        answer: 'Yes, its antimicrobial and aromatic compounds make it a powerful breath freshener.'
-                      },
-                      {
-                        question: 'Can clove help with fertility?',
-                        answer: 'Traditionally yes, especially in men with cold-type sexual weakness. Modern evidence is limited but promising.'
-                      }
-                    ]}
-                  />
-                )
-              }
-            ]}
+            herbData={{
+              title: herbData.title,
+              chineseName: herbData.chineseName,
+              latinName: herbData.latinName,
+              description: herbData.description,
+              primaryEffects: herbData.primaryEffects,
+              activeCompounds: herbData.activeCompounds,
+              dosage: herbData.dosage,
+              safetyLevel: herbData.safetyLevel,
+              contraindications: herbData.contraindications,
+              traditionalUse: "In Traditional Chinese Medicine, clove (Ding Xiang) is considered a warming herb that dispels cold, stops pain, and warms the middle burner. It has been used for centuries to treat cold-type conditions, toothache, and digestive issues.",
+              modernApplications: "Modern studies confirm clove's effectiveness for dental pain, digestive support, and antimicrobial properties. Research shows it has strong antibacterial, antifungal, and anti-inflammatory effects."
+            }}
           />
         </div>
       </div>

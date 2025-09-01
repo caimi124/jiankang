@@ -34,19 +34,7 @@ const nextConfig = {
     // CSS优化
     optimizeCss: true,
     // 预构建优化
-    optimizePackageImports: ['lucide-react'],
-    // 优化字体加载
-    optimizeServerReact: true,
-    // 减少JavaScript bundle
-    serverMinification: true,
-    // 🚀 新增：启用SWC压缩
-    swcMinify: true,
-    // 🚀 新增：启用模块联邦
-    modularizeImports: {
-      'lucide-react': {
-        transform: 'lucide-react/dist/esm/icons/{{kebabCase member}}'
-      }
-    }
+    optimizePackageImports: ['lucide-react']
   },
 
   // 🚀 性能优化headers
@@ -222,7 +210,7 @@ const nextConfig = {
           name: 'herbscience',
           filename: 'remoteEntry.js',
           exposes: {
-            './HerbCard': './components/HerbRecommendations/HerbCard.tsx',
+            './HerbCard': './components/HerbRecommendations.tsx',
           },
           shared: {
             react: {
