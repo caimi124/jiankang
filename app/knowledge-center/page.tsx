@@ -13,6 +13,37 @@ export default function KnowledgeCenter() {
   const pathname = usePathname()
   const currentLocale = pathname.startsWith('/zh') ? 'zh' : 'en'
   
+  // CollectionPage + Breadcrumb 结构化数据
+  const collectionJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Knowledge Center',
+    description: 'Explore FAQs, safety guides, and research on herbal medicine.',
+    url: 'https://herbscience.shop/knowledge-center',
+    mainEntity: {
+      '@type': 'ItemList',
+      name: 'Knowledge List',
+      itemListOrder: 'https://schema.org/ItemListOrderDescending',
+      numberOfItems: 30
+    }
+  }
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://herbscience.shop/' },
+      { '@type': 'ListItem', position: 2, name: 'Knowledge Center', item: 'https://herbscience.shop/knowledge-center' }
+    ]
+  }
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <main className="min-h-screen bg-white">
+        {/* ...existing code... */}
+      </main>
+    </>
+  )
   // 添加语言前缀的函数
   const addLocalePrefix = (href: string) => {
     if (currentLocale === 'zh') {

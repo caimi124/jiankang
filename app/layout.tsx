@@ -53,5 +53,40 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  return children
-} 
+  // 结构化数据：WebSite + Organization
+  const websiteJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'HerbScience.shop',
+    url: 'https://herbscience.shop',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: 'https://herbscience.shop/herb-finder?query={search_term_string}',
+      'query-input': 'required name=search_term_string'
+    }
+  }
+  const orgJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'HerbScience',
+    url: 'https://herbscience.shop',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://herbscience.shop/logo.png',
+      width: 256,
+      height: 256
+    },
+    sameAs: [
+      'https://www.facebook.com/herbscience',
+      'https://www.instagram.com/herbscience',
+      'https://www.youtube.com/@herbscience'
+    ]
+  }
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />
+      {children}
+    </>
+  )
+}
