@@ -260,6 +260,9 @@ export async function generateStaticParams() {
 		console.error('❌ 静态数据加载失败:', error)
 		// 最后的回退选项
 		return [
+			{ slug: 'clove' },
+			{ slug: 'cinnamon' },
+			{ slug: 'pumpkin-seeds' },
 			{ slug: 'ginseng' },
 			{ slug: 'ginger' },
 			{ slug: 'turmeric' },

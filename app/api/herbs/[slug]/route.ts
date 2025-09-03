@@ -3,6 +3,88 @@ import { fetchHerbFromNotionBySlug } from '../../../../lib/notion-herbs'
 
 // 完整的草药详情数据
 const HERB_DETAIL_DATA = {
+  clove: {
+    id: 'clove',
+    name: 'Clove',
+    chinese_name: '丁香',
+    latin_name: 'Syzygium aromaticum',
+    slug: 'clove',
+    category: 'Digestive & Antimicrobial',
+    evidence_level: 'Moderate',
+    safety_level: 'medium',
+    
+    overview: 'Clove is a powerful aromatic spice with a long history in culinary and medicinal use. It supports oral health, eases pain, warms the stomach to relieve cold-type indigestion and nausea, and exhibits antibacterial, antifungal, and antioxidant effects.',
+    
+    benefits: [
+      'Oral health and toothache relief',
+      'Anti-nausea and vomiting relief',
+      'Digestive support (bloating, poor appetite)',
+      'Relief of cold-type abdominal pain',
+      "Men's health support (traditional use)",
+      'Anti-inflammatory support',
+      'Helps with mild topical infections'
+    ],
+    
+    active_compounds: 'Eugenol (primary), tannins, flavonoids, and volatile oils providing antimicrobial and analgesic properties.',
+    
+    traditional_uses: 'In TCM, clove (Ding Xiang) warms the middle, stops vomiting, dispels cold, relieves pain, and supports kidney yang.',
+    
+    suitable_for: [
+      'Yang deficiency with cold stomach and poor digestion',
+      'Weak circulation and fatigue',
+      'Cold-type nausea or motion sickness'
+    ],
+    
+    not_suitable_for: [
+      'Yin deficiency with internal heat',
+      'High blood pressure (use cautiously)',
+      'Pregnancy and children under 12 (unless advised by a provider)'
+    ],
+    
+    dosage_forms: [
+      { form: 'Whole Cloves (tea)', dosage: '1–3 g/day', usage: 'Steep 2–3 whole cloves; drink before meals' },
+      { form: 'Clove Powder', dosage: '0.5–1 g/day', usage: 'Use with warm water or in food' },
+      { form: 'Clove Oil (external)', dosage: '1–2 drops diluted (≥1:5)', usage: 'Topical use for tooth/gum discomfort; avoid mucosa contact' }
+    ],
+    
+    safety_warnings: [
+      'May irritate the GI tract if overused',
+      'Avoid during pregnancy and in children unless supervised',
+      'Do not combine with turmeric/curcumin per traditional incompatibility rule',
+      'Possible dizziness or nausea with excess use'
+    ],
+    
+    interactions: [
+      'Use caution with anticoagulants and antiplatelet agents',
+      'May irritate sensitive oral tissue when used undiluted'
+    ],
+    
+    scientific_evidence: 'Eugenol provides local anesthetic effects by blocking nerve transmission and inhibits inflammatory mediators (e.g., COX-2). In vitro studies show antimicrobial effects against Streptococcus mutans and Candida. Clinical evidence supports halitosis reduction with clove-containing mouthwash.',
+    
+    constitution_match: [
+      { type: 'Yang Deficient / Cold Stomach', suitable: 'yes', description: 'Warming and stimulating; supports digestion' },
+      { type: 'Yin Deficient / Internal Heat', suitable: 'no', description: 'May aggravate heat signs (dry mouth, irritability)' }
+    ],
+    
+    pairs_well_with: ['Ginger', 'Fennel seed', 'Black or red tea (for warming tonic)'],
+    
+    user_stories: [
+      { quote: 'Clove and ginger tea before meals improved my appetite and reduced bloating.', author: 'Verified User', location: 'Case Note' }
+    ],
+    
+    faqs: [
+      { question: 'Is clove safe for daily use?', answer: 'Small culinary amounts are safe; avoid long-term use of concentrated oil without supervision.' },
+      { question: 'Can I use clove oil for gum pain?', answer: 'Yes, but always dilute and avoid direct contact with sensitive tissue.' },
+      { question: 'Does clove help with bad breath?', answer: 'Yes. Antimicrobial and aromatic compounds freshen breath and reduce oral bacteria.' }
+    ],
+    
+    seo_keywords: [
+      'clove benefits', 'clove dosage', 'clove safety', 'Syzygium aromaticum',
+      'clove for toothache', 'clove antimicrobial', 'clove for digestion',
+      "clove men's health", 'eugenol', 'traditional chinese medicine clove'
+    ],
+    properties: ['Warming', 'Antibacterial', 'Anti-nausea', 'Analgesic', 'Digestive Support']
+  },
   ginseng: {
     id: 'ginseng',
     name: 'Ginseng',
@@ -427,6 +509,109 @@ const HERB_DETAIL_DATA = {
     
     seo_keywords: ['turmeric benefits', 'curcumin supplement', 'natural anti-inflammatory', 'turmeric dosage', 'turmeric for joint pain'],
     properties: ['Anti-inflammatory', 'Antioxidant', 'Digestive Support', 'Joint Health']
+  }
+  ,
+  cinnamon: {
+    id: 'cinnamon',
+    name: 'Cinnamon',
+    chinese_name: '肉桂',
+    latin_name: 'Cinnamomum verum',
+    slug: 'cinnamon',
+    category: 'Warming & Metabolic Support',
+    evidence_level: 'Moderate',
+    safety_level: 'medium',
+
+    overview: 'Cinnamon is a warming spice traditionally used to support circulation, digestion, and blood sugar balance. Modern research suggests benefits for glycemic control and inflammation.',
+
+    benefits: [
+      'Supports healthy blood sugar balance',
+      'Warming digestive support',
+      'Circulation and comfort',
+      'Antioxidant and anti-inflammatory effects'
+    ],
+
+    active_compounds: 'Cinnamaldehyde, cinnamic acid, procyanidins, and essential oils contributing to metabolic and antimicrobial actions.',
+
+    traditional_uses: 'In TCM, Rou Gui warms the interior, dispels cold, unblocks channels, and supports yang.',
+
+    suitable_for: [
+      'Cold-type digestion with bloating',
+      'Cold extremities and sluggish circulation'
+    ],
+    not_suitable_for: [
+      'Heat conditions or yin deficiency with heat signs',
+      'Pregnancy in high doses'
+    ],
+
+    dosage_forms: [
+      { form: 'Powder/Capsule', dosage: '500–2000 mg/day', usage: 'With meals' },
+      { form: 'Tea', dosage: '1–3 g bark simmered', usage: '1–2 times daily' }
+    ],
+
+    safety_warnings: [
+      'High coumarin content in cassia types may affect liver in excess',
+      'Monitor with anticoagulants and diabetes meds'
+    ],
+
+    interactions: [
+      'Anticoagulants', 'Antidiabetic medications'
+    ],
+
+    scientific_evidence: 'Meta-analyses show modest improvements in fasting glucose and lipids; anti-inflammatory and antioxidant activities are reported.',
+
+    constitution_match: [
+      { type: 'Cold Constitution', suitable: 'yes', description: 'Warming and circulation support' },
+      { type: 'Heat Excess', suitable: 'no', description: 'May aggravate heat symptoms' }
+    ],
+
+    pairs_well_with: ['Ginger', 'Cardamom', 'Black tea'],
+    user_stories: [],
+    faqs: [],
+    seo_keywords: ['cinnamon benefits', 'cinnamon blood sugar', 'Cinnamomum verum', 'warming spice'],
+    properties: ['Warming', 'Metabolic Support', 'Digestive Support']
+  },
+  'pumpkin-seeds': {
+    id: 'pumpkin-seeds',
+    name: 'Pumpkin Seeds',
+    chinese_name: '南瓜子',
+    latin_name: 'Cucurbita pepo (semen)',
+    slug: 'pumpkin-seeds',
+    category: 'Men’s Health & Nutritional Support',
+    evidence_level: 'Moderate',
+    safety_level: 'high',
+
+    overview: 'Pumpkin seeds are rich in zinc, healthy fats, and phytosterols, supporting prostate health, urinary comfort, and general nutrition. They also provide antioxidants and magnesium for metabolic and cardiovascular support.',
+
+    benefits: [
+      'Prostate and urinary health support',
+      'Nutrient-dense (zinc, magnesium, healthy fats)',
+      'Anti-inflammatory and antioxidant effects',
+      'Sleep and mood support via magnesium'
+    ],
+
+    active_compounds: 'Phytosterols (beta-sitosterol), zinc, vitamin E, omega-6 and omega-9 fatty acids.',
+
+    traditional_uses: 'Used as a nourishing food in traditional diets; seeds sometimes used for parasitic concerns.',
+
+    suitable_for: ['Men’s health support', 'Nutritional replenishment'],
+    not_suitable_for: ['Seed allergies', 'High-calorie restriction (use in moderation)'],
+
+    dosage_forms: [
+      { form: 'Whole seeds', dosage: '15–30 g/day', usage: 'As snack or topping' },
+      { form: 'Oil', dosage: '1–2 tsp/day', usage: 'Cold use preferred' }
+    ],
+
+    safety_warnings: ['Generally safe; caloric density high; watch for allergies'],
+    interactions: [],
+    scientific_evidence: 'Studies suggest pumpkin seed oil may improve urinary symptoms in BPH and provide lipid profile benefits; antioxidant properties documented.',
+    constitution_match: [
+      { type: 'Deficiency with dryness', suitable: 'yes', description: 'Nourishing fats and minerals' }
+    ],
+    pairs_well_with: ['Saw palmetto (for men’s health)', 'Whole grains', 'Leafy greens'],
+    user_stories: [],
+    faqs: [],
+    seo_keywords: ['pumpkin seeds benefits', 'beta-sitosterol', 'pumpkin seed oil prostate', 'zinc rich food'],
+    properties: ['Nourishing', 'Anti-inflammatory', 'Antioxidant']
   }
 }
 
