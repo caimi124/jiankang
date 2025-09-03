@@ -517,101 +517,78 @@ const HERB_DETAIL_DATA = {
     chinese_name: '肉桂',
     latin_name: 'Cinnamomum verum',
     slug: 'cinnamon',
-    category: 'Warming & Metabolic Support',
+    category: 'Warming & Digestive',
     evidence_level: 'Moderate',
     safety_level: 'medium',
 
-    overview: 'Cinnamon is a warming spice traditionally used to support circulation, digestion, and blood sugar balance. Modern research suggests benefits for glycemic control and inflammation.',
-
+    overview: 'Cinnamon is a warming spice used traditionally to promote circulation, support digestion, and balance blood sugar. Modern studies indicate antioxidant and anti-inflammatory properties.',
     benefits: [
       'Supports healthy blood sugar balance',
-      'Warming digestive support',
-      'Circulation and comfort',
-      'Antioxidant and anti-inflammatory effects'
+      'Aids digestion and reduces bloating',
+      'Warming support for cold-type discomfort',
+      'Antioxidant and anti-inflammatory properties'
     ],
-
-    active_compounds: 'Cinnamaldehyde, cinnamic acid, procyanidins, and essential oils contributing to metabolic and antimicrobial actions.',
-
-    traditional_uses: 'In TCM, Rou Gui warms the interior, dispels cold, unblocks channels, and supports yang.',
-
-    suitable_for: [
-      'Cold-type digestion with bloating',
-      'Cold extremities and sluggish circulation'
-    ],
-    not_suitable_for: [
-      'Heat conditions or yin deficiency with heat signs',
-      'Pregnancy in high doses'
-    ],
-
+    active_compounds: 'Cinnamaldehyde, cinnamic acid, eugenol, and polyphenols contributing to metabolic and anti-inflammatory effects.',
+    traditional_uses: 'In TCM, cinnamon warms the interior, disperses cold, and promotes circulation to relieve pain.',
+    suitable_for: ['Cold constitution with sluggish digestion', 'Low circulation and cold limbs'],
+    not_suitable_for: ['Heat conditions, Yin deficiency with heat', 'Pregnancy (high doses)'],
     dosage_forms: [
-      { form: 'Powder/Capsule', dosage: '500–2000 mg/day', usage: 'With meals' },
+      { form: 'Powder/Capsule', dosage: '500–1000 mg/day', usage: 'With meals' },
       { form: 'Tea', dosage: '1–3 g bark simmered', usage: '1–2 times daily' }
     ],
-
     safety_warnings: [
-      'High coumarin content in cassia types may affect liver in excess',
-      'Monitor with anticoagulants and diabetes meds'
+      'High coumarin types may affect liver if overused',
+      'May interact with diabetes medications'
     ],
-
-    interactions: [
-      'Anticoagulants', 'Antidiabetic medications'
-    ],
-
-    scientific_evidence: 'Meta-analyses show modest improvements in fasting glucose and lipids; anti-inflammatory and antioxidant activities are reported.',
-
+    interactions: ['Antidiabetic agents', 'Anticoagulants (high-dose caution)'],
+    scientific_evidence: 'Evidence suggests improved glycemic control markers in some studies and antioxidant benefits. More robust RCTs needed for definitive conclusions.',
     constitution_match: [
-      { type: 'Cold Constitution', suitable: 'yes', description: 'Warming and circulation support' },
-      { type: 'Heat Excess', suitable: 'no', description: 'May aggravate heat symptoms' }
+      { type: 'Cold Constitution', suitable: 'yes', description: 'Warming and circulation supporting' },
+      { type: 'Heat Excess', suitable: 'no', description: 'May aggravate heat signs' }
     ],
-
     pairs_well_with: ['Ginger', 'Cardamom', 'Black tea'],
     user_stories: [],
     faqs: [],
-    seo_keywords: ['cinnamon benefits', 'cinnamon blood sugar', 'Cinnamomum verum', 'warming spice'],
-    properties: ['Warming', 'Metabolic Support', 'Digestive Support']
-  },
+    seo_keywords: ['cinnamon benefits', 'cinnamon dosage', 'cinnamon for blood sugar', 'cinnamaldehyde'],
+    properties: ['Warming', 'Digestive Support', 'Metabolic Support']
+  }
+  ,
   'pumpkin-seeds': {
     id: 'pumpkin-seeds',
     name: 'Pumpkin Seeds',
     chinese_name: '南瓜子',
-    latin_name: 'Cucurbita pepo (semen)',
+    latin_name: 'Cucurbita pepo (seeds)',
     slug: 'pumpkin-seeds',
-    category: 'Men’s Health & Nutritional Support',
+    category: 'Nutritional & Men’s Health',
     evidence_level: 'Moderate',
     safety_level: 'high',
 
-    overview: 'Pumpkin seeds are rich in zinc, healthy fats, and phytosterols, supporting prostate health, urinary comfort, and general nutrition. They also provide antioxidants and magnesium for metabolic and cardiovascular support.',
-
+    overview: 'Pumpkin seeds are nutrient-dense, providing zinc, magnesium, and healthy fats. Traditionally used for urinary comfort and men’s health; may support prostate and hair health.',
     benefits: [
-      'Prostate and urinary health support',
-      'Nutrient-dense (zinc, magnesium, healthy fats)',
-      'Anti-inflammatory and antioxidant effects',
-      'Sleep and mood support via magnesium'
+      'Supports prostate and urinary comfort',
+      'Rich in zinc and magnesium for metabolism',
+      'Anti-inflammatory and antioxidant support',
+      'May support hair and skin health'
     ],
-
-    active_compounds: 'Phytosterols (beta-sitosterol), zinc, vitamin E, omega-6 and omega-9 fatty acids.',
-
-    traditional_uses: 'Used as a nourishing food in traditional diets; seeds sometimes used for parasitic concerns.',
-
-    suitable_for: ['Men’s health support', 'Nutritional replenishment'],
-    not_suitable_for: ['Seed allergies', 'High-calorie restriction (use in moderation)'],
-
+    active_compounds: 'Phytosterols (beta-sitosterol), zinc, magnesium, tocopherols, and essential fatty acids.',
+    traditional_uses: 'Used in traditional practices for worms, urinary comfort, and nutritional support.',
+    suitable_for: ['Men’s health support', 'Nutritional supplementation'],
+    not_suitable_for: ['Nut/seed allergies', 'High-calorie restriction diets (portion control)'],
     dosage_forms: [
-      { form: 'Whole seeds', dosage: '15–30 g/day', usage: 'As snack or topping' },
-      { form: 'Oil', dosage: '1–2 tsp/day', usage: 'Cold use preferred' }
+      { form: 'Whole Seeds', dosage: '15–30 g/day', usage: 'Snacks or toppings' },
+      { form: 'Oil', dosage: '1–2 tsp/day', usage: 'Cold use to preserve nutrients' }
     ],
-
-    safety_warnings: ['Generally safe; caloric density high; watch for allergies'],
-    interactions: [],
-    scientific_evidence: 'Studies suggest pumpkin seed oil may improve urinary symptoms in BPH and provide lipid profile benefits; antioxidant properties documented.',
+    safety_warnings: ['Generally safe; observe for digestive sensitivity'],
+    interactions: ['May affect absorption when taken with mineral supplements (timing consideration)'],
+    scientific_evidence: 'Phytosterols may contribute to prostate support; minerals aid metabolic and neuromuscular function. Evidence is suggestive but mixed across studies.',
     constitution_match: [
-      { type: 'Deficiency with dryness', suitable: 'yes', description: 'Nourishing fats and minerals' }
+      { type: 'Deficiency with dryness', suitable: 'warning', description: 'Oil-rich; monitor digestion' }
     ],
-    pairs_well_with: ['Saw palmetto (for men’s health)', 'Whole grains', 'Leafy greens'],
+    pairs_well_with: ['Pumpkin seed oil', 'Zinc-rich diet'],
     user_stories: [],
     faqs: [],
-    seo_keywords: ['pumpkin seeds benefits', 'beta-sitosterol', 'pumpkin seed oil prostate', 'zinc rich food'],
-    properties: ['Nourishing', 'Anti-inflammatory', 'Antioxidant']
+    seo_keywords: ['pumpkin seeds benefits', 'pumpkin seed oil', 'beta-sitosterol', 'zinc rich seeds'],
+    properties: ['Nutritional', 'Anti-inflammatory', 'Men’s Health']
   }
 }
 
