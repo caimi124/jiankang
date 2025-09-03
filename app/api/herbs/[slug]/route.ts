@@ -224,7 +224,6 @@ const HERB_DETAIL_DATA = {
     seo_keywords: ['ginseng supplement', 'ginseng for energy', 'ginsenosides', 'panax ginseng', 'adaptogen', 'ginseng benefits'],
     properties: ['Energizing', 'Immune Support', 'Cognitive Enhancement', 'Stress Adaptation']
   },
-  
   ginger: {
     id: 'ginger',
     name: 'Ginger',
@@ -509,8 +508,7 @@ const HERB_DETAIL_DATA = {
     
     seo_keywords: ['turmeric benefits', 'curcumin supplement', 'natural anti-inflammatory', 'turmeric dosage', 'turmeric for joint pain'],
     properties: ['Anti-inflammatory', 'Antioxidant', 'Digestive Support', 'Joint Health']
-  }
-  ,
+  },
   cinnamon: {
     id: 'cinnamon',
     name: 'Cinnamon',
@@ -551,8 +549,7 @@ const HERB_DETAIL_DATA = {
     faqs: [],
     seo_keywords: ['cinnamon benefits', 'cinnamon dosage', 'cinnamon for blood sugar', 'cinnamaldehyde'],
     properties: ['Warming', 'Digestive Support', 'Metabolic Support']
-  }
-  ,
+  },
   'pumpkin-seeds': {
     id: 'pumpkin-seeds',
     name: 'Pumpkin Seeds',
