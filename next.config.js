@@ -98,6 +98,37 @@ const nextConfig = {
   // 重定向配置
   async redirects() {
     return [
+      // 域名规范化重定向
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'www.herbscience.shop',
+          },
+        ],
+        destination: 'https://herbscience.shop/:path*',
+        permanent: true,
+      },
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'herbscience.shop',
+          },
+        ],
+        missing: [
+          {
+            type: 'header',
+            key: 'x-forwarded-proto',
+            value: 'https',
+          },
+        ],
+        destination: 'https://herbscience.shop/:path*',
+        permanent: true,
+      },
+      // 页面重定向
       {
         source: '/index.html',
         destination: '/',

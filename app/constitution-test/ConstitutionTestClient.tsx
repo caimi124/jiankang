@@ -18,29 +18,7 @@ import {
   Share2
 } from 'lucide-react'
 
-// 简化的体质测试问题
-const questions = [
-  {
-    id: 1,
-    category: '身体特征',
-    text: '您的体型特征如何？',
-    options: [
-      { value: 1, label: '偏瘦', description: '体重偏轻，肌肉不发达' },
-      { value: 2, label: '正常', description: '体重适中，体型匀称' },
-      { value: 3, label: '偏胖', description: '体重偏重，体型丰满' }
-    ]
-  },
-  {
-    id: 2,
-    category: '精神状态',
-    text: '您的精神状态如何？',
-    options: [
-      { value: 1, label: '容易疲劳', description: '经常感到疲惫无力' },
-      { value: 2, label: '一般', description: '精神状态正常' },
-      { value: 3, label: '精力充沛', description: '精神饱满，活力充足' }
-    ]
-  }
-]
+import { questions, scoreOptions, calculateConstitution, constitutionInfo, type ConstitutionType } from './questions'
 
 export default function ConstitutionTestClient() {
   const [currentStep, setCurrentStep] = useState<'welcome' | 'test' | 'results'>('welcome')
@@ -110,7 +88,7 @@ export default function ConstitutionTestClient() {
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               基于《中国居民中医体质分类与判定标准》的专业测试，
-              通过科学问题，精准判定您的体质类型，获得个性化的草药调理建议。
+              通过{questions.length}道科学问题，精准判定您的体质类型，获得个性化的草药调理建议。
             </p>
           </div>
 
@@ -206,7 +184,7 @@ export default function ConstitutionTestClient() {
 
             {/* 答案选项 */}
             <div className="space-y-4 mb-8">
-              {question.options.map((option) => (
+              {scoreOptions.map((option) => (
                 <button
                   key={option.value}
                   onClick={() => handleAnswerSelect(option.value)}
@@ -265,6 +243,10 @@ export default function ConstitutionTestClient() {
 
   // 结果页面
   if (currentStep === 'results') {
+    const result = calculateConstitution(answers)
+    const primaryInfo = constitutionInfo[result.primary]
+    const secondaryInfo = result.secondary ? constitutionInfo[result.secondary] : null
+
     return (
       <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
         <Navigation />
@@ -281,23 +263,22 @@ export default function ConstitutionTestClient() {
           {/* 主要体质结果 */}
           <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
             <div className="text-center mb-8">
-              <div className="text-6xl mb-4">🌿</div>
+              <div className="text-6xl mb-4">{primaryInfo.icon}</div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                平和质
+                {primaryInfo.name}
               </h1>
               <p className="text-lg text-gray-600 mb-4">
-                Balanced Constitution
+                {primaryInfo.englishName}
               </p>
               <div className="flex justify-center gap-2 mb-6">
-                <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
-                  体质平衡
-                </span>
-                <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
-                  健康状态
-                </span>
+                {primaryInfo.keywords.map((keyword, index) => (
+                  <span key={index} className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
+                    {keyword}
+                  </span>
+                ))}
               </div>
               <p className="text-lg text-gray-700 max-w-3xl mx-auto">
-                您的体质属于平和质，这是最理想的体质状态。身体机能协调，适应能力强，精神状态良好。
+                {primaryInfo.description}
               </p>
             </div>
           </div>

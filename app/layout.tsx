@@ -45,7 +45,8 @@ export const metadata: Metadata = {
       'zh': 'https://herbscience.shop/zh',
       'x-default': 'https://herbscience.shop/'
     }
-  }
+  },
+  metadataBase: new URL('https://herbscience.shop')
 }
 
 export default function RootLayout({

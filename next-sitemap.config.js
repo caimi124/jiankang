@@ -18,9 +18,7 @@ module.exports = {
     '/not-found',
     // 排除重定向源页面，避免404
     '/home',
-    '/herbs',
-    // 排除旧的herb-finder页面，因为它们现在重定向到/herbs/
-    '/herb-finder/*'
+    '/index.html'
   ],
   
   // 添加额外的路径或自定义页面
