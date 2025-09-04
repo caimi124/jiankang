@@ -16,6 +16,7 @@ async function getHerbData(slug: string) {
 		.replace(/--+/g, '-')
 		.replace(/^-|-$/g, '')
 		.replace(/^cloves$/, 'clove')
+	
 	// 🔍 检查Sanity是否正确配置
 	const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
 	const isValidSanityConfig = projectId && 
@@ -90,7 +91,7 @@ async function getHerbData(slug: string) {
 		
 		if (staticHerb) {
 			console.log('✅ 从静态数据获取草药:', staticHerb.english_name)
-			return mapStaticHerbData(staticHerb, slug)
+			return mapStaticHerbData(staticHerb, normalizedSlug)
 		}
 	} catch (error) {
 		console.error('❌ 静态数据查询失败:', error)
@@ -330,12 +331,12 @@ export default async function HerbDetailPage({ params }: { params: Promise<{ slu
 			interactions: ['Consult healthcare provider'],
 			scientific_evidence: 'Research ongoing',
 			constitution_match: [{ type: 'General', suitable: 'yes', description: 'Consult practitioner' }],
-			pairs_well_with: [],
+			pairs_well_with: ['Other herbs'],
 			user_stories: [],
 			faqs: [],
 			seo_keywords: [slug],
 			properties: ['General Support'],
-			evidence_level: 'Preliminary',
+			evidence_level: 'Moderate',
 			category: 'General',
 			safety_level: 'medium'
 		}
@@ -424,4 +425,4 @@ export default async function HerbDetailPage({ params }: { params: Promise<{ slu
 			<HerbDetailClient herbData={herbData as any} slug={slug} />
 		</>
 	)
-} 
+}
