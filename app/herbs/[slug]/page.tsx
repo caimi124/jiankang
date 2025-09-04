@@ -297,7 +297,16 @@ export async function generateStaticParams() {
 // 服务器端组件
 export default async function HerbDetailPage({ params }: { params: Promise<{ slug: string }> }) {
 	const { slug } = await params
-	const herbData = await getHerbData(slug)
+	let herbData = await getHerbData(slug)
+	// 额外兜底：若仍未命中，尝试一次本地兜底（防止意外notFound导致用户看到404）
+	if (!herbData) {
+		const normalizedSlug = slug.toLowerCase().trim()
+			.replace(/[^a-z0-9\-]+/g, '-')
+			.replace(/--+/g, '-')
+			.replace(/^-|-$/g, '')
+			.replace(/^cloves$/, 'clove')
+		herbData = getFallbackHerb(normalizedSlug) as any
+	}
 	
 	if (!herbData) {
 		notFound()
