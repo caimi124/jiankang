@@ -6,9 +6,16 @@ import { getFallbackHerb } from '@/lib/herb-detail-fallback'
 import { headers } from 'next/headers'
 
 export const dynamic = 'force-dynamic'
+export const dynamicParams = true
+export const revalidate = 0
 
 // 从多个数据源获取草药数据（智能检测Sanity配置状态）
 async function getHerbData(slug: string) {
+	const normalizedSlug = slug.toLowerCase().trim()
+		.replace(/[^a-z0-9\-]+/g, '-')
+		.replace(/--+/g, '-')
+		.replace(/^-|-$/g, '')
+		.replace(/^cloves$/, 'clove')
 	// 🔍 检查Sanity是否正确配置
 	const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
 	const isValidSanityConfig = projectId && 
@@ -41,7 +48,7 @@ async function getHerbData(slug: string) {
 			    "studies": *[_type == "study" && references(^._id)]{title,summary,link,evidenceLevel}
 			  }
 			`
-			const herb = await sanityFetch<any>(query, { slug }, { next: { revalidate: 300 } })
+			const herb = await sanityFetch<any>(query, { slug: normalizedSlug }, { next: { revalidate: 300 } })
 			if (herb) {
 				console.log('✅ 从Sanity获取草药数据:', herb.title)
 				return mapSanityHerbData(herb)
@@ -60,7 +67,7 @@ async function getHerbData(slug: string) {
 		const host = h.get('x-forwarded-host') || h.get('host') || 'herbscience.shop'
 		const proto = h.get('x-forwarded-proto') || 'https'
 		const base = `${proto}://${host}`
-		const res = await fetch(`${base}/api/herbs/${slug}`, { cache: 'no-store' })
+		const res = await fetch(`${base}/api/herbs/${normalizedSlug}`, { cache: 'no-store' })
 		if (res.ok) {
 			const json = await res.json()
 			if (json?.success && json?.data) {
@@ -78,22 +85,22 @@ async function getHerbData(slug: string) {
 			const herbSlug = herb.english_name.toLowerCase()
 				.replace(/[^a-z0-9]+/g, '-')
 				.replace(/^-|-$/g, '')
-			return herbSlug === slug
+			return herbSlug === normalizedSlug
 		})
 		
 		if (staticHerb) {
 			console.log('✅ 从静态数据获取草药:', staticHerb.english_name)
 			return mapStaticHerbData(staticHerb, slug)
 		}
-
-		// 4. 最终本地兜底（关键三种草药）
-		const fallback = getFallbackHerb(slug)
-		if (fallback) {
-			console.log('✅ 命中本地兜底草药:', fallback.name)
-			return fallback as any
-		}
 	} catch (error) {
 		console.error('❌ 静态数据查询失败:', error)
+	}
+
+	// 4. 最终本地兜底（关键三种草药）
+	const fallback = getFallbackHerb(normalizedSlug)
+	if (fallback) {
+		console.log('✅ 命中本地兜底草药:', fallback.name)
+		return fallback as any
 	}
 
 	return null
