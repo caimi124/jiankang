@@ -281,8 +281,8 @@ export async function generateStaticParams() {
 }
 
 // 服务器端组件
-export default async function HerbDetailPage({ params }: { params: { slug: string } }) {
-	const { slug } = params
+export default async function HerbDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+	const { slug } = await params
 	const herbData = await getHerbData(slug)
 	
 	if (!herbData) {
