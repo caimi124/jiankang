@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import HerbDetailClient from './HerbDetailClient'
 import { sanityFetch } from '@/lib/sanity'
+import { getFallbackHerb } from '@/lib/herb-detail-fallback'
 
 // 从多个数据源获取草药数据（智能检测Sanity配置状态）
 async function getHerbData(slug: string) {
@@ -76,6 +77,13 @@ async function getHerbData(slug: string) {
 		if (staticHerb) {
 			console.log('✅ 从静态数据获取草药:', staticHerb.english_name)
 			return mapStaticHerbData(staticHerb, slug)
+		}
+
+		// 4. 最终本地兜底（关键三种草药）
+		const fallback = getFallbackHerb(slug)
+		if (fallback) {
+			console.log('✅ 命中本地兜底草药:', fallback.name)
+			return fallback as any
 		}
 	} catch (error) {
 		console.error('❌ 静态数据查询失败:', error)
@@ -273,8 +281,8 @@ export async function generateStaticParams() {
 }
 
 // 服务器端组件
-export default async function HerbDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-	const { slug } = await params
+export default async function HerbDetailPage({ params }: { params: { slug: string } }) {
+	const { slug } = params
 	const herbData = await getHerbData(slug)
 	
 	if (!herbData) {
