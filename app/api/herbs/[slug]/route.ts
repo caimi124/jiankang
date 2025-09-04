@@ -660,10 +660,10 @@ const HERB_DETAIL_DATA = {
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { slug } = params
+    const { slug } = await params
     
     // 标准化slug（移除可能的额外字符）
     const normalizedSlug = slug.toLowerCase().trim()
@@ -827,10 +827,10 @@ export async function GET(
 // 用于获取所有草药列表的端点
 export async function POST(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { slug } = params
+    const { slug } = await params
     const body = await request.json()
     const { action } = body
     
