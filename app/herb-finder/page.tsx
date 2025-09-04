@@ -15,7 +15,8 @@ export default function HerbFinderPage() {
       itemListOrder: 'https://schema.org/ItemListOrderAscending',
       numberOfItems: 100
     }
-  }
+  };
+
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -23,12 +24,13 @@ export default function HerbFinderPage() {
       { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://herbscience.shop/' },
       { '@type': 'ListItem', position: 2, name: 'Herb Finder', item: 'https://herbscience.shop/herb-finder' }
     ]
-  }
+  };
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <HerbFinderClient />
     </>
-  )
+  );
 }

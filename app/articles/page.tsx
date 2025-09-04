@@ -15,7 +15,8 @@ export default function ArticlesPage() {
       itemListOrder: 'https://schema.org/ItemListOrderDescending',
       numberOfItems: 50
     }
-  }
+  };
+
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -23,12 +24,13 @@ export default function ArticlesPage() {
       { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://herbscience.shop/' },
       { '@type': 'ListItem', position: 2, name: 'Articles', item: 'https://herbscience.shop/articles' }
     ]
-  }
+  };
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <ArticlesClient />
     </>
-  )
+  );
 }
