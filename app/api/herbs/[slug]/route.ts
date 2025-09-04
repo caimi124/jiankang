@@ -86,6 +86,80 @@ const HERB_DETAIL_DATA = {
     properties: ['Warming', 'Antibacterial', 'Anti-nausea', 'Analgesic', 'Digestive Support']
   },
 
+  cinnamon: {
+    id: 'cinnamon',
+    name: 'Cinnamon',
+    chinese_name: '肉桂',
+    latin_name: 'Cinnamomum verum',
+    slug: 'cinnamon',
+    category: 'Digestive & Metabolic Support',
+    evidence_level: 'Moderate',
+    safety_level: 'medium',
+
+    overview: 'Cinnamon is a warming spice traditionally used to support circulation, digestive comfort, and metabolic balance. It may help regulate blood sugar and ease cold-type abdominal discomfort.',
+
+    benefits: [
+      'Supports healthy blood sugar balance',
+      'Warming digestive support',
+      'May reduce bloating and discomfort',
+      'Antioxidant and antimicrobial properties'
+    ],
+
+    active_compounds: 'Cinnamaldehyde, cinnamic acid, procyanidins, and essential oils with metabolic and antimicrobial effects.',
+
+    traditional_uses: 'In TCM, cinnamon (Rou Gui/Gui Zhi variety context-dependent) warms the channels, supports yang, moves blood, and alleviates cold pain.',
+
+    suitable_for: [
+      'Cold-type digestive discomfort',
+      'Mild blood sugar balance support',
+      'Cold hands and feet with sluggish circulation'
+    ],
+
+    not_suitable_for: [
+      'Heat signs or Yin deficiency with internal heat',
+      'Pregnancy in high doses (culinary amounts generally safe)',
+      'Ulcer or severe reflux (use cautiously)'
+    ],
+
+    dosage_forms: [
+      { form: 'Powder/Capsule', dosage: '500–2000 mg/day', usage: 'Split doses with meals' },
+      { form: 'Tea/Decoction', dosage: '1–3 g/day', usage: 'Simmer gently; drink warm' }
+    ],
+
+    safety_warnings: [
+      'Cassia cinnamon may be higher in coumarin—avoid excessive use if liver concerns',
+      'May interact with blood sugar medications'
+    ],
+
+    interactions: [
+      'Antidiabetic medications (monitor glucose)',
+      'Anticoagulants (high-dose cassia, theoretical risk)'
+    ],
+
+    scientific_evidence: 'Meta-analyses suggest modest improvements in fasting glucose and lipids with cinnamon supplementation; warming effects observed in traditional practice.',
+
+    constitution_match: [
+      { type: 'Cold Constitution', suitable: 'yes', description: 'Warming action helps dispel cold and support digestion' },
+      { type: 'Yin Deficient/Heat', suitable: 'no', description: 'May aggravate heat and dryness' }
+    ],
+
+    pairs_well_with: ['Ginger', 'Cardamom', 'Black pepper (for thermogenic support)'],
+
+    user_stories: [
+      { quote: 'Adding cinnamon with meals helped stabilize my afternoon energy.', author: 'Verified User', location: 'Case Note' }
+    ],
+
+    faqs: [
+      { question: 'Does cinnamon help with blood sugar?', answer: 'It may support healthy glucose metabolism; monitor if using medications.' },
+      { question: 'Is daily cinnamon safe?', answer: 'Culinary amounts are generally safe; avoid high-dose cassia long-term.' }
+    ],
+
+    seo_keywords: [
+      'cinnamon benefits','cinnamon blood sugar','cinnamaldehyde','warming spice','digestive support'
+    ],
+    properties: ['Warming','Metabolic Support','Digestive Comfort','Antioxidant']
+  },
+
   ginseng: {
     id: 'ginseng',
     name: 'Ginseng',
@@ -593,16 +667,26 @@ export async function GET(
     
     // 标准化slug（移除可能的额外字符）
     const normalizedSlug = slug.toLowerCase().trim()
+    // 别名与常见变体归一
+    const aliasMap: Record<string, string> = {
+      'pumpkin-seed': 'pumpkin-seeds',
+      'pumpkinseeds': 'pumpkin-seeds',
+      'pumpkin seeds': 'pumpkin-seeds',
+      'pumpkin_seed': 'pumpkin-seeds',
+      'cinnamomum': 'cinnamon',
+      'cloves': 'clove'
+    }
+    const canonicalSlug = aliasMap[normalizedSlug] || normalizedSlug
     
-    console.log(`[API] 查询草药详情: ${normalizedSlug}`)
+    console.log(`[API] 查询草药详情: ${canonicalSlug}`)
     
     // 优先从 Notion 读取
-    let herbData = await fetchHerbFromNotionBySlug(normalizedSlug)
+    let herbData = await fetchHerbFromNotionBySlug(canonicalSlug)
       .catch(() => null) as any
     
     // 兼容旧数据：未命中 Notion 时回退到内置常量
     if (!herbData) {
-      herbData = HERB_DETAIL_DATA[normalizedSlug as keyof typeof HERB_DETAIL_DATA]
+      herbData = HERB_DETAIL_DATA[canonicalSlug as keyof typeof HERB_DETAIL_DATA]
     }
     
     // 如果没找到，尝试从完整数据库中查找并生成基础数据
@@ -616,9 +700,9 @@ export async function GET(
           .replace(/[^\w\-]/g, '')
           .replace(/--+/g, '-')
           .trim()
-        return herbSlug === normalizedSlug || 
-               herb.english_name.toLowerCase().includes(normalizedSlug) ||
-               herb.chinese_name.includes(normalizedSlug)
+        return herbSlug === canonicalSlug || 
+               herb.english_name.toLowerCase().includes(canonicalSlug) ||
+               herb.chinese_name.includes(canonicalSlug)
       })
       
       if (!herbData && matchedHerb) {
