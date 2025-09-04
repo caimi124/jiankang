@@ -3,6 +3,9 @@ import { notFound } from 'next/navigation'
 import HerbDetailClient from './HerbDetailClient'
 import { sanityFetch } from '@/lib/sanity'
 import { getFallbackHerb } from '@/lib/herb-detail-fallback'
+import { headers } from 'next/headers'
+
+export const dynamic = 'force-dynamic'
 
 // 从多个数据源获取草药数据（智能检测Sanity配置状态）
 async function getHerbData(slug: string) {
@@ -52,8 +55,12 @@ async function getHerbData(slug: string) {
 
 	// 2. 回退到内部API（内置详情+Notion/静态数据库聚合）
 	try {
-		// 使用相对路径以适配 Vercel 预览/自定义域名环境
-		const res = await fetch(`/api/herbs/${slug}`, { cache: 'no-store' })
+		// 使用请求头构造绝对地址，兼容 Vercel/自定义域
+		const h = await headers()
+		const host = h.get('x-forwarded-host') || h.get('host') || 'herbscience.shop'
+		const proto = h.get('x-forwarded-proto') || 'https'
+		const base = `${proto}://${host}`
+		const res = await fetch(`${base}/api/herbs/${slug}`, { cache: 'no-store' })
 		if (res.ok) {
 			const json = await res.json()
 			if (json?.success && json?.data) {
