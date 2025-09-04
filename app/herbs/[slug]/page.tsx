@@ -51,8 +51,8 @@ async function getHerbData(slug: string) {
 
 	// 2. 回退到内部API（内置详情+Notion/静态数据库聚合）
 	try {
-		const baseUrl = process.env.NODE_ENV === 'production' ? 'https://herbscience.shop' : 'http://localhost:3000'
-		const res = await fetch(`${baseUrl}/api/herbs/${slug}`, { cache: 'no-store' })
+		// 使用相对路径以适配 Vercel 预览/自定义域名环境
+		const res = await fetch(`/api/herbs/${slug}`, { cache: 'no-store' })
 		if (res.ok) {
 			const json = await res.json()
 			if (json?.success && json?.data) {
