@@ -46,12 +46,26 @@ async function getHerbsData(filters: any = {}) {
     
     // 客户端筛选（因为API可能不支持所有筛选条件）
     if (constitution) {
-      herbs = herbs.filter((herb: any) => herb.constitution_type === constitution)
+      // 映射中文体质类型到英文
+      const constitutionMap: Record<string, string> = {
+        '平和质': 'balanced',
+        '气虚质': 'qi_deficiency',
+        '阳虚质': 'yang_deficiency',
+        '阴虚质': 'yin_deficiency',
+        '痰湿质': 'phlegm_dampness',
+        '湿热质': 'damp_heat',
+        '血瘀质': 'blood_stasis',
+        '气郁质': 'qi_stagnation',
+        '特禀质': 'special_constitution'
+      }
+      const mappedConstitution = constitutionMap[constitution] || constitution
+      herbs = herbs.filter((herb: any) => 
+        herb.constitution_type === mappedConstitution || 
+        herb.constitution_type === 'balanced' // 平和质草药适合所有体质
+      )
     }
     
-    if (category && category !== 'general') {
-      herbs = herbs.filter((herb: any) => herb.category === category)
-    }
+    // 暂时不进行类别筛选，因为当前数据都是 'general' 类别
     
     // 分页处理
     const startIndex = (page - 1) * limit
@@ -68,7 +82,21 @@ async function getHerbsData(filters: any = {}) {
         efficacy: herb.efficacy || herb.primary_effects || [],
         primary_effects: herb.primary_effects || herb.efficacy || [],
         safety_level: herb.safety_level || 'medium',
-        constitution_type: herb.constitution_type || '平和质',
+        constitution_type: (() => {
+          // 映射英文体质类型到中文
+          const constitutionReverseMap: Record<string, string> = {
+            'balanced': '平和质',
+            'qi_deficiency': '气虚质',
+            'yang_deficiency': '阳虚质',
+            'yin_deficiency': '阴虚质',
+            'phlegm_dampness': '痰湿质',
+            'damp_heat': '湿热质',
+            'blood_stasis': '血瘀质',
+            'qi_stagnation': '气郁质',
+            'special_constitution': '特禀质'
+          }
+          return constitutionReverseMap[herb.constitution_type] || '平和质'
+        })(),
         traditional_use: herb.traditional_use || herb.description || '',
         modern_applications: herb.modern_applications || herb.description || '',
         dosage: herb.dosage || '请咨询专业医师',
