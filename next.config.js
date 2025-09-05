@@ -154,6 +154,17 @@ const nextConfig = {
         destination: '/admin',
         permanent: true,
       },
+      // 草药别名重定向
+      {
+        source: '/herbs/pumpkin-seed',
+        destination: '/herbs/pumpkin-seeds',
+        permanent: true,
+      },
+      {
+        source: '/herbs/cloves',
+        destination: '/herbs/clove',
+        permanent: true,
+      },
     ]
   },
 
