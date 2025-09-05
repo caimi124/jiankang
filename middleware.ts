@@ -2,7 +2,33 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  const url = request.nextUrl
+  const url = new URL(request.url)
+  let needsRedirect = false
+
+  // Normalize protocol to https
+  if (url.protocol === 'http:') {
+    url.protocol = 'https:'
+    needsRedirect = true
+  }
+
+  // Normalize hostname to apex (non-www)
+  if (url.hostname === 'www.herbscience.shop') {
+    url.hostname = 'herbscience.shop'
+    needsRedirect = true
+  }
+
+  if (needsRedirect) {
+    return NextResponse.redirect(url, 308)
+  }
+
+  // Handle herb URL redirects
+  if (url.pathname === '/herbs/pumpkin-seed') {
+    return NextResponse.redirect(new URL('/herbs/pumpkin-seeds', request.url), 301)
+  }
+  
+  if (url.pathname === '/herbs/cloves') {
+    return NextResponse.redirect(new URL('/herbs/clove', request.url), 301)
+  }
 
   const response = NextResponse.next()
 
@@ -43,8 +69,8 @@ export const config = {
      * - api (API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
+     * - favicon.ico, robots.txt, sitemap files
      */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    '/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|sitemap-0.xml|api).*)',
   ],
 } 
