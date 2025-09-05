@@ -23,91 +23,72 @@ import {
   Target
 } from 'lucide-react'
 import type { Herb } from '../../lib/herbs-recommendation'
-import { sanityFetch } from '@/lib/sanity'
 
-// 获取草药数据（优化版本：单一数据源）
+// 获取草药数据（修复版本：使用本地API作为主要数据源）
 async function getHerbsData(filters: any = {}) {
   try {
     const { search = '', category = '', constitution = '', safety = '', page = 1, limit = 24 } = filters
     
-    // 构建高效的Sanity查询
-    const baseFilter = `*[_type == "herb"`
-    const categoryFilter = category ? ` && category == $category` : ''
-    const constitutionFilter = constitution ? ` && constitutionType == $constitution` : ''
-    const safetyFilter = safety ? ` && safetyLevel == $safety` : ''
-    const searchFilter = search ? ` && (
-      title match $search ||
-      chineseName match $search ||
-      latinName match $search ||
-      description match $search ||
-      count(primaryEffects[@ match $search]) > 0
-    )` : ''
+    // 构建API查询参数
+    const searchParams = new URLSearchParams()
+    if (search) searchParams.set('search', search)
+    if (category) searchParams.set('category', category)
+    if (safety) searchParams.set('safety', safety)
+    searchParams.set('limit', '1000') // 获取更多数据以便客户端筛选
     
-    const fullFilter = `${baseFilter}${categoryFilter}${constitutionFilter}${safetyFilter}${searchFilter}]`
+    const response = await fetch(`/api/herbs/data?${searchParams.toString()}`)
+    if (!response.ok) {
+      throw new Error(`API request failed: ${response.status}`)
+    }
     
-    // 单次查询获取数据和总数
-    const query = `{
-      "items": ${fullFilter} | order(_createdAt desc) [${(page - 1) * limit}...${page * limit}] {
-        _id,
-        "id": _id,
-        "slug": slug.current,
-        title,
-        chineseName,
-        latinName,
-        category,
-        constitutionType,
-        primaryEffects,
-        activeCompounds,
-        dosage,
-        safetyLevel,
-        contraindications,
-        description,
-        traditionalUse,
-        modernApplications,
-        featuredImage,
-        gallery
-      },
-      "total": count(${fullFilter})
-    }`
+    const data = await response.json()
+    let herbs = data.herbs || []
     
-    const result = await sanityFetch(query, {
-      search: search ? `*${search}*` : undefined,
-      category: category || undefined,
-      constitution: constitution || undefined,
-      safety: safety || undefined
-    })
+    // 客户端筛选（因为API可能不支持所有筛选条件）
+    if (constitution) {
+      herbs = herbs.filter((herb: any) => herb.constitution_type === constitution)
+    }
+    
+    if (category && category !== 'general') {
+      herbs = herbs.filter((herb: any) => herb.category === category)
+    }
+    
+    // 分页处理
+    const startIndex = (page - 1) * limit
+    const endIndex = startIndex + limit
+    const paginatedHerbs = herbs.slice(startIndex, endIndex)
     
     return {
-      herbs: (result?.items || []).map((herb: any) => ({
-        id: herb._id,
-        chinese_name: herb.chineseName || herb.title,
-        english_name: herb.title,
-        latin_name: herb.latinName || herb.title,
+      herbs: paginatedHerbs.map((herb: any) => ({
+        id: herb.id || Math.random().toString(36),
+        chinese_name: herb.chinese_name || herb.english_name || '未知',
+        english_name: herb.english_name || herb.chinese_name || 'Unknown',
+        latin_name: herb.latin_name || herb.english_name || '',
         description: herb.description || '',
-        efficacy: herb.primaryEffects || [],
-        primary_effects: herb.primaryEffects || [],
-        safety_level: herb.safetyLevel || 'medium',
-        constitution_type: herb.constitutionType || '平和质',
-        traditional_use: herb.traditionalUse || herb.description || '',
-        modern_applications: herb.modernApplications || herb.description || '',
+        efficacy: herb.efficacy || herb.primary_effects || [],
+        primary_effects: herb.primary_effects || herb.efficacy || [],
+        safety_level: herb.safety_level || 'medium',
+        constitution_type: herb.constitution_type || '平和质',
+        traditional_use: herb.traditional_use || herb.description || '',
+        modern_applications: herb.modern_applications || herb.description || '',
         dosage: herb.dosage || '请咨询专业医师',
         contraindications: herb.contraindications || '',
-        quality_score: 85,
-        popularity_score: 80,
-        ingredients: herb.activeCompounds || ['待补充'],
-        category: herb.category || '',
-        part_used: '',
-        taste: '',
-        meridians: [],
-        source: 'sanity',
-        price_range: 'moderate',
-        availability: 'common',
-        slug: herb.slug
+        quality_score: herb.quality_score || 85,
+        popularity_score: herb.popularity_score || 80,
+        ingredients: herb.ingredients || ['待补充'],
+        category: herb.category || 'general',
+        part_used: herb.part_used || '',
+        taste: herb.taste || '',
+        meridians: herb.meridians || [],
+        source: 'local-api',
+        price_range: herb.price_range || 'moderate',
+        availability: herb.availability || 'common',
+        slug: herb.english_name?.toLowerCase()?.replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'unknown'
       })),
-      total: result?.total || 0
+      total: herbs.length
     }
   } catch (error) {
-    console.error('Failed to fetch herbs:', error)
+    console.error('Failed to fetch herbs from local API:', error)
     return { herbs: [], total: 0 }
   }
 }
@@ -199,7 +180,7 @@ export default function HerbFinderClient() {
       setIsLoading(true)
       setError(null)
 
-      // 直接调用Sanity API，无需回退机制
+      // 调用本地API获取草药数据
       const result = await getHerbsData({
         search: filters.search,
         category: filters.category,
