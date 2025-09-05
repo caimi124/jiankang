@@ -11,11 +11,22 @@ export const revalidate = 0
 
 // 从多个数据源获取草药数据（智能检测Sanity配置状态）
 async function getHerbData(slug: string) {
-	const normalizedSlug = slug.toLowerCase().trim()
+	let normalizedSlug = slug.toLowerCase().trim()
 		.replace(/[^a-z0-9\-]+/g, '-')
 		.replace(/--+/g, '-')
 		.replace(/^-|-$/g, '')
-		.replace(/^cloves$/, 'clove')
+	
+	// Handle common URL aliases
+	const aliases: Record<string, string> = {
+		'pumpkin-seed': 'pumpkin-seeds',
+		'pumpkinseeds': 'pumpkin-seeds',
+		'pumpkin_seed': 'pumpkin-seeds',
+		'cloves': 'clove'
+	}
+	
+	if (aliases[normalizedSlug]) {
+		normalizedSlug = aliases[normalizedSlug]
+	}
 	
 	// 🔍 检查Sanity是否正确配置
 	const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID

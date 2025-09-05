@@ -123,7 +123,22 @@ export const HERB_DETAIL_FALLBACK: Record<string, HerbDetail> = {
 }
 
 export function getFallbackHerb(slug: string): HerbDetail | null {
-  const key = slug.toLowerCase().trim()
+  let key = slug.toLowerCase().trim()
+  
+  // Handle URL aliases for fallback herbs
+  const aliases: Record<string, string> = {
+    'pumpkin-seed': 'pumpkin-seeds',
+    'pumpkinseeds': 'pumpkin-seeds',
+    'pumpkin_seed': 'pumpkin-seeds',
+    'pumpkin seeds': 'pumpkin-seeds',
+    'cloves': 'clove'
+  }
+  
+  // Apply alias mapping
+  if (aliases[key]) {
+    key = aliases[key]
+  }
+  
   return HERB_DETAIL_FALLBACK[key] || null
 }
 
