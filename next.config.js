@@ -207,7 +207,7 @@ const nextConfig = {
   },
 
   // 🚀 Webpack优化
-  webpack: (config, { dev, isServer, webpack }) => {
+  webpack: (config, { dev, isServer }) => {
     // 生产环境bundle优化
     if (!dev && !isServer) {
       config.optimization.splitChunks = {
@@ -226,13 +226,6 @@ const nextConfig = {
             priority: 5,
             reuseExistingChunk: true,
           },
-          // 🚀 新增：草药相关组件单独打包
-          herbs: {
-            test: /[\\/]components[\\/]Herb/,
-            name: 'herbs',
-            chunks: 'all',
-            priority: 3,
-          }
         },
       }
     }
@@ -241,29 +234,6 @@ const nextConfig = {
     config.resolve.alias = {
       ...config.resolve.alias,
       '@': require('path').resolve(__dirname),
-    }
-
-    // 🚀 新增：启用模块联邦
-    if (!isServer) {
-      config.plugins.push(
-        new webpack.container.ModuleFederationPlugin({
-          name: 'herbscience',
-          filename: 'remoteEntry.js',
-          exposes: {
-            './HerbCard': './components/HerbRecommendations.tsx',
-          },
-          shared: {
-            react: {
-              singleton: true,
-              requiredVersion: false,
-            },
-            'react-dom': {
-              singleton: true,
-              requiredVersion: false,
-            },
-          },
-        })
-      )
     }
 
     return config
