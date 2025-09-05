@@ -7,6 +7,16 @@
       "source": "/index.html",
       "destination": "/",
       "permanent": true
+    },
+    {
+      "source": "/herbs/pumpkin-seed",
+      "destination": "/herbs/pumpkin-seeds",
+      "permanent": true
+    },
+    {
+      "source": "/herbs/cloves",
+      "destination": "/herbs/clove",
+      "permanent": true
     }
   ],
   "headers": [
