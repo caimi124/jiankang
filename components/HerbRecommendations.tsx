@@ -148,14 +148,28 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
     ? urlFor({ _ref: (herb as any).image_url } as any).width(600).height(400).fit('crop').url()
     : undefined
 
-  const handleHerbClick = () => {
-    console.log(`[HerbCard] 点击草药: ${herb.chinese_name} -> /herbs/${herbSlug}`)
+  const handleHerbClick = (e: React.MouseEvent) => {
+    console.log(`[HerbCard] 点击事件触发: ${herb.chinese_name}`)
+    console.log(`[HerbCard] 点击目标:`, e.target)
+    console.log(`[HerbCard] 目标slug: ${herbSlug}`)
+    
+    // 如果点击的是按钮区域，不要跳转
+    const isButtonClick = (e.target as HTMLElement).closest('button')
+    if (isButtonClick) {
+      console.log(`[HerbCard] 按钮点击，取消导航`)
+      return
+    }
+    
+    console.log(`[HerbCard] 导航到: /herbs/${herbSlug}`)
     router.push(`/herbs/${herbSlug}`)
   }
 
   return (
-    <div onClick={handleHerbClick} className="block cursor-pointer">
-      <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 group cursor-pointer">
+    <div 
+      onClick={handleHerbClick} 
+      className="block cursor-pointer relative hover:scale-105 transition-transform duration-200"
+    >
+      <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl hover:border-green-200 transition-all duration-300 group cursor-pointer">
         {/* Cover Image */}
         {imageSrc && (
           <div className="mb-4 -mt-2 -mx-2">
@@ -206,21 +220,33 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
 
       {/* Action Area */}
       <div className="space-y-3">
-        {/* Click Hint */}
-        <div className="text-center">
-          <p className="text-sm text-green-600 font-medium flex items-center justify-center">
-            <Eye className="w-4 h-4 mr-1" />
-            Click to view details
-            <ArrowRight className="w-4 h-4 ml-1" />
-          </p>
-        </div>
+        {/* Click Hint - Only show if not in detailed view */}
+        {!showDetailed && (
+          <div className="text-center">
+            <p className="text-sm text-green-600 font-medium flex items-center justify-center">
+              <Eye className="w-4 h-4 mr-1" />
+              Click anywhere to view details
+              <ArrowRight className="w-4 h-4 ml-1" />
+            </p>
+          </div>
+        )}
+        
+        {/* For detailed view, show a different message */}
+        {showDetailed && (
+          <div className="text-center border-t border-gray-100 pt-4">
+            <p className="text-xs text-gray-500 flex items-center justify-center">
+              <Eye className="w-3 h-3 mr-1" />
+              Click anywhere on the card to see full herb details
+              <ArrowRight className="w-3 h-3 ml-1" />
+            </p>
+          </div>
+        )}
 
         {/* Show More Details Button (only for detailed view) */}
         {showDetailed && (
           <button
             onClick={(e) => {
-              e.preventDefault() // 阻止Link的默认行为
-              e.stopPropagation() // 阻止事件冒泡
+              e.stopPropagation() // 阻止事件冒泡到父容器
               setIsExpanded(!isExpanded)
             }}
             className="flex items-center justify-center gap-2 w-full bg-gray-50 hover:bg-gray-100 text-gray-700 py-2 px-4 rounded-lg transition-all duration-200 text-sm font-medium"
