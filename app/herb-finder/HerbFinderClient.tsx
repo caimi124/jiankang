@@ -151,8 +151,9 @@ export default function HerbFinderClient() {
     { value: 'low', label: 'Use with Caution' }
   ]
 
-  // 单一数据源获取，使用静态生成
+  // 单一数据源获取，使用静态生成  
   useEffect(() => {
+    console.log(`[HerbFinder] 🎯 useEffect triggered - Page: ${page}, PageSize: ${pageSize}`)
     fetchHerbsData()
   }, [page, pageSize, filters.search, filters.safety, filters.constitution])
 
@@ -171,8 +172,14 @@ export default function HerbFinderClient() {
         limit: pageSize
       })
 
+      console.log(`[HerbFinder] 📝 Setting herbs: ${result.herbs.length}, Total: ${result.total}`)
       setHerbs(result.herbs)
       setTotal(result.total)
+      
+      // Initialize filteredHerbs with all herbs when no filters are active
+      if (!Object.values(filters).some(value => value !== '')) {
+        setFilteredHerbs(result.herbs)
+      }
     } catch (err) {
       console.error('Error fetching herbs:', err)
       setError(err instanceof Error ? err.message : 'Failed to load herbs data')
@@ -242,6 +249,7 @@ export default function HerbFinderClient() {
       return scoreB - scoreA
     })
 
+    console.log(`[HerbFinder] 🔄 Filtered herbs: ${filtered.length} (from ${herbs.length} total)`)
     setFilteredHerbs(filtered)
   }, [herbs, filters])
 
@@ -335,7 +343,7 @@ export default function HerbFinderClient() {
               Smart Herb Finder
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover the perfect natural remedies from our comprehensive database of <span className="font-semibold text-green-600">{herbs.length} traditional herbs</span>. 
+              Discover the perfect natural remedies from our comprehensive database of <span className="font-semibold text-green-600">{total || herbs.length} traditional herbs</span>. 
               Search by symptoms, health goals, or constitution type.
             </p>
           </div>
@@ -479,7 +487,7 @@ export default function HerbFinderClient() {
               <h2 className="text-2xl font-bold text-gray-900">
                 {error ? 'Error Loading Herbs' : (
                   <>
-                    <span className="text-green-600">{total || filteredHerbs.length}</span> Herbs Found
+                    <span className="text-green-600">{filteredHerbs.length > 0 ? filteredHerbs.length : (herbs.length || total)}</span> Herbs Found
                   </>
                 )}
               </h2>
@@ -578,9 +586,9 @@ export default function HerbFinderClient() {
           )}
 
           {/* Enhanced Herbs Grid */}
-          {!error && filteredHerbs.length > 0 && (
+          {!error && (filteredHerbs.length > 0 || (!isLoading && herbs.length > 0)) && (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredHerbs.map((herb) => (
+              {(filteredHerbs.length > 0 ? filteredHerbs : herbs).map((herb) => (
                 <HerbCard 
                   key={herb.id} 
                   herb={herb} 
