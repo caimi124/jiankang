@@ -25,89 +25,51 @@ import {
 import type { Herb } from '../../lib/herbs-recommendation'
 import { sanityFetch } from '@/lib/sanity'
 
-// 获取草药数据（优化版本：单一数据源）
+// 获取草药数据（优化版本：使用本地API）
 async function getHerbsData(filters: any = {}) {
   try {
-    const { search = '', category = '', constitution = '', safety = '', page = 1, limit = 24 } = filters
+    console.log(`[HerbFinder] 🚀 Fetching herbs with filters:`, filters)
     
-    // 构建高效的Sanity查询
-    const baseFilter = `*[_type == "herb"`
-    const categoryFilter = category ? ` && category == $category` : ''
-    const constitutionFilter = constitution ? ` && constitutionType == $constitution` : ''
-    const safetyFilter = safety ? ` && safetyLevel == $safety` : ''
-    const searchFilter = search ? ` && (
-      title match $search ||
-      chineseName match $search ||
-      latinName match $search ||
-      description match $search ||
-      count(primaryEffects[@ match $search]) > 0
-    )` : ''
+    // 构建查询参数
+    const searchParams = new URLSearchParams()
     
-    const fullFilter = `${baseFilter}${categoryFilter}${constitutionFilter}${safetyFilter}${searchFilter}]`
+    if (filters.search) searchParams.set('search', filters.search)
+    if (filters.category) searchParams.set('category', filters.category)
+    if (filters.constitution) searchParams.set('constitution', filters.constitution)
+    if (filters.safety) searchParams.set('safety', filters.safety)
+    if (filters.page) searchParams.set('page', filters.page.toString())
+    if (filters.limit) searchParams.set('limit', filters.limit.toString())
     
-    // 单次查询获取数据和总数
-    const query = `{
-      "items": ${fullFilter} | order(_createdAt desc) [${(page - 1) * limit}...${page * limit}] {
-        _id,
-        "id": _id,
-        "slug": slug.current,
-        title,
-        chineseName,
-        latinName,
-        category,
-        constitutionType,
-        primaryEffects,
-        activeCompounds,
-        dosage,
-        safetyLevel,
-        contraindications,
-        description,
-        traditionalUse,
-        modernApplications,
-        featuredImage,
-        gallery
-      },
-      "total": count(${fullFilter})
-    }`
+    // 强制使用新版本，添加超时控制
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 10000) // 10秒超时
     
-    const result = await sanityFetch(query, {
-      search: search ? `*${search}*` : undefined,
-      category: category || undefined,
-      constitution: constitution || undefined,
-      safety: safety || undefined
+    const response = await fetch(`/api/herbs/data?${searchParams.toString()}&_t=${Date.now()}&v=${Date.now()}`, {
+      cache: 'no-store',
+      signal: controller.signal,
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      }
     })
     
+    clearTimeout(timeoutId)
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+    }
+    
+    const data = await response.json()
+    
+    console.log(`[HerbFinder] ⚡ API SUCCESS - Version: ${Date.now()} - Herbs: ${data.herbs?.length || 0} - Total: ${data.total || 0}`)
+    
     return {
-      herbs: (result?.items || []).map((herb: any) => ({
-        id: herb._id,
-        chinese_name: herb.chineseName || herb.title,
-        english_name: herb.title,
-        latin_name: herb.latinName || herb.title,
-        description: herb.description || '',
-        efficacy: herb.primaryEffects || [],
-        primary_effects: herb.primaryEffects || [],
-        safety_level: herb.safetyLevel || 'medium',
-        constitution_type: herb.constitutionType || '平和质',
-        traditional_use: herb.traditionalUse || herb.description || '',
-        modern_applications: herb.modernApplications || herb.description || '',
-        dosage: herb.dosage || '请咨询专业医师',
-        contraindications: herb.contraindications || '',
-        quality_score: 85,
-        popularity_score: 80,
-        ingredients: herb.activeCompounds || ['待补充'],
-        category: herb.category || '',
-        part_used: '',
-        taste: '',
-        meridians: [],
-        source: 'sanity',
-        price_range: 'moderate',
-        availability: 'common',
-        slug: herb.slug
-      })),
-      total: result?.total || 0
+      herbs: data.herbs || [],
+      total: data.total || 0
     }
   } catch (error) {
-    console.error('Failed to fetch herbs:', error)
+    console.error('[HerbFinder] ❌ API FAILED:', error)
     return { herbs: [], total: 0 }
   }
 }
@@ -332,7 +294,7 @@ export default function HerbFinderClient() {
               <div className="absolute inset-0 bg-green-200 rounded-full animate-ping opacity-25"></div>
             </div>
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Loading Herb Database</h2>
-            <p className="text-gray-600">Fetching from Sanity CMS... Almost there!</p>
+            <p className="text-gray-600">Loading herbs from local database... Almost ready!</p>
             <div className="mt-8 max-w-4xl mx-auto">
               {/* 骨架屏预览 */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

@@ -1,6 +1,6 @@
 {
   "name": "notion-herb-updater",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "自动化草药数据库Notion条目创建和更新工具",
   "main": "notion-herb-updater.js",
   "scripts": {
