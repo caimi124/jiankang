@@ -6,7 +6,7 @@ import { HERBS_DATABASE } from '@/lib/herbs-data-complete'
 
 const limiter = rateLimit({
   interval: 60 * 1000, // 1 minute
-  uniqueTokenPerInterval: 500
+  uniqueTokenPerInterval: 1000 // 提高速率限制
 })
 
 // Input validation schema
@@ -19,9 +19,9 @@ const QuerySchema = z.object({
 
 export async function GET(request: NextRequest) {
   try {
-    // Rate limiting
+    // Rate limiting (更宽松)
     try {
-      await limiter.check(5, 'HERBS_API_CACHE') // 5 requests per minute per token
+      await limiter.check(20, 'HERBS_API_CACHE') // 20 requests per minute per token
     } catch {
       return new NextResponse(JSON.stringify({ error: 'Too many requests' }), {
         status: 429,
@@ -87,7 +87,7 @@ export async function GET(request: NextRequest) {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=30'
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600, max-age=300'
       }
     })
 
