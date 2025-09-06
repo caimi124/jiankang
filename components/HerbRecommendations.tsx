@@ -100,19 +100,26 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
     return benefits.slice(0, 2).join(' · ') || 'Wellness Support'
   }
 
-  // 生成草药的slug用于URL
+  // 生成草药的slug用于URL - 改进版本
   const generateSlug = (chineseName: string, englishName: string) => {
-    if (englishName) {
-      return englishName.toLowerCase()
-        .replace(/\s+/g, '-')
-        .replace(/[^\w\-]+/g, '')
-        .replace(/\-\-+/g, '-')
-        .replace(/^-+/, '')
-        .replace(/-+$/, '')
-    }
-    return chineseName.toLowerCase()
-      .replace(/\s+/g, '-')
-      .replace(/[^\w\-]+/g, '')
+    // 优先使用英文名称
+    let name = englishName || chineseName || 'unknown-herb'
+    
+    // 清理名称：移除括号中的内容，移除特殊字符
+    name = name
+      .replace(/\([^)]*\)/g, '') // 移除括号内容
+      .replace(/（[^）]*）/g, '') // 移除中文括号内容
+      .replace(/\s*\/\s*.*$/g, '') // 移除斜杠后的内容
+      .trim()
+    
+    // 生成slug
+    return name
+      .toLowerCase()
+      .replace(/\s+/g, '-')           // 空格替换为连字符
+      .replace(/[^\w\-\u4e00-\u9fff]/g, '') // 只保留字母数字连字符和中文
+      .replace(/\-\-+/g, '-')        // 多个连字符替换为单个
+      .replace(/^-+|-+$/g, '')       // 移除首尾连字符
+      || 'herb-' + (herb.id || Date.now()) // 如果生成失败，使用备用方案
   }
 
   // 兼容 Sanity 返回的 slug 结构（可能为 { current: string }）与普通字符串
@@ -140,20 +147,21 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
     : undefined
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 group">
-      {/* Cover Image */}
-      {imageSrc && (
-        <div className="mb-4 -mt-2 -mx-2">
-          <img src={imageSrc} alt={formattedName} className="w-full h-40 object-cover rounded-lg" />
+    <Link href={`/herbs/${herbSlug}`} className="block">
+      <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 group cursor-pointer">
+        {/* Cover Image */}
+        {imageSrc && (
+          <div className="mb-4 -mt-2 -mx-2">
+            <img src={imageSrc} alt={formattedName} className="w-full h-40 object-cover rounded-lg" />
+          </div>
+        )}
+        {/* Header - Herb Name with emoji */}
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold text-gray-900 group-hover:text-green-700 transition-colors flex items-center">
+            <span className="text-xl mr-2">🌿</span>
+            {formattedName}
+          </h3>
         </div>
-      )}
-      {/* Header - Herb Name with emoji */}
-      <div className="mb-4">
-        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-green-700 transition-colors flex items-center">
-          <span className="text-xl mr-2">🌿</span>
-          {formattedName}
-        </h3>
-      </div>
 
       {/* Subheadline - Main Benefits */}
       <div className="mb-4">
@@ -189,23 +197,26 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
         </div>
       </div>
 
-      {/* Call to Action Buttons */}
+      {/* Action Area */}
       <div className="space-y-3">
-        {/* CTA 1 - Learn how to use */}
-        <Link 
-          href={`/herbs/${herbSlug}`}
-          className="flex items-center justify-center gap-2 w-full bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg transition-all duration-200 text-sm font-medium group-hover:bg-green-700"
-        >
-          <span className="text-sm mr-1">🔍</span>
-          Learn how to use
-          <ArrowRight className="w-4 h-4" />
-        </Link>
+        {/* Click Hint */}
+        <div className="text-center">
+          <p className="text-sm text-green-600 font-medium flex items-center justify-center">
+            <Eye className="w-4 h-4 mr-1" />
+            Click to view details
+            <ArrowRight className="w-4 h-4 ml-1" />
+          </p>
+        </div>
 
-        {/* CTA 2 - Show More Details */}
+        {/* Show More Details Button (only for detailed view) */}
         {showDetailed && (
           <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="flex items-center justify-center gap-2 w-full bg-gray-50 hover:bg-gray-100 text-gray-700 py-3 px-4 rounded-lg transition-all duration-200 text-sm font-medium"
+            onClick={(e) => {
+              e.preventDefault() // 阻止Link的默认行为
+              e.stopPropagation() // 阻止事件冒泡
+              setIsExpanded(!isExpanded)
+            }}
+            className="flex items-center justify-center gap-2 w-full bg-gray-50 hover:bg-gray-100 text-gray-700 py-2 px-4 rounded-lg transition-all duration-200 text-sm font-medium"
           >
             <span className="text-sm mr-1">📖</span>
             {isExpanded ? 'Show Less Details' : 'Show More Details'}
@@ -270,7 +281,8 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </Link>
   )
 }
 

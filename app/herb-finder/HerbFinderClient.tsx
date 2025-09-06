@@ -289,14 +289,14 @@ export default function HerbFinderClient() {
     }
   ]
 
-  const [herbs, setHerbs] = useState<Herb[]>(staticHerbs)
-  const [filteredHerbs, setFilteredHerbs] = useState<Herb[]>(staticHerbs)
-  const [isLoading, setIsLoading] = useState(false)
+  const [herbs, setHerbs] = useState<Herb[]>([])
+  const [filteredHerbs, setFilteredHerbs] = useState<Herb[]>([])
+  const [isLoading, setIsLoading] = useState(true) // Start with loading true
   const [error, setError] = useState<string | null>(null)
   const [showFilters, setShowFilters] = useState(false)
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(120)
-  const [total, setTotal] = useState(staticHerbs.length)
+  const [total, setTotal] = useState(0)
   
   const [filters, setFilters] = useState<FilterState>({
     constitution: '',
@@ -334,44 +334,94 @@ export default function HerbFinderClient() {
       setIsLoading(true)
       setError(null)
 
-      // 先尝试从API获取数据，如果失败使用静态数据
-      try {
-        const result = await getHerbsData({
-          search: filters.search,
-          category: filters.category,
-          constitution: filters.constitution,
-          safety: filters.safety,
-          page: 1, // Get all herbs on first page
-          limit: 120 // Increase limit to get more herbs
-        })
+      console.log(`[HerbFinder] 🚀 开始获取草药数据...`)
 
-        if (result.herbs && result.herbs.length > 0) {
-          console.log(`[HerbFinder] 📝 API数据加载成功: ${result.herbs.length}个草药`)
-          // 使用API数据，不合并静态数据避免重复
-          setHerbs(result.herbs)
-          setTotal(result.total)
-          
-          if (!Object.values(filters).some(value => value !== '')) {
-            setFilteredHerbs(result.herbs)
+      // 1. 首先尝试从完整数据库直接加载所有草药
+      let allHerbs: Herb[] = []
+      
+      try {
+        // 直接从herbs-data-complete导入所有数据
+        const { HERBS_DATABASE } = await import('../../lib/herbs-data-complete')
+        console.log(`[HerbFinder] 📚 从herbs-data-complete加载了 ${HERBS_DATABASE.length} 个草药`)
+        
+        // 将数据库格式转换为Herb接口格式
+        allHerbs = HERBS_DATABASE.map(herb => ({
+          id: herb.id,
+          chinese_name: herb.chinese_name,
+          english_name: herb.english_name,
+          latin_name: herb.latin_name,
+          category: herb.category,
+          constitution_type: herb.constitution_type,
+          primary_effects: herb.primary_effects,
+          secondary_effects: herb.secondary_effects,
+          efficacy: herb.efficacy,
+          dosage: herb.dosage,
+          safety_level: herb.safety_level,
+          contraindications: herb.contraindications,
+          description: herb.description,
+          traditional_use: herb.traditional_use,
+          modern_applications: herb.modern_applications,
+          taste: herb.taste,
+          meridians: herb.meridians,
+          part_used: herb.part_used,
+          source: herb.source,
+          growing_regions: herb.growing_regions,
+          price_range: herb.price_range,
+          availability: herb.availability,
+          quality_score: herb.quality_score,
+          popularity_score: herb.popularity_score,
+          usage_suggestions: herb.usage_suggestions,
+          ingredients: herb.ingredients
+        } as Herb))
+        
+      } catch (importError) {
+        console.error(`[HerbFinder] 直接导入失败，尝试API:`, importError)
+        
+        // 2. 如果直接导入失败，尝试API
+        try {
+          const result = await getHerbsData({
+            search: filters.search,
+            category: filters.category,
+            constitution: filters.constitution,
+            safety: filters.safety,
+            page: 1,
+            limit: 500 // 获取更多数据
+          })
+
+          if (result.herbs && result.herbs.length > 0) {
+            console.log(`[HerbFinder] 📝 API数据加载成功: ${result.herbs.length}个草药`)
+            allHerbs = result.herbs
+          } else {
+            throw new Error('API返回空数据')
           }
-        } else {
-          throw new Error('API返回空数据')
+        } catch (apiError) {
+          console.warn(`[HerbFinder] API也失败，使用静态备用数据:`, apiError)
+          allHerbs = staticHerbs
         }
-      } catch (apiError) {
-        console.warn(`[HerbFinder] API加载失败，使用静态数据:`, apiError)
-        // API失败时使用静态数据
-        setHerbs(staticHerbs)
-        setTotal(staticHerbs.length)
-        setFilteredHerbs(staticHerbs)
-        setError(null) // 不显示错误，因为有静态数据fallback
       }
+
+      // 3. 设置数据
+      if (allHerbs.length > 0) {
+        setHerbs(allHerbs)
+        setTotal(allHerbs.length)
+        
+        // 如果没有激活的筛选器，显示所有草药
+        if (!Object.values(filters).some(value => value !== '')) {
+          setFilteredHerbs(allHerbs)
+        }
+        
+        console.log(`[HerbFinder] ✅ 最终加载了 ${allHerbs.length} 个草药`)
+      } else {
+        throw new Error('所有数据源都为空')
+      }
+      
     } catch (err) {
-      console.error('所有数据加载都失败了:', err)
-      // 最终fallback
+      console.error('[HerbFinder] ❌ 所有数据加载都失败了:', err)
+      // 最终fallback到静态数据
       setHerbs(staticHerbs)
       setTotal(staticHerbs.length) 
       setFilteredHerbs(staticHerbs)
-      setError('使用离线数据显示')
+      setError('正在使用备用数据，部分功能可能受限')
     } finally {
       setIsLoading(false)
     }
