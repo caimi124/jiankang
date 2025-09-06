@@ -147,7 +147,7 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
     : undefined
 
   return (
-    <Link href={`/herbs/${herbSlug}`} className="block">
+    <div onClick={() => window.location.href = `/herbs/${herbSlug}`} className="block cursor-pointer">
       <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 group cursor-pointer">
         {/* Cover Image */}
         {imageSrc && (
@@ -282,7 +282,7 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
         </div>
       )}
       </div>
-    </Link>
+    </div>
   )
 }
 
