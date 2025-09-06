@@ -295,7 +295,7 @@ export default function HerbFinderClient() {
   const [error, setError] = useState<string | null>(null)
   const [showFilters, setShowFilters] = useState(false)
   const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(24)
+  const [pageSize, setPageSize] = useState(120)
   const [total, setTotal] = useState(staticHerbs.length)
   
   const [filters, setFilters] = useState<FilterState>({
@@ -341,19 +341,18 @@ export default function HerbFinderClient() {
           category: filters.category,
           constitution: filters.constitution,
           safety: filters.safety,
-          page,
-          limit: pageSize
+          page: 1, // Get all herbs on first page
+          limit: 120 // Increase limit to get more herbs
         })
 
         if (result.herbs && result.herbs.length > 0) {
           console.log(`[HerbFinder] 📝 API数据加载成功: ${result.herbs.length}个草药`)
-          // 合并API数据和静态数据，确保至少有内容显示
-          const combinedHerbs = [...staticHerbs, ...result.herbs]
-          setHerbs(combinedHerbs)
-          setTotal(Math.max(result.total, combinedHerbs.length))
+          // 使用API数据，不合并静态数据避免重复
+          setHerbs(result.herbs)
+          setTotal(result.total)
           
           if (!Object.values(filters).some(value => value !== '')) {
-            setFilteredHerbs(combinedHerbs)
+            setFilteredHerbs(result.herbs)
           }
         } else {
           throw new Error('API返回空数据')

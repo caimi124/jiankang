@@ -11,10 +11,12 @@ const limiter = rateLimit({
 
 // Input validation schema
 const QuerySchema = z.object({
-  limit: z.string().transform(Number).pipe(z.number().min(1).max(100)).optional(),
+  limit: z.string().transform(Number).pipe(z.number().min(1).max(500)).optional(),
   search: z.string().min(1).max(100).optional(),
   category: z.string().min(1).max(50).optional(),
-  safety: z.enum(['high', 'medium', 'low']).optional()
+  safety: z.enum(['high', 'medium', 'low']).optional(),
+  constitution: z.string().min(1).max(50).optional(),
+  page: z.string().transform(Number).pipe(z.number().min(1)).optional()
 })
 
 export async function GET(request: NextRequest) {
@@ -49,9 +51,10 @@ export async function GET(request: NextRequest) {
       })
     }
 
-    const { limit = 100, search, category, safety } = validatedParams.data
+    const { limit = 120, search, category, safety, constitution, page = 1 } = validatedParams.data
 
     let filteredHerbs = [...HERBS_DATABASE]
+    const totalAvailable = filteredHerbs.length
 
     // Apply filters
     if (search) {
@@ -60,7 +63,9 @@ export async function GET(request: NextRequest) {
         herb.chinese_name.toLowerCase().includes(searchLower) ||
         herb.english_name.toLowerCase().includes(searchLower) ||
         herb.description.toLowerCase().includes(searchLower) ||
-        herb.efficacy.some((effect: string) => effect.toLowerCase().includes(searchLower))
+        herb.efficacy.some((effect: string) => effect.toLowerCase().includes(searchLower)) ||
+        herb.traditional_use.toLowerCase().includes(searchLower) ||
+        herb.modern_applications.toLowerCase().includes(searchLower)
       )
     }
 
@@ -76,13 +81,27 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Limit results
-    filteredHerbs = filteredHerbs.slice(0, limit)
+    if (constitution) {
+      filteredHerbs = filteredHerbs.filter(herb => 
+        herb.constitution_type === constitution
+      )
+    }
+
+    // Calculate pagination
+    const totalFiltered = filteredHerbs.length
+    const startIndex = (page - 1) * limit
+    const endIndex = startIndex + limit
+    
+    // Apply pagination
+    filteredHerbs = filteredHerbs.slice(startIndex, endIndex)
 
     return new NextResponse(JSON.stringify({
       herbs: filteredHerbs,
-      total: filteredHerbs.length,
-      limit
+      total: totalFiltered,
+      totalAvailable: totalAvailable,
+      limit,
+      page,
+      hasMore: endIndex < totalFiltered
     }), {
       status: 200,
       headers: {
