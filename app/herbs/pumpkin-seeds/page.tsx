@@ -178,7 +178,7 @@ export default function PumpkinSeedsPage() {
               </p>
               <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded">
                 <p className="text-green-800 font-medium">
-                  👉 If you're struggling with <strong>prostate issues, hair loss, menopause symptoms, or parasite infections</strong>, pumpkin seeds may be a natural solution worth adding to your diet.
+                  👉 If you&apos;re struggling with <strong>prostate issues, hair loss, menopause symptoms, or parasite infections</strong>, pumpkin seeds may be a natural solution worth adding to your diet.
                 </p>
               </div>
             </div>

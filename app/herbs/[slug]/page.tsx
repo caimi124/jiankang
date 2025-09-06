@@ -4,6 +4,7 @@ import HerbDetailClient from './HerbDetailClient'
 import { sanityFetch } from '@/lib/sanity'
 import { getFallbackHerb } from '@/lib/herb-detail-fallback'
 import { headers } from 'next/headers'
+import { generateHerbSlug, normalizeSlug } from '@/lib/herb-slug-utils'
 
 export const dynamic = 'force-dynamic'
 export const dynamicParams = true
@@ -11,10 +12,7 @@ export const revalidate = 0
 
 // 从多个数据源获取草药数据（智能检测Sanity配置状态）
 async function getHerbData(slug: string) {
-	let normalizedSlug = slug.toLowerCase().trim()
-		.replace(/[^a-z0-9\-]+/g, '-')
-		.replace(/--+/g, '-')
-		.replace(/^-|-$/g, '')
+	let normalizedSlug = normalizeSlug(slug)
 	
 	// Handle common URL aliases
 	const aliases: Record<string, string> = {
@@ -94,9 +92,8 @@ async function getHerbData(slug: string) {
 	try {
 		const { HERBS_DATABASE } = await import('@/lib/herbs-data-complete')
 		const staticHerb = HERBS_DATABASE.find(herb => {
-			const herbSlug = herb.english_name.toLowerCase()
-				.replace(/[^a-z0-9]+/g, '-')
-				.replace(/^-|-$/g, '')
+			// 使用与HerbCard相同的slug生成逻辑
+			const herbSlug = generateHerbSlug(herb.chinese_name, herb.english_name, herb.id)
 			return herbSlug === normalizedSlug
 		})
 		
@@ -282,11 +279,10 @@ export async function generateStaticParams() {
 	// 回退到静态数据库
 	try {
 		const { HERBS_DATABASE } = await import('@/lib/herbs-data-complete')
-		const staticSlugs = HERBS_DATABASE.map(herb => ({
-			slug: herb.english_name.toLowerCase()
-				.replace(/[^a-z0-9]+/g, '-')
-				.replace(/^-|-$/g, '')
-		}))
+		const staticSlugs = HERBS_DATABASE.map(herb => {
+			const slug = generateHerbSlug(herb.chinese_name, herb.english_name, herb.id)
+			return { slug }
+		})
 		
 		console.log('✅ 从静态数据生成', staticSlugs.length, '个草药页面')
 		return staticSlugs
@@ -313,11 +309,7 @@ export default async function HerbDetailPage({ params }: { params: Promise<{ slu
 	
 	// 强制兜底：确保关键草药永不 404
 	if (!herbData) {
-		const normalizedSlug = slug.toLowerCase().trim()
-			.replace(/[^a-z0-9\-]+/g, '-')
-			.replace(/--+/g, '-')
-			.replace(/^-|-$/g, '')
-			.replace(/^cloves$/, 'clove')
+		const normalizedSlug = normalizeSlug(slug).replace(/^cloves$/, 'clove')
 		
 		herbData = getFallbackHerb(normalizedSlug) as any
 		console.log('🆘 强制兜底激活:', normalizedSlug, herbData ? '成功' : '失败')

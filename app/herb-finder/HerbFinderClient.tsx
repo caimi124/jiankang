@@ -744,7 +744,7 @@ export default function HerbFinderClient() {
                     Clear All Filters
                   </button>
                   <p className="text-sm text-gray-500">
-                    Or try searching for: "sleep", "energy", "immune", "stress", "digestion"
+                    Or try searching for: &quot;sleep&quot;, &quot;energy&quot;, &quot;immune&quot;, &quot;stress&quot;, &quot;digestion&quot;
                   </p>
                 </div>
               )}
@@ -813,7 +813,7 @@ export default function HerbFinderClient() {
               {/* Quick Tips */}
               <div className="mt-6 text-green-100 text-sm">
                 Pro Tip: Use the category buttons above for quick health-focused searches, 
-                or try specific symptoms like "sleep problems" or "low energy"
+                or try specific symptoms like &quot;sleep problems&quot; or &quot;low energy&quot;
               </div>
             </div>
           )}

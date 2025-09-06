@@ -2,9 +2,11 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Herb } from '../lib/herbs-recommendation'
 import { urlFor } from '@/lib/sanity'
+import { generateHerbSlug } from '@/lib/herb-slug-utils'
 import { 
   Leaf, 
   Shield, 
@@ -102,30 +104,8 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
     return benefits.slice(0, 2).join(' · ') || 'Wellness Support'
   }
 
-  // 生成草药的slug用于URL - 改进版本
-  const generateSlug = (chineseName: string, englishName: string) => {
-    // 优先使用英文名称
-    let name = englishName || chineseName || 'unknown-herb'
-    
-    // 清理名称：移除括号中的内容，移除特殊字符
-    name = name
-      .replace(/\([^)]*\)/g, '') // 移除括号内容
-      .replace(/（[^）]*）/g, '') // 移除中文括号内容
-      .replace(/\s*\/\s*.*$/g, '') // 移除斜杠后的内容
-      .trim()
-    
-    // 生成slug
-    return name
-      .toLowerCase()
-      .replace(/\s+/g, '-')           // 空格替换为连字符
-      .replace(/[^\w\-\u4e00-\u9fff]/g, '') // 只保留字母数字连字符和中文
-      .replace(/\-\-+/g, '-')        // 多个连字符替换为单个
-      .replace(/^-+|-+$/g, '')       // 移除首尾连字符
-      || 'herb-' + (herb.id || Date.now()) // 如果生成失败，使用备用方案
-  }
-
   // 兼容 Sanity 返回的 slug 结构（可能为 { current: string }）与普通字符串
-  const herbSlug = (herb as any)?.slug?.current || (herb as any)?.slug || generateSlug(herb.chinese_name, herb.english_name)
+  const herbSlug = (herb as any)?.slug?.current || (herb as any)?.slug || generateHerbSlug(herb.chinese_name, herb.english_name, herb.id)
   const safetyBadge = getSafetyBadge(herb.safety_level)
   const evidenceLevel = getEvidenceLevel(herb)
   const bestForScenario = getBestForScenario(herb)
@@ -173,7 +153,15 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
         {/* Cover Image */}
         {imageSrc && (
           <div className="mb-4 -mt-2 -mx-2">
-            <img src={imageSrc} alt={formattedName} className="w-full h-40 object-cover rounded-lg" />
+            <Image 
+              src={imageSrc} 
+              alt={formattedName} 
+              width={600} 
+              height={160} 
+              className="w-full h-40 object-cover rounded-lg"
+              loading="lazy"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
           </div>
         )}
         {/* Header - Herb Name with emoji */}

@@ -214,7 +214,7 @@ export default function AboutClient() {
                     <div>
                       <h4 className="font-bold text-red-900 mb-2">🚨 Medical Emergency</h4>
                       <p className="text-red-800 text-sm">
-                        If you're experiencing a medical emergency or severe adverse reaction to any supplement, 
+                        If you&apos;re experiencing a medical emergency or severe adverse reaction to any supplement, 
                         please call 911 or go to your nearest emergency room immediately. Do not wait for our response.
                       </p>
                     </div>

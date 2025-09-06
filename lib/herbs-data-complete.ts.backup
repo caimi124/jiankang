@@ -34,7 +34,7 @@ export const HERBS_DATABASE: Herb[] = [
   {
     "id": "2176f14b-923c-8198-8b82-cc631b7b5797",
     "chinese_name": "Sojae oleum raffinatum",
-    "english_name": "Refined Soybean Oil",
+    "english_name": "Sojae oleum raffinatum(待翻译)",
     "latin_name": "Sojae oleum raffinatum",
     "category": "general",
     "constitution_type": "balanced",
@@ -72,7 +72,7 @@ export const HERBS_DATABASE: Herb[] = [
   {
     "id": "2176f14b-923c-813a-8885-e3bb3aaad7ed",
     "chinese_name": "Melissae folium",
-    "english_name": "Lemon Balm Leaf",
+    "english_name": "Melissae folium(待翻译)",
     "latin_name": "Melissae folium",
     "category": "general",
     "constitution_type": "balanced",
@@ -110,7 +110,7 @@ export const HERBS_DATABASE: Herb[] = [
   {
     "id": "2176f14b-923c-8106-8894-f357736cb6ea",
     "chinese_name": "Ginkgo folium",
-    "english_name": "Ginkgo Leaf",
+    "english_name": "Ginkgo folium(待翻译)",
     "latin_name": "Ginkgo folium",
     "category": "general",
     "constitution_type": "balanced",
@@ -148,7 +148,7 @@ export const HERBS_DATABASE: Herb[] = [
   {
     "id": "2176f14b-923c-8178-a3e4-e556f9683343",
     "chinese_name": "Myrrha",
-    "english_name": "Myrrh",
+    "english_name": "Myrrha(待翻译)",
     "latin_name": "Myrrha",
     "category": "general",
     "constitution_type": "balanced",
@@ -186,7 +186,7 @@ export const HERBS_DATABASE: Herb[] = [
   {
     "id": "2176f14b-923c-8116-ae4f-cd14b53b5ef3",
     "chinese_name": "Valerianae radix",
-    "english_name": "Valerian Root",
+    "english_name": "Valerianae radix(待翻译)",
     "latin_name": "Valerianae radix",
     "category": "general",
     "constitution_type": "balanced",
@@ -224,7 +224,7 @@ export const HERBS_DATABASE: Herb[] = [
   {
     "id": "2176f14b-923c-810f-9d25-d3cb81a3e147",
     "chinese_name": "Foeniculi vulgaris fructus",
-    "english_name": "Fennel Seed",
+    "english_name": "Foeniculi vulgaris fructus(待翻译)",
     "latin_name": "Foeniculi vulgaris fructus",
     "category": "general",
     "constitution_type": "balanced",
@@ -262,7 +262,7 @@ export const HERBS_DATABASE: Herb[] = [
   {
     "id": "2176f14b-923c-8147-9821-fe8c7c126c61",
     "chinese_name": "Foeniculi dulcis fructus",
-    "english_name": "Sweet Fennel Seed",
+    "english_name": "Foeniculi dulcis fructus(待翻译)",
     "latin_name": "Foeniculi dulcis fructus",
     "category": "general",
     "constitution_type": "balanced",
@@ -300,7 +300,7 @@ export const HERBS_DATABASE: Herb[] = [
   {
     "id": "2176f14b-923c-815d-9650-ec72b5d11a48",
     "chinese_name": "Echinaceae purpureae radix",
-    "english_name": "Purple Echinacea Root",
+    "english_name": "Echinaceae purpureae radix(待翻译)",
     "latin_name": "Echinaceae purpureae radix",
     "category": "general",
     "constitution_type": "balanced",
@@ -338,7 +338,7 @@ export const HERBS_DATABASE: Herb[] = [
   {
     "id": "2176f14b-923c-816e-b7de-c79eac1b57a6",
     "chinese_name": "Echinaceae angustifoliae radix",
-    "english_name": "Narrow-leaf Echinacea Root",
+    "english_name": "Echinaceae angustifoliae radix(待翻译)",
     "latin_name": "Echinaceae angustifoliae radix",
     "category": "general",
     "constitution_type": "balanced",
@@ -376,7 +376,7 @@ export const HERBS_DATABASE: Herb[] = [
   {
     "id": "2176f14b-923c-819c-9ae1-fbd4a3840aae",
     "chinese_name": "Sennae folium",
-    "english_name": "Senna Leaf",
+    "english_name": "Sennae folium(待翻译)",
     "latin_name": "Sennae folium",
     "category": "general",
     "constitution_type": "balanced",
@@ -642,7 +642,7 @@ export const HERBS_DATABASE: Herb[] = [
   {
     "id": "2176f14b-923c-8174-bf7a-fad1bf362d70",
     "chinese_name": "Anisi stellati fructus",
-    "english_name": "Star Anise",
+    "english_name": "Anisi stellati fructus(待翻译)",
     "latin_name": "Anisi stellati fructus",
     "category": "general",
     "constitution_type": "balanced",
@@ -2468,7 +2468,7 @@ export const CONSTITUTION_HERB_MAPPING = {
   {
     "id": "2176f14b-923c-8198-8b82-cc631b7b5797",
     "chinese_name": "Sojae oleum raffinatum",
-    "english_name": "Refined Soybean Oil",
+    "english_name": "Sojae oleum raffinatum(待翻译)",
     "latin_name": "Sojae oleum raffinatum",
     "category": "general",
     "constitution_type": "balanced",
@@ -2506,7 +2506,7 @@ export const CONSTITUTION_HERB_MAPPING = {
   {
     "id": "2176f14b-923c-813a-8885-e3bb3aaad7ed",
     "chinese_name": "Melissae folium",
-    "english_name": "Lemon Balm Leaf",
+    "english_name": "Melissae folium(待翻译)",
     "latin_name": "Melissae folium",
     "category": "general",
     "constitution_type": "balanced",
@@ -2544,7 +2544,7 @@ export const CONSTITUTION_HERB_MAPPING = {
   {
     "id": "2176f14b-923c-8106-8894-f357736cb6ea",
     "chinese_name": "Ginkgo folium",
-    "english_name": "Ginkgo Leaf",
+    "english_name": "Ginkgo folium(待翻译)",
     "latin_name": "Ginkgo folium",
     "category": "general",
     "constitution_type": "balanced",
@@ -2582,7 +2582,7 @@ export const CONSTITUTION_HERB_MAPPING = {
   {
     "id": "2176f14b-923c-8178-a3e4-e556f9683343",
     "chinese_name": "Myrrha",
-    "english_name": "Myrrh",
+    "english_name": "Myrrha(待翻译)",
     "latin_name": "Myrrha",
     "category": "general",
     "constitution_type": "balanced",
@@ -2620,7 +2620,7 @@ export const CONSTITUTION_HERB_MAPPING = {
   {
     "id": "2176f14b-923c-8116-ae4f-cd14b53b5ef3",
     "chinese_name": "Valerianae radix",
-    "english_name": "Valerian Root",
+    "english_name": "Valerianae radix(待翻译)",
     "latin_name": "Valerianae radix",
     "category": "general",
     "constitution_type": "balanced",
@@ -2658,7 +2658,7 @@ export const CONSTITUTION_HERB_MAPPING = {
   {
     "id": "2176f14b-923c-810f-9d25-d3cb81a3e147",
     "chinese_name": "Foeniculi vulgaris fructus",
-    "english_name": "Fennel Seed",
+    "english_name": "Foeniculi vulgaris fructus(待翻译)",
     "latin_name": "Foeniculi vulgaris fructus",
     "category": "general",
     "constitution_type": "balanced",
@@ -2696,7 +2696,7 @@ export const CONSTITUTION_HERB_MAPPING = {
   {
     "id": "2176f14b-923c-8147-9821-fe8c7c126c61",
     "chinese_name": "Foeniculi dulcis fructus",
-    "english_name": "Sweet Fennel Seed",
+    "english_name": "Foeniculi dulcis fructus(待翻译)",
     "latin_name": "Foeniculi dulcis fructus",
     "category": "general",
     "constitution_type": "balanced",
@@ -2734,7 +2734,7 @@ export const CONSTITUTION_HERB_MAPPING = {
   {
     "id": "2176f14b-923c-815d-9650-ec72b5d11a48",
     "chinese_name": "Echinaceae purpureae radix",
-    "english_name": "Purple Echinacea Root",
+    "english_name": "Echinaceae purpureae radix(待翻译)",
     "latin_name": "Echinaceae purpureae radix",
     "category": "general",
     "constitution_type": "balanced",
@@ -2772,7 +2772,7 @@ export const CONSTITUTION_HERB_MAPPING = {
   {
     "id": "2176f14b-923c-816e-b7de-c79eac1b57a6",
     "chinese_name": "Echinaceae angustifoliae radix",
-    "english_name": "Narrow-leaf Echinacea Root",
+    "english_name": "Echinaceae angustifoliae radix(待翻译)",
     "latin_name": "Echinaceae angustifoliae radix",
     "category": "general",
     "constitution_type": "balanced",
@@ -2810,7 +2810,7 @@ export const CONSTITUTION_HERB_MAPPING = {
   {
     "id": "2176f14b-923c-819c-9ae1-fbd4a3840aae",
     "chinese_name": "Sennae folium",
-    "english_name": "Senna Leaf",
+    "english_name": "Sennae folium(待翻译)",
     "latin_name": "Sennae folium",
     "category": "general",
     "constitution_type": "balanced",
@@ -3076,7 +3076,7 @@ export const CONSTITUTION_HERB_MAPPING = {
   {
     "id": "2176f14b-923c-8174-bf7a-fad1bf362d70",
     "chinese_name": "Anisi stellati fructus",
-    "english_name": "Star Anise",
+    "english_name": "Anisi stellati fructus(待翻译)",
     "latin_name": "Anisi stellati fructus",
     "category": "general",
     "constitution_type": "balanced",

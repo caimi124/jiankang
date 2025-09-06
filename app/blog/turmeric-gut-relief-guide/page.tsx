@@ -80,7 +80,7 @@ export default function TurmericGutReliefGuidePage() {
               </h1>
               
               <p className="text-xl text-gray-600 leading-relaxed">
-                Feeling bloated, achy, or tired? Discover how turmeric—a natural golden root—can help calm your gut, reduce inflammation, and boost your energy. Here's the simple, no-confusion guide to get started today.
+                Feeling bloated, achy, or tired? Discover how turmeric—a natural golden root—can help calm your gut, reduce inflammation, and boost your energy. Here&apos;s the simple, no-confusion guide to get started today.
               </p>
             </div>
 
@@ -105,7 +105,7 @@ export default function TurmericGutReliefGuidePage() {
               </p>
               
               <p>
-                In simple terms, turmeric helps reduce "inflammation fires" in your body—those hidden causes behind bloating, joint pain, and sluggish digestion.
+                In simple terms, turmeric helps reduce &quot;inflammation fires&quot; in your body—those hidden causes behind bloating, joint pain, and sluggish digestion.
               </p>
 
               <h2>How Turmeric Can Help You Feel Better</h2>
@@ -143,7 +143,7 @@ export default function TurmericGutReliefGuidePage() {
               <h2>Why Black Pepper and Healthy Fats Matter</h2>
               
               <p>
-                Curcumin on its own isn't absorbed well by the body. Black pepper contains <strong>piperine</strong>, which boosts curcumin absorption by up to 20 times! Also, consuming turmeric with healthy fats like olive oil or avocado helps your body take in the nutrients better.
+                Curcumin on its own isn&apos;t absorbed well by the body. Black pepper contains <strong>piperine</strong>, which boosts curcumin absorption by up to 20 times! Also, consuming turmeric with healthy fats like olive oil or avocado helps your body take in the nutrients better.
               </p>
 
               <h2>What to Expect: Real Effects You Can Feel</h2>
@@ -171,7 +171,7 @@ export default function TurmericGutReliefGuidePage() {
                 <h3 className="text-yellow-800 font-semibold mb-2">When to Be Careful</h3>
                 <ul className="text-yellow-700 space-y-1">
                   <li>If you have <strong>gallstones or bile duct issues</strong>, talk to your doctor first.</li>
-                  <li>If you're on <strong>blood-thinning medications</strong>, consult your healthcare provider.</li>
+                  <li>If you&apos;re on <strong>blood-thinning medications</strong>, consult your healthcare provider.</li>
                   <li>Pregnant or breastfeeding women should seek medical advice before starting turmeric supplements.</li>
                 </ul>
               </div>
