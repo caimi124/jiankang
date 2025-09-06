@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Herb } from '../lib/herbs-recommendation'
 import { urlFor } from '@/lib/sanity'
 import { 
@@ -33,6 +34,7 @@ interface HerbCardProps {
 
 export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
   const [isExpanded, setIsExpanded] = useState(false)
+  const router = useRouter()
 
   const getSafetyBadge = (level: string) => {
     switch (level) {
@@ -146,8 +148,13 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
     ? urlFor({ _ref: (herb as any).image_url } as any).width(600).height(400).fit('crop').url()
     : undefined
 
+  const handleHerbClick = () => {
+    console.log(`[HerbCard] 点击草药: ${herb.chinese_name} -> /herbs/${herbSlug}`)
+    router.push(`/herbs/${herbSlug}`)
+  }
+
   return (
-    <div onClick={() => window.location.href = `/herbs/${herbSlug}`} className="block cursor-pointer">
+    <div onClick={handleHerbClick} className="block cursor-pointer">
       <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 group cursor-pointer">
         {/* Cover Image */}
         {imageSrc && (

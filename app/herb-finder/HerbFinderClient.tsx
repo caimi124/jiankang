@@ -377,16 +377,16 @@ export default function HerbFinderClient() {
       
       filtered = filtered.filter(herb => {
         const searchableText = [
-          herb.chinese_name,
-          herb.english_name,
-          herb.latin_name,
-          herb.description,
-          ...herb.efficacy,
-          ...herb.primary_effects,
-          herb.traditional_use,
-          herb.modern_applications,
-          ...herb.ingredients
-        ].join(' ').toLowerCase()
+          herb.chinese_name || '',
+          herb.english_name || '',
+          herb.latin_name || '',
+          herb.description || '',
+          ...(herb.efficacy || []),
+          ...(herb.primary_effects || []),
+          herb.traditional_use || '',
+          herb.modern_applications || '',
+          ...(herb.ingredients || [])
+        ].filter(Boolean).join(' ').toLowerCase()
         
         // 所有搜索词都必须匹配
         return searchTerms.every(term => searchableText.includes(term))
@@ -440,6 +440,7 @@ export default function HerbFinderClient() {
   }, [applyFilters])
 
   const handleFilterChange = (key: keyof FilterState, value: string) => {
+    console.log(`[HerbFinder] 筛选变更: ${key} = "${value}"`)
     setFilters(prev => ({ ...prev, [key]: value }))
     setPage(1)
   }
