@@ -5,12 +5,13 @@ import Link from 'next/link'
 import { useEffect } from 'react'
 import Navigation from '../../../components/Navigation'
 import Breadcrumb from '../../../components/Breadcrumb'
+import AccordionSection from '../../../components/AccordionSection'
 import { 
   Heart, Shield, Brain, Zap, AlertTriangle, Clock, 
   Star, Users, BookOpen, FlaskConical, Pill, Leaf,
   CheckCircle, XCircle, AlertCircle, ArrowRight,
   Share2, Bookmark, Download, Mail, Eye, Award,
-  Coffee, Beaker, Target, Activity
+  Coffee, Beaker, Target, Activity, ChevronDown
 } from 'lucide-react'
 
 // 草药数据类型定义
@@ -60,10 +61,25 @@ interface HerbDetailClientProps {
 }
 
 export default function HerbDetailClient({ herbData, slug }: HerbDetailClientProps) {
-  const [activeTab, setActiveTab] = useState('overview')
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
+    overview: true,  // 默认展开概述
+    benefits: false,
+    safety: false,
+    science: false,
+    traditional: false,
+    faqs: false
+  })
   const [bookmarked, setBookmarked] = useState(false)
   const [relatedHerbs, setRelatedHerbs] = useState<string[]>([])
   const [relatedArticles, setRelatedArticles] = useState<{ title: string; href: string }[]>([])
+
+  // 切换折叠状态
+  const toggleSection = (section: string) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }))
+  }
 
   // 获取体质匹配图标
   const getConstitutionIcon = (suitable: string) => {
