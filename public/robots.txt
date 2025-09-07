@@ -11,4 +11,3 @@ Host: https://herbscience.shop
 
 # Sitemaps
 Sitemap: https://herbscience.shop/sitemap.xml
-Sitemap: https://herbscience.shop/sitemap-0.xml

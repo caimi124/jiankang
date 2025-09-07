@@ -175,8 +175,7 @@ module.exports = {
         disallow: ['/api/', '/test-enhanced', '/_next/', '/zh/test']
       }
     ],
-    additionalSitemaps: [
-      'https://herbscience.shop/sitemap-0.xml'
-    ]
+    // 移除 additionalSitemaps 配置，避免重复引用
+    // next-sitemap 会自动生成 sitemap-index.xml 和相应的 sitemap-0.xml 文件
   }
 } 
