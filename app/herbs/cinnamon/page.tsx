@@ -151,8 +151,8 @@ export default async function CinnamonPage() {
         herbData={{
           ...herbData,
           slug: 'cinnamon',
-          traditionalUse: "In Traditional Chinese Medicine (TCM), cinnamon (Rou Gui) is considered a warming herb that \"warms the yang,\" dispels internal cold, and invigorates blood flow. It has been used for centuries to treat cold-damp conditions, improve circulation, and support women's reproductive health.",
-          modernApplications: "Modern studies confirm cinnamon's role in diabetes support, arthritis relief, and digestive sluggishness. Research shows it improves insulin sensitivity, reduces inflammatory markers, and supports cardiovascular health through its warming and circulatory properties."
+          traditionalUse: 'In Traditional Chinese Medicine (TCM), cinnamon (Rou Gui) is considered a warming herb that "warms the yang," dispels internal cold, and invigorates blood flow. It has been used for centuries to treat cold-damp conditions, improve circulation, and support women\'s reproductive health.',
+          modernApplications: 'Modern studies confirm cinnamon\'s role in diabetes support, arthritis relief, and digestive sluggishness. Research shows it improves insulin sensitivity, reduces inflammatory markers, and supports cardiovascular health through its warming and circulatory properties.'
         }}
       />
     </>
