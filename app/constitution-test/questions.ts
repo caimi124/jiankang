@@ -424,20 +424,41 @@ export function calculateConstitution(answers: number[]): {
     "痰湿": 0, "湿热": 0, "血瘀": 0, "气郁": 0, "特禀": 0
   };
 
-  // 计算各体质得分
+  // 计算各体质得分 - 只计算有效答案 (1-5)
   questions.forEach((question, index) => {
-    const answer = answers[index] || 1;
-    Object.entries(question.affects).forEach(([type, weight]) => {
-      scores[type] = (scores[type] || 0) + answer * weight;
-    });
+    const answer = answers[index];
+    // 只处理有效答案，忽略未回答的题目(0)
+    if (answer >= 1 && answer <= 5) {
+      Object.entries(question.affects).forEach(([type, weight]) => {
+        scores[type] = (scores[type] || 0) + answer * weight;
+      });
+    }
   });
+
+  // 检查有效答案数量
+  const validAnswerCount = answers.filter(answer => answer >= 1 && answer <= 5).length;
+  const minRequiredAnswers = Math.max(3, Math.floor(questions.length * 0.3)); // 至少30%的问题
+
+  // 如果回答的问题太少，提供默认结果
+  if (validAnswerCount < minRequiredAnswers) {
+    return {
+      primary: '平和',
+      secondary: undefined,
+      scores: {
+        "平和": 50, "气虚": 0, "阳虚": 0, "阴虚": 0,
+        "痰湿": 0, "湿热": 0, "血瘀": 0, "气郁": 0, "特禀": 0
+      },
+      isBalanced: false
+    };
+  }
 
   // 排序得分
   const sortedScores = Object.entries(scores)
     .sort((a, b) => b[1] - a[1])
     .filter(([_, score]) => score > 0);
 
-  const [primaryType, primaryScore] = sortedScores[0];
+  // 处理没有正分的情况，默认为平和体质
+  const [primaryType, primaryScore] = sortedScores[0] || ['平和', 0];
   const [secondaryType, secondaryScore] = sortedScores[1] || ['', 0];
 
   // 判定逻辑

@@ -450,9 +450,68 @@ export default function ConstitutionTestClient() {
 
   // 结果页面
   if (currentStep === 'results') {
+    // 检查是否所有问题都已回答
+    const answeredCount = answers.filter(answer => answer >= 1 && answer <= 5).length;
+    const minRequiredAnswers = Math.max(3, Math.floor(questions.length * 0.5)); // 至少50%的问题
+    
+    if (answeredCount < minRequiredAnswers) {
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-yellow-50 to-orange-50">
+          <style dangerouslySetInnerHTML={{ __html: customAnimations }} />
+          <Navigation />
+          
+          <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
+              <div className="text-6xl mb-4">📝</div>
+              <h1 className="text-2xl font-bold text-yellow-600 mb-4">请完成更多题目</h1>
+              <p className="text-gray-600 mb-6">
+                为了获得准确的体质分析，请至少回答 {minRequiredAnswers} 个问题。<br/>
+                您已回答: {answeredCount} / {questions.length}
+              </p>
+              <button
+                onClick={() => setCurrentStep('test')}
+                className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors"
+              >
+                继续答题
+              </button>
+            </div>
+          </main>
+        </div>
+      )
+    }
+
     const result = calculateConstitution(answers)
     const primaryInfo = constitutionInfo[result.primary]
     const secondaryInfo = result.secondary ? constitutionInfo[result.secondary] : null
+
+    // Error handling - if primaryInfo is undefined, show error
+    if (!primaryInfo) {
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50">
+          <style dangerouslySetInnerHTML={{ __html: customAnimations }} />
+          <Navigation />
+          
+          <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
+              <div className="text-6xl mb-4">⚠️</div>
+              <h1 className="text-2xl font-bold text-red-600 mb-4">计算错误</h1>
+              <p className="text-gray-600 mb-6">
+                抱歉，体质计算出现问题。调试信息：<br/>
+                Primary: {result.primary}<br/>
+                Scores: {JSON.stringify(result.scores)}<br/>
+                Available types: {Object.keys(constitutionInfo).join(', ')}
+              </p>
+              <button
+                onClick={() => setCurrentStep('welcome')}
+                className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors"
+              >
+                重新测试
+              </button>
+            </div>
+          </main>
+        </div>
+      )
+    }
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
