@@ -1,6 +1,5 @@
-import { Metadata } from 'next';
-import Navigation from '../../../components/Navigation';
-import Breadcrumb from '../../../components/Breadcrumb';
+import { Metadata } from 'next'
+import HerbDetailClient from '../[slug]/HerbDetailClient'
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -10,84 +9,28 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function ClovePage() {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100">
-      <Navigation />
-      <div className="container mx-auto px-4 py-8">
-        <Breadcrumb
-          items={[
-            { label: 'Home', href: '/' },
-            { label: 'Herbs', href: '/herb-finder' },
-            { label: 'Clove', href: '/herbs/clove' },
-          ]}
-        />
+async function getCloveData() {
+  return {
+    title: 'Clove',
+    chineseName: '丁香',
+    latinName: 'Syzygium aromaticum',
+    description: 'Clove is a powerful aromatic spice with both culinary and medicinal uses. Native to Indonesia, clove buds have been valued for centuries to relieve digestive discomfort, freshen breath, ease tooth pain, and support men\'s reproductive health.',
+    primaryEffects: ['Oral health and dental care', 'Digestive support and nausea relief', 'Anti-inflammatory pain relief'],
+    activeCompounds: ['Eugenol', 'Tannins', 'Flavonoids', 'Volatile oils'],
+    dosage: 'Whole cloves (tea): 1-3 g/day. Powder: 0.5-1 g/day. Oil (external): 1-2 diluted drops.',
+    safetyLevel: 'medium',
+    contraindications: ['Not for acid reflux or stomach ulcers', 'Avoid during pregnancy', 'Not for children under 12 unless supervised'],
+    traditionalUse: 'In Traditional Chinese Medicine, clove (Ding Xiang) is considered a warming herb that strengthens the spleen and kidneys, warms the middle burner, and stops nausea. It has been used to treat digestive weakness, impotence, and cold-related abdominal pain.',
+    modernApplications: 'Modern research confirms clove\'s antimicrobial, analgesic, and anti-inflammatory properties. Studies show effectiveness for dental pain, digestive issues, and as a natural preservative with strong antioxidant activity.',
+    slug: 'clove',
+    seoTitle: 'Clove Benefits and Uses | HerbScience',
+    seoDescription: 'Explore the benefits of clove (Syzygium aromaticum) for digestion, oral health, and inflammation. Learn about its active compounds, uses, and contraindications.',
+    seoKeywords: ['clove benefits', 'clove uses', 'clove tea', 'clove oil benefits']
+  }
+}
 
-        <section>
-          <h1 className="text-3xl font-bold">Clove (Syzygium aromaticum)</h1>
-          <p className="mt-4 text-lg">
-            Clove is a powerful aromatic spice with both culinary and medicinal uses. Native to Indonesia, clove buds have been valued for centuries to relieve digestive discomfort, freshen breath, ease tooth pain, and support men’s reproductive health.
-          </p>
-        </section>
-
-        <section className="mt-8">
-          <h2 className="text-2xl font-semibold">Active Compounds in Clove</h2>
-          <ul className="list-disc ml-6 mt-4">
-            <li><strong>Eugenol</strong> – primary bioactive compound with strong antiseptic and analgesic effects</li>
-            <li><strong>Tannins</strong> – tighten tissues and reduce inflammation</li>
-            <li><strong>Flavonoids</strong> – add antioxidant support</li>
-            <li><strong>Volatile oils</strong> – provide aromatic and antimicrobial activity</li>
-          </ul>
-        </section>
-
-        <section className="mt-8">
-          <h2 className="text-2xl font-semibold">Clove Benefits & Uses</h2>
-          <table className="table-auto w-full mt-4 border-collapse border border-gray-300">
-            <thead>
-              <tr>
-                <th className="border border-gray-300 px-4 py-2">Use Case</th>
-                <th className="border border-gray-300 px-4 py-2">Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">Oral health</td>
-                <td className="border border-gray-300 px-4 py-2">Clove oil helps with toothache, gum pain, and bad breath.</td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">Nausea & vomiting</td>
-                <td className="border border-gray-300 px-4 py-2">Clove tea soothes an upset stomach, motion sickness, or morning nausea.</td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">Bloating & poor appetite</td>
-                <td className="border border-gray-300 px-4 py-2">Stimulates digestive enzymes and reduces gas.</td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">Anti-inflammatory</td>
-                <td className="border border-gray-300 px-4 py-2">Helps with arthritis, headaches, and swelling.</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-
-        <section className="mt-8">
-          <h2 className="text-2xl font-semibold">Clove Contraindications</h2>
-          <ul className="list-disc ml-6 mt-4">
-            <li>Not recommended for people with acid reflux, stomach ulcers, or heat-type conditions.</li>
-            <li>Avoid during pregnancy and in children under 12 unless supervised.</li>
-            <li>Overuse may cause nausea, dizziness, or GI irritation.</li>
-          </ul>
-        </section>
-
-        <section className="mt-8">
-          <h2 className="text-2xl font-semibold">Daily Dosage Guide</h2>
-          <ul className="list-disc ml-6 mt-4">
-            <li><strong>Whole Cloves (tea):</strong> 1–3 g/day</li>
-            <li><strong>Clove Powder:</strong> 0.5–1 g/day</li>
-            <li><strong>Clove Oil (external):</strong> 1–2 diluted drops</li>
-          </ul>
-        </section>
-      </div>
-    </div>
-  );
+export default async function ClovePage() {
+  const herbData = await getCloveData()
+  
+  return <HerbDetailClient herbData={herbData} />
 }

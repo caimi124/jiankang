@@ -5,8 +5,11 @@ export function middleware(request: NextRequest) {
   const url = new URL(request.url)
   let needsRedirect = false
 
-  // Normalize protocol to https
-  if (url.protocol === 'http:') {
+  // 仅在生产环境强制 HTTPS（排除 localhost 开发环境）
+  const isProduction = process.env.NODE_ENV === 'production'
+  const isLocalhost = url.hostname === 'localhost' || url.hostname === '127.0.0.1'
+  
+  if (isProduction && !isLocalhost && url.protocol === 'http:') {
     url.protocol = 'https:'
     needsRedirect = true
   }
@@ -32,24 +35,29 @@ export function middleware(request: NextRequest) {
 
   const response = NextResponse.next()
 
-  // 添加安全相关的响应头
-  const cspHeader = `
-    default-src 'self';
-    script-src 'self' 'unsafe-inline' 'unsafe-eval';
-    style-src 'self' 'unsafe-inline';
-    img-src 'self' data: https:;
-    font-src 'self';
-    object-src 'none';
-    base-uri 'self';
-    form-action 'self';
-    frame-ancestors 'none';
-    block-all-mixed-content;
-    upgrade-insecure-requests;
-  `.replace(/\s{2,}/g, ' ').trim()
+  // 只在生产环境添加适度的安全头，避免阻止JavaScript执行
+  if (isProduction && !isLocalhost) {
+    // 更宽松的CSP策略，允许必要的JavaScript执行
+    const cspHeader = `
+      default-src 'self' 'unsafe-inline' 'unsafe-eval';
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' https: blob: data:;
+      style-src 'self' 'unsafe-inline' https:;
+      img-src 'self' data: https: blob:;
+      font-src 'self' https: data:;
+      connect-src 'self' https: wss: ws:;
+      media-src 'self' https: data:;
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self' https:;
+      frame-ancestors 'self';
+    `.replace(/\s{2,}/g, ' ').trim()
 
-  response.headers.set('Content-Security-Policy', cspHeader)
+    response.headers.set('Content-Security-Policy', cspHeader)
+    response.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload')
+  }
+
+  // 基本安全头（开发和生产环境都添加）
   response.headers.set('X-DNS-Prefetch-Control', 'on')
-  response.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload')
   response.headers.set('X-XSS-Protection', '1; mode=block')
   response.headers.set('X-Frame-Options', 'SAMEORIGIN')
   response.headers.set('X-Content-Type-Options', 'nosniff')

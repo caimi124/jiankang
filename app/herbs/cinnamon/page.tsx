@@ -1,9 +1,5 @@
 import { Metadata } from 'next'
-import { sanityFetch } from '@/lib/sanity'
-import Navigation from '../../../components/Navigation'
-import Breadcrumb from '../../../components/Breadcrumb'
-import { HerbDetailTabs } from '../../../components/HerbDetailTabs'
-import { HerbHero } from '../../../components/HerbHero'
+import HerbDetailClient from '../[slug]/HerbDetailClient'
 
 // 🚀 SEO优化：生成动态metadata
 export async function generateMetadata(): Promise<Metadata> {
@@ -46,45 +42,22 @@ export async function generateStaticParams() {
 
 // 获取Cinnamon草药数据
 async function getCinnamonData() {
-  try {
-    const herb = await sanityFetch(`*[_type == "herb" && slug.current == "cinnamon"][0]`)
-    
-    if (!herb) {
-      // 如果Sanity中没有数据，返回默认数据
-      return {
-        title: 'Cinnamon',
-        chineseName: '肉桂',
-        latinName: 'Cinnamomum cassia',
-        description: 'Cinnamon (Cinnamomum cassia) is not just a warming kitchen spice—it\'s a traditional herbal medicine used for centuries to improve blood circulation, regulate blood sugar, relieve menstrual cramps, and ease cold-related pain.',
-        primaryEffects: ['Blood sugar regulation and diabetes support', 'Menstrual cramps relief and women\'s health', 'Cold limbs and poor circulation improvement'],
-        activeCompounds: ['Cinnamaldehyde', 'Cinnamic acid', 'Polyphenols', 'Essential oils'],
-        dosage: 'Whole bark (tea): 1.5-3 grams/day. Powder: 0.5-1 gram/day. Capsules/Tincture: 250-500 mg/day.',
-        safetyLevel: 'medium',
-        contraindications: ['Not suitable for hot-type conditions', 'Avoid during pregnancy', 'Not recommended for heavy menstruation'],
-        seoTitle: 'Cinnamon Benefits for Blood Sugar, Menstrual Cramps & Cold Limbs | HerbScience',
-        seoDescription: 'Discover the benefits of cinnamon (Cinnamomum cassia) for blood sugar, menstrual cramps, arthritis, and cold limbs.',
-        seoKeywords: ['cinnamon benefits', 'cinnamon for blood sugar', 'cinnamon for menstrual cramps']
-      }
-    }
-    
-    return herb
-  } catch (error) {
-    console.error('Error fetching cinnamon data:', error)
-    // 返回默认数据
-    return {
-      title: 'Cinnamon',
-      chineseName: '肉桂',
-      latinName: 'Cinnamomum cassia',
-      description: 'Cinnamon (Cinnamomum cassia) is not just a warming kitchen spice—it\'s a traditional herbal medicine used for centuries to improve blood circulation, regulate blood sugar, relieve menstrual cramps, and ease cold-related pain.',
-      primaryEffects: ['Blood sugar regulation and diabetes support', 'Menstrual cramps relief and women\'s health', 'Cold limbs and poor circulation improvement'],
-      activeCompounds: ['Cinnamaldehyde', 'Cinnamic acid', 'Polyphenols', 'Essential oils'],
-      dosage: 'Whole bark (tea): 1.5-3 grams/day. Powder: 0.5-1 gram/day. Capsules/Tincture: 250-500 mg/day.',
-      safetyLevel: 'medium',
-      contraindications: ['Not suitable for hot-type conditions', 'Avoid during pregnancy', 'Not recommended for heavy menstruation'],
-      seoTitle: 'Cinnamon Benefits for Blood Sugar, Menstrual Cramps & Cold Limbs | HerbScience',
-      seoDescription: 'Discover the benefits of cinnamon (Cinnamomum cassia) for blood sugar, menstrual cramps, arthritis, and cold limbs.',
-      seoKeywords: ['cinnamon benefits', 'cinnamon for blood sugar', 'cinnamon for menstrual cramps']
-    }
+  return {
+    title: 'Cinnamon',
+    chineseName: '肉桂',
+    latinName: 'Cinnamomum cassia',
+    description: 'Cinnamon (Cinnamomum cassia) is not just a warming kitchen spice—it\'s a traditional herbal medicine used for centuries to improve blood circulation, regulate blood sugar, relieve menstrual cramps, and ease cold-related pain.',
+    primaryEffects: ['Blood sugar regulation and diabetes support', 'Menstrual cramps relief and women\'s health', 'Cold limbs and poor circulation improvement'],
+    activeCompounds: ['Cinnamaldehyde', 'Cinnamic acid', 'Polyphenols', 'Essential oils'],
+    dosage: 'Whole bark (tea): 1.5-3 grams/day. Powder: 0.5-1 gram/day. Capsules/Tincture: 250-500 mg/day.',
+    safetyLevel: 'medium',
+    contraindications: ['Not suitable for hot-type conditions', 'Avoid during pregnancy', 'Not recommended for heavy menstruation'],
+    traditionalUse: 'In Traditional Chinese Medicine (TCM), cinnamon (Rou Gui) is considered a warming herb that "warms the yang," dispels internal cold, and invigorates blood flow. It has been used for centuries to treat cold-damp conditions, improve circulation, and support women\'s reproductive health.',
+    modernApplications: 'Modern studies confirm cinnamon\'s role in diabetes support, arthritis relief, and digestive sluggishness. Research shows it improves insulin sensitivity, reduces inflammatory markers, and supports cardiovascular health through its warming and circulatory properties.',
+    slug: 'cinnamon',
+    seoTitle: 'Cinnamon Benefits for Blood Sugar, Menstrual Cramps & Cold Limbs | HerbScience',
+    seoDescription: 'Discover the benefits of cinnamon (Cinnamomum cassia) for blood sugar, menstrual cramps, arthritis, and cold limbs.',
+    seoKeywords: ['cinnamon benefits', 'cinnamon for blood sugar', 'cinnamon for menstrual cramps']
   }
 }
 
@@ -174,47 +147,14 @@ export default async function CinnamonPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100">
-        <Navigation />
-        
-        <div className="container mx-auto px-4 py-8">
-          <Breadcrumb 
-            items={[
-              { label: 'Home', href: '/' },
-              { label: 'Herbs', href: '/herb-finder' },
-              { label: 'Cinnamon', href: '/herbs/cinnamon' }
-            ]} 
-          />
-          
-          {/* 草药英雄区域 */}
-          <HerbHero
-            herbData={{
-              title: herbData.title,
-              chineseName: herbData.chineseName,
-              latinName: herbData.latinName,
-              description: herbData.description,
-              safetyLevel: herbData.safetyLevel
-            }}
-          />
-          
-          {/* 草药详情标签页 */}
-          <HerbDetailTabs
-            herbData={{
-              title: herbData.title,
-              chineseName: herbData.chineseName,
-              latinName: herbData.latinName,
-              description: herbData.description,
-              primaryEffects: herbData.primaryEffects,
-              activeCompounds: herbData.activeCompounds,
-              dosage: herbData.dosage,
-              safetyLevel: herbData.safetyLevel,
-              contraindications: herbData.contraindications,
-              traditionalUse: "In Traditional Chinese Medicine (TCM), cinnamon (Rou Gui) is considered a warming herb that \"warms the yang,\" dispels internal cold, and invigorates blood flow. It has been used for centuries to treat cold-damp conditions, improve circulation, and support women's reproductive health.",
-              modernApplications: "Modern studies confirm cinnamon's role in diabetes support, arthritis relief, and digestive sluggishness. Research shows it improves insulin sensitivity, reduces inflammatory markers, and supports cardiovascular health through its warming and circulatory properties."
-            }}
-          />
-        </div>
-      </div>
+      <HerbDetailClient 
+        herbData={{
+          ...herbData,
+          slug: 'cinnamon',
+          traditionalUse: "In Traditional Chinese Medicine (TCM), cinnamon (Rou Gui) is considered a warming herb that \"warms the yang,\" dispels internal cold, and invigorates blood flow. It has been used for centuries to treat cold-damp conditions, improve circulation, and support women's reproductive health.",
+          modernApplications: "Modern studies confirm cinnamon's role in diabetes support, arthritis relief, and digestive sluggishness. Research shows it improves insulin sensitivity, reduces inflammatory markers, and supports cardiovascular health through its warming and circulatory properties."
+        }}
+      />
     </>
   )
 }

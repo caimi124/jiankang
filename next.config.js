@@ -35,7 +35,7 @@ const nextConfig = {
     optimizeCss: true,
   },
 
-  // 🚀 性能优化headers
+  // 🚀 性能优化headers（移除可能阻止JavaScript的严格安全头）
   async headers() {
     return [
       {
@@ -45,14 +45,11 @@ const nextConfig = {
             key: 'X-DNS-Prefetch-Control',
             value: 'on'
           },
-          {
+          // 在开发环境不添加HSTS
+          ...(process.env.NODE_ENV === 'production' ? [{
             key: 'Strict-Transport-Security',
             value: 'max-age=63072000; includeSubDomains; preload'
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block'
-          },
+          }] : []),
           {
             key: 'X-Frame-Options',
             value: 'SAMEORIGIN'
@@ -206,64 +203,14 @@ const nextConfig = {
     styledComponents: false,
   },
 
-  // 🚀 Webpack优化
-  webpack: (config, { dev, isServer, webpack }) => {
-    // 生产环境bundle优化
-    if (!dev && !isServer) {
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-            priority: 10,
-          },
-          common: {
-            name: 'common',
-            minChunks: 2,
-            chunks: 'all',
-            priority: 5,
-            reuseExistingChunk: true,
-          },
-          // 🚀 新增：草药相关组件单独打包
-          herbs: {
-            test: /[\\/]components[\\/]Herb/,
-            name: 'herbs',
-            chunks: 'all',
-            priority: 3,
-          }
-        },
+  // 🚀 Webpack配置 - 简化以避免模块加载冲突
+  webpack: (config, { dev, isServer }) => {
+    // 仅在开发环境添加基本的路径别名
+    if (dev) {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        '@': require('path').resolve(__dirname),
       }
-    }
-
-    // 模块解析优化
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      '@': require('path').resolve(__dirname),
-    }
-
-    // 🚀 新增：启用模块联邦
-    if (!isServer) {
-      config.plugins.push(
-        new webpack.container.ModuleFederationPlugin({
-          name: 'herbscience',
-          filename: 'remoteEntry.js',
-          exposes: {
-            './HerbCard': './components/HerbRecommendations.tsx',
-          },
-          shared: {
-            react: {
-              singleton: true,
-              requiredVersion: false,
-            },
-            'react-dom': {
-              singleton: true,
-              requiredVersion: false,
-            },
-          },
-        })
-      )
     }
 
     return config

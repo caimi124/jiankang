@@ -128,28 +128,21 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
     ? urlFor({ _ref: (herb as any).image_url } as any).width(600).height(400).fit('crop').url()
     : undefined
 
-  const handleHerbClick = (e: React.MouseEvent) => {
+  const handleHerbClick = () => {
     console.log(`[HerbCard] 点击事件触发: ${herb.chinese_name}`)
-    console.log(`[HerbCard] 点击目标:`, e.target)
     console.log(`[HerbCard] 目标slug: ${herbSlug}`)
-    
-    // 如果点击的是按钮区域，不要跳转
-    const isButtonClick = (e.target as HTMLElement).closest('button')
-    if (isButtonClick) {
-      console.log(`[HerbCard] 按钮点击，取消导航`)
-      return
-    }
-    
     console.log(`[HerbCard] 导航到: /herbs/${herbSlug}`)
-    router.push(`/herbs/${herbSlug}`)
+    
+    // 直接使用 window.location 进行导航
+    window.location.href = `/herbs/${herbSlug}`
   }
 
   return (
-    <div 
-      onClick={handleHerbClick} 
-      className="block cursor-pointer relative hover:scale-105 transition-transform duration-200"
+    <a
+      href={`/herbs/${herbSlug}`}
+      className="block relative hover:scale-105 transition-transform duration-200 bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl hover:border-green-200 transition-all duration-300 group text-inherit no-underline"
+      onClick={handleHerbClick}
     >
-      <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl hover:border-green-200 transition-all duration-300 group cursor-pointer">
         {/* Cover Image */}
         {imageSrc && (
           <div className="mb-4 -mt-2 -mx-2">
@@ -238,6 +231,7 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
               setIsExpanded(!isExpanded)
             }}
             className="flex items-center justify-center gap-2 w-full bg-gray-50 hover:bg-gray-100 text-gray-700 py-2 px-4 rounded-lg transition-all duration-200 text-sm font-medium"
+            type="button"
           >
             <span className="text-sm mr-1">📖</span>
             {isExpanded ? 'Show Less Details' : 'Show More Details'}
@@ -302,8 +296,7 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
           </div>
         </div>
       )}
-      </div>
-    </div>
+    </a>
   )
 }
 
