@@ -86,12 +86,16 @@ export default function Navigation() {
 
   // 语言切换功能
   const handleLanguageSwitch = (newLocale: string) => {
+    console.log(`[Navigation] 切换语言: ${currentLocale} -> ${newLocale}`)
+    console.log(`[Navigation] 当前路径: ${pathname}`)
+    
     const currentPath = pathname.replace(/^\/zh/, '') || '/'
-    if (newLocale === 'zh') {
-      router.push(`/zh${currentPath}`)
-    } else {
-      router.push(currentPath)
-    }
+    const newPath = newLocale === 'zh' ? `/zh${currentPath}` : currentPath
+    
+    console.log(`[Navigation] 目标路径: ${newPath}`)
+    
+    // 直接使用 window.location 进行导航
+    window.location.href = newPath
   }
 
   // 键盘导航处理
@@ -240,26 +244,41 @@ export default function Navigation() {
               {/* Language Switcher */}
               <div className="relative">
                 <div className="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
+                  {/* 按钮版本 */}
                   <button
                     onClick={() => handleLanguageSwitch('en')}
-                    className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${
+                    className={`px-3 py-1 text-sm font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 ${
                       currentLocale === 'en' 
                         ? 'bg-white text-green-600 shadow-sm' 
                         : 'text-gray-600 hover:text-gray-900'
                     }`}
+                    type="button"
+                    aria-label="切换到英文版本"
                   >
                     🇺🇸 EN
                   </button>
                   <button
                     onClick={() => handleLanguageSwitch('zh')}
-                    className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${
+                    className={`px-3 py-1 text-sm font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 ${
                       currentLocale === 'zh' 
                         ? 'bg-white text-green-600 shadow-sm' 
                         : 'text-gray-600 hover:text-gray-900'
                     }`}
+                    type="button"
+                    aria-label="切换到中文版本"
                   >
                     🇨🇳 中文
                   </button>
+                  
+                  {/* 备用链接版本 - 仅在按钮不工作时显示 */}
+                  <div className="hidden" id="lang-backup">
+                    <a
+                      href={currentLocale === 'en' ? '/zh' + pathname.replace(/^\/zh/, '') : pathname.replace(/^\/zh/, '') || '/'}
+                      className="px-3 py-1 text-sm font-medium rounded-md bg-gray-200 text-gray-700"
+                    >
+                      🔄 {currentLocale === 'en' ? '中文' : 'EN'}
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -270,21 +289,25 @@ export default function Navigation() {
               <div className="flex items-center space-x-1">
                 <button
                   onClick={() => handleLanguageSwitch('en')}
-                  className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
+                  className={`px-2 py-1 text-xs font-medium rounded transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 ${
                     currentLocale === 'en' 
                       ? 'bg-green-100 text-green-600' 
                       : 'text-gray-600'
                   }`}
+                  type="button"
+                  aria-label="Switch to English"
                 >
                   🇺🇸
                 </button>
                 <button
                   onClick={() => handleLanguageSwitch('zh')}
-                  className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
+                  className={`px-2 py-1 text-xs font-medium rounded transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 ${
                     currentLocale === 'zh' 
                       ? 'bg-green-100 text-green-600' 
                       : 'text-gray-600'
                   }`}
+                  type="button"
+                  aria-label="切换到中文"
                 >
                   🇨🇳
                 </button>

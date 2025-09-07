@@ -26,20 +26,51 @@ export default function ConstitutionTestClient() {
   const [answers, setAnswers] = useState<number[]>(new Array(questions.length).fill(0))
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
 
+  // 检查URL参数，如果有start=true则自动开始测试
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search)
+      if (urlParams.get('start') === 'true') {
+        console.log('[ConstitutionTest] URL参数检测到start=true，自动开始测试')
+        setCurrentStep('test')
+        // 清除URL参数
+        window.history.replaceState({}, '', '/constitution-test')
+      }
+      
+      // 添加调试脚本
+      const script = document.createElement('script')
+      script.src = '/debug-buttons.js'
+      document.head.appendChild(script)
+    }
+  }, [])
+
   const handleStartTest = () => {
-    setCurrentStep('test')
-    setCurrentQuestion(0)
-    setAnswers(new Array(questions.length).fill(0))
-    setSelectedAnswer(null)
+    console.log('[ConstitutionTest] 开始测试按钮被点击')
+    try {
+      setCurrentStep('test')
+      setCurrentQuestion(0)
+      setAnswers(new Array(questions.length).fill(0))
+      setSelectedAnswer(null)
+      console.log('[ConstitutionTest] 状态已更新为测试模式')
+    } catch (error) {
+      console.error('[ConstitutionTest] 状态更新错误:', error)
+      // 强制刷新页面并添加参数
+      window.location.href = '/constitution-test?start=true'
+    }
   }
 
   const handleAnswerSelect = (score: number) => {
+    console.log(`[ConstitutionTest] 选择答案: ${score}`)
     setSelectedAnswer(score)
   }
 
   const handleNextQuestion = () => {
-    if (selectedAnswer === null) return
+    if (selectedAnswer === null) {
+      console.log('[ConstitutionTest] 未选择答案，无法继续')
+      return
+    }
 
+    console.log(`[ConstitutionTest] 提交答案: ${selectedAnswer} for question ${currentQuestion}`)
     const newAnswers = [...answers]
     newAnswers[currentQuestion] = selectedAnswer
     setAnswers(newAnswers)
@@ -47,8 +78,10 @@ export default function ConstitutionTestClient() {
 
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1)
+      console.log(`[ConstitutionTest] 进入下一题: ${currentQuestion + 1}`)
     } else {
       setCurrentStep('results')
+      console.log('[ConstitutionTest] 测试完成，显示结果')
     }
   }
 
@@ -119,15 +152,46 @@ export default function ConstitutionTestClient() {
             </div>
           </div>
 
-          {/* 开始测试按钮 */}
-          <div className="text-center">
+          {/* 开始测试按钮 - 使用多种方式 */}
+          <div className="text-center space-y-4">
+            {/* 方式1: React按钮 */}
             <button
               onClick={handleStartTest}
-              className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-12 py-4 rounded-2xl text-lg font-semibold hover:from-green-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
+              className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-12 py-4 rounded-2xl text-lg font-semibold hover:from-green-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg focus:outline-none focus:ring-4 focus:ring-green-300"
+              type="button"
             >
-              🎯 开始体质测试
+              🎯 开始体质测试 (React按钮)
             </button>
-            <p className="text-gray-500 mt-4 text-sm">
+            
+            {/* 方式2: HTML链接伪装成按钮 */}
+            <a
+              href="/constitution-test?start=true"
+              className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-12 py-4 rounded-2xl text-lg font-semibold transition-all duration-200 shadow-lg"
+            >
+              🔄 开始体质测试 (HTML链接)
+            </a>
+
+            {/* 方式3: 内联JavaScript */}
+            <div
+              onClick={() => window.location.href = '/constitution-test?start=true'}
+              className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-12 py-4 rounded-2xl text-lg font-semibold transition-all duration-200 shadow-lg cursor-pointer"
+            >
+              ⚡ 开始体质测试 (内联JS)
+            </div>
+
+            {/* 方式4: 纯HTML按钮带onclick */}
+            <button
+              onClick={() => {
+                console.log('🚀 纯HTML按钮点击')
+                window.location.href = '/constitution-test?start=true'
+              }}
+              className="bg-red-600 hover:bg-red-700 text-white px-12 py-4 rounded-2xl text-lg font-semibold transition-all duration-200 shadow-lg"
+            >
+              🔥 开始体质测试 (纯HTML)
+            </button>
+            
+            <p className="text-gray-500 text-sm">
+              ⚠️ 如果上面所有按钮都不工作，可能是JavaScript被完全禁用<br/>
               本测试仅供教育参考，不能替代专业医疗建议
             </p>
           </div>
@@ -188,11 +252,14 @@ export default function ConstitutionTestClient() {
                 <button
                   key={option.value}
                   onClick={() => handleAnswerSelect(option.value)}
-                  className={`w-full p-4 rounded-xl border-2 text-left transition-all duration-200 ${
+                  className={`w-full p-4 rounded-xl border-2 text-left transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-green-300 ${
                     selectedAnswer === option.value
                       ? 'border-green-500 bg-green-50 text-green-700'
                       : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                   }`}
+                  type="button"
+                  aria-label={`选择答案：${option.label} - ${option.description}`}
+                  aria-pressed={selectedAnswer === option.value}
                 >
                   <div className="flex items-center justify-between">
                     <div>
@@ -225,11 +292,13 @@ export default function ConstitutionTestClient() {
               <button
                 onClick={handleNextQuestion}
                 disabled={selectedAnswer === null}
-                className={`flex items-center gap-2 px-8 py-3 rounded-xl font-medium transition-colors ${
+                className={`flex items-center gap-2 px-8 py-3 rounded-xl font-medium transition-colors focus:outline-none focus:ring-4 ${
                   selectedAnswer === null
                     ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-green-600 to-blue-600 text-white hover:from-green-700 hover:to-blue-700'
+                    : 'bg-gradient-to-r from-green-600 to-blue-600 text-white hover:from-green-700 hover:to-blue-700 focus:ring-green-300'
                 }`}
+                type="button"
+                aria-label={currentQuestion === questions.length - 1 ? '查看测试结果' : '进入下一题'}
               >
                 {currentQuestion === questions.length - 1 ? '查看结果' : '下一题'}
                 <ArrowRight className="w-5 h-5" />
