@@ -50,5 +50,5 @@ async function getCloveData() {
 export default async function ClovePage() {
   const herbData = await getCloveData()
   
-  return <HerbDetailClient herbData={herbData} />
+  return <HerbDetailClient herbData={herbData} slug="clove" />
 }
