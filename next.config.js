@@ -38,7 +38,7 @@ const nextConfig = {
   },
 
   // 🚀 优化服务器组件
-  serverExternalPackages: ['@sanity/client'],
+  transpilePackages: ['@sanity/client', '@sanity/image-url'],
 
   // 🚀 性能优化headers（移除可能阻止JavaScript的严格安全头）
   async headers() {
@@ -209,6 +209,7 @@ const nextConfig = {
   },
 
 
+
   // 🚀 Webpack配置 - 性能优化
   webpack: (config, { dev, isServer }) => {
     // 仅在开发环境添加基本的路径别名
@@ -228,13 +229,20 @@ const nextConfig = {
       'lodash': false,
       'moment': false,
       'axios': false,
+      'date-fns': false,
+      'classnames': 'clsx', // 使用轻量级替代品
     }
     
-    // 启用tree shaking和dead code elimination
+    
+    // 启用tree shaking和dead code elimination + 现代化优化
     config.optimization = {
       ...config.optimization,
       usedExports: true,
       sideEffects: false,
+      // 移除旧版代码
+      moduleIds: 'deterministic',
+      // 优化打包大小
+      minimize: !dev,
     }
 
     // 🚀 移动端优化：激进的代码分割 + 禁用polyfills

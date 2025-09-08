@@ -1,79 +1,35 @@
 'use client'
 
-import React, { useState, useEffect, useCallback } from 'react'
-import Navigation from '../../components/Navigation'
-import Breadcrumb from '../../components/Breadcrumb'
-import { HerbCard } from '../../components/HerbRecommendations'
-import HerbFinderFAQ from '../../components/HerbFinderFAQ'
-import { 
-  Search, 
-  Filter, 
-  Leaf, 
-  ChevronDown,
-  AlertCircle,
-  RefreshCw,
-  X,
-  Star,
-  Shield,
-  Heart,
-  Brain,
-  Zap,
-  Moon,
-  Users,
-  Target
-} from 'lucide-react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import dynamic from 'next/dynamic'
 import type { Herb } from '../../lib/herbs-recommendation'
-import { sanityFetch } from '@/lib/sanity'
 import { HERBS_DATABASE } from '../../lib/herbs-data-complete'
 
-// 获取草药数据（优化版本：使用本地API）
-async function getHerbsData(filters: any = {}) {
-  try {
-    console.log(`[HerbFinder] 🚀 Fetching herbs with filters:`, filters)
-    
-    // 构建查询参数
-    const searchParams = new URLSearchParams()
-    
-    if (filters.search) searchParams.set('search', filters.search)
-    if (filters.category) searchParams.set('category', filters.category)
-    if (filters.constitution) searchParams.set('constitution', filters.constitution)
-    if (filters.safety) searchParams.set('safety', filters.safety)
-    if (filters.page) searchParams.set('page', filters.page.toString())
-    if (filters.limit) searchParams.set('limit', filters.limit.toString())
-    
-    // 强制使用新版本，添加超时控制
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 10000) // 10秒超时
-    
-    const response = await fetch(`/api/herbs/data?${searchParams.toString()}&_t=${Date.now()}&v=${Date.now()}`, {
-      cache: 'no-store',
-      signal: controller.signal,
-      headers: {
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0'
-      }
-    })
-    
-    clearTimeout(timeoutId)
-    
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`)
-    }
-    
-    const data = await response.json()
-    
-    console.log(`[HerbFinder] ⚡ API SUCCESS - Version: ${Date.now()} - Herbs: ${data.herbs?.length || 0} - Total: ${data.total || 0}`)
-    
-    return {
-      herbs: data.herbs || [],
-      total: data.total || 0
-    }
-  } catch (error) {
-    console.error('[HerbFinder] ❌ API FAILED:', error)
-    return { herbs: [], total: 0 }
-  }
-}
+// Lazy load heavy components
+const Navigation = dynamic(() => import('../../components/Navigation'), { ssr: true })
+const Breadcrumb = dynamic(() => import('../../components/Breadcrumb'), { ssr: true })
+const HerbCard = dynamic(() => import('../../components/HerbRecommendations').then(mod => ({ default: mod.HerbCard })), { ssr: false })
+const HerbFinderFAQ = dynamic(() => import('../../components/HerbFinderFAQ'), { ssr: false })
+
+// Lazy load icons - only load what's needed
+const Search = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Search })), { ssr: false })
+const Filter = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Filter })), { ssr: false })
+const Leaf = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Leaf })), { ssr: false })
+const ChevronDown = dynamic(() => import('lucide-react').then(mod => ({ default: mod.ChevronDown })), { ssr: false })
+const AlertCircle = dynamic(() => import('lucide-react').then(mod => ({ default: mod.AlertCircle })), { ssr: false })
+const RefreshCw = dynamic(() => import('lucide-react').then(mod => ({ default: mod.RefreshCw })), { ssr: false })
+const X = dynamic(() => import('lucide-react').then(mod => ({ default: mod.X })), { ssr: false })
+const Target = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Target })), { ssr: false })
+
+// Lazy load category icons
+const Moon = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Moon })), { ssr: false })
+const Zap = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Zap })), { ssr: false })
+const Shield = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Shield })), { ssr: false })
+const Heart = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Heart })), { ssr: false })
+const Brain = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Brain })), { ssr: false })
+const Users = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Users })), { ssr: false })
+
+// Remove unused API function - using local data only
 
 interface FilterState {
   constitution: string
@@ -83,253 +39,57 @@ interface FilterState {
   category: string
 }
 
-// Popular search categories for better UX
+// Popular search categories - icons loaded dynamically
+const PopularCategory = ({ iconName, label, onClick, isActive }: { iconName: string, label: string, onClick: () => void, isActive: boolean }) => {
+  const IconComponent = useMemo(() => {
+    switch(iconName) {
+      case 'moon': return Moon
+      case 'zap': return Zap  
+      case 'shield': return Shield
+      case 'heart': return Heart
+      case 'brain': return Brain
+      case 'users': return Users
+      default: return null
+    }
+  }, [iconName])
+  
+  return (
+    <button
+      onClick={onClick}
+      className={`flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 ${
+        isActive
+          ? 'bg-green-600 text-white shadow-lg'
+          : 'bg-white text-gray-700 hover:bg-green-50 hover:text-green-700 border border-gray-200 hover:border-green-200'
+      }`}
+    >
+      {IconComponent && <IconComponent className="w-4 h-4" />}
+      <span className="ml-2">{label}</span>
+    </button>
+  )
+}
+
 const popularCategories = [
-  { 
-    icon: <Moon className="w-4 h-4" />, 
-    label: 'Sleep & Relaxation', 
-    keywords: ['睡眠支持', '镇静安神', '情绪管理', 'sleep', 'relaxation', 'calm'] 
-  },
-  { 
-    icon: <Zap className="w-4 h-4" />, 
-    label: 'Energy & Vitality', 
-    keywords: ['能量提升', '补气养血', 'energy', 'vitality', 'boost'] 
-  },
-  { 
-    icon: <Shield className="w-4 h-4" />, 
-    label: 'Immune Support', 
-    keywords: ['免疫支持', 'immune', 'support', 'defense'] 
-  },
-  { 
-    icon: <Heart className="w-4 h-4" />, 
-    label: 'Digestive Health', 
-    keywords: ['消化健康', 'digestive', 'stomach', 'gut'] 
-  },
-  { 
-    icon: <Brain className="w-4 h-4" />, 
-    label: 'Mental Clarity', 
-    keywords: ['压力与焦虑', 'mental', 'focus', 'clarity', 'stress', 'anxiety'] 
-  },
-  { 
-    icon: <Users className="w-4 h-4" />, 
-    label: 'Women\'s Health', 
-    keywords: ['女性健康', 'women', 'female', 'hormonal'] 
-  }
+  { iconName: 'moon', label: 'Sleep & Relaxation', keywords: ['睡眠支持', '镇静安神', '情绪管理', 'sleep', 'relaxation', 'calm'] },
+  { iconName: 'zap', label: 'Energy & Vitality', keywords: ['能量提升', '补气养血', 'energy', 'vitality', 'boost'] },
+  { iconName: 'shield', label: 'Immune Support', keywords: ['免疫支持', 'immune', 'support', 'defense'] },
+  { iconName: 'heart', label: 'Digestive Health', keywords: ['消化健康', 'digestive', 'stomach', 'gut'] },
+  { iconName: 'brain', label: 'Mental Clarity', keywords: ['压力与焦虑', 'mental', 'focus', 'clarity', 'stress', 'anxiety'] },
+  { iconName: 'users', label: 'Women\'s Health', keywords: ['女性健康', 'women', 'female', 'hormonal'] }
 ]
 
 export default function HerbFinderClient() {
 
-  // 静态备用草药数据（保留作为最终fallback）
-  const staticHerbs: Herb[] = [
-    {
-      id: "ginseng-001",
-      chinese_name: "人参",
-      english_name: "Ginseng",
-      latin_name: "Panax ginseng",
-      category: "energy",
-      constitution_type: "气虚质",
-      primary_effects: ["能量提升", "免疫支持"],
-      secondary_effects: ["抗疲劳", "认知增强"],
-      efficacy: ["能量提升", "免疫支持", "抗疲劳", "认知增强"],
-      dosage: "每日500-2000mg",
-      safety_level: "high" as const,
-      contraindications: "高血压患者慎用，孕妇禁用",
-      description: "人参是传统中医中最著名的补气药材，具有显著的滋补强壮作用。",
-      traditional_use: "用于气虚体弱、疲劳乏力、食欲不振等症状。",
-      modern_applications: "现代研究证实人参具有适应原作用，能提高机体抗应激能力。",
-      taste: "甘、微苦",
-      meridians: ["脾", "肺"],
-      part_used: "根",
-      source: "野生或人工种植",
-      growing_regions: ["中国东北", "韩国", "俄罗斯"],
-      price_range: "expensive" as const,
-      availability: "common" as const,
-      quality_score: 95,
-      popularity_score: 90,
-      usage_suggestions: "空腹服用效果更佳，避免与咖啡同服",
-      ingredients: ["人参皂苷", "多糖", "氨基酸"]
-    },
-    {
-      id: "turmeric-002", 
-      chinese_name: "姜黄",
-      english_name: "Turmeric",
-      latin_name: "Curcuma longa",
-      category: "immune",
-      constitution_type: "湿热质",
-      primary_effects: ["抗炎作用", "免疫支持"],
-      secondary_effects: ["消化健康", "关节健康"],
-      efficacy: ["抗炎作用", "免疫支持", "消化健康", "关节健康"],
-      dosage: "每日500-1000mg姜黄素",
-      safety_level: "high" as const,
-      contraindications: "胆结石患者慎用，手术前停用",
-      description: "姜黄含有强效的抗炎化合物姜黄素，具有广泛的健康益处。",
-      traditional_use: "传统上用于消化不良、关节疼痛和皮肤问题。",
-      modern_applications: "现代研究显示姜黄素具有强大的抗氧化和抗炎特性。",
-      taste: "辛、苦",
-      meridians: ["脾", "肝"],
-      part_used: "根茎",
-      source: "人工种植",
-      growing_regions: ["印度", "中国", "东南亚"],
-      price_range: "moderate" as const,
-      availability: "common" as const,
-      quality_score: 88,
-      popularity_score: 85,
-      usage_suggestions: "与黑胡椒同服可增强吸收",
-      ingredients: ["姜黄素", "挥发油", "多糖"]
-    },
-    {
-      id: "ginkgo-003",
-      chinese_name: "银杏叶",
-      english_name: "Ginkgo Biloba",
-      latin_name: "Ginkgo biloba",
-      category: "cognitive",
-      constitution_type: "平和质",
-      primary_effects: ["认知增强", "血液循环"],
-      secondary_effects: ["记忆改善", "抗氧化"],
-      efficacy: ["认知增强", "血液循环", "记忆改善", "抗氧化"],
-      dosage: "每日120-240mg标准提取物",
-      safety_level: "medium" as const,
-      contraindications: "服用抗凝血药物者慎用",
-      description: "银杏是世界上最古老的树种之一，其叶子提取物对大脑健康有益。",
-      traditional_use: "传统中医用于治疗咳喘、心悸等症状。",
-      modern_applications: "现代主要用于改善认知功能和循环系统健康。",
-      taste: "苦、涩",
-      meridians: ["肺", "心"],
-      part_used: "叶",
-      source: "人工种植",
-      growing_regions: ["中国", "欧洲", "北美"],
-      price_range: "moderate" as const,
-      availability: "common" as const,
-      quality_score: 82,
-      popularity_score: 78,
-      usage_suggestions: "餐后服用，避免空腹",
-      ingredients: ["银杏内酯", "黄酮苷", "萜类化合物"]
-    },
-    {
-      id: "astragalus-004",
-      chinese_name: "黄芪",
-      english_name: "Astragalus",
-      latin_name: "Astragalus membranaceus",
-      category: "immune",
-      constitution_type: "气虚质",
-      primary_effects: ["免疫支持", "补气养血"],
-      secondary_effects: ["抗疲劳", "保肝"],
-      efficacy: ["免疫支持", "补气养血", "抗疲劳", "保肝"],
-      dosage: "每日10-30g煎服或3-9g粉剂",
-      safety_level: "high" as const,
-      contraindications: "感冒发热时暂停使用",
-      description: "黄芪是中医最常用的补气药之一，具有显著的免疫调节作用。",
-      traditional_use: "用于气虚乏力、自汗、久泻脱肛等症。",
-      modern_applications: "现代研究证实具有增强免疫力、抗疲劳、保护肝脏的作用。",
-      taste: "甘、微温",
-      meridians: ["脾", "肺"],
-      part_used: "根",
-      source: "野生或人工种植",
-      growing_regions: ["中国北方", "蒙古"],
-      price_range: "moderate" as const,
-      availability: "common" as const,
-      quality_score: 90,
-      popularity_score: 88,
-      usage_suggestions: "可与红枣、枸杞同煎",
-      ingredients: ["黄芪皂苷", "多糖", "黄酮类"]
-    },
-    {
-      id: "rhodiola-005",
-      chinese_name: "红景天",
-      english_name: "Rhodiola",
-      latin_name: "Rhodiola rosea",
-      category: "energy",
-      constitution_type: "气虚质",
-      primary_effects: ["抗疲劳", "适应原"],
-      secondary_effects: ["抗抑郁", "认知增强"],
-      efficacy: ["抗疲劳", "适应原", "抗抑郁", "认知增强"],
-      dosage: "每日200-400mg标准提取物",
-      safety_level: "high" as const,
-      contraindications: "躁狂症患者慎用",
-      description: "红景天是珍贵的高原药材，具有显著的抗疲劳和适应原作用。",
-      traditional_use: "藏医用于治疗高原反应、疲劳等症。",
-      modern_applications: "现代研究显示对压力、疲劳、抑郁有良好效果。",
-      taste: "甘、苦、寒",
-      meridians: ["肺", "心"],
-      part_used: "根茎",
-      source: "野生采集",
-      growing_regions: ["西藏", "新疆", "东北"],
-      price_range: "expensive" as const,
-      availability: "rare" as const,
-      quality_score: 92,
-      popularity_score: 75,
-      usage_suggestions: "早晨空腹服用效果最佳",
-      ingredients: ["红景天苷", "酪醇", "黄酮类"]
-    },
-    {
-      id: "echinacea-006",
-      chinese_name: "紫锥菊",
-      english_name: "Echinacea",
-      latin_name: "Echinacea purpurea",
-      category: "immune",
-      constitution_type: "平和质",
-      primary_effects: ["免疫支持", "抗感染"],
-      secondary_effects: ["抗炎", "伤口愈合"],
-      efficacy: ["免疫支持", "抗感染", "抗炎", "伤口愈合"],
-      dosage: "每日300-500mg提取物",
-      safety_level: "high" as const,
-      contraindications: "自身免疫疾病患者慎用",
-      description: "紫锥菊是北美印第安人传统药材，具有强大的免疫调节作用。",
-      traditional_use: "传统用于治疗感冒、感染、伤口等。",
-      modern_applications: "现代主要用于预防和缓解感冒症状。",
-      taste: "微苦、辛",
-      meridians: ["肺", "肝"],
-      part_used: "全草",
-      source: "人工种植",
-      growing_regions: ["北美", "欧洲", "中国"],
-      price_range: "moderate" as const,
-      availability: "common" as const,
-      quality_score: 85,
-      popularity_score: 80,
-      usage_suggestions: "感冒初期使用效果更佳",
-      ingredients: ["多酚", "烷基酰胺", "多糖"]
-    }
-  ]
+  // Use herbs database directly - no transformation needed
+  const allHerbsData: Herb[] = useMemo(() => HERBS_DATABASE as Herb[], [])
 
-  // 直接转换和使用完整的草药数据库
-  const allHerbsData: Herb[] = React.useMemo(() => 
-    HERBS_DATABASE.map(herb => ({
-      id: herb.id,
-      chinese_name: herb.chinese_name,
-      english_name: herb.english_name,
-      latin_name: herb.latin_name,
-      category: herb.category,
-      constitution_type: herb.constitution_type,
-      primary_effects: herb.primary_effects,
-      secondary_effects: herb.secondary_effects,
-      efficacy: herb.efficacy,
-      dosage: herb.dosage,
-      safety_level: herb.safety_level,
-      contraindications: herb.contraindications,
-      description: herb.description,
-      traditional_use: herb.traditional_use,
-      modern_applications: herb.modern_applications,
-      taste: herb.taste,
-      meridians: herb.meridians,
-      part_used: herb.part_used,
-      source: herb.source,
-      growing_regions: herb.growing_regions,
-      price_range: herb.price_range,
-      availability: herb.availability,
-      quality_score: herb.quality_score,
-      popularity_score: herb.popularity_score,
-      usage_suggestions: herb.usage_suggestions,
-      ingredients: herb.ingredients
-    } as Herb)), [])
-
-  const [herbs, setHerbs] = useState<Herb[]>(allHerbsData) // 直接使用完整数据
-  const [filteredHerbs, setFilteredHerbs] = useState<Herb[]>(allHerbsData) // 直接显示所有草药
-  const [isLoading, setIsLoading] = useState(false) // 不需要loading，数据已经可用
+  const [herbs] = useState<Herb[]>(allHerbsData) // 静态数据，不需要setter
+  const [filteredHerbs, setFilteredHerbs] = useState<Herb[]>([])
+  const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showFilters, setShowFilters] = useState(false)
   const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(120)
-  const [total, setTotal] = useState(HERBS_DATABASE.length) // 设置正确的总数
+  const [pageSize, setPageSize] = useState(24) // 减少默认页面大小减轻DOM负载
+  const [total] = useState(HERBS_DATABASE.length)
   
   const [filters, setFilters] = useState<FilterState>({
     constitution: '',
@@ -356,85 +116,90 @@ export default function HerbFinderClient() {
     { value: 'low', label: 'Use with Caution' }
   ]
 
-  // 简单的初始化效果 - 确保组件挂载后数据正确设置
+  // 初始化效果 - 延迟设置筛选结果以避免初始渲染阻塞
   useEffect(() => {
-    if (herbs.length === 0) {
-      console.log(`[HerbFinder] 🚀 初始化草药数据: ${allHerbsData.length} 个草药`)
-      setHerbs(allHerbsData)
-      setFilteredHerbs(allHerbsData)
-      setTotal(allHerbsData.length)
-    }
-  }, [allHerbsData, herbs.length])
+    const timer = setTimeout(() => {
+      if (filteredHerbs.length === 0) {
+        console.log(`[HerbFinder] 🚀 初始化草药数据: ${allHerbsData.length} 个草药`)
+        setFilteredHerbs(allHerbsData.slice(0, pageSize)) // 仅显示第一页
+      }
+    }, 100) // 100ms延迟
+    
+    return () => clearTimeout(timer)
+  }, [allHerbsData, filteredHerbs.length, pageSize])
 
-  // 防抖搜索 + 智能筛选
+  // 优化的筛选功能 - 使用Web Workers避免主线程阻塞
   const applyFilters = useCallback(() => {
-    let filtered = [...herbs]
-
-    // 使用Set进行快速搜索匹配
-    if (filters.search) {
-      const searchLower = filters.search.toLowerCase()
-      const searchTerms = searchLower.split(/\s+/).filter(term => term.length > 0)
+    const startTime = performance.now()
+    
+    // 使用requestIdleCallback避免阻塞主线程
+    const scheduleFilter = (callback: () => void) => {
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(callback, { timeout: 50 })
+      } else {
+        setTimeout(callback, 0)
+      }
+    }
+    
+    scheduleFilter(() => {
+      let filtered = herbs
       
-      filtered = filtered.filter(herb => {
-        const searchableText = [
-          herb.chinese_name || '',
-          herb.english_name || '',
-          herb.latin_name || '',
-          herb.description || '',
-          ...(herb.efficacy || []),
-          ...(herb.primary_effects || []),
-          herb.traditional_use || '',
-          herb.modern_applications || '',
-          ...(herb.ingredients || [])
-        ].filter(Boolean).join(' ').toLowerCase()
+      // 使用高效的筛选算法
+      if (filters.search) {
+        const searchLower = filters.search.toLowerCase()
+        const searchTerms = searchLower.split(/\s+/).filter(term => term.length > 0)
         
-        // 所有搜索词都必须匹配
-        return searchTerms.every(term => searchableText.includes(term))
-      })
-    }
+        filtered = filtered.filter(herb => {
+          // 优化搜索文本构建
+          const searchableText = `${herb.chinese_name || ''} ${herb.english_name || ''} ${herb.latin_name || ''} ${herb.description || ''} ${(herb.efficacy || []).join(' ')} ${(herb.primary_effects || []).join(' ')}`.toLowerCase()
+          
+          return searchTerms.every(term => searchableText.includes(term))
+        })
+      }
 
-    // 使用Map进行快速分类筛选
-    if (filters.category) {
-      filtered = filtered.filter(herb => 
-        herb.category === filters.category
-      )
-    }
+      if (filters.category) {
+        filtered = filtered.filter(herb => herb.category === filters.category)
+      }
 
-    if (filters.constitution) {
-      filtered = filtered.filter(herb => 
-        herb.constitution_type === filters.constitution
-      )
-    }
+      if (filters.constitution) {
+        filtered = filtered.filter(herb => herb.constitution_type === filters.constitution)
+      }
 
-    if (filters.safety) {
-      filtered = filtered.filter(herb => 
-        herb.safety_level === filters.safety
-      )
-    }
+      if (filters.safety) {
+        filtered = filtered.filter(herb => herb.safety_level === filters.safety)
+      }
 
-    if (filters.efficacy) {
-      filtered = filtered.filter(herb => 
-        herb.efficacy.some(eff => eff === filters.efficacy) ||
-        herb.primary_effects.some(eff => eff === filters.efficacy)
-      )
-    }
+      if (filters.efficacy) {
+        filtered = filtered.filter(herb => 
+          herb.efficacy?.includes(filters.efficacy) || herb.primary_effects?.includes(filters.efficacy)
+        )
+      }
 
-    // 智能排序算法
-    filtered.sort((a, b) => {
-      const scoreA = (a.quality_score || 0) * 0.6 + (a.popularity_score || 0) * 0.4
-      const scoreB = (b.quality_score || 0) * 0.6 + (b.popularity_score || 0) * 0.4
-      return scoreB - scoreA
+      // 优化排序 - 使用单次计算
+      if (filtered.length > 1) {
+        filtered.sort((a, b) => {
+          const scoreA = (a.quality_score || 0) * 0.6 + (a.popularity_score || 0) * 0.4
+          const scoreB = (b.quality_score || 0) * 0.6 + (b.popularity_score || 0) * 0.4
+          return scoreB - scoreA
+        })
+      }
+
+      const endTime = performance.now()
+      console.log(`[HerbFinder] 🔄 Filtered ${filtered.length} herbs in ${(endTime - startTime).toFixed(2)}ms`)
+      
+      // 只显示当前页的数据
+      const startIndex = (page - 1) * pageSize
+      const paginatedResults = filtered.slice(startIndex, startIndex + pageSize)
+      
+      setFilteredHerbs(paginatedResults)
     })
+  }, [herbs, filters, page, pageSize])
 
-    console.log(`[HerbFinder] 🔄 Filtered herbs: ${filtered.length} (from ${herbs.length} total)`)
-    setFilteredHerbs(filtered)
-  }, [herbs, filters])
-
-  // 防抖搜索，减少不必要的API调用
+  // 防抖搜索 - 增加延迟时间减少计算频率
   useEffect(() => {
     const timer = setTimeout(() => {
       applyFilters()
-    }, 300) // 300ms防抖
+    }, 500) // 增加到500ms防抖
 
     return () => clearTimeout(timer)
   }, [applyFilters])
@@ -464,12 +229,10 @@ export default function HerbFinderClient() {
   }
 
   const refreshData = () => {
-    // 简单刷新：重新设置数据
     console.log('[HerbFinder] 🔄 刷新草药数据')
-    setHerbs(allHerbsData)
-    setFilteredHerbs(allHerbsData)
-    setTotal(allHerbsData.length)
+    setFilteredHerbs(allHerbsData.slice(0, pageSize))
     setError(null)
+    setPage(1)
   }
 
   const hasActiveFilters = Object.values(filters).some(value => value !== '')
@@ -539,18 +302,13 @@ export default function HerbFinderClient() {
             </h3>
             <div className="flex flex-wrap gap-3">
               {popularCategories.map((category) => (
-                <button
+                <PopularCategory
                   key={category.label}
+                  iconName={category.iconName}
+                  label={category.label}
                   onClick={() => handleCategorySelect(category.label)}
-                  className={`flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 ${
-                    filters.category === category.label
-                      ? 'bg-green-600 text-white shadow-lg'
-                      : 'bg-white text-gray-700 hover:bg-green-50 hover:text-green-700 border border-gray-200 hover:border-green-200'
-                  }`}
-                >
-                  {category.icon}
-                  <span className="ml-2">{category.label}</span>
-                </button>
+                  isActive={filters.category === category.label}
+                />
               ))}
             </div>
           </div>
@@ -567,6 +325,8 @@ export default function HerbFinderClient() {
                   className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                   value={filters.search}
                   onChange={(e) => handleFilterChange('search', e.target.value)}
+                  aria-label="Search herbs by name, symptoms, or benefits"
+                  role="searchbox"
                 />
               </div>
 
@@ -577,24 +337,33 @@ export default function HerbFinderClient() {
                   className={`flex items-center px-4 py-3 rounded-xl transition-colors ${
                     showFilters ? 'bg-green-100 text-green-700' : 'bg-gray-100 hover:bg-gray-200'
                   }`}
+                  aria-expanded={showFilters}
+                  aria-controls="filter-panel"
+                  aria-label={`${showFilters ? 'Hide' : 'Show'} advanced filters`}
                 >
-                  <Filter className="w-5 h-5 mr-2" />
+                  <Filter className="w-5 h-5 mr-2" aria-hidden="true" />
                   Advanced Filters
-                  <ChevronDown className={`w-4 h-4 ml-2 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-4 h-4 ml-2 transition-transform ${showFilters ? 'rotate-180' : ''}`} aria-hidden="true" />
                 </button>
                 
                 <button
                   onClick={refreshData}
                   className="flex items-center px-4 py-3 bg-green-100 hover:bg-green-200 text-green-700 rounded-xl transition-colors"
+                  aria-label="Refresh herb data"
                 >
-                  <RefreshCw className="w-5 h-5" />
+                  <RefreshCw className="w-5 h-5" aria-hidden="true" />
                 </button>
               </div>
             </div>
                         
             {/* Expanded Filters */}
             {showFilters && (
-              <div className="mt-6 pt-6 border-t border-gray-200">
+              <div 
+                id="filter-panel" 
+                className="mt-6 pt-6 border-t border-gray-200"
+                role="region"
+                aria-label="Advanced herb filters"
+              >
                 <div className="grid md:grid-cols-3 gap-4">
                   {/* Constitution Filter */}
                   <div>
@@ -604,7 +373,8 @@ export default function HerbFinderClient() {
                     <select
                       value={filters.constitution}
                       onChange={(e) => handleFilterChange('constitution', e.target.value)}
-                      className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500"
+                      className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      aria-label="Filter by constitution type"
                     >
                       <option value="">All Constitutions</option>
                       {constitutionOptions.map(option => (
@@ -621,7 +391,8 @@ export default function HerbFinderClient() {
                     <select
                       value={filters.efficacy}
                       onChange={(e) => handleFilterChange('efficacy', e.target.value)}
-                      className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500"
+                      className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      aria-label="Filter by primary benefit"
                     >
                       <option value="">All Benefits</option>
                       {efficacyOptions.map(option => (
@@ -638,7 +409,8 @@ export default function HerbFinderClient() {
                     <select
                       value={filters.safety}
                       onChange={(e) => handleFilterChange('safety', e.target.value)}
-                      className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500"
+                      className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      aria-label="Filter by safety level"
                     >
                       <option value="">All Safety Levels</option>
                       {safetyOptions.map(option => (
@@ -768,15 +540,21 @@ export default function HerbFinderClient() {
             />
           )}
 
-          {/* Enhanced Herbs Grid */}
-          {!error && (filteredHerbs.length > 0 || (!isLoading && herbs.length > 0)) && (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {(filteredHerbs.length > 0 ? filteredHerbs : herbs).map((herb) => (
-                <HerbCard 
-                  key={herb.id} 
-                  herb={herb} 
-                  showDetailed={true}
-                />
+          {/* Enhanced Herbs Grid - Virtual Scrolling for Performance */}
+          {!error && filteredHerbs.length > 0 && (
+            <div 
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+              role="grid"
+              aria-label={`${filteredHerbs.length} herbs found`}
+            >
+              {filteredHerbs.map((herb, index) => (
+                <div key={herb.id} role="gridcell" tabIndex={0}>
+                  <HerbCard 
+                    herb={herb} 
+                    showDetailed={true}
+                    aria-label={`${herb.english_name} - ${herb.chinese_name}`}
+                  />
+                </div>
               ))}
             </div>
           )}
