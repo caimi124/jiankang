@@ -219,11 +219,22 @@ const nextConfig = {
       }
     }
 
-    // 🚀 彻底禁用polyfills和core-js
+    // 🚀 彻底禁用polyfills和core-js + 移除未使用模块
     config.resolve.alias = {
       ...config.resolve.alias,
       'core-js': false,
       '@babel/runtime': false,
+      // 移除未使用的大型依赖
+      'lodash': false,
+      'moment': false,
+      'axios': false,
+    }
+    
+    // 启用tree shaking和dead code elimination
+    config.optimization = {
+      ...config.optimization,
+      usedExports: true,
+      sideEffects: false,
     }
 
     // 🚀 移动端优化：激进的代码分割 + 禁用polyfills

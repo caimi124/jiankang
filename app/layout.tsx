@@ -94,14 +94,19 @@ export default function RootLayout({
         <style dangerouslySetInnerHTML={{
           __html: `
             *{box-sizing:border-box;margin:0;padding:0}
-            body{font:-apple-system-body;font-family:-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.5;overflow-x:hidden;text-rendering:optimizeSpeed}
-            .hero-section{background:#f0fdf4;padding:3rem 1rem;text-align:center;min-height:50vh;display:flex;align-items:center;justify-content:center}
-            .hero-title{font-size:2rem;font-weight:600;color:#0f172a;margin-bottom:1rem;line-height:1.2}
-            .hero-subtitle{font-size:1rem;color:#475569;margin-bottom:1.5rem;max-width:35rem;margin-left:auto;margin-right:auto}
-            img{max-width:100%;height:auto}
+            html{font-size:16px;-webkit-text-size-adjust:100%}
+            body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.5;color:#1f2937;background:#fff;text-rendering:optimizeSpeed;-webkit-font-smoothing:antialiased}
+            .hero-section{background:#f0fdf4;padding:3rem 1rem 2rem;text-align:center;min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
+            .hero-title{font-size:2rem;font-weight:600;color:#0f172a;margin:0 0 1rem 0;line-height:1.2;max-width:90%;word-wrap:break-word}
+            .hero-subtitle{font-size:1rem;color:#1f2937;margin:0 0 2rem 0;max-width:35rem;line-height:1.6}
+            a{color:#059669;text-decoration:none}
+            a:hover{text-decoration:underline}
+            img{max-width:100%;height:auto;display:block}
+            button,a[role="button"]{cursor:pointer;border:none;outline:none;transition:opacity 0.2s}
+            button:hover,a[role="button"]:hover{opacity:0.9}
           `
         }} />
-        <link rel="preload" href="/logo.png" as="image" />
+        <link rel="preload" href="/logo.png" as="image" type="image/png" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />
       </head>

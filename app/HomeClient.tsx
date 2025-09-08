@@ -4,21 +4,46 @@ import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { getTranslation } from '../lib/i18n'
 
-// 🚀 极限性能优化：超激进懒加载
-const Header = dynamic(() => import('../components/Header'), {
-  ssr: false,
-  loading: () => (
-    <div style={{height:'80px',background:'#fff',borderBottom:'1px solid #e5e7eb'}} />
-  )
-})
+// 🚀 移动端极限优化：最小化初始JavaScript
+// 仅在用户交互后加载Header
+const Header = dynamic(() => 
+  new Promise<any>((resolve) => {
+    // 等待用户首次交互或5秒后加载
+    const loadHeader = () => resolve(import('../components/Header'))
+    
+    const events = ['click', 'touchstart', 'keydown', 'scroll']
+    const cleanup = () => events.forEach(e => document.removeEventListener(e, loadHeader))
+    
+    events.forEach(e => document.addEventListener(e, loadHeader, { once: true }))
+    setTimeout(() => { cleanup(); loadHeader() }, 3000)
+  }),
+  {
+    ssr: false,
+    loading: () => (
+      <div style={{height:'60px',background:'#fff',borderBottom:'1px solid #e5e7eb'}} />
+    )
+  }
+)
 
-// 延迟5秒加载非关键组件
+// 完全延迟PersonalizedRecommendations
 const PersonalizedRecommendations = dynamic(
   () => 
     new Promise<any>((resolve) => {
+      // 10秒后或用户滚动到底部时加载
+      const loadComponent = () => resolve(import('../components/PersonalizedRecommendations'))
+      
+      const onScroll = () => {
+        if (window.scrollY + window.innerHeight >= document.body.scrollHeight - 1000) {
+          window.removeEventListener('scroll', onScroll)
+          loadComponent()
+        }
+      }
+      
+      window.addEventListener('scroll', onScroll)
       setTimeout(() => {
-        resolve(import('../components/PersonalizedRecommendations'))
-      }, 5000)
+        window.removeEventListener('scroll', onScroll)
+        loadComponent()
+      }, 10000)
     }),
   {
     ssr: false,
@@ -72,7 +97,7 @@ export default function HomeClient() {
         <Header />
 
       {/* Hero Section - 移动端极简化 */}
-      <section className="hero-section">
+      <section className="hero-section" aria-label="Main hero section">
         <h1 className="hero-title">
           Your Herbal Companion
           <span style={{color:'#059669',display:'block'}}>Backed by Science</span>
@@ -82,41 +107,51 @@ export default function HomeClient() {
           Navigate herbal supplements with confidence. Get evidence-based recommendations, safety checks, and personalized guidance.
         </p>
         
-        {/* 极简化按钮 */}
-        <div style={{display:'flex',flexDirection:'column',gap:'0.75rem',alignItems:'center'}}>
+        {/* 优化DOM结构 - 精简按钮容器 */}
+        <div role="group" aria-label="Main actions" style={{display:'flex',flexDirection:'column',gap:'0.75rem',alignItems:'center'}}>
           <Link 
             href="/constitution-test"
-            aria-label="Start herb journey"
+            aria-label="Start your personalized herbal medicine journey with constitution test"
+            role="button"
             style={{
-              display:'block',
-              padding:'0.875rem 1.75rem',
-              background:'#059669',
-              color:'white',
+              display:'inline-flex',
+              alignItems:'center',
+              justifyContent:'center',
+              padding:'1rem 2rem',
+              background:'#047857',
+              color:'#ffffff',
               fontWeight:'600',
               borderRadius:'0.75rem',
               textDecoration:'none',
-              fontSize:'1rem'
+              fontSize:'1rem',
+              minWidth:'200px',
+              minHeight:'48px'
             }}
           >
-            🎯 Start Journey
+            Start Journey
           </Link>
           
           <Link 
             href="/herb-finder"
-            aria-label="Explore herb database"
+            aria-label="Explore comprehensive herbal medicine database and search tool"
+            role="button"
             style={{
-              display:'block',
-              padding:'0.875rem 1.75rem',
-              background:'white',
-              color:'#059669',
+              display:'inline-flex',
+              alignItems:'center',
+              justifyContent:'center',
+              padding:'1rem 2rem',
+              background:'#ffffff',
+              color:'#047857',
               fontWeight:'600',
               borderRadius:'0.75rem',
               textDecoration:'none',
-              border:'2px solid #059669',
-              fontSize:'1rem'
+              border:'2px solid #047857',
+              fontSize:'1rem',
+              minWidth:'200px',
+              minHeight:'48px'
             }}
           >
-            🔍 Explore Database
+            Explore Database
           </Link>
         </div>
       </section>
