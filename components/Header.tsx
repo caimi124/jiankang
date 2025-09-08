@@ -1,11 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Globe, Menu, X, ChevronDown } from 'lucide-react'
-import MobileNavigation from './MobileNavigation'
 import { getTranslation, supportedLanguages } from '../lib/i18n'
+
+// 懒加载图标
+import dynamic from 'next/dynamic'
+const Menu = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Menu })), { ssr: false })
+const X = dynamic(() => import('lucide-react').then(mod => ({ default: mod.X })), { ssr: false })
+const ChevronDown = dynamic(() => import('lucide-react').then(mod => ({ default: mod.ChevronDown })), { ssr: false })
 
 export default function Header() {
   const pathname = usePathname()
@@ -13,29 +17,26 @@ export default function Header() {
   const [showLangMenu, setShowLangMenu] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  // 检测当前语言
-  const currentLocale = pathname.startsWith('/zh') ? 'zh' : 'en'
-  const t = getTranslation(currentLocale)
+  // 检测当前语言 - 使用 useMemo 优化
+  const currentLocale = useMemo(() => pathname.startsWith('/zh') ? 'zh' : 'en', [pathname])
+  const t = useMemo(() => getTranslation(currentLocale), [currentLocale])
 
-  const navigationItems = [
-    { href: '/', label: t.nav.home, icon: '🏠', gradient: 'from-blue-500 to-cyan-500' },
-    { href: '/herb-finder', label: t.nav.herbFinder, icon: '🔍', gradient: 'from-green-500 to-emerald-500' },
-    { href: '/ingredient-checker', label: t.nav.safetyChecker, icon: '🛡️', gradient: 'from-orange-500 to-red-500' },
-    { href: '/knowledge-center', label: t.nav.knowledgeCenter, icon: '📚', gradient: 'from-purple-500 to-pink-500' },
-    { href: '/constitution-test', label: t.nav.constitutionTest, icon: '🧠', gradient: 'from-indigo-500 to-purple-500' },
-    { href: '/user-experiences', label: t.nav.userReviews, icon: '💬', gradient: 'from-yellow-500 to-orange-500' },
-    { href: '/blog', label: t.nav.blog, icon: '📝', gradient: 'from-teal-500 to-green-500' },
-    { href: '/about', label: t.nav.about, icon: 'ℹ️', gradient: 'from-gray-500 to-slate-500' }
-  ]
+  // 移动端简化导航项目
+  const navigationItems = useMemo(() => [
+    { href: '/', label: t.nav.home, icon: '🏠' },
+    { href: '/herb-finder', label: t.nav.herbFinder, icon: '🔍' },
+    { href: '/constitution-test', label: t.nav.constitutionTest, icon: '🧠' },
+    { href: '/blog', label: t.nav.blog, icon: '📝' }
+  ], [t])
 
-  const isActive = (href: string) => {
+  const isActive = useCallback((href: string) => {
     if (href === '/') {
       return pathname === '/' || pathname === '/zh'
     }
     return pathname === href || pathname === `/zh${href}` || pathname.startsWith(href + '/') || pathname.startsWith(`/zh${href}/`)
-  }
+  }, [pathname])
 
-  const handleLanguageChange = (langCode: string) => {
+  const handleLanguageChange = useCallback((langCode: string) => {
     setShowLangMenu(false)
     const currentPath = pathname.replace(/^\/zh/, '') || '/'
     if (langCode === 'zh') {
@@ -43,14 +44,14 @@ export default function Header() {
     } else {
       router.push(currentPath)
     }
-  }
+  }, [pathname, router])
 
-  const getLocalizedHref = (href: string) => {
+  const getLocalizedHref = useCallback((href: string) => {
     if (currentLocale === 'zh') {
       return `/zh${href}`
     }
     return href
-  }
+  }, [currentLocale])
 
   return (
     <header className="bg-white/95 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50 shadow-lg">
@@ -86,67 +87,22 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* Enhanced Desktop Navigation */}
+          {/* 极简桌面导航 */}
           <nav className="hidden lg:flex items-center space-x-1">
-            {navigationItems.slice(0, 6).map((item) => (
+            {navigationItems.map((item) => (
               <Link
                 key={item.href}
                 href={getLocalizedHref(item.href)}
-                className={`group relative flex items-center px-4 py-2 text-sm font-medium rounded-xl transition-all duration-200 ${
+                className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
                   isActive(item.href)
-                    ? 'text-white shadow-lg transform scale-105'
-                    : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                    ? 'bg-green-600 text-white'
+                    : 'text-gray-700 hover:bg-gray-100'
                 }`}
-                style={
-                  isActive(item.href)
-                    ? { background: `linear-gradient(135deg, var(--tw-gradient-stops))` }
-                    : {}
-                }
               >
-                {isActive(item.href) && (
-                  <div className={`absolute inset-0 bg-gradient-to-r ${item.gradient} rounded-xl`}></div>
-                )}
-                <span className={`relative mr-2 text-lg ${isActive(item.href) ? 'filter drop-shadow-sm' : ''}`}>
-                  {item.icon}
-                </span>
-                <span className="relative font-medium">
-                  {item.label}
-                </span>
-                {isActive(item.href) && (
-                  <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-white rounded-full shadow-sm"></div>
-                )}
+                <span className="mr-2">{item.icon}</span>
+                {item.label}
               </Link>
             ))}
-            
-            {/* More Menu for additional items */}
-            <div className="relative">
-              <button
-                onClick={() => setShowLangMenu(!showLangMenu)}
-                className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-all duration-200"
-              >
-                <span className="mr-2">⋯</span>
-                <span className="hidden xl:inline">More</span>
-                <ChevronDown className={`ml-1 h-4 w-4 transition-transform ${showLangMenu ? 'rotate-180' : ''}`} />
-              </button>
-              
-              {showLangMenu && (
-                <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-3 z-20">
-                  {navigationItems.slice(6).map((item) => (
-                    <Link
-                      key={item.href}
-                      href={getLocalizedHref(item.href)}
-                      onClick={() => setShowLangMenu(false)}
-                      className={`w-full text-left px-4 py-3 text-sm flex items-center hover:bg-gray-50 transition-colors ${
-                        isActive(item.href) ? 'text-green-600 bg-green-50' : 'text-gray-700'
-                      }`}
-                    >
-                      <span className="mr-3 text-lg">{item.icon}</span>
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
           </nav>
 
           {/* Right Side - Language Switcher & Mobile Menu */}
@@ -188,29 +144,22 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Enhanced Mobile Navigation */}
+        {/* 极简移动端导航 */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden absolute left-0 right-0 top-full bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl">
-            <div className="px-4 py-6 space-y-3">
+          <div className="lg:hidden absolute left-0 right-0 top-full bg-white border-b border-gray-200 shadow-lg">
+            <div className="px-4 py-4 space-y-2">
               {navigationItems.map((item) => (
                 <Link
                   key={item.href}
                   href={getLocalizedHref(item.href)}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`flex items-center px-4 py-3 rounded-xl transition-all duration-200 ${
+                  className={`flex items-center px-3 py-2 rounded-lg ${
                     isActive(item.href)
-                      ? 'bg-gradient-to-r text-white shadow-lg transform scale-[1.02]'
-                      : 'text-gray-700 hover:bg-gray-50'
+                      ? 'bg-green-600 text-white'
+                      : 'text-gray-700 hover:bg-gray-100'
                   }`}
-                  style={
-                    isActive(item.href)
-                      ? { background: `linear-gradient(135deg, ${item.gradient.split(' ')[1]} 0%, ${item.gradient.split(' ')[3]} 100%)` }
-                      : {}
-                  }
                 >
-                  <span className={`mr-3 text-xl ${isActive(item.href) ? 'filter drop-shadow-sm' : ''}`}>
-                    {item.icon}
-                  </span>
+                  <span className="mr-3">{item.icon}</span>
                   <span className="font-medium">{item.label}</span>
                 </Link>
               ))}

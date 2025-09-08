@@ -2,10 +2,16 @@
 
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
-import Header from '../components/Header'
 import { getTranslation } from '../lib/i18n'
 
-// 延迟加载所有非关键组件
+// 延迟加载所有非关键组件，仅在交互或可视区域时加载
+const Header = dynamic(() => import('../components/Header'), {
+  ssr: true,
+  loading: () => (
+    <div style={{height:'80px',background:'#fff',borderBottom:'1px solid #e5e7eb'}} />
+  )
+})
+
 const PersonalizedRecommendations = dynamic(() => import('../components/PersonalizedRecommendations'), {
   ssr: false,
   loading: () => null
@@ -42,82 +48,56 @@ export default function HomeClient() {
   
   return (
     <main className="min-h-screen bg-white">
-      {/* 英文首页动态 OG 图 */}
-      <meta property="og:image" content="https://www.herbscience.shop/opengraph-image" />
-      <meta name="twitter:image" content="https://www.herbscience.shop/opengraph-image" />
-      {/* hreflang alternates */}
-      <link rel="alternate" hrefLang="en" href="https://www.herbscience.shop/" />
-      <link rel="alternate" hrefLang="zh" href="https://www.herbscience.shop/zh" />
-      <link rel="alternate" hrefLang="x-default" href="https://www.herbscience.shop/" />
-      {/* BreadcrumbList JSON-LD */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
-      {/* Unified Header Component */}
+      {/* 移动端优化：延迟加载头部 */}
       <Header />
 
-      {/* Hero Section - Ultra-optimized for LCP */}
+      {/* Hero Section - 移动端极简化 */}
       <section className="hero-section">
-        <div>
-          <h1 className="hero-title">
-            Your Herbal Companion
-            <span style={{color:'#059669',display:'block'}}>Backed by Science</span>
-          </h1>
+        <h1 className="hero-title">
+          Your Herbal Companion
+          <span style={{color:'#059669',display:'block'}}>Backed by Science</span>
+        </h1>
+        
+        <p className="hero-subtitle">
+          Navigate herbal supplements with confidence. Get evidence-based recommendations, safety checks, and personalized guidance.
+        </p>
+        
+        {/* 极简化按钮 */}
+        <div style={{display:'flex',flexDirection:'column',gap:'0.75rem',alignItems:'center'}}>
+          <Link 
+            href="/constitution-test"
+            aria-label="Start herb journey"
+            style={{
+              display:'block',
+              padding:'0.875rem 1.75rem',
+              background:'#059669',
+              color:'white',
+              fontWeight:'600',
+              borderRadius:'0.75rem',
+              textDecoration:'none',
+              fontSize:'1rem'
+            }}
+          >
+            🎯 Start Journey
+          </Link>
           
-          <p className="hero-subtitle">
-            Navigate herbal supplements with confidence. Get evidence-based recommendations, safety checks, and personalized guidance from traditional medicine experts.
-          </p>
-          
-          {/* Simplified Action Buttons */}
-          <div style={{display:'flex',flexDirection:'column',gap:'1rem',alignItems:'center',marginBottom:'2rem'}}>
-            <Link 
-              href="/constitution-test"
-              aria-label="Start your personalized herb journey with constitution test"
-              role="button"
-              style={{
-                display:'inline-flex',
-                alignItems:'center',
-                justifyContent:'center',
-                padding:'1rem 2rem',
-                background:'linear-gradient(135deg,#059669,#047857)',
-                color:'white',
-                fontWeight:'600',
-                borderRadius:'1rem',
-                textDecoration:'none',
-                boxShadow:'0 4px 6px -1px rgba(0,0,0,0.1)',
-                transition:'all 0.2s ease-in-out'
-              }}
-              onFocus={(e) => e.currentTarget.style.outline = '2px solid #10b981'}
-              onBlur={(e) => e.currentTarget.style.outline = 'none'}
-            >
-              🎯 Start Your Herb Journey →
-            </Link>
-            
-            <Link 
-              href="/herb-finder"
-              aria-label="Explore comprehensive herb database and finder tool"
-              role="button"
-              style={{
-                display:'inline-flex',
-                alignItems:'center',
-                justifyContent:'center',
-                padding:'1rem 2rem',
-                background:'white',
-                color:'#047857',
-                fontWeight:'600',
-                borderRadius:'1rem',
-                textDecoration:'none',
-                boxShadow:'0 4px 6px -1px rgba(0,0,0,0.1)',
-                border:'2px solid #d1fae5',
-                transition:'all 0.2s ease-in-out'
-              }}
-              onFocus={(e) => e.currentTarget.style.outline = '2px solid #10b981'}
-              onBlur={(e) => e.currentTarget.style.outline = 'none'}
-            >
-              🔍 Explore Herb Database →
-            </Link>
-          </div>
+          <Link 
+            href="/herb-finder"
+            aria-label="Explore herb database"
+            style={{
+              display:'block',
+              padding:'0.875rem 1.75rem',
+              background:'white',
+              color:'#059669',
+              fontWeight:'600',
+              borderRadius:'0.75rem',
+              textDecoration:'none',
+              border:'2px solid #059669',
+              fontSize:'1rem'
+            }}
+          >
+            🔍 Explore Database
+          </Link>
         </div>
       </section>
 

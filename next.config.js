@@ -34,7 +34,11 @@ const nextConfig = {
     // CSS优化
     optimizeCss: true,
     // 优化包导入
-    optimizePackageImports: ['react', 'react-dom', 'next'],
+    optimizePackageImports: ['react', 'react-dom', 'next', '@heroicons/react', 'lucide-react'],
+    // 启用部分预渲染
+    ppr: false,
+    // 优化服务器组件
+    serverComponentsExternalPackages: ['@sanity/client'],
   },
 
   // 🚀 现代浏览器目标 - 减少polyfill
@@ -220,17 +224,47 @@ const nextConfig = {
       }
     }
 
-    // 优化代码分割
+    // 🚀 移动端优化：激进的代码分割
     if (!isServer && !dev) {
       config.optimization = {
         ...config.optimization,
         splitChunks: {
           chunks: 'all',
+          minSize: 20000,
+          minRemainingSize: 0,
+          minChunks: 1,
+          maxAsyncRequests: 30,
+          maxInitialRequests: 30,
+          enforceSizeThreshold: 50000,
           cacheGroups: {
+            default: {
+              minChunks: 2,
+              priority: -20,
+              reuseExistingChunk: true,
+            },
             vendor: {
               test: /[\\/]node_modules[\\/]/,
               name: 'vendors',
+              priority: -10,
               chunks: 'all',
+            },
+            react: {
+              test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+              name: 'react',
+              chunks: 'all',
+              priority: 10,
+            },
+            icons: {
+              test: /[\\/]node_modules[\\/](@heroicons|lucide-react)[\\/]/,
+              name: 'icons',
+              chunks: 'async',
+              priority: 5,
+            },
+            sanity: {
+              test: /[\\/]node_modules[\\/](@sanity|next-sanity)[\\/]/,
+              name: 'sanity',
+              chunks: 'async',
+              priority: 5,
             },
           },
         },
