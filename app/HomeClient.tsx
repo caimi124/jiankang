@@ -13,15 +13,18 @@ const Header = dynamic(() => import('../components/Header'), {
 })
 
 // 延迟5秒加载非关键组件
-const PersonalizedRecommendations = dynamic(() => 
-  new Promise(resolve => {
-    setTimeout(() => {
-      resolve(import('../components/PersonalizedRecommendations'))
-    }, 5000)
-  }), {
-  ssr: false,
-  loading: () => null
-})
+const PersonalizedRecommendations = dynamic(
+  () => 
+    new Promise<any>((resolve) => {
+      setTimeout(() => {
+        resolve(import('../components/PersonalizedRecommendations'))
+      }, 5000)
+    }),
+  {
+    ssr: false,
+    loading: () => null
+  }
+)
 
 export default function HomeClient() {
   // 获取翻译（在服务器端）
