@@ -121,6 +121,6 @@ export default function HomeClient() {
         {/* Personalized Recommendations Section */}
         <PersonalizedRecommendations />
       </main>
-    </>)
+    </>
   )
 }

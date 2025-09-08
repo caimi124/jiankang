@@ -35,21 +35,10 @@ const nextConfig = {
     optimizeCss: true,
     // 优化包导入
     optimizePackageImports: ['react', 'react-dom', 'next', '@heroicons/react', 'lucide-react'],
-    // 启用部分预渲染
-    ppr: false,
-    // 优化服务器组件
-    serverComponentsExternalPackages: ['@sanity/client'],
   },
 
-  // 🚀 彻底移除polyfill - 现代浏览器目标
-  browserslistrc: false,
-  swcMinify: true,
-  
-  // 完全禁用polyfill
-  webpack5: true,
-  
-  // SWC编译器优化
-  swcFileReading: false,
+  // 🚀 优化服务器组件
+  serverExternalPackages: ['@sanity/client'],
 
   // 🚀 性能优化headers（移除可能阻止JavaScript的严格安全头）
   async headers() {
