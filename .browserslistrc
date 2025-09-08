@@ -1,10 +1,9 @@
-# 现代浏览器支持，避免旧版 JavaScript polyfills
-> 0.5%
-last 2 versions
+# 极致现代浏览器支持，完全移除polyfills
+chrome >= 91
+firefox >= 90
+safari >= 14
+edge >= 91
+and_chr >= 91
+and_ff >= 90
+ios_saf >= 14
 not dead
-not ie 11
-not op_mini all
-chrome >= 60
-firefox >= 60
-safari >= 12
-edge >= 79

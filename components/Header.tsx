@@ -158,7 +158,8 @@ export default function Header() {
                   <button
                     key={language.code}
                     onClick={() => handleLanguageChange(language.code)}
-                    className={`flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                    aria-label={`Switch to ${language.name}`}
+                    className={`flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 min-w-[3.5rem] h-10 ${
                       currentLocale === language.code
                         ? 'bg-white text-green-600 shadow-md transform scale-105'
                         : 'text-gray-600 hover:text-gray-900 hover:bg-white/50'

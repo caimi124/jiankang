@@ -87,14 +87,37 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta name="theme-color" content="#059669" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link 
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" 
-          rel="stylesheet" 
+          rel="preload" 
+          href="https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2" 
+          as="font" 
+          type="font/woff2" 
+          crossOrigin="anonymous" 
         />
+        <link 
+          rel="preload" 
+          href="https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGKYAZ9hiJ-Ek-_EeA.woff2" 
+          as="font" 
+          type="font/woff2" 
+          crossOrigin="anonymous" 
+        />
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            @font-face{font-family:Inter;font-style:normal;font-weight:400;font-display:swap;src:url(https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2) format('woff2')}
+            @font-face{font-family:Inter;font-style:normal;font-weight:600;font-display:swap;src:url(https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGKYAZ9hiJ-Ek-_EeA.woff2) format('woff2')}
+            *{box-sizing:border-box}
+            body{font-family:Inter,system-ui,sans-serif;margin:0;padding:0;line-height:1.6;overflow-x:hidden}
+            .hero-section{background:linear-gradient(135deg,#f0fdf4 0%,#ecfdf5 100%);padding:5rem 1rem;text-align:center;min-height:70vh;display:flex;align-items:center;justify-content:center}
+            .hero-title{font-size:3rem;font-weight:600;color:#0f172a;margin:0 0 1rem 0;line-height:1.2;text-size-adjust:100%}
+            .hero-subtitle{font-size:1.25rem;color:#475569;margin:0 0 2rem 0;max-width:48rem;margin-left:auto;margin-right:auto;text-size-adjust:100%}
+            img{height:auto;width:auto;max-width:100%}
+            @media(max-width:768px){.hero-title{font-size:2rem}.hero-subtitle{font-size:1.125rem}.hero-section{min-height:60vh;padding:3rem 1rem}}
+          `
+        }} />
         <link rel="preload" href="/logo.png" as="image" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />

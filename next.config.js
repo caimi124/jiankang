@@ -33,7 +33,13 @@ const nextConfig = {
   experimental: {
     // CSS优化
     optimizeCss: true,
+    // 优化包导入
+    optimizePackageImports: ['react', 'react-dom', 'next'],
   },
+
+  // 🚀 现代浏览器目标 - 减少polyfill
+  browserslistrc: false,
+  swcMinify: true,
 
   // 🚀 性能优化headers（移除可能阻止JavaScript的严格安全头）
   async headers() {
