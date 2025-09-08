@@ -89,15 +89,16 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="theme-color" content="#059669" />
+        <link rel="dns-prefetch" href="//herbscience.shop" />
+        <link rel="preconnect" href="https://herbscience.shop" />
         <style dangerouslySetInnerHTML={{
           __html: `
-            *{box-sizing:border-box}
-            body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;margin:0;padding:0;line-height:1.6;overflow-x:hidden;font-synthesis:none;text-rendering:optimizeSpeed}
-            .hero-section{background:#f0fdf4;padding:4rem 1rem;text-align:center;min-height:60vh;display:flex;align-items:center;justify-content:center}
-            .hero-title{font-size:2.5rem;font-weight:600;color:#0f172a;margin:0 0 1rem 0;line-height:1.2;text-size-adjust:100%}
-            .hero-subtitle{font-size:1.125rem;color:#475569;margin:0 0 1.5rem 0;max-width:40rem;margin-left:auto;margin-right:auto;text-size-adjust:100%}
-            img{height:auto;max-width:100%}
-            @media(max-width:768px){.hero-title{font-size:2rem}.hero-subtitle{font-size:1rem}.hero-section{min-height:50vh;padding:2rem 1rem}}
+            *{box-sizing:border-box;margin:0;padding:0}
+            body{font:-apple-system-body;font-family:-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.5;overflow-x:hidden;text-rendering:optimizeSpeed}
+            .hero-section{background:#f0fdf4;padding:3rem 1rem;text-align:center;min-height:50vh;display:flex;align-items:center;justify-content:center}
+            .hero-title{font-size:2rem;font-weight:600;color:#0f172a;margin-bottom:1rem;line-height:1.2}
+            .hero-subtitle{font-size:1rem;color:#475569;margin-bottom:1.5rem;max-width:35rem;margin-left:auto;margin-right:auto}
+            img{max-width:100%;height:auto}
           `
         }} />
         <link rel="preload" href="/logo.png" as="image" />

@@ -4,15 +4,21 @@ import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { getTranslation } from '../lib/i18n'
 
-// 延迟加载所有非关键组件，仅在交互或可视区域时加载
+// 🚀 极限性能优化：超激进懒加载
 const Header = dynamic(() => import('../components/Header'), {
-  ssr: true,
+  ssr: false,
   loading: () => (
     <div style={{height:'80px',background:'#fff',borderBottom:'1px solid #e5e7eb'}} />
   )
 })
 
-const PersonalizedRecommendations = dynamic(() => import('../components/PersonalizedRecommendations'), {
+// 延迟5秒加载非关键组件
+const PersonalizedRecommendations = dynamic(() => 
+  new Promise(resolve => {
+    setTimeout(() => {
+      resolve(import('../components/PersonalizedRecommendations'))
+    }, 5000)
+  }), {
   ssr: false,
   loading: () => null
 })
@@ -47,9 +53,20 @@ export default function HomeClient() {
   }
   
   return (
-    <main className="min-h-screen bg-white">
-      {/* 移动端优化：延迟加载头部 */}
-      <Header />
+    <>
+      {/* Skip link for accessibility */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-blue-600 text-white p-2 z-50"
+        style={{position:'absolute',left:'-9999px'}}
+        onFocus={(e) => e.currentTarget.style.left = '0'}
+        onBlur={(e) => e.currentTarget.style.left = '-9999px'}
+      >
+        Skip to main content
+      </a>
+      <main id="main-content" className="min-h-screen bg-white">
+        {/* 移动端优化：延迟加载头部 */}
+        <Header />
 
       {/* Hero Section - 移动端极简化 */}
       <section className="hero-section">
@@ -101,8 +118,9 @@ export default function HomeClient() {
         </div>
       </section>
 
-      {/* Personalized Recommendations Section */}
-      <PersonalizedRecommendations />
-    </main>
+        {/* Personalized Recommendations Section */}
+        <PersonalizedRecommendations />
+      </main>
+    </>)
   )
 }

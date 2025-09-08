@@ -41,9 +41,15 @@ const nextConfig = {
     serverComponentsExternalPackages: ['@sanity/client'],
   },
 
-  // 🚀 现代浏览器目标 - 减少polyfill
+  // 🚀 彻底移除polyfill - 现代浏览器目标
   browserslistrc: false,
   swcMinify: true,
+  
+  // 完全禁用polyfill
+  webpack5: true,
+  
+  // SWC编译器优化
+  swcFileReading: false,
 
   // 🚀 性能优化headers（移除可能阻止JavaScript的严格安全头）
   async headers() {
@@ -224,8 +230,25 @@ const nextConfig = {
       }
     }
 
-    // 🚀 移动端优化：激进的代码分割
+    // 🚀 彻底禁用polyfills和core-js
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'core-js': false,
+      '@babel/runtime': false,
+    }
+
+    // 🚀 移动端优化：激进的代码分割 + 禁用polyfills
     if (!isServer && !dev) {
+      // 禁用不必要的polyfills
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        crypto: false,
+        stream: false,
+        path: false,
+        os: false,
+        fs: false,
+      }
+      
       config.optimization = {
         ...config.optimization,
         splitChunks: {
