@@ -84,95 +84,58 @@ export default function PersonalizedRecommendations() {
           </p>
         </div>
 
-        {/* Health Goal Selection */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        {/* Health Goal Selection - Simplified */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
           {healthGoals.map((goal) => (
-                  <button
+            <button
               key={goal.id}
               onClick={() => setSelectedGoal(goal.id === selectedGoal ? '' : goal.id)}
-              className={`p-6 rounded-2xl border-2 transition-all duration-300 text-left group hover:shadow-lg ${
+              className={`p-4 rounded-xl border transition-all text-left hover:shadow-md ${
                 selectedGoal === goal.id 
-                  ? `border-${goal.color}-400 bg-${goal.color}-50 shadow-lg` 
+                  ? 'border-green-400 bg-green-50 shadow-md' 
                   : 'border-gray-200 bg-white hover:border-gray-300'
               }`}
             >
-              <div className="flex items-start space-x-4">
-                <div className={`w-12 h-12 bg-gradient-to-br ${getColorClasses(goal.color)} rounded-xl flex items-center justify-center text-white text-xl shadow-md`}>
-                  {goal.icon}
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{goal.title}</h3>
+              <div className="flex items-center space-x-3">
+                <span className="text-2xl">{goal.icon}</span>
+                <div>
+                  <h3 className="font-semibold text-gray-900">{goal.title}</h3>
                   <p className="text-gray-600 text-sm">{goal.description}</p>
-                  {selectedGoal === goal.id && (
-                    <div className="mt-4 pt-4 border-t border-gray-200">
-                      <p className="text-sm font-medium text-gray-900 mb-2">Recommended herbs:</p>
-                      <div className="flex flex-wrap gap-1">
-                        {goal.herbs.map((herb, index) => (
-                          <span key={index} className={`text-xs px-2 py-1 bg-${goal.color}-100 text-${goal.color}-700 rounded-full`}>
-                            {herb}
-                          </span>
-                ))}
-              </div>
-            </div>
-                  )}
                 </div>
               </div>
             </button>
           ))}
         </div>
 
-        {/* Detailed Recommendations */}
+        {/* Simplified Recommendations */}
         {selectedGoalData && (
-          <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-200">
-            <div className="text-center mb-8">
-              <div className={`w-20 h-20 bg-gradient-to-br ${getColorClasses(selectedGoalData.color)} rounded-2xl flex items-center justify-center text-white text-3xl mx-auto mb-4 shadow-lg`}>
-                {selectedGoalData.icon}
-      </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                Personalized Plan for {selectedGoalData.title}
+          <div className="bg-white rounded-2xl shadow-lg p-6 border">
+            <div className="text-center mb-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
+                Recommended for {selectedGoalData.title}
               </h3>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                Based on traditional use and modern research, here are the most effective herbs for your goal.
-              </p>
-        </div>
+            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="flex flex-wrap gap-3 justify-center mb-6">
               {selectedGoalData.herbs.map((herb, index) => (
-                <div key={index} className="bg-gray-50 rounded-xl p-6 text-center hover:bg-gray-100 transition-colors">
-                  <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="text-2xl">🌿</span>
-                  </div>
-                  <h4 className="font-semibold text-gray-900 mb-2">{herb}</h4>
-                  <p className="text-gray-600 text-sm mb-3">
-                    {herb === 'Ashwagandha' && 'Adaptogenic herb that helps reduce cortisol levels'}
-                    {herb === 'Rhodiola' && 'Arctic root that enhances stress resilience'}
-                    {herb === 'Ginseng' && 'Traditional energy booster and cognitive enhancer'}
-                    {herb === 'Valerian' && 'Natural sleep aid used for centuries'}
-                    {herb === 'Echinacea' && 'Purple flower that supports immune function'}
-                    {herb === 'Ginkgo' && 'Ancient tree extract for memory and focus'}
-                    {herb === 'Ginger' && 'Warming spice that soothes digestion'}
-                    {!['Ashwagandha', 'Rhodiola', 'Ginseng', 'Valerian', 'Echinacea', 'Ginkgo', 'Ginger'].includes(herb) && 'Powerful natural remedy with proven benefits'}
-                  </p>
-                  <Link 
-                    href={`/herbs/${herb.toLowerCase().replace(/\s+/g, '-')}`}
-                      className="text-green-600 hover:text-green-700 font-medium text-sm"
-                    >
-                      Learn More →
-                  </Link>
-                </div>
+                <Link 
+                  key={index}
+                  href={`/herbs/${herb.toLowerCase().replace(/\s+/g, '-')}`}
+                  className="bg-green-50 hover:bg-green-100 px-4 py-2 rounded-full text-green-700 font-medium text-sm transition-colors"
+                >
+                  🌿 {herb}
+                </Link>
               ))}
             </div>
 
             <div className="text-center">
               <Link 
                 href="/constitution-test"
-                className={`inline-flex items-center bg-gradient-to-r ${getColorClasses(selectedGoalData.color)} text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg transition-all`}
+                className="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-medium transition-colors"
               >
-                <span className="mr-2">🎯</span>
-                Get Detailed Personal Plan
-                <span className="ml-2">→</span>
+                Get Personal Plan →
               </Link>
-              </div>
+            </div>
           </div>
         )}
 

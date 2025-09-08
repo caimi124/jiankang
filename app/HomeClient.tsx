@@ -1,11 +1,24 @@
 'use client'
 
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import Header from '../components/Header'
-import SmartSearch from '../components/SmartSearch'
-import TrustIndicators from '../components/TrustIndicators'
-import PersonalizedRecommendations from '../components/PersonalizedRecommendations'
 import { getTranslation } from '../lib/i18n'
+
+const SmartSearch = dynamic(() => import('../components/SmartSearch'), {
+  ssr: false,
+  loading: () => <div className="h-16 bg-gray-100 rounded-2xl animate-pulse" />
+})
+
+const TrustIndicators = dynamic(() => import('../components/TrustIndicators'), {
+  ssr: false,
+  loading: () => <div className="h-12 bg-gray-100 rounded animate-pulse" />
+})
+
+const PersonalizedRecommendations = dynamic(() => import('../components/PersonalizedRecommendations'), {
+  ssr: false,
+  loading: () => <div className="h-96 bg-gray-100 rounded-3xl animate-pulse" />
+})
 
 export default function HomeClient() {
   // 获取翻译（在服务器端）
@@ -53,16 +66,12 @@ export default function HomeClient() {
       {/* Unified Header Component */}
       <Header />
 
-      {/* Hero Section with Enhanced Visual Design */}
-      <section className="relative bg-gradient-to-br from-green-50 via-emerald-50 to-teal-100 py-20 overflow-hidden">
-        {/* Background Elements */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-20 h-20 text-green-600">🌿</div>
-          <div className="absolute top-20 right-20 w-16 h-16 text-blue-600">⚗️</div>
-          <div className="absolute bottom-20 left-20 w-18 h-18 text-purple-600">🧬</div>
-          <div className="absolute bottom-10 right-10 w-16 h-16 text-green-700">🌱</div>
-          <div className="absolute top-1/2 left-1/4 w-12 h-12 text-emerald-600">✨</div>
-          <div className="absolute top-1/3 right-1/4 w-14 h-14 text-teal-600">🔬</div>
+      {/* Hero Section - Optimized for LCP */}
+      <section className="relative bg-gradient-to-br from-green-50 to-emerald-100 py-20 batch-render">
+        {/* Simplified background for faster paint */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-10 left-10 text-4xl">🌿</div>
+          <div className="absolute bottom-10 right-10 text-4xl">🌱</div>
         </div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

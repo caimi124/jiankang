@@ -1,0 +1,10 @@
+# 现代浏览器支持，避免旧版 JavaScript polyfills
+> 0.5%
+last 2 versions
+not dead
+not ie 11
+not op_mini all
+chrome >= 60
+firefox >= 60
+safari >= 12
+edge >= 79

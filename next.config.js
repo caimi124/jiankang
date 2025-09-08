@@ -203,13 +203,31 @@ const nextConfig = {
     styledComponents: false,
   },
 
-  // 🚀 Webpack配置 - 简化以避免模块加载冲突
+
+  // 🚀 Webpack配置 - 性能优化
   webpack: (config, { dev, isServer }) => {
     // 仅在开发环境添加基本的路径别名
     if (dev) {
       config.resolve.alias = {
         ...config.resolve.alias,
         '@': require('path').resolve(__dirname),
+      }
+    }
+
+    // 优化代码分割
+    if (!isServer && !dev) {
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          chunks: 'all',
+          cacheGroups: {
+            vendor: {
+              test: /[\\/]node_modules[\\/]/,
+              name: 'vendors',
+              chunks: 'all',
+            },
+          },
+        },
       }
     }
 

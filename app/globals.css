@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -194,14 +193,28 @@
   /* 图片优化 */
   img {
     content-visibility: auto;
+    loading: lazy;
   }
   
-  /* 减少重绘 */
+  /* 减少重绘和重排 */
   .contain-layout {
     contain: layout;
   }
   
   .contain-paint {
     contain: paint;
+  }
+  
+  /* 批量 DOM 操作优化 */
+  .batch-render {
+    contain: layout style paint;
+  }
+  
+  /* 减少主线程阻塞 */
+  @supports (content-visibility: auto) {
+    .virtual-scroll {
+      content-visibility: auto;
+      contain-intrinsic-size: 0 500px;
+    }
   }
 } 
