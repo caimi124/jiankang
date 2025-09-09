@@ -1,35 +1,55 @@
 'use client'
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useEffect, useCallback, useMemo, memo } from 'react'
 import dynamic from 'next/dynamic'
 import type { Herb } from '../../lib/herbs-recommendation'
 import { HERBS_DATABASE } from '../../lib/herbs-data-complete'
 
-// Lazy load heavy components
-const Navigation = dynamic(() => import('../../components/Navigation'), { ssr: true })
-const Breadcrumb = dynamic(() => import('../../components/Breadcrumb'), { ssr: true })
-const HerbCard = dynamic(() => import('../../components/HerbRecommendations').then(mod => ({ default: mod.HerbCard })), { ssr: false })
+// 🚀 优化1: 合并导入 - 减少网络请求和bundle分割
+import { 
+  Search, Filter, Leaf, ChevronDown, AlertCircle, RefreshCw, X, Target,
+  Moon, Zap, Shield, Heart, Brain, Users 
+} from 'lucide-react'
+
+// 🚀 优化2: 延迟加载重型组件
+const Navigation = dynamic(() => import('../../components/Navigation'), { 
+  ssr: true,
+  loading: () => (
+    <div className="h-16 bg-white border-b border-gray-200 animate-pulse" />
+  )
+})
+
+const Breadcrumb = dynamic(() => import('../../components/Breadcrumb'), { 
+  ssr: true,
+  loading: () => (
+    <div className="h-8 bg-gray-100 rounded animate-pulse" />
+  )
+})
+
+const HerbCard = dynamic(() => 
+  import('../../components/HerbRecommendations').then(mod => ({ default: mod.HerbCard })), { 
+    ssr: false,
+    loading: () => <HerbCardSkeleton />
+  }
+)
+
 const HerbFinderFAQ = dynamic(() => import('../../components/HerbFinderFAQ'), { ssr: false })
 
-// Lazy load icons - only load what's needed
-const Search = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Search })), { ssr: false })
-const Filter = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Filter })), { ssr: false })
-const Leaf = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Leaf })), { ssr: false })
-const ChevronDown = dynamic(() => import('lucide-react').then(mod => ({ default: mod.ChevronDown })), { ssr: false })
-const AlertCircle = dynamic(() => import('lucide-react').then(mod => ({ default: mod.AlertCircle })), { ssr: false })
-const RefreshCw = dynamic(() => import('lucide-react').then(mod => ({ default: mod.RefreshCw })), { ssr: false })
-const X = dynamic(() => import('lucide-react').then(mod => ({ default: mod.X })), { ssr: false })
-const Target = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Target })), { ssr: false })
+// 🚀 优化3: 骨架屏组件防止布局偏移
+const HerbCardSkeleton = memo(() => (
+  <div className="bg-white rounded-2xl p-6 shadow-lg animate-pulse" style={{ minHeight: '380px' }}>
+    <div className="w-full h-48 bg-gray-200 rounded-xl mb-4" />
+    <div className="h-6 bg-gray-200 rounded mb-2" />
+    <div className="h-4 bg-gray-200 rounded w-3/4 mb-4" />
+    <div className="flex gap-2 mb-4">
+      <div className="h-6 bg-gray-200 rounded-full w-16" />
+      <div className="h-6 bg-gray-200 rounded-full w-20" />
+    </div>
+    <div className="h-10 bg-gray-200 rounded" />
+  </div>
+))
 
-// Lazy load category icons
-const Moon = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Moon })), { ssr: false })
-const Zap = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Zap })), { ssr: false })
-const Shield = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Shield })), { ssr: false })
-const Heart = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Heart })), { ssr: false })
-const Brain = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Brain })), { ssr: false })
-const Users = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Users })), { ssr: false })
-
-// Remove unused API function - using local data only
+HerbCardSkeleton.displayName = 'HerbCardSkeleton'
 
 interface FilterState {
   constitution: string
@@ -39,42 +59,51 @@ interface FilterState {
   category: string
 }
 
-// Popular search categories - icons loaded dynamically
-const PopularCategory = ({ iconName, label, onClick, isActive }: { iconName: string, label: string, onClick: () => void, isActive: boolean }) => {
-  const IconComponent = useMemo(() => {
-    switch(iconName) {
-      case 'moon': return Moon
-      case 'zap': return Zap  
-      case 'shield': return Shield
-      case 'heart': return Heart
-      case 'brain': return Brain
-      case 'users': return Users
-      default: return null
-    }
-  }, [iconName])
+// 🚀 优化4: 预定义图标映射避免动态计算
+const iconMap = {
+  moon: Moon,
+  zap: Zap,
+  shield: Shield,
+  heart: Heart,
+  brain: Brain,
+  users: Users
+} as const
+
+// 🚀 优化5: Memoized组件减少重渲染 + 无障碍性改进
+const PopularCategory = memo(({ iconName, label, onClick, isActive }: { 
+  iconName: keyof typeof iconMap
+  label: string
+  onClick: () => void
+  isActive: boolean 
+}) => {
+  const IconComponent = iconMap[iconName]
   
   return (
     <button
       onClick={onClick}
-      className={`flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 ${
+      className={`flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${
         isActive
-          ? 'bg-green-600 text-white shadow-lg'
-          : 'bg-white text-gray-700 hover:bg-green-50 hover:text-green-700 border border-gray-200 hover:border-green-200'
+          ? 'bg-green-600 text-white shadow-md'
+          : 'bg-white text-gray-700 hover:bg-green-50 hover:text-green-700 border border-gray-200'
       }`}
+      aria-pressed={isActive}
+      aria-label={`Filter by ${label}${isActive ? ' (currently active)' : ''}`}
     >
-      {IconComponent && <IconComponent className="w-4 h-4" />}
+      {IconComponent && <IconComponent className="w-4 h-4" aria-hidden="true" />}
       <span className="ml-2">{label}</span>
     </button>
   )
-}
+})
+
+PopularCategory.displayName = 'PopularCategory'
 
 const popularCategories = [
-  { iconName: 'moon', label: 'Sleep & Relaxation', keywords: ['睡眠支持', '镇静安神', '情绪管理', 'sleep', 'relaxation', 'calm'] },
-  { iconName: 'zap', label: 'Energy & Vitality', keywords: ['能量提升', '补气养血', 'energy', 'vitality', 'boost'] },
-  { iconName: 'shield', label: 'Immune Support', keywords: ['免疫支持', 'immune', 'support', 'defense'] },
-  { iconName: 'heart', label: 'Digestive Health', keywords: ['消化健康', 'digestive', 'stomach', 'gut'] },
-  { iconName: 'brain', label: 'Mental Clarity', keywords: ['压力与焦虑', 'mental', 'focus', 'clarity', 'stress', 'anxiety'] },
-  { iconName: 'users', label: 'Women\'s Health', keywords: ['女性健康', 'women', 'female', 'hormonal'] }
+  { iconName: 'moon' as const, label: 'Sleep & Relaxation', keywords: ['睡眠支持', '镇静安神', '情绪管理'] },
+  { iconName: 'zap' as const, label: 'Energy & Vitality', keywords: ['能量提升', '补气养血'] },
+  { iconName: 'shield' as const, label: 'Immune Support', keywords: ['免疫支持'] },
+  { iconName: 'heart' as const, label: 'Digestive Health', keywords: ['消化健康'] },
+  { iconName: 'brain' as const, label: 'Mental Clarity', keywords: ['压力与焦虑'] },
+  { iconName: 'users' as const, label: 'Women\'s Health', keywords: ['女性健康'] }
 ]
 
 export default function HerbFinderClient() {
@@ -116,66 +145,61 @@ export default function HerbFinderClient() {
     { value: 'low', label: 'Use with Caution' }
   ]
 
-  // 初始化效果 - 延迟设置筛选结果以避免初始渲染阻塞
+  // 🚀 优化6: 改进初始化 - 预设初始数据避免空白
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (filteredHerbs.length === 0) {
-        console.log(`[HerbFinder] 🚀 初始化草药数据: ${allHerbsData.length} 个草药`)
-        setFilteredHerbs(allHerbsData.slice(0, pageSize)) // 仅显示第一页
-      }
-    }, 100) // 100ms延迟
+      setFilteredHerbs(allHerbsData.slice(0, 24))
+      setIsLoading(false)
+    }, 150)
     
     return () => clearTimeout(timer)
-  }, [allHerbsData, filteredHerbs.length, pageSize])
+  }, [allHerbsData])
 
-  // 优化的筛选功能 - 使用Web Workers避免主线程阻塞
+  // 🚀 优化7: 高性能筛选算法 - 减少主线程阻塞
   const applyFilters = useCallback(() => {
-    const startTime = performance.now()
-    
-    // 使用requestIdleCallback避免阻塞主线程
-    const scheduleFilter = (callback: () => void) => {
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(callback, { timeout: 50 })
-      } else {
-        setTimeout(callback, 0)
-      }
-    }
-    
-    scheduleFilter(() => {
-      let filtered = herbs
+    if (typeof window === 'undefined') return
+
+    const filterWorkerCallback = () => {
+      const startTime = performance.now()
       
-      // 使用高效的筛选算法
+      let filtered = allHerbsData
+      
+      // 优化搜索 - 预编译搜索条件
       if (filters.search) {
-        const searchLower = filters.search.toLowerCase()
-        const searchTerms = searchLower.split(/\s+/).filter(term => term.length > 0)
+        const searchTerms = filters.search.toLowerCase()
+          .split(/\s+/)
+          .filter(term => term.length > 0)
         
+        if (searchTerms.length > 0) {
+          filtered = filtered.filter(herb => {
+            const searchableText = [
+              herb.chinese_name,
+              herb.english_name, 
+              herb.latin_name,
+              herb.description,
+              ...(herb.efficacy || []),
+              ...(herb.primary_effects || [])
+            ].join(' ').toLowerCase()
+            
+            return searchTerms.every(term => searchableText.includes(term))
+          })
+        }
+      }
+
+      // 快速筛选 - 单次遍历避免多次filter调用
+      if (filters.category || filters.constitution || filters.safety || filters.efficacy) {
         filtered = filtered.filter(herb => {
-          // 优化搜索文本构建
-          const searchableText = `${herb.chinese_name || ''} ${herb.english_name || ''} ${herb.latin_name || ''} ${herb.description || ''} ${(herb.efficacy || []).join(' ')} ${(herb.primary_effects || []).join(' ')}`.toLowerCase()
-          
-          return searchTerms.every(term => searchableText.includes(term))
+          if (filters.category && herb.category !== filters.category) return false
+          if (filters.constitution && herb.constitution_type !== filters.constitution) return false
+          if (filters.safety && herb.safety_level !== filters.safety) return false
+          if (filters.efficacy && 
+              !herb.efficacy?.includes(filters.efficacy) && 
+              !herb.primary_effects?.includes(filters.efficacy)) return false
+          return true
         })
       }
 
-      if (filters.category) {
-        filtered = filtered.filter(herb => herb.category === filters.category)
-      }
-
-      if (filters.constitution) {
-        filtered = filtered.filter(herb => herb.constitution_type === filters.constitution)
-      }
-
-      if (filters.safety) {
-        filtered = filtered.filter(herb => herb.safety_level === filters.safety)
-      }
-
-      if (filters.efficacy) {
-        filtered = filtered.filter(herb => 
-          herb.efficacy?.includes(filters.efficacy) || herb.primary_effects?.includes(filters.efficacy)
-        )
-      }
-
-      // 优化排序 - 使用单次计算
+      // 优化排序 - 使用缓存的分数计算
       if (filtered.length > 1) {
         filtered.sort((a, b) => {
           const scoreA = (a.quality_score || 0) * 0.6 + (a.popularity_score || 0) * 0.4
@@ -185,39 +209,40 @@ export default function HerbFinderClient() {
       }
 
       const endTime = performance.now()
-      console.log(`[HerbFinder] 🔄 Filtered ${filtered.length} herbs in ${(endTime - startTime).toFixed(2)}ms`)
+      console.log(`[HerbFinder] ⚡ Filtered ${filtered.length}/${allHerbsData.length} herbs in ${(endTime - startTime).toFixed(2)}ms`)
       
-      // 只显示当前页的数据
-      const startIndex = (page - 1) * pageSize
-      const paginatedResults = filtered.slice(startIndex, startIndex + pageSize)
-      
-      setFilteredHerbs(paginatedResults)
-    })
-  }, [herbs, filters, page, pageSize])
+      // 🚀 优化8: 限制初始渲染数量防止DOM过载
+      setFilteredHerbs(filtered.slice(0, Math.min(filtered.length, 48)))
+    }
 
-  // 防抖搜索 - 增加延迟时间减少计算频率
+    // 🚀 优化9: 更智能的任务调度
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(filterWorkerCallback, { timeout: 100 })
+    } else {
+      setTimeout(filterWorkerCallback, 16) // 1帧时间
+    }
+  }, [allHerbsData, filters])
+
+  // 🚀 优化10: 增强防抖 - 搜索字段特殊处理
   useEffect(() => {
-    const timer = setTimeout(() => {
-      applyFilters()
-    }, 500) // 增加到500ms防抖
-
+    const delay = filters.search ? 300 : 100 // 搜索有更长防抖
+    const timer = setTimeout(applyFilters, delay)
     return () => clearTimeout(timer)
   }, [applyFilters])
 
-  const handleFilterChange = (key: keyof FilterState, value: string) => {
-    console.log(`[HerbFinder] 筛选变更: ${key} = "${value}"`)
+  // 🚀 优化11: useCallback优化事件处理器
+  const handleFilterChange = useCallback((key: keyof FilterState, value: string) => {
     setFilters(prev => ({ ...prev, [key]: value }))
-    setPage(1)
-  }
+  }, [])
 
-  const handleCategorySelect = (categoryLabel: string) => {
+  const handleCategorySelect = useCallback((categoryLabel: string) => {
     setFilters(prev => ({ 
       ...prev, 
       category: prev.category === categoryLabel ? '' : categoryLabel 
     }))
-  }
+  }, [])
 
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
     setFilters({
       constitution: '',
       efficacy: '',
@@ -225,17 +250,18 @@ export default function HerbFinderClient() {
       search: '',
       category: ''
     })
-    setPage(1)
-  }
+  }, [])
 
-  const refreshData = () => {
-    console.log('[HerbFinder] 🔄 刷新草药数据')
-    setFilteredHerbs(allHerbsData.slice(0, pageSize))
+  const refreshData = useCallback(() => {
+    setFilteredHerbs(allHerbsData.slice(0, 24))
     setError(null)
-    setPage(1)
-  }
+  }, [allHerbsData])
 
-  const hasActiveFilters = Object.values(filters).some(value => value !== '')
+  // 🚀 优化12: useMemo优化计算属性
+  const hasActiveFilters = useMemo(() => 
+    Object.values(filters).some(value => value !== ''), 
+    [filters]
+  )
 
   if (isLoading) {
     return (
