@@ -117,53 +117,24 @@ module.exports = {
       }
     }
 
-    // 核心工具页面高优先级
+    // 核心工具页面高优先级 - 暂时移除hreflang以避免next-sitemap的bug
     if (path.includes('constitution-test') || path.includes('herb-finder') || path.includes('knowledge-center') || path.includes('ingredient-checker') || path.includes('dosage-calculator') || path.includes('user-experiences') || path.includes('about') || path.includes('articles') || path.includes('blog') || path.includes('privacy')) {
       return {
         loc: path,
         changefreq: 'weekly',
         priority: 0.9,
-        lastmod: new Date().toISOString(),
-        // 多语言替代版本：对成对存在的页面输出 hreflang
-        ...(path.startsWith('/zh/') ? {
-          alternateRefs: [
-            { href: `https://herbscience.shop${path.replace('/zh', '')}`, hreflang: 'en' },
-            { href: `https://herbscience.shop${path}`, hreflang: 'zh' },
-            { href: `https://herbscience.shop${path.replace('/zh', '')}`, hreflang: 'x-default' }
-          ]
-        } : {
-          alternateRefs: [
-            { href: `https://herbscience.shop${path}`, hreflang: 'en' },
-            { href: `https://herbscience.shop/zh${path}`, hreflang: 'zh' },
-            { href: `https://herbscience.shop${path}`, hreflang: 'x-default' }
-          ]
-        }),
+        lastmod: new Date().toISOString()
+        // 暂时移除 alternateRefs 以避免URL重复问题
       }
     }
 
-    // 其他页面标准优先级 + hreflang（如存在 zh 对应）
-    const hasZh = path.startsWith('/zh/')
-    const basePath = hasZh ? path.replace('/zh', '') : path
+    // 其他页面标准优先级 - 暂时移除hreflang
     return {
       loc: path,
       changefreq: config.changefreq,
       priority: config.priority,
-      lastmod: new Date().toISOString(),
-      ...(path === '/' || path === '/zh' ? {} : {
-        ...(hasZh ? {
-          alternateRefs: [
-            { href: `https://herbscience.shop${basePath}`, hreflang: 'en' },
-            { href: `https://herbscience.shop${path}`, hreflang: 'zh' },
-            { href: `https://herbscience.shop${basePath}`, hreflang: 'x-default' }
-          ]
-        } : {
-          alternateRefs: [
-            { href: `https://herbscience.shop${path}`, hreflang: 'en' },
-            { href: `https://herbscience.shop/zh${path}`, hreflang: 'zh' },
-            { href: `https://herbscience.shop${path}`, hreflang: 'x-default' }
-          ]
-        })
-      })
+      lastmod: new Date().toISOString()
+      // 暂时移除所有 alternateRefs 以避免URL重复问题
     }
   },
 
