@@ -21,12 +21,16 @@ export default function Header() {
   const currentLocale = useMemo(() => pathname.startsWith('/zh') ? 'zh' : 'en', [pathname])
   const t = useMemo(() => getTranslation(currentLocale), [currentLocale])
 
-  // 移动端简化导航项目
+  // 完整导航项目 - 恢复所有重要功能页面
   const navigationItems = useMemo(() => [
     { href: '/', label: t.nav.home, icon: '🏠' },
     { href: '/herb-finder', label: t.nav.herbFinder, icon: '🔍' },
     { href: '/constitution-test', label: t.nav.constitutionTest, icon: '🧠' },
-    { href: '/blog', label: t.nav.blog, icon: '📝' }
+    { href: '/knowledge-center', label: t.nav.knowledgeCenter, icon: '📚' },
+    { href: '/ingredient-checker', label: t.nav.safetyChecker, icon: '🛡️' },
+    { href: '/user-experiences', label: t.nav.userReviews, icon: '👥' },
+    { href: '/blog', label: t.nav.blog, icon: '📝' },
+    { href: '/about', label: t.nav.about, icon: 'ℹ️' }
   ], [t])
 
   const isActive = useCallback((href: string) => {
@@ -87,22 +91,117 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* 极简桌面导航 */}
+          {/* 桌面导航 - 核心功能 + 工具下拉菜单 */}
           <nav className="hidden lg:flex items-center space-x-1">
-            {navigationItems.map((item) => (
-              <Link
-                key={item.href}
-                href={getLocalizedHref(item.href)}
-                className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-                  isActive(item.href)
-                    ? 'bg-green-600 text-white'
-                    : 'text-gray-700 hover:bg-gray-100'
-                }`}
-              >
-                <span className="mr-2">{item.icon}</span>
-                {item.label}
-              </Link>
-            ))}
+            {/* 核心导航项 */}
+            <Link
+              href={getLocalizedHref('/')}
+              className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                isActive('/')
+                  ? 'bg-green-600 text-white'
+                  : 'text-gray-700 hover:bg-gray-100'
+              }`}
+            >
+              <span className="mr-2">🏠</span>
+              {t.nav.home}
+            </Link>
+            
+            <Link
+              href={getLocalizedHref('/herb-finder')}
+              className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                isActive('/herb-finder')
+                  ? 'bg-green-600 text-white'
+                  : 'text-gray-700 hover:bg-gray-100'
+              }`}
+            >
+              <span className="mr-2">🔍</span>
+              {t.nav.herbFinder}
+            </Link>
+            
+            <Link
+              href={getLocalizedHref('/constitution-test')}
+              className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                isActive('/constitution-test')
+                  ? 'bg-green-600 text-white'
+                  : 'text-gray-700 hover:bg-gray-100'
+              }`}
+            >
+              <span className="mr-2">🧠</span>
+              {t.nav.constitutionTest}
+            </Link>
+
+            {/* 工具下拉菜单 */}
+            <div className="relative group">
+              <button className="px-3 py-2 text-sm font-medium rounded-lg transition-colors text-gray-700 hover:bg-gray-100 flex items-center">
+                <span className="mr-2">🛠️</span>
+                Tools
+                <ChevronDown className="ml-1 h-4 w-4" />
+              </button>
+              
+              <div className="absolute top-full left-0 mt-1 w-64 bg-white rounded-lg shadow-xl border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div className="p-2 space-y-1">
+                  <Link
+                    href={getLocalizedHref('/ingredient-checker')}
+                    className={`flex items-center px-3 py-2 text-sm rounded-lg transition-colors ${
+                      isActive('/ingredient-checker')
+                        ? 'bg-green-600 text-white'
+                        : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                  >
+                    <span className="mr-3">🛡️</span>
+                    {t.nav.safetyChecker}
+                  </Link>
+                  
+                  <Link
+                    href={getLocalizedHref('/knowledge-center')}
+                    className={`flex items-center px-3 py-2 text-sm rounded-lg transition-colors ${
+                      isActive('/knowledge-center')
+                        ? 'bg-green-600 text-white'
+                        : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                  >
+                    <span className="mr-3">📚</span>
+                    {t.nav.knowledgeCenter}
+                  </Link>
+                  
+                  <Link
+                    href={getLocalizedHref('/user-experiences')}
+                    className={`flex items-center px-3 py-2 text-sm rounded-lg transition-colors ${
+                      isActive('/user-experiences')
+                        ? 'bg-green-600 text-white'
+                        : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                  >
+                    <span className="mr-3">👥</span>
+                    {t.nav.userReviews}
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            <Link
+              href={getLocalizedHref('/blog')}
+              className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                isActive('/blog')
+                  ? 'bg-green-600 text-white'
+                  : 'text-gray-700 hover:bg-gray-100'
+              }`}
+            >
+              <span className="mr-2">📝</span>
+              {t.nav.blog}
+            </Link>
+            
+            <Link
+              href={getLocalizedHref('/about')}
+              className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                isActive('/about')
+                  ? 'bg-green-600 text-white'
+                  : 'text-gray-700 hover:bg-gray-100'
+              }`}
+            >
+              <span className="mr-2">ℹ️</span>
+              {t.nav.about}
+            </Link>
           </nav>
 
           {/* Right Side - Language Switcher & Mobile Menu */}

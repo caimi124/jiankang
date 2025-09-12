@@ -414,7 +414,7 @@ export const HERBS_DATABASE: Herb[] = [
   {
     "id": "2176f14b-923c-819e-9026-cb3c53a89c2e",
     "chinese_name": "Matricariae flos",
-    "english_name": "Matricariae flos(待翻译)",
+    "english_name": "Chamomile Flower",
     "latin_name": "Matricariae flos",
     "category": "general",
     "constitution_type": "balanced",
@@ -604,7 +604,7 @@ export const HERBS_DATABASE: Herb[] = [
   {
     "id": "2176f14b-923c-81fd-b3b7-ee7973a9fe2e",
     "chinese_name": "Rosae caninae fructus",
-    "english_name": "Rosae caninae fructus(待翻译)",
+    "english_name": "Rose Hip",
     "latin_name": "Rosae caninae fructus",
     "category": "general",
     "constitution_type": "balanced",
@@ -2848,7 +2848,7 @@ export const CONSTITUTION_HERB_MAPPING = {
   {
     "id": "2176f14b-923c-819e-9026-cb3c53a89c2e",
     "chinese_name": "Matricariae flos",
-    "english_name": "Matricariae flos(待翻译)",
+    "english_name": "Chamomile Flower",
     "latin_name": "Matricariae flos",
     "category": "general",
     "constitution_type": "balanced",
@@ -3038,7 +3038,7 @@ export const CONSTITUTION_HERB_MAPPING = {
   {
     "id": "2176f14b-923c-81fd-b3b7-ee7973a9fe2e",
     "chinese_name": "Rosae caninae fructus",
-    "english_name": "Rosae caninae fructus(待翻译)",
+    "english_name": "Rose Hip",
     "latin_name": "Rosae caninae fructus",
     "category": "general",
     "constitution_type": "balanced",
