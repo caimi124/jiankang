@@ -19,7 +19,11 @@ import {
   Play,
   BarChart3,
   Activity,
-  Target
+  Target,
+  AlertTriangle,
+  AlertCircle,
+  Leaf,
+  Search
 } from 'lucide-react'
 
 import { questions, scoreOptions, calculateConstitution, constitutionInfo, type ConstitutionType } from './questions'
@@ -41,6 +45,131 @@ const customAnimations = `
     animation: fade-in 0.3s ease-out;
   }
 `
+
+// 支持函数：获取体质对应的渐变色
+const getConstitutionGradient = (constitutionType: string) => {
+  const gradients: Record<string, string> = {
+    '平和': 'from-green-600 to-emerald-600',
+    '气虚': 'from-yellow-500 to-orange-500',
+    '阳虚': 'from-orange-500 to-red-500',
+    '阴虚': 'from-red-500 to-pink-500',
+    '痰湿': 'from-blue-500 to-cyan-500',
+    '湿热': 'from-purple-500 to-indigo-500',
+    '血瘀': 'from-gray-600 to-slate-600',
+    '气郁': 'from-indigo-500 to-purple-500',
+    '特禀': 'from-pink-500 to-rose-500'
+  }
+  return gradients[constitutionType] || 'from-gray-500 to-gray-600'
+}
+
+// 支持函数：获取英文吸睛总结
+const getEngineeredSummary = (constitutionType: string) => {
+  const summaries: Record<string, string> = {
+    '平和': 'You have a Balanced Constitution — your body maintains harmony and optimal health naturally.',
+    '气虚': 'You have a Qi Deficiency Constitution — your body needs energy boosting and immune strengthening.',
+    '阳虚': 'You have a Yang Deficiency Constitution — your body tends to feel cold and lacks warming energy.',
+    '阴虚': 'You have a Yin Deficiency Constitution — your body runs hot and needs cooling, nourishing support.',
+    '痰湿': 'You have a Phlegm-Dampness Constitution — your body tends to retain moisture and needs drainage.',
+    '湿热': 'You have a Damp-Heat Constitution — your body experiences inflammation and needs cooling, clearing support.',
+    '血瘀': 'You have a Blood Stasis Constitution — your circulation needs improvement and movement support.',
+    '气郁': 'You have a Qi Stagnation Constitution — your energy flow is blocked and needs gentle release.',
+    '特禀': 'You have a Special Constitution — your body has unique sensitivities requiring personalized care.'
+  }
+  return summaries[constitutionType] || 'You have a unique constitution that requires personalized attention.'
+}
+
+// 支持函数：获取健康洞察
+const getHealthInsights = (constitutionType: string) => {
+  const insights: Record<string, string> = {
+    '平和': 'Your balanced constitution indicates optimal health. Focus on maintaining this harmony through consistent lifestyle practices.',
+    '气虚': 'Low energy and frequent fatigue suggest your body needs gentle strengthening. Avoid overexertion and focus on building stamina gradually.',
+    '阳虚': 'Poor circulation and cold sensitivity indicate warming therapy is beneficial. Regular gentle exercise can help improve circulation.',
+    '阴虚': 'Heat symptoms and restlessness suggest your body needs cooling and nourishing support. Stress management is particularly important.',
+    '痰湿': 'Sluggish metabolism and weight retention indicate your body needs drying and moving therapies. Regular movement is essential.',
+    '湿热': 'Inflammatory symptoms suggest your body needs clearing and cooling support. Avoid heating foods and activities.',
+    '血瘀': 'Poor circulation and stagnation suggest your body needs movement and flow enhancement. Regular exercise is crucial.',
+    '气郁': 'Emotional stress and tension suggest your body needs relaxation and flow restoration. Stress management techniques are beneficial.',
+    '特禀': 'Allergic tendencies suggest your body needs immune balancing and protective support. Avoid known triggers consistently.'
+  }
+  return insights[constitutionType] || 'Your constitution requires personalized care and attention.'
+}
+
+// 支持函数：获取作息建议
+const getRestRecommendations = (constitutionType: string) => {
+  const restAdvice: Record<string, string> = {
+    '平和': 'Maintain regular sleep schedule (10pm-6am). Practice relaxation techniques to preserve balance.',
+    '气虚': 'Prioritize 8+ hours of sleep. Take afternoon naps when possible. Avoid late nights and excessive stimulation.',
+    '阳虚': 'Sleep in warm environment. Morning sunlight exposure helps regulate circadian rhythm. Avoid cold sleeping environments.',
+    '阴虚': 'Create cool, dark sleeping environment. Practice evening meditation. Avoid screens before bed to calm the mind.',
+    '痰湿': 'Avoid daytime napping. Light exercise before bed helps circulation. Keep bedroom well-ventilated and dry.',
+    '湿热': 'Sleep in cool environment. Evening cooling activities like gentle yoga. Avoid heavy meals before bed.',
+    '血瘀': 'Gentle stretching before bed improves circulation. Regular massage can help. Maintain consistent sleep schedule.',
+    '气郁': 'Stress-reducing bedtime routine essential. Journaling or gentle music helps. Consistent wake times important.',
+    '特禀': 'Avoid allergens in bedroom. Air purifiers recommended. Hypoallergenic bedding materials preferred.'
+  }
+  return restAdvice[constitutionType] || 'Maintain regular sleep schedule and stress management practices.'
+}
+
+// 支持函数：获取草药益处
+const getHerbBenefit = (herb: string, constitutionType: string) => {
+  const benefits: Record<string, Record<string, string>> = {
+    '气虚': {
+      '黄芪': 'Boosts energy and strengthens immune system naturally',
+      '党参': 'Gentle energy enhancement without overstimulation',
+      '人参': 'Powerful vitality restoration for deep fatigue',
+      '白术': 'Strengthens digestion and nutrient absorption'
+    },
+    '阳虚': {
+      '附子': 'Powerful warming herb for cold constitution',
+      '干姜': 'Gentle warming for digestive and circulation',
+      '肉桂': 'Sweet warming spice for daily use',
+      '鹿茸': 'Premium warming and strengthening tonic'
+    },
+    '阴虚': {
+      '枸杞': 'Nourishing and moistening for dry conditions',
+      '百合': 'Cooling and calming for restless energy',
+      '沙参': 'Moistens lungs and reduces heat symptoms',
+      '麦冬': 'Generates fluids and calms the mind'
+    },
+    '痰湿': {
+      '陈皮': 'Promotes circulation and reduces dampness',
+      '茯苓': 'Drains dampness and strengthens digestion',
+      '半夏': 'Transforms phlegm and harmonizes stomach',
+      '薏苡仁': 'Drains dampness and strengthens spleen'
+    },
+    '湿热': {
+      '连翘': 'Clears heat and reduces inflammation',
+      '金银花': 'Cooling and detoxifying for heat symptoms',
+      '栀子': 'Clears heat and calms irritability',
+      '黄连': 'Powerful heat-clearing and drying herb'
+    },
+    '血瘀': {
+      '当归': 'Nourishes blood and promotes circulation',
+      '川芎': 'Activates blood and relieves stagnation',
+      '红花': 'Invigorates blood circulation',
+      '丹参': 'Promotes blood flow and heart health'
+    },
+    '气郁': {
+      '柴胡': 'Soothes liver qi and relieves stress',
+      '香附': 'Regulates qi and relieves tension',
+      '薄荷': 'Cooling and uplifting for mood',
+      '玫瑰花': 'Gentle qi regulation and mood support'
+    },
+    '特禀': {
+      '防风': 'Strengthens immunity and prevents allergies',
+      '白芍': 'Nourishes blood and calms sensitivity',
+      '甘草': 'Harmonizes and reduces allergic reactions',
+      '乌梅': 'Astringent and protective for sensitive systems'
+    },
+    '平和': {
+      '党参': 'Maintains energy and supports overall wellness',
+      '枸杞': 'Antioxidant support for continued health',
+      '黄芪': 'Immune support and vitality maintenance',
+      '甘草': 'Harmonizing and balancing herb'
+    }
+  }
+  return benefits[constitutionType]?.[herb] || 'Supports your constitutional balance naturally'
+}
 
 export default function ConstitutionTestClient() {
   const [currentStep, setCurrentStep] = useState<'welcome' | 'test' | 'results'>('welcome')
@@ -135,6 +264,78 @@ export default function ConstitutionTestClient() {
     setCurrentQuestion(0)
     setAnswers(new Array(questions.length).fill(0))
     setSelectedAnswer(null)
+  }
+
+  // CTA 按钮处理函数
+  const handleHerbClick = (herb: string) => {
+    // 尝试跳转到对应的草药详情页面
+    const herbSlugMap: Record<string, string> = {
+      '黄芪': 'astragalus',
+      '党参': 'codonopsis',
+      '人参': 'ginseng',
+      '白术': 'atractylodes',
+      '附子': 'aconite',
+      '干姜': 'dried-ginger',
+      '肉桂': 'cinnamon',
+      '鹿茸': 'deer-antler',
+      '枸杞': 'goji-berry',
+      '百合': 'lily-bulb',
+      '沙参': 'adenophora',
+      '麦冬': 'ophiopogon',
+      '陈皮': 'tangerine-peel',
+      '茯苓': 'poria',
+      '半夏': 'pinellia',
+      '薏苡仁': 'coix-seed',
+      '连翘': 'forsythia',
+      '金银花': 'honeysuckle',
+      '栀子': 'gardenia',
+      '黄连': 'coptis',
+      '当归': 'angelica',
+      '川芎': 'ligusticum',
+      '红花': 'carthamus',
+      '丹参': 'salvia',
+      '柴胡': 'bupleurum',
+      '香附': 'cyperus',
+      '薄荷': 'mint',
+      '玫瑰花': 'rose',
+      '防风': 'saposhnikovia',
+      '白芍': 'white-peony',
+      '甘草': 'licorice',
+      '乌梅': 'dark-plum'
+    }
+    
+    const slug = herbSlugMap[herb] || herb.toLowerCase().replace(/\s+/g, '-')
+    window.open(`/herbs/${slug}`, '_blank')
+  }
+
+  const handleSubscribeClick = () => {
+    // 实现订阅功能 - 可以跳转到邮件订阅页面或显示模态框
+    window.open('/subscribe?source=constitution-test', '_blank')
+  }
+
+  const handleShareResults = () => {
+    // 实现分享功能
+    if (navigator.share) {
+      navigator.share({
+        title: 'My TCM Constitution Test Results',
+        text: 'I just discovered my Traditional Chinese Medicine constitution type!',
+        url: window.location.href
+      })
+    } else {
+      // 后备分享方案 - 复制链接
+      navigator.clipboard.writeText(window.location.href)
+      alert('Link copied to clipboard! Share with your friends.')
+    }
+  }
+
+  const handleDownloadReport = () => {
+    // 实现下载报告功能 - 简单的打印对话框
+    window.print()
+  }
+
+  const handleBookConsultation = () => {
+    // 跳转到咨询预约页面
+    window.open('/consultation?source=constitution-test', '_blank')
   }
 
   const progress = ((currentQuestion + 1) / questions.length) * 100
@@ -234,22 +435,271 @@ export default function ConstitutionTestClient() {
               ]} 
             />
 
-            {/* 其余的结果页面内容会在这里继续... */}
-            <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
-              <div className="text-6xl mb-4">{primaryInfo.icon}</div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">{primaryInfo.name}</h1>
-              <p className="text-lg text-gray-600 mb-6">{primaryInfo.description}</p>
-              
-              <div className="bg-gray-50 rounded-xl p-6 mb-8">
-                <h2 className="text-xl font-semibold mb-4">详细分析</h2>
-                <p className="text-gray-700">{primaryInfo.modernInterpretation}</p>
+            {/* 🎯 简短总结（吸睛） */}
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
+              <div className={`bg-gradient-to-r ${getConstitutionGradient(primaryInfo.id)} px-8 py-12 text-center text-white relative`}>
+                <div className="absolute inset-0 bg-black/10"></div>
+                <div className="relative">
+                  <div className="text-8xl mb-6">{primaryInfo.icon}</div>
+                  <h1 className="text-4xl font-bold mb-4">{primaryInfo.englishName}</h1>
+                  <div className="text-2xl font-light mb-6 max-w-3xl mx-auto leading-relaxed">
+                    {getEngineeredSummary(primaryInfo.id)}
+                  </div>
+                  <div className="flex justify-center items-center gap-3 mb-4">
+                    <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
+                      <span className="text-lg font-medium">{primaryInfo.name}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 📊 详细解释（科学+通俗） */}
+            <div className="grid lg:grid-cols-2 gap-8 mb-8">
+              {/* Body Traits */}
+              <div className="bg-white rounded-2xl shadow-xl p-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                    <Activity className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-900">Body Traits</h2>
+                </div>
+                <div className="space-y-4">
+                  {primaryInfo.characteristics?.map((trait, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                      <p className="text-gray-700">{trait}</p>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="mt-6 p-4 bg-blue-50 rounded-xl">
+                  <h3 className="font-semibold text-blue-900 mb-2">Modern Interpretation</h3>
+                  <p className="text-blue-800">{primaryInfo.modernInterpretation}</p>
+                </div>
               </div>
 
+              {/* Possible Issues & Warnings */}
+              <div className="bg-white rounded-2xl shadow-xl p-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+                    <AlertTriangle className="w-6 h-6 text-orange-600" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-900">Health Considerations</h2>
+                </div>
+                
+                {primaryInfo.warnings?.length > 0 && (
+                  <div className="mb-6">
+                    <h3 className="font-semibold text-orange-900 mb-3">⚠️ Important Warnings</h3>
+                    <div className="space-y-2">
+                      {primaryInfo.warnings.map((warning, index) => (
+                        <div key={index} className="flex items-start gap-3 p-3 bg-orange-50 rounded-lg">
+                          <AlertCircle className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
+                          <p className="text-orange-800 text-sm">{warning}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="p-4 bg-gray-50 rounded-xl">
+                  <h3 className="font-semibold text-gray-900 mb-2">💡 Key Insights</h3>
+                  <p className="text-gray-700 text-sm">{getHealthInsights(primaryInfo.id)}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* 🌱 生活方式建议 */}
+            <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Personalized Lifestyle Recommendations</h2>
+                <p className="text-gray-600 text-lg">Tailored specifically for your {primaryInfo.englishName}</p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-8">
+                {/* 饮食建议 */}
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl">🥗</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">Dietary Guidelines</h3>
+                  <div className="space-y-3">
+                    <div className="p-4 bg-green-50 rounded-xl">
+                      <h4 className="font-semibold text-green-900 mb-2">✅ Include More:</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {primaryInfo.dietaryRecommendations?.include?.map((food, index) => (
+                          <span key={index} className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
+                            {food}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="p-4 bg-red-50 rounded-xl">
+                      <h4 className="font-semibold text-red-900 mb-2">❌ Avoid:</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {primaryInfo.dietaryRecommendations?.avoid?.map((food, index) => (
+                          <span key={index} className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">
+                            {food}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 运动建议 */}
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl">💪</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">Exercise & Activity</h3>
+                  <div className="p-4 bg-blue-50 rounded-xl">
+                    <div className="space-y-3">
+                      {primaryInfo.lifestyleAdvice?.map((advice, index) => (
+                        <div key={index} className="flex items-start gap-3">
+                          <Star className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                          <p className="text-blue-800 text-sm text-left">{advice}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* 作息建议 */}
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl">😴</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">Rest & Recovery</h3>
+                  <div className="p-4 bg-purple-50 rounded-xl">
+                    <p className="text-purple-800">{getRestRecommendations(primaryInfo.id)}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 🌿 草药推荐（关联数据库） */}
+            <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Recommended Herbs for Your Constitution</h2>
+                <p className="text-gray-600 text-lg">Science-backed herbal allies perfectly matched to your body type</p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                {primaryInfo.recommendedHerbs?.slice(0, 3).map((herb, index) => (
+                  <div key={index} className="group cursor-pointer transform transition-all duration-200 hover:scale-105">
+                    <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-200">
+                      <div className="text-center">
+                        <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-md">
+                          <Leaf className="w-8 h-8 text-green-600" />
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-900 mb-3">{herb}</h3>
+                        <p className="text-gray-600 text-sm mb-4">{getHerbBenefit(herb, primaryInfo.id)}</p>
+                        <button
+                          onClick={() => handleHerbClick(herb)}
+                          className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors text-sm font-medium"
+                        >
+                          Learn More →
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="text-center mt-8">
+                <button 
+                  onClick={() => window.open('/herb-finder?constitution=' + encodeURIComponent(primaryInfo.id), '_blank')}
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-teal-600 text-white px-8 py-4 rounded-xl hover:from-green-700 hover:to-teal-700 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg font-medium"
+                >
+                  <Search className="w-5 h-5" />
+                  Explore All Compatible Herbs
+                </button>
+              </div>
+            </div>
+
+            {/* 🎯 行动引导（转化）- CTA按钮组 */}
+            <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 rounded-2xl shadow-2xl p-8 text-center text-white mb-8">
+              <div className="max-w-3xl mx-auto">
+                <h2 className="text-3xl font-bold mb-4">Your Wellness Journey Starts Now</h2>
+                <p className="text-xl text-white/90 mb-8">Transform your health with personalized guidance based on your unique constitution</p>
+                
+                <div className="grid md:grid-cols-3 gap-4">
+                  <button 
+                    onClick={() => window.open('/herb-finder?recommended=true&constitution=' + encodeURIComponent(primaryInfo.id), '_blank')}
+                    className="group bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl p-6 hover:bg-white/30 transition-all duration-200 transform hover:scale-105"
+                  >
+                    <div className="text-3xl mb-3">🌿</div>
+                    <h3 className="font-bold text-lg mb-2">View Your Herbs</h3>
+                    <p className="text-sm text-white/80">Discover herbs perfectly matched to your constitution</p>
+                  </button>
+                  
+                  <button 
+                    onClick={() => handleSubscribeClick()}
+                    className="group bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl p-6 hover:bg-white/30 transition-all duration-200 transform hover:scale-105"
+                  >
+                    <div className="text-3xl mb-3">📧</div>
+                    <h3 className="font-bold text-lg mb-2">Get Personalized Tips</h3>
+                    <p className="text-sm text-white/80">Weekly wellness advice tailored to your body type</p>
+                  </button>
+                  
+                  <button 
+                    onClick={() => handleShareResults()}
+                    className="group bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl p-6 hover:bg-white/30 transition-all duration-200 transform hover:scale-105"
+                  >
+                    <div className="text-3xl mb-3">📱</div>
+                    <h3 className="font-bold text-lg mb-2">Share Results</h3>
+                    <p className="text-sm text-white/80">Help friends discover their constitution too</p>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* 📊 次要体质信息（如果存在） */}
+            {secondaryInfo && (
+              <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
+                <div className="text-center mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Secondary Constitution Tendency</h2>
+                  <p className="text-gray-600">You also show some traits of {secondaryInfo.englishName}</p>
+                </div>
+                
+                <div className="bg-gray-50 rounded-xl p-6">
+                  <div className="flex items-center gap-4 mb-4">
+                    <span className="text-4xl">{secondaryInfo.icon}</span>
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-900">{secondaryInfo.name}</h3>
+                      <p className="text-gray-600">{secondaryInfo.englishName}</p>
+                    </div>
+                  </div>
+                  <p className="text-gray-700">{secondaryInfo.description}</p>
+                </div>
+              </div>
+            )}
+
+            {/* 🔄 重新测试和其他操作 */}
+            <div className="grid md:grid-cols-3 gap-4 max-w-2xl mx-auto">
               <button
-                onClick={() => setCurrentStep('welcome')}
-                className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors"
+                onClick={handleBackToWelcome}
+                className="group flex items-center justify-center gap-2 px-8 py-4 border-2 border-gray-300 rounded-xl text-gray-700 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg"
               >
-                重新测试
+                <ArrowLeft className="w-5 h-5 group-hover:translate-x-[-2px] transition-transform duration-200" />
+                <span className="font-medium">Retake Test</span>
+              </button>
+              
+              <button 
+                onClick={() => handleDownloadReport()}
+                className="group flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              >
+                <Download className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
+                <span className="font-medium">Download Report</span>
+              </button>
+              
+              <button 
+                onClick={() => handleBookConsultation()}
+                className="group flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-xl hover:from-green-700 hover:to-teal-700 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              >
+                <Users className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
+                <span className="font-medium">Consult Expert</span>
               </button>
             </div>
           </main>
