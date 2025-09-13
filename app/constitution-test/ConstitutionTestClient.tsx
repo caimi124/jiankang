@@ -139,6 +139,151 @@ export default function ConstitutionTestClient() {
 
   const progress = ((currentQuestion + 1) / questions.length) * 100
 
+  // 结果页面错误边界处理
+  if (currentStep === 'results') {
+    try {
+      // 检查是否所有问题都已回答
+      const answeredCount = answers.filter(answer => answer >= 1 && answer <= 5).length;
+      const minRequiredAnswers = Math.max(3, Math.floor(questions.length * 0.5)); // 至少50%的问题
+      
+      console.log('[ConstitutionTest] 进入结果页面:', {
+        answeredCount,
+        minRequiredAnswers,
+        totalQuestions: questions.length,
+        answers: answers.slice(0, 5) // 只显示前5个答案用于调试
+      });
+
+      if (answeredCount < minRequiredAnswers) {
+        return (
+          <div className="min-h-screen bg-gradient-to-br from-yellow-50 to-orange-50">
+            <style dangerouslySetInnerHTML={{ __html: customAnimations }} />
+            <Navigation />
+            
+            <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+              <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
+                <div className="text-6xl mb-4">📝</div>
+                <h1 className="text-2xl font-bold text-yellow-600 mb-4">请完成更多题目</h1>
+                <p className="text-gray-600 mb-6">
+                  为了获得准确的体质分析，请至少回答 {minRequiredAnswers} 个问题。<br/>
+                  您已回答: {answeredCount} / {questions.length}
+                </p>
+                <button
+                  onClick={() => setCurrentStep('test')}
+                  className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors"
+                >
+                  继续测试
+                </button>
+              </div>
+            </main>
+          </div>
+        )
+      }
+
+      console.log('[ConstitutionTest] 开始计算体质结果...');
+      const result = calculateConstitution(answers)
+      console.log('[ConstitutionTest] 计算结果:', result);
+      
+      const primaryInfo = constitutionInfo[result.primary]
+      const secondaryInfo = result.secondary ? constitutionInfo[result.secondary] : null
+
+      console.log('[ConstitutionTest] 主要体质信息:', primaryInfo ? '存在' : '不存在');
+      console.log('[ConstitutionTest] 次要体质信息:', secondaryInfo ? '存在' : '不存在');
+
+      // Error handling - if primaryInfo is undefined, show error
+      if (!primaryInfo) {
+        return (
+          <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50">
+            <style dangerouslySetInnerHTML={{ __html: customAnimations }} />
+            <Navigation />
+            
+            <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+              <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
+                <div className="text-6xl mb-4">⚠️</div>
+                <h1 className="text-2xl font-bold text-red-600 mb-4">计算错误</h1>
+                <p className="text-gray-600 mb-6">
+                  抱歉，体质计算出现问题。调试信息：<br/>
+                  Primary: {result.primary}<br/>
+                  Scores: {JSON.stringify(result.scores)}<br/>
+                  Available types: {Object.keys(constitutionInfo).join(', ')}
+                </p>
+                <button
+                  onClick={() => setCurrentStep('welcome')}
+                  className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors"
+                >
+                  重新测试
+                </button>
+              </div>
+            </main>
+          </div>
+        )
+      }
+
+      console.log('[ConstitutionTest] 准备渲染结果页面...');
+
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
+          <style dangerouslySetInnerHTML={{ __html: customAnimations }} />
+          <Navigation />
+          
+          <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <Breadcrumb 
+              items={[
+                { label: 'Home', href: '/' },
+                { label: 'Constitution Test', href: '/constitution-test' },
+                { label: '测试结果' }
+              ]} 
+            />
+
+            {/* 其余的结果页面内容会在这里继续... */}
+            <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
+              <div className="text-6xl mb-4">{primaryInfo.icon}</div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-4">{primaryInfo.name}</h1>
+              <p className="text-lg text-gray-600 mb-6">{primaryInfo.description}</p>
+              
+              <div className="bg-gray-50 rounded-xl p-6 mb-8">
+                <h2 className="text-xl font-semibold mb-4">详细分析</h2>
+                <p className="text-gray-700">{primaryInfo.modernInterpretation}</p>
+              </div>
+
+              <button
+                onClick={() => setCurrentStep('welcome')}
+                className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors"
+              >
+                重新测试
+              </button>
+            </div>
+          </main>
+        </div>
+      )
+
+    } catch (error) {
+      console.error('[ConstitutionTest] 结果页面渲染错误:', error);
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50">
+          <style dangerouslySetInnerHTML={{ __html: customAnimations }} />
+          <Navigation />
+          
+          <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
+              <div className="text-6xl mb-4">🔧</div>
+              <h1 className="text-2xl font-bold text-red-600 mb-4">系统错误</h1>
+              <p className="text-gray-600 mb-6">
+                抱歉，系统在处理您的测试结果时出现了问题。<br/>
+                错误信息: {error instanceof Error ? error.message : '未知错误'}
+              </p>
+              <button
+                onClick={() => setCurrentStep('welcome')}
+                className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors"
+              >
+                重新开始
+              </button>
+            </div>
+          </main>
+        </div>
+      )
+    }
+  }
+
   // 欢迎页面
   if (currentStep === 'welcome') {
     return (
@@ -441,186 +586,6 @@ export default function ConstitutionTestClient() {
                 )}
                 <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-200"></div>
               </button>
-            </div>
-          </div>
-        </main>
-      </div>
-    )
-  }
-
-  // 结果页面
-  if (currentStep === 'results') {
-    // 检查是否所有问题都已回答
-    const answeredCount = answers.filter(answer => answer >= 1 && answer <= 5).length;
-    const minRequiredAnswers = Math.max(3, Math.floor(questions.length * 0.5)); // 至少50%的问题
-    
-    if (answeredCount < minRequiredAnswers) {
-      return (
-        <div className="min-h-screen bg-gradient-to-br from-yellow-50 to-orange-50">
-          <style dangerouslySetInnerHTML={{ __html: customAnimations }} />
-          <Navigation />
-          
-          <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
-              <div className="text-6xl mb-4">📝</div>
-              <h1 className="text-2xl font-bold text-yellow-600 mb-4">请完成更多题目</h1>
-              <p className="text-gray-600 mb-6">
-                为了获得准确的体质分析，请至少回答 {minRequiredAnswers} 个问题。<br/>
-                您已回答: {answeredCount} / {questions.length}
-              </p>
-              <button
-                onClick={() => setCurrentStep('test')}
-                className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors"
-              >
-                继续答题
-              </button>
-            </div>
-          </main>
-        </div>
-      )
-    }
-
-    const result = calculateConstitution(answers)
-    const primaryInfo = constitutionInfo[result.primary]
-    const secondaryInfo = result.secondary ? constitutionInfo[result.secondary] : null
-
-    // Error handling - if primaryInfo is undefined, show error
-    if (!primaryInfo) {
-      return (
-        <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50">
-          <style dangerouslySetInnerHTML={{ __html: customAnimations }} />
-          <Navigation />
-          
-          <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
-              <div className="text-6xl mb-4">⚠️</div>
-              <h1 className="text-2xl font-bold text-red-600 mb-4">计算错误</h1>
-              <p className="text-gray-600 mb-6">
-                抱歉，体质计算出现问题。调试信息：<br/>
-                Primary: {result.primary}<br/>
-                Scores: {JSON.stringify(result.scores)}<br/>
-                Available types: {Object.keys(constitutionInfo).join(', ')}
-              </p>
-              <button
-                onClick={() => setCurrentStep('welcome')}
-                className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors"
-              >
-                重新测试
-              </button>
-            </div>
-          </main>
-        </div>
-      )
-    }
-
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
-        <style dangerouslySetInnerHTML={{ __html: customAnimations }} />
-        <Navigation />
-        
-        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <Breadcrumb 
-            items={[
-              { label: 'Home', href: '/' },
-              { label: 'Constitution Test', href: '/constitution-test' },
-              { label: '测试结果' }
-            ]} 
-          />
-
-          {/* Celebration Banner */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-3 bg-gradient-to-r from-green-500 to-blue-500 text-white px-8 py-4 rounded-2xl shadow-lg animate-bounce">
-              <Target className="w-6 h-6" />
-              <span className="font-semibold text-lg">🎉 测试完成！您的体质类型已确定</span>
-            </div>
-          </div>
-
-          {/* Enhanced Primary Constitution Results */}
-          <div className="bg-white rounded-2xl shadow-xl p-10 mb-8 transform hover:scale-[1.01] transition-transform duration-300 relative overflow-hidden">
-            {/* Background decoration */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-100 to-blue-100 rounded-full -translate-y-16 translate-x-16 opacity-50"></div>
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-purple-100 to-pink-100 rounded-full translate-y-12 -translate-x-12 opacity-50"></div>
-            
-            <div className="text-center mb-10 relative z-10">
-              {/* Animated icon */}
-              <div className="text-8xl mb-6 animate-pulse">{primaryInfo.icon}</div>
-              
-              {/* Main title with gradient */}
-              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-4">
-                {primaryInfo.name}
-              </h1>
-              
-              {/* English name */}
-              <p className="text-xl text-gray-600 mb-6 font-medium">
-                {primaryInfo.englishName}
-              </p>
-              
-              {/* Keywords with enhanced styling */}
-              <div className="flex justify-center flex-wrap gap-3 mb-8">
-                {primaryInfo.keywords.map((keyword, index) => (
-                  <span 
-                    key={index} 
-                    className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg transform hover:scale-105 transition-transform duration-200"
-                    style={{ animationDelay: `${index * 200}ms` }}
-                  >
-                    {keyword}
-                  </span>
-                ))}
-              </div>
-              
-              {/* Description with better typography */}
-              <div className="bg-gray-50 rounded-xl p-6 max-w-4xl mx-auto">
-                <p className="text-lg text-gray-700 leading-relaxed">
-                  {primaryInfo.description}
-                </p>
-              </div>
-            </div>
-
-            {/* Constitution strength indicator */}
-            <div className="mt-8 text-center">
-              <div className="inline-flex items-center gap-2 bg-green-50 border border-green-200 rounded-xl px-6 py-3">
-                <Activity className="w-5 h-5 text-green-600" />
-                <span className="text-green-700 font-medium">主要体质类型匹配度: 高</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Enhanced Action Buttons */}
-          <div className="grid md:grid-cols-3 gap-4 max-w-2xl mx-auto">
-            <button
-              onClick={handleBackToWelcome}
-              className="group flex items-center justify-center gap-2 px-8 py-4 border-2 border-gray-300 rounded-xl text-gray-700 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg"
-            >
-              <ArrowLeft className="w-5 h-5 group-hover:translate-x-[-2px] transition-transform duration-200" />
-              <span className="font-medium">重新测试</span>
-            </button>
-            
-            <button className="group flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
-              <Download className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
-              <span className="font-medium">下载报告</span>
-            </button>
-            
-            <button className="group flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-xl hover:from-green-700 hover:to-teal-700 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
-              <Share2 className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
-              <span className="font-medium">分享结果</span>
-            </button>
-          </div>
-
-          {/* Additional Info Section */}
-          <div className="mt-12 text-center">
-            <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 max-w-3xl mx-auto">
-              <div className="flex items-start gap-3">
-                <Target className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
-                <div className="text-left">
-                  <h3 className="text-lg font-semibold text-blue-900 mb-2">下一步建议</h3>
-                  <ul className="text-blue-800 space-y-1 text-sm">
-                    <li>• 根据您的体质类型，我们推荐浏览相关的草药和调理方案</li>
-                    <li>• 考虑咨询专业中医师获得个性化诊疗建议</li>
-                    <li>• 定期重新测试以追踪体质变化</li>
-                    <li>• 关注饮食起居，保持适合您体质的生活方式</li>
-                  </ul>
-                </div>
-              </div>
             </div>
           </div>
         </main>
