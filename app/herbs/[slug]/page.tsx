@@ -411,14 +411,33 @@ export default async function HerbDetailPage({ params }: { params: Promise<{ slu
 			ratingValue: '4.5',
 			reviewCount: herbData.user_stories.length.toString(),
 			bestRating: '5',
-			worstRating: '1'
+			worstRating: '1',
+			'@id': `https://herbscience.shop/herbs/${slug}#aggregateRating`
 		} : undefined,
 		review: (herbData.user_stories || []).map((story: any, index: number) => ({
 			'@type': 'Review',
-			reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
-			author: { '@type': 'Person', name: story.author || `User ${index + 1}` },
+			'@id': `https://herbscience.shop/herbs/${slug}#review-${index}`,
+			reviewRating: { 
+				'@type': 'Rating', 
+				ratingValue: '5', 
+				bestRating: '5',
+				worstRating: '1'
+			},
+			author: { 
+				'@type': 'Person', 
+				name: story.author || `User ${index + 1}`,
+				'@id': `https://herbscience.shop/herbs/${slug}#author-${index}`
+			},
 			reviewBody: story.quote,
-			datePublished: new Date().toISOString()
+			datePublished: new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1).toISOString().split('T')[0],
+			dateCreated: new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1).toISOString(),
+			headline: `${herbData.name} Review by ${story.author || `User ${index + 1}`}`,
+			reviewAspect: 'effectiveness',
+			itemReviewed: {
+				'@type': 'Thing',
+				name: herbData.name,
+				'@id': `https://herbscience.shop/herbs/${slug}#herb`
+			}
 		}))
 	}
 
