@@ -1116,7 +1116,7 @@ Take the free test and find your perfect herbal match! 👇`
                       <div className="space-y-6">
                         <div className="grid gap-4">
                           {testHistory.map((test, index) => {
-                            const testInfo = constitutionInfo[test.primary]
+                            const testInfo = constitutionInfo[test.primary as ConstitutionType]
                             const isLatest = index === 0
                             const showComparison = index > 0 && testHistory[index - 1]
                             
@@ -1148,7 +1148,7 @@ Take the free test and find your perfect herbal match! 👇`
                                   {test.secondary && (
                                     <div className="text-right">
                                       <p className="text-sm text-gray-500 mb-1">Secondary:</p>
-                                      <p className="text-gray-700 font-medium">{constitutionInfo[test.secondary].name}</p>
+                                      <p className="text-gray-700 font-medium">{constitutionInfo[test.secondary as ConstitutionType].name}</p>
                                     </div>
                                   )}
                                 </div>
