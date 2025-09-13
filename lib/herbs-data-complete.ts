@@ -2459,6 +2459,70 @@ export const HERBS_DATABASE: Herb[] = [
       "Flavonoids - Antioxidant and anti-inflammatory properties",
       "Polysaccharides - Immune-modulating effects"
     ]
+  },
+  {
+    "id": "onion-1757692057323-4ethdd",
+    "chinese_name": "洋葱",
+    "english_name": "Onion",
+    "latin_name": "Allium cepa",
+    "category": "heart_health",
+    "constitution_type": "yang_deficiency",
+    "primary_effects": [
+      "Heart Health Support",
+      "Blood Sugar Balance",
+      "Cholesterol Management",
+      "Digestive Health",
+      "Immunity Boost"
+    ],
+    "secondary_effects": [
+      "Anti-inflammatory",
+      "Antioxidant Protection",
+      "Blood Pressure Support",
+      "Weight Management"
+    ],
+    "efficacy": [
+      "Onion for cholesterol - helps lower LDL cholesterol",
+      "Onion for high blood pressure - supports healthy blood pressure",
+      "Onion for digestion - prebiotics improve gut microbiome",
+      "Pickled onion benefits - boosts gut health and adds probiotics",
+      "Blood sugar management support",
+      "Immunity strengthening"
+    ],
+    "dosage": "½–1 medium onion daily, or follow supplement labels (250–500 mg quercetin extract)",
+    "safety_level": "high",
+    "contraindications": "Avoid if you have a confirmed onion allergy. May trigger gas, bloating, or reflux in sensitive people. Those with IBS, GERD, or stomach sensitivity should limit intake. Not recommended before surgery due to mild blood-thinning effects. Pregnant women can eat in moderation, but onion supplements should only be taken under medical guidance.",
+    "description": "Onion (Allium cepa) is more than just a kitchen staple. Rich in quercetin, sulfur compounds, and prebiotic fibers, onions support heart health, blood sugar balance, immunity, and digestion. Both fresh and pickled onions are valued as natural remedies in modern and traditional wellness.",
+    "traditional_use": "Traditional medicine has valued onions for respiratory health, circulation improvement, and digestive support. In folk remedies, onion tea was commonly used for colds and coughs, while raw onions were applied to help with inflammation and wound healing.",
+    "modern_applications": "Modern research confirms onion's cardiovascular benefits through quercetin and sulfur compounds. Clinical studies show effectiveness for cholesterol management, blood pressure support, blood sugar balance, and prebiotic digestive health. Red onions contain higher antioxidant levels than white varieties.",
+    "taste": "Pungent, sweet when cooked",
+    "meridians": [
+      "Heart",
+      "Spleen",
+      "Lung"
+    ],
+    "part_used": "Bulb",
+    "source": "Global cultivation",
+    "growing_regions": [
+      "India",
+      "China",
+      "United States",
+      "Turkey",
+      "Iran",
+      "Russia"
+    ],
+    "price_range": "low",
+    "availability": "common",
+    "quality_score": 85,
+    "popularity_score": 95,
+    "usage_suggestions": "Eat raw onions in salads for maximum antioxidants. Cook onions to reduce pungency but retain key compounds. Try pickled onions for gut health and probiotics. Brew onion tea (boil chopped onion in water) as a simple home remedy for colds. Use red onions if seeking more antioxidants, white onions for milder taste.",
+    "ingredients": [
+      "Quercetin - powerful flavonoid antioxidant for heart health",
+      "Sulfur compounds (allicin, allyl sulfides) - natural antibacterial and cholesterol support",
+      "Prebiotic fibers (inulin, FOS) - feed beneficial gut bacteria",
+      "Flavonoids - anti-inflammatory and vascular protection",
+      "Chromium - blood sugar regulation support",
+      "Vitamin C - immune system strengthening"
+    ]
   }
 ];
 
@@ -4671,7 +4735,7 @@ export const CONSTITUTION_HERB_MAPPING = {
       "挥发油"
     ]
   }
-]
+  ]
 };
 
 // 体质类型映射（为了与现有系统兼容）

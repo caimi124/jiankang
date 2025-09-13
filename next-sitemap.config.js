@@ -46,12 +46,8 @@ module.exports = {
     // 从静态数据库获取草药slugs作为备选
     async function fetchStaticHerbSlugs() {
       try {
-        const { HERBS_DATABASE } = require('./lib/herbs-data-complete')
-        const { generateHerbSlug } = require('./lib/herb-slug-utils')
-        return HERBS_DATABASE.map(herb => {
-          const slug = generateHerbSlug(herb.chinese_name, herb.english_name, herb.id)
-          return { slug }
-        }).filter(item => item.slug && item.slug !== '-' && item.slug.length > 1)
+        const { getStaticHerbSlugs } = require('./lib/herbs-data-sitemap')
+        return getStaticHerbSlugs()
       } catch (e) {
         console.warn('[sitemap] Static herbs fetch failed:', e?.message)
         return []
@@ -59,7 +55,7 @@ module.exports = {
     }
 
     const { herbs, posts } = await fetchSanitySlugs()
-    const staticHerbs = herbs.length > 0 ? [] : await fetchStaticHerbSlugs()
+    const staticHerbs = await fetchStaticHerbSlugs() // Always fetch static herbs
 
     const extraPaths = [
       // 核心功能页面
@@ -84,11 +80,14 @@ module.exports = {
       await config.transform(config, '/privacy'),
       await config.transform(config, '/zh/privacy'),
       
-      // 动态草药详情（来自 Sanity 或静态数据库）
+      // 动态草药详情（合并 Sanity 和静态数据库，去重）
       ...await Promise.all(
-        [...herbs, ...staticHerbs]
-          .filter(h => h.slug && h.slug !== '-' && h.slug.length > 1)
-          .map(h => config.transform(config, `/herbs/${h.slug}`))
+        Array.from(new Map(
+          [...herbs, ...staticHerbs]
+            .filter(h => h.slug && h.slug !== '-' && h.slug.length > 1)
+            .map(h => [h.slug, h]) // 用slug作为key去重
+        ).values())
+        .map(h => config.transform(config, `/herbs/${h.slug}`))
       ),
       
       // 博客文章页面（来自 Sanity）
