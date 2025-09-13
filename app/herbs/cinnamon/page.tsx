@@ -192,7 +192,7 @@ export default async function CinnamonPage() {
           value: herbData.benefits.join(', ')
         }
       ],
-      hasHealthAspect: herbData.benefits.map(benefit => ({
+      hasHealthAspect: herbData.benefits.map((benefit: string) => ({
         '@type': 'HealthAspectEnumeration',
         name: benefit
       }))

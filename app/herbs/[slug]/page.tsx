@@ -397,12 +397,12 @@ export default async function HerbDetailPage({ params }: { params: Promise<{ slu
 					value: (herbData as any).safety_level || 'Medium'
 				}
 			],
-			hasHealthAspect: (herbData.benefits || []).map(benefit => ({
+			hasHealthAspect: (herbData.benefits || []).map((benefit: string) => ({
 				'@type': 'HealthAspectEnumeration',
 				name: benefit
 			}))
 		},
-		about: (herbData.benefits || []).map(benefit => ({
+		about: (herbData.benefits || []).map((benefit: string) => ({
 			'@type': 'Thing',
 			name: benefit
 		})),
