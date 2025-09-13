@@ -110,15 +110,27 @@ async function getCinnamonData() {
     faqs: [
       {
         question: 'Is cinnamon good for diabetes?',
-        answer: 'Yes. Cinnamon supports insulin sensitivity and helps regulate blood sugar. Best for prediabetic or type 2 diabetes patients under medical supervision.'
+        answer: 'Yes, cinnamon is beneficial for blood sugar management. Research shows it can improve insulin sensitivity by up to 20% and reduce fasting blood glucose levels. It works by increasing glucose uptake by cells and improving insulin signaling. Ceylon cinnamon is preferred over Cassia for long-term use due to lower coumarin content. Always consult your doctor before using cinnamon as a diabetes supplement.'
       },
       {
         question: 'Can cinnamon help with menstrual cramps?',
-        answer: 'Yes, cinnamon warms the uterus and relieves cold-type cramps. Avoid if bleeding is heavy.'
+        answer: 'Yes, cinnamon is excellent for menstrual cramps, especially those caused by cold or poor circulation. In Traditional Chinese Medicine, cinnamon warms the uterus and promotes blood flow, reducing cramping pain. Drink cinnamon tea 3-5 days before your period starts for best results. Avoid if you have heavy bleeding or hot constitution symptoms.'
       },
       {
         question: 'How much cinnamon per day is safe?',
-        answer: '1-3g bark or 0.5-1g powder daily is safe. Long-term high doses may harm the liver.'
+        answer: 'For general health: 1-3g of cinnamon bark or 0.5-1g of powder daily. For blood sugar support: 1-6g daily under medical supervision. Ceylon cinnamon is safer for long-term use than Cassia cinnamon due to lower coumarin levels. Pregnant women should limit intake, and those on blood thinners should consult their doctor.'
+      },
+      {
+        question: 'What is the difference between Ceylon and Cassia cinnamon?',
+        answer: 'Ceylon cinnamon (true cinnamon) is sweeter, more delicate, and has very low coumarin levels, making it safer for daily use. Cassia cinnamon is stronger, more common in stores, but has higher coumarin content which can be toxic in large amounts. For therapeutic use, Ceylon cinnamon is generally preferred.'
+      },
+      {
+        question: 'Can cinnamon help with cold hands and feet?',
+        answer: 'Yes, cinnamon is excellent for improving circulation and warming cold extremities. It stimulates blood flow and has warming properties that help with poor circulation. Drink cinnamon tea regularly or add cinnamon to warm foods. You should notice improvement in circulation within 2-3 weeks of regular use.'
+      },
+      {
+        question: 'Are there any side effects of cinnamon?',
+        answer: 'Cinnamon is generally safe in culinary amounts. However, large doses may cause mouth sores, digestive upset, or liver damage (due to coumarin in Cassia cinnamon). It may interact with blood thinners and diabetes medications. People with hot constitution, liver disease, or bleeding disorders should use caution.'
       }
     ],
     seo_keywords: ['cinnamon benefits', 'cinnamon for blood sugar', 'cinnamon for menstrual cramps', 'cinnamon tea', 'traditional chinese medicine'],
@@ -152,52 +164,65 @@ export default async function CinnamonPage() {
       }
     },
     mainEntity: {
-      '@type': 'Drug',
+      '@type': 'Thing',
+      '@id': 'https://herbscience.shop/herbs/cinnamon#herb',
       name: 'Cinnamon',
       alternateName: ['肉桂', 'Cinnamomum cassia', 'Rou Gui'],
       description: herbData.overview,
-      activeIngredient: herbData.active_compounds,
-      dosageForm: ['Bark', 'Powder', 'Capsules', 'Tincture', 'Essential oil'],
-      indication: herbData.benefits,
-      contraindication: herbData.not_suitable_for,
-      drugClass: 'Herbal supplement',
-      mechanismOfAction: 'Cinnamaldehyde improves insulin sensitivity, cinnamic acid boosts blood flow, polyphenols reduce inflammation, essential oils stimulate circulation',
-      clinicalPharmacology: 'Cinnamon contains cinnamaldehyde, cinnamic acid, polyphenols, and essential oils, providing blood sugar support, anti-inflammatory effects, and circulatory benefits'
+      category: 'Warming Herbs',
+      additionalProperty: [
+        {
+          '@type': 'PropertyValue',
+          name: 'Active Compounds',
+          value: herbData.active_compounds
+        },
+        {
+          '@type': 'PropertyValue',
+          name: 'Traditional Uses',
+          value: herbData.traditional_uses
+        },
+        {
+          '@type': 'PropertyValue',
+          name: 'Evidence Level',
+          value: 'Moderate'
+        },
+        {
+          '@type': 'PropertyValue',
+          name: 'Health Benefits',
+          value: herbData.benefits.join(', ')
+        }
+      ],
+      hasHealthAspect: herbData.benefits.map(benefit => ({
+        '@type': 'HealthAspectEnumeration',
+        name: benefit
+      }))
     },
     datePublished: '2025-01-19',
     dateModified: new Date().toISOString().split('T')[0]
   }
 
-  // 🚀 FAQ结构化数据
+  // 🚀 FAQ结构化数据 - 使用实际FAQ数据
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'Is cinnamon good for diabetes?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes. Cinnamon supports insulin sensitivity and helps regulate blood sugar. Best for prediabetic or type 2 diabetes patients under medical supervision.'
-        }
-      },
-      {
-        '@type': 'Question',
-        name: 'Can cinnamon help with menstrual cramps?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes, cinnamon warms the uterus and relieves cold-type cramps. Avoid if bleeding is heavy.'
-        }
-      },
-      {
-        '@type': 'Question',
-        name: 'How much cinnamon per day is safe?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '1-3g bark or 0.5-1g powder daily is safe. Long-term high doses may harm the liver.'
-        }
+    '@id': 'https://herbscience.shop/herbs/cinnamon#faq',
+    url: 'https://herbscience.shop/herbs/cinnamon',
+    name: 'Cinnamon Frequently Asked Questions',
+    description: 'Common questions and answers about cinnamon benefits, uses, and safety',
+    mainEntity: herbData.faqs.map((faq, index) => ({
+      '@type': 'Question',
+      '@id': `https://herbscience.shop/herbs/cinnamon#faq-${index}`,
+      name: faq.question,
+      text: faq.question,
+      answerCount: 1,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        '@id': `https://herbscience.shop/herbs/cinnamon#answer-${index}`,
+        text: faq.answer,
+        dateCreated: new Date().toISOString(),
+        upvoteCount: 1
       }
-    ]
+    }))
   }
 
   return (

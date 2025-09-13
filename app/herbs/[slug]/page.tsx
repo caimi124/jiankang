@@ -346,11 +346,11 @@ export default async function HerbDetailPage({ params }: { params: Promise<{ slu
 		console.log('🆘 最终兜底激活:', slug)
 	}
 
-	// 生成JSON-LD结构化数据
+	// 生成JSON-LD结构化数据 - 修复为合适的schema类型
 	const jsonLd = {
 		'@context': 'https://schema.org',
 		'@type': 'Article',
-		headline: `${herbData.name} Benefits and Uses`,
+		headline: `${herbData.name} Benefits and Uses - Natural Health Guide`,
 		description: herbData.overview,
 		author: {
 			'@type': 'Organization',
@@ -367,49 +367,119 @@ export default async function HerbDetailPage({ params }: { params: Promise<{ slu
 		},
 		datePublished: new Date().toISOString(),
 		dateModified: new Date().toISOString(),
+		image: `https://herbscience.shop/herbs/${slug}/opengraph-image`,
 		mainEntity: {
-			'@type': 'Drug',
+			'@type': 'Thing',
+			'@id': `https://herbscience.shop/herbs/${slug}#herb`,
 			name: herbData.name,
+			alternateName: herbData.latin_name,
 			description: herbData.overview,
-			activeIngredient: herbData.active_compounds,
-			indication: herbData.benefits,
-			contraindication: herbData.not_suitable_for,
-			warning: herbData.safety_warnings,
-			administrationRoute: herbData.dosage_forms?.map((form: any) => form.form),
-			clinicalPharmacology: herbData.scientific_evidence,
-			aggregateRating: {
-				'@type': 'AggregateRating',
-				ratingValue: '4.5',
-				reviewCount: '156',
-				bestRating: '5',
-				worstRating: '1'
-			},
-			review: (herbData.user_stories || []).map((story: any, index: number) => ({
-				'@type': 'Review',
-				reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
-				author: { '@type': 'Person', name: story.author || `User ${index + 1}` },
-				reviewBody: story.quote
+			category: herbData.category || 'Herbal Medicine',
+			additionalProperty: [
+				{
+					'@type': 'PropertyValue',
+					name: 'Active Compounds',
+					value: herbData.active_compounds
+				},
+				{
+					'@type': 'PropertyValue',
+					name: 'Traditional Uses',
+					value: herbData.traditional_uses
+				},
+				{
+					'@type': 'PropertyValue',
+					name: 'Evidence Level',
+					value: herbData.evidence_level || 'Moderate'
+				},
+				{
+					'@type': 'PropertyValue',
+					name: 'Safety Level',
+					value: (herbData as any).safety_level || 'Medium'
+				}
+			],
+			hasHealthAspect: (herbData.benefits || []).map(benefit => ({
+				'@type': 'HealthAspectEnumeration',
+				name: benefit
 			}))
-		}
+		},
+		about: (herbData.benefits || []).map(benefit => ({
+			'@type': 'Thing',
+			name: benefit
+		})),
+		aggregateRating: (herbData.user_stories && herbData.user_stories.length > 0) ? {
+			'@type': 'AggregateRating',
+			ratingValue: '4.5',
+			reviewCount: herbData.user_stories.length.toString(),
+			bestRating: '5',
+			worstRating: '1'
+		} : undefined,
+		review: (herbData.user_stories || []).map((story: any, index: number) => ({
+			'@type': 'Review',
+			reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
+			author: { '@type': 'Person', name: story.author || `User ${index + 1}` },
+			reviewBody: story.quote,
+			datePublished: new Date().toISOString()
+		}))
 	}
 
 	const faqJsonLd = Array.isArray(herbData.faqs) && herbData.faqs.length > 0 ? {
 		'@context': 'https://schema.org',
 		'@type': 'FAQPage',
+		'@id': `https://herbscience.shop/herbs/${slug}#faq`,
+		url: `https://herbscience.shop/herbs/${slug}`,
+		name: `${herbData.name} Frequently Asked Questions`,
+		description: `Common questions and answers about ${herbData.name} benefits, uses, and safety`,
 		mainEntity: herbData.faqs.map((faq: any) => ({
 			'@type': 'Question',
+			'@id': `https://herbscience.shop/herbs/${slug}#faq-${herbData.faqs.indexOf(faq)}`,
 			name: faq.question,
-			acceptedAnswer: { '@type': 'Answer', text: faq.answer }
+			text: faq.question,
+			answerCount: 1,
+			acceptedAnswer: { 
+				'@type': 'Answer', 
+				'@id': `https://herbscience.shop/herbs/${slug}#answer-${herbData.faqs.indexOf(faq)}`,
+				text: faq.answer,
+				dateCreated: new Date().toISOString(),
+				upvoteCount: 1
+			}
 		}))
 	} : null
 
 	const breadcrumbJsonLd = {
 		'@context': 'https://schema.org',
 		'@type': 'BreadcrumbList',
+		'@id': `https://herbscience.shop/herbs/${slug}#breadcrumb`,
 		itemListElement: [
-			{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://herbscience.shop/' },
-			{ '@type': 'ListItem', position: 2, name: 'Herbs', item: 'https://herbscience.shop/herb-finder' },
-			{ '@type': 'ListItem', position: 3, name: herbData.name, item: `https://herbscience.shop/herbs/${slug}` }
+			{ 
+				'@type': 'ListItem', 
+				position: 1, 
+				name: 'Home', 
+				item: {
+					'@type': 'WebPage',
+					'@id': 'https://herbscience.shop/',
+					name: 'HerbScience - Natural Health & Herbal Medicine'
+				}
+			},
+			{ 
+				'@type': 'ListItem', 
+				position: 2, 
+				name: 'Herbs', 
+				item: {
+					'@type': 'WebPage',
+					'@id': 'https://herbscience.shop/herb-finder',
+					name: 'Herb Finder - Browse Natural Herbs & Remedies'
+				}
+			},
+			{ 
+				'@type': 'ListItem', 
+				position: 3, 
+				name: herbData.name, 
+				item: {
+					'@type': 'WebPage',
+					'@id': `https://herbscience.shop/herbs/${slug}`,
+					name: `${herbData.name} Benefits and Uses`
+				}
+			}
 		]
 	}
 

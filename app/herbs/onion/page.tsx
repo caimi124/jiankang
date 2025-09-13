@@ -226,17 +226,44 @@ export default async function OnionPage() {
       }
     },
     mainEntity: {
-      '@type': 'Drug',
+      '@type': 'NutritionInformation',
       name: 'Onion',
       alternateName: ['Allium cepa', 'Common Onion', 'Garden Onion'],
       description: herbData.overview,
-      activeIngredient: herbData.active_compounds,
-      dosageForm: ['Raw', 'Cooked', 'Tea', 'Pickled', 'Extract'],
-      indication: herbData.benefits,
-      contraindication: herbData.not_suitable_for,
-      drugClass: 'Nutritional supplement',
-      mechanismOfAction: 'Quercetin provides antioxidant and anti-inflammatory effects, sulfur compounds support cardiovascular health, fructooligosaccharides promote digestive health',
-      clinicalPharmacology: 'Onions contain quercetin, allicin, sulfur compounds, and other bioactive compounds that provide cardiovascular protection, immune support, and anti-inflammatory benefits'
+      calories: '40 per 100g',
+      carbohydrateContent: '9.3g per 100g',
+      fiberContent: '1.7g per 100g',
+      proteinContent: '1.1g per 100g',
+      fatContent: '0.1g per 100g',
+      sugarContent: '4.2g per 100g',
+      vitaminContent: 'Vitamin C, Folate, Vitamin B6',
+      mineralContent: 'Potassium, Manganese, Phosphorus',
+      unsaturatedFatContent: 'Low',
+      saturatedFatContent: 'Minimal',
+      sodiumContent: '4mg per 100g',
+      servingSize: '1 medium onion (150g)',
+      additionalProperty: [
+        {
+          '@type': 'PropertyValue',
+          name: 'Active Compounds',
+          value: herbData.active_compounds
+        },
+        {
+          '@type': 'PropertyValue',
+          name: 'Health Benefits',
+          value: herbData.benefits.join(', ')
+        },
+        {
+          '@type': 'PropertyValue',
+          name: 'Traditional Uses',
+          value: herbData.traditional_uses
+        },
+        {
+          '@type': 'PropertyValue',
+          name: 'Evidence Level',
+          value: 'Strong scientific evidence'
+        }
+      ]
     },
     datePublished: '2025-01-19',
     dateModified: new Date().toISOString().split('T')[0],

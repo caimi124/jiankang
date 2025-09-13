@@ -179,8 +179,22 @@ export default function ConstitutionTestClient() {
   const [autoAdvance, setAutoAdvance] = useState(true)
   const [showExplanation, setShowExplanation] = useState(false)
   const [isAutoAdvancing, setIsAutoAdvancing] = useState(false)
+  const [showEmailModal, setShowEmailModal] = useState(false)
+  const [userEmail, setUserEmail] = useState('')
+  const [emailSubmitted, setEmailSubmitted] = useState(false)
+  const [isSubmittingEmail, setIsSubmittingEmail] = useState(false)
+  const [showHistoryModal, setShowHistoryModal] = useState(false)
+  const [testHistory, setTestHistory] = useState<Array<{
+    id: string
+    date: string
+    primary: string
+    secondary?: string
+    scores: Record<string, number>
+    answers: number[]
+  }>>([])
+  const [selectedHistoryItem, setSelectedHistoryItem] = useState<string | null>(null)
 
-  // 检查URL参数，如果有start=true则自动开始测试
+  // 检查URL参数，如果有start=true则自动开始测试，同时加载测试历史
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search)
@@ -190,6 +204,16 @@ export default function ConstitutionTestClient() {
         window.history.replaceState({}, '', '/constitution-test')
       }
       
+      // 加载测试历史
+      const savedHistory = localStorage.getItem('constitutionTestHistory')
+      if (savedHistory) {
+        try {
+          const history = JSON.parse(savedHistory)
+          setTestHistory(history)
+        } catch (error) {
+          console.error('Failed to load test history:', error)
+        }
+      }
     }
   }, [])
 
@@ -309,23 +333,201 @@ export default function ConstitutionTestClient() {
   }
 
   const handleSubscribeClick = () => {
-    // 实现订阅功能 - 可以跳转到邮件订阅页面或显示模态框
-    window.open('/subscribe?source=constitution-test', '_blank')
+    // 显示邮件订阅模态框
+    setShowEmailModal(true)
+  }
+
+  const handleEmailSubmit = async () => {
+    if (!userEmail || !userEmail.includes('@')) {
+      alert('Please enter a valid email address')
+      return
+    }
+    
+    setIsSubmittingEmail(true)
+    
+    try {
+      // 获取当前测试结果进行个性化推荐
+      const result = calculateConstitution(answers)
+      const primaryInfo = constitutionInfo[result.primary]
+      
+      // 准备邮件数据
+      const emailData = {
+        email: userEmail,
+        constitution: result.primary,
+        constitutionEnglish: primaryInfo.englishName,
+        recommendedHerbs: primaryInfo.recommendedHerbs?.slice(0, 5) || [],
+        dietaryRecommendations: primaryInfo.dietaryRecommendations,
+        lifestyleAdvice: primaryInfo.lifestyleAdvice,
+        timestamp: new Date().toISOString(),
+        source: 'constitution-test'
+      }
+      
+      // 发送到后端API（这里先用console.log模拟）
+      console.log('Sending personalized email with data:', emailData)
+      
+      // 模拟API调用
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      
+      // 实际项目中应该调用真实的邮件API
+      // const response = await fetch('/api/constitution/send-guide', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(emailData)
+      // })
+      // if (!response.ok) throw new Error('Failed to send email')
+      
+      setEmailSubmitted(true)
+      
+      // 保存用户邮箱到localStorage以便后续使用
+      localStorage.setItem('userEmail', userEmail)
+      
+    } catch (error) {
+      console.error('Failed to send personalized guide:', error)
+      alert('Sorry, there was an error sending your guide. Please try again.')
+    } finally {
+      setIsSubmittingEmail(false)
+    }
   }
 
   const handleShareResults = () => {
-    // 实现分享功能
+    // 获取当前测试结果生成个性化分享文本
+    const result = calculateConstitution(answers)
+    const primaryInfo = constitutionInfo[result.primary]
+    
+    const shareText = `🧘‍♀️ I just discovered my TCM constitution: ${primaryInfo.englishName}! 
+
+${getEngineeredSummary(result.primary)}
+
+🌿 Top herbs for my type: ${primaryInfo.recommendedHerbs?.slice(0, 3).join(', ') || 'personalized recommendations'}
+
+Take the free test and find your perfect herbal match! 👇`
+
+    const shareUrl = `${window.location.origin}/constitution-test`
+    
     if (navigator.share) {
       navigator.share({
-        title: 'My TCM Constitution Test Results',
-        text: 'I just discovered my Traditional Chinese Medicine constitution type!',
-        url: window.location.href
+        title: `My Constitution: ${primaryInfo.englishName}`,
+        text: shareText,
+        url: shareUrl
       })
     } else {
-      // 后备分享方案 - 复制链接
-      navigator.clipboard.writeText(window.location.href)
-      alert('Link copied to clipboard! Share with your friends.')
+      // 后备分享方案 - 复制个性化文本
+      const fullShareText = `${shareText}\n\n${shareUrl}`
+      navigator.clipboard.writeText(fullShareText)
+      alert('Personalized share text copied to clipboard! Paste it anywhere to share.')
     }
+  }
+
+  // 生成社交分享卡片图像（增强版）
+  const generateShareCard = () => {
+    const result = calculateConstitution(answers)
+    const primaryInfo = constitutionInfo[result.primary]
+    
+    // 创建画布生成分享卡片
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    
+    canvas.width = 1200
+    canvas.height = 630
+    
+    // 设置高质量渲染
+    ctx.imageSmoothingEnabled = true
+    ctx.imageSmoothingQuality = 'high'
+    
+    // 根据体质类型设置渐变颜色
+    const constitutionColors: Record<string, [string, string]> = {
+      '平和': ['#10b981', '#059669'], // 绿色
+      '气虚': ['#f59e0b', '#d97706'], // 黄/橙色
+      '阳虚': ['#f97316', '#ea580c'], // 橙/红色
+      '阴虚': ['#ec4899', '#db2777'], // 粉/红色
+      '痰湿': ['#3b82f6', '#2563eb'], // 蓝色
+      '湿热': ['#8b5cf6', '#7c3aed'], // 紫色
+      '血瘀': ['#6b7280', '#4b5563'], // 灰色
+      '气郁': ['#6366f1', '#4f46e5'], // 靛蓝色
+      '特禀': ['#f43f5e', '#e11d48']  // 玫瑰红
+    }
+    
+    const [color1, color2] = constitutionColors[result.primary] || ['#10b981', '#059669']
+    
+    // 创建渐变背景
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height)
+    gradient.addColorStop(0, color1)
+    gradient.addColorStop(1, color2)
+    
+    ctx.fillStyle = gradient
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    
+    // 添加半透明覆盖层增加深度
+    const overlay = ctx.createRadialGradient(canvas.width / 2, canvas.height / 2, 0, canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height))
+    overlay.addColorStop(0, 'rgba(255, 255, 255, 0.1)')
+    overlay.addColorStop(1, 'rgba(0, 0, 0, 0.3)')
+    ctx.fillStyle = overlay
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    
+    // 添加品牌标识区域
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.1)'
+    ctx.fillRect(50, 50, canvas.width - 100, 100)
+    
+    // 品牌文字
+    ctx.fillStyle = 'white'
+    ctx.font = 'bold 32px Arial, sans-serif'
+    ctx.textAlign = 'left'
+    ctx.fillText('HerbScience.shop', 80, 110)
+    
+    // 主标题区域
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.95)'
+    ctx.font = 'bold 84px Arial, sans-serif'
+    ctx.textAlign = 'center'
+    
+    // 添加文字阴影效果
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.3)'
+    ctx.shadowBlur = 10
+    ctx.shadowOffsetX = 3
+    ctx.shadowOffsetY = 3
+    
+    ctx.fillText(primaryInfo.englishName, canvas.width / 2, 280)
+    
+    // 重置阴影
+    ctx.shadowColor = 'transparent'
+    ctx.shadowBlur = 0
+    ctx.shadowOffsetX = 0
+    ctx.shadowOffsetY = 0
+    
+    // 体质图标（放大显示）
+    ctx.font = '96px Arial, sans-serif'
+    ctx.fillText(primaryInfo.icon, canvas.width / 2, 400)
+    
+    // 副标题
+    ctx.font = '36px Arial, sans-serif'
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)'
+    const subtitle = `${primaryInfo.name} | TCM Constitution`
+    ctx.fillText(subtitle, canvas.width / 2, 460)
+    
+    // 底部CTA
+    ctx.font = 'bold 28px Arial, sans-serif'
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)'
+    ctx.fillText('Discover your herbal match & wellness plan', canvas.width / 2, 540)
+    
+    // 添加装饰性元素
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)'
+    ctx.lineWidth = 2
+    ctx.beginPath()
+    ctx.moveTo(400, 480)
+    ctx.lineTo(800, 480)
+    ctx.stroke()
+    
+    // 生成高质量图像并下载
+    canvas.toBlob((blob) => {
+      if (blob) {
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.download = `my-constitution-${result.primary}-social-card.png`
+        link.href = url
+        link.click()
+        URL.revokeObjectURL(url)
+      }
+    }, 'image/png', 1.0)
   }
 
   const handleDownloadReport = () => {
@@ -336,6 +538,61 @@ export default function ConstitutionTestClient() {
   const handleBookConsultation = () => {
     // 跳转到咨询预约页面
     window.open('/consultation?source=constitution-test', '_blank')
+  }
+
+  // 保存测试结果到历史记录
+  const saveTestResult = (result: any, answers: number[]) => {
+    if (typeof window === 'undefined') return
+    
+    const newResult = {
+      id: Date.now().toString(),
+      date: new Date().toISOString(),
+      primary: result.primary,
+      secondary: result.secondary,
+      scores: result.scores,
+      answers: answers
+    }
+    
+    try {
+      const currentHistory = testHistory.length > 0 ? testHistory : []
+      const updatedHistory = [newResult, ...currentHistory].slice(0, 10) // 保留最近10次结果
+      
+      setTestHistory(updatedHistory)
+      localStorage.setItem('constitutionTestHistory', JSON.stringify(updatedHistory))
+    } catch (error) {
+      console.error('Failed to save test result:', error)
+    }
+  }
+
+  // 显示测试历史
+  const handleShowHistory = () => {
+    setShowHistoryModal(true)
+  }
+
+  // 比较两次测试结果
+  const compareResults = (current: any, previous: any) => {
+    const changes: string[] = []
+    
+    if (current.primary !== previous.primary) {
+      changes.push(`Primary constitution changed from ${previous.primary} to ${current.primary}`)
+    }
+    
+    if (current.secondary !== previous.secondary) {
+      changes.push(`Secondary constitution changed from ${previous.secondary || 'None'} to ${current.secondary || 'None'}`)
+    }
+    
+    // 比较各体质得分变化
+    Object.keys(current.scores).forEach(constitution => {
+      const currentScore = current.scores[constitution]
+      const previousScore = previous.scores[constitution] || 0
+      const difference = currentScore - previousScore
+      
+      if (Math.abs(difference) >= 5) { // 只显示显著变化（5分以上）
+        changes.push(`${constitution} score ${difference > 0 ? 'increased' : 'decreased'} by ${Math.abs(difference)} points`)
+      }
+    })
+    
+    return changes
   }
 
   const progress = ((currentQuestion + 1) / questions.length) * 100
@@ -383,6 +640,9 @@ export default function ConstitutionTestClient() {
       console.log('[ConstitutionTest] 开始计算体质结果...');
       const result = calculateConstitution(answers)
       console.log('[ConstitutionTest] 计算结果:', result);
+      
+      // 保存测试结果到历史记录
+      saveTestResult(result, answers)
       
       const primaryInfo = constitutionInfo[result.primary]
       const secondaryInfo = result.secondary ? constitutionInfo[result.secondary] : null
@@ -624,7 +884,7 @@ export default function ConstitutionTestClient() {
                 <h2 className="text-3xl font-bold mb-4">Your Wellness Journey Starts Now</h2>
                 <p className="text-xl text-white/90 mb-8">Transform your health with personalized guidance based on your unique constitution</p>
                 
-                <div className="grid md:grid-cols-3 gap-4">
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                   <button 
                     onClick={() => window.open('/herb-finder?recommended=true&constitution=' + encodeURIComponent(primaryInfo.id), '_blank')}
                     className="group bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl p-6 hover:bg-white/30 transition-all duration-200 transform hover:scale-105"
@@ -639,8 +899,8 @@ export default function ConstitutionTestClient() {
                     className="group bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl p-6 hover:bg-white/30 transition-all duration-200 transform hover:scale-105"
                   >
                     <div className="text-3xl mb-3">📧</div>
-                    <h3 className="font-bold text-lg mb-2">Get Personalized Tips</h3>
-                    <p className="text-sm text-white/80">Weekly wellness advice tailored to your body type</p>
+                    <h3 className="font-bold text-lg mb-2">Get Your Personal Guide</h3>
+                    <p className="text-sm text-white/80">Free personalized wellness guide emailed instantly</p>
                   </button>
                   
                   <button 
@@ -650,6 +910,15 @@ export default function ConstitutionTestClient() {
                     <div className="text-3xl mb-3">📱</div>
                     <h3 className="font-bold text-lg mb-2">Share Results</h3>
                     <p className="text-sm text-white/80">Help friends discover their constitution too</p>
+                  </button>
+                  
+                  <button 
+                    onClick={() => generateShareCard()}
+                    className="group bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl p-6 hover:bg-white/30 transition-all duration-200 transform hover:scale-105"
+                  >
+                    <div className="text-3xl mb-3">🎨</div>
+                    <h3 className="font-bold text-lg mb-2">Download Share Card</h3>
+                    <p className="text-sm text-white/80">Beautiful card perfect for social media</p>
                   </button>
                 </div>
               </div>
@@ -677,13 +946,21 @@ export default function ConstitutionTestClient() {
             )}
 
             {/* 🔄 重新测试和其他操作 */}
-            <div className="grid md:grid-cols-3 gap-4 max-w-2xl mx-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
               <button
                 onClick={handleBackToWelcome}
                 className="group flex items-center justify-center gap-2 px-8 py-4 border-2 border-gray-300 rounded-xl text-gray-700 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg"
               >
                 <ArrowLeft className="w-5 h-5 group-hover:translate-x-[-2px] transition-transform duration-200" />
                 <span className="font-medium">Retake Test</span>
+              </button>
+              
+              <button 
+                onClick={() => handleShowHistory()}
+                className="group flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              >
+                <BarChart3 className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
+                <span className="font-medium">View History</span>
               </button>
               
               <button 
@@ -702,6 +979,262 @@ export default function ConstitutionTestClient() {
                 <span className="font-medium">Consult Expert</span>
               </button>
             </div>
+
+            {/* 📧 邮件订阅模态框 */}
+            {showEmailModal && (
+              <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 transform transition-all duration-300 scale-100">
+                  <div className="p-8">
+                    {!emailSubmitted ? (
+                      <>
+                        <div className="text-center mb-6">
+                          <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span className="text-3xl">📧</span>
+                          </div>
+                          <h3 className="text-2xl font-bold text-gray-900 mb-2">Get Your Personal Wellness Guide</h3>
+                          <p className="text-gray-600">
+                            Receive a detailed PDF guide with personalized recommendations for your {primaryInfo.englishName} constitution.
+                          </p>
+                        </div>
+
+                        <div className="space-y-4 mb-6">
+                          <div className="p-4 bg-green-50 rounded-xl border border-green-200">
+                            <h4 className="font-semibold text-green-900 mb-2">✨ Your Guide Includes:</h4>
+                            <ul className="text-sm text-green-800 space-y-1">
+                              <li>• Complete constitution analysis</li>
+                              <li>• Personalized herb recommendations</li>
+                              <li>• Custom meal plans & recipes</li>
+                              <li>• Exercise routines for your type</li>
+                              <li>• Stress management techniques</li>
+                            </ul>
+                          </div>
+
+                          <div>
+                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                              Email Address
+                            </label>
+                            <input
+                              type="email"
+                              id="email"
+                              value={userEmail}
+                              onChange={(e) => setUserEmail(e.target.value)}
+                              placeholder="Enter your email to receive your guide"
+                              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="flex gap-3">
+                          <button
+                            onClick={() => setShowEmailModal(false)}
+                            className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
+                          >
+                            Maybe Later
+                          </button>
+                          <button
+                            onClick={handleEmailSubmit}
+                            disabled={isSubmittingEmail || !userEmail}
+                            className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
+                          >
+                            {isSubmittingEmail ? (
+                              <>
+                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                Sending...
+                              </>
+                            ) : (
+                              'Send My Guide'
+                            )}
+                          </button>
+                        </div>
+
+                        <p className="text-xs text-gray-500 text-center mt-4">
+                          No spam, ever. Unsubscribe with one click.
+                        </p>
+                      </>
+                    ) : (
+                      <div className="text-center">
+                        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                          <CheckCircle className="w-8 h-8 text-green-600" />
+                        </div>
+                        <h3 className="text-2xl font-bold text-gray-900 mb-3">Guide Sent Successfully!</h3>
+                        <p className="text-gray-600 mb-6">
+                          Check your inbox for your personalized {primaryInfo.englishName} wellness guide. 
+                          Don't forget to check your spam folder just in case.
+                        </p>
+                        
+                        <div className="space-y-3">
+                          <button
+                            onClick={() => setShowEmailModal(false)}
+                            className="w-full px-6 py-3 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-xl hover:from-green-700 hover:to-teal-700 transition-all duration-200"
+                          >
+                            Continue Exploring
+                          </button>
+                          
+                          <button
+                            onClick={() => {
+                              setShowEmailModal(false)
+                              handleShareResults()
+                            }}
+                            className="w-full px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
+                          >
+                            <Share2 className="w-4 h-4" />
+                            Share Your Results
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* 📊 测试历史模态框 */}
+            {showHistoryModal && (
+              <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full mx-4 max-h-[80vh] overflow-hidden">
+                  <div className="p-6 border-b border-gray-200">
+                    <div className="flex justify-between items-center">
+                      <h3 className="text-2xl font-bold text-gray-900">Test History & Comparison</h3>
+                      <button
+                        onClick={() => setShowHistoryModal(false)}
+                        className="text-gray-400 hover:text-gray-600 transition-colors"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div className="p-6 overflow-y-auto max-h-[60vh]">
+                    {testHistory.length === 0 ? (
+                      <div className="text-center py-12">
+                        <div className="text-6xl mb-4">📊</div>
+                        <h4 className="text-xl font-semibold text-gray-700 mb-2">No Previous Tests</h4>
+                        <p className="text-gray-500">This is your first constitution test. Come back after taking more tests to see your progress!</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-6">
+                        <div className="grid gap-4">
+                          {testHistory.map((test, index) => {
+                            const testInfo = constitutionInfo[test.primary]
+                            const isLatest = index === 0
+                            const showComparison = index > 0 && testHistory[index - 1]
+                            
+                            return (
+                              <div key={test.id} className={`p-6 rounded-xl border-2 transition-all duration-200 ${
+                                isLatest ? 'border-green-500 bg-green-50' : 'border-gray-200 bg-gray-50'
+                              }`}>
+                                <div className="flex justify-between items-start mb-4">
+                                  <div className="flex items-center gap-4">
+                                    <div className="text-4xl">{testInfo.icon}</div>
+                                    <div>
+                                      <h4 className="text-xl font-bold text-gray-900">
+                                        {testInfo.englishName}
+                                        {isLatest && <span className="text-green-600 text-sm font-medium ml-2">(Current)</span>}
+                                      </h4>
+                                      <p className="text-gray-600">{testInfo.name}</p>
+                                      <p className="text-sm text-gray-500">
+                                        {new Date(test.date).toLocaleDateString('en-US', {
+                                          year: 'numeric',
+                                          month: 'long',
+                                          day: 'numeric',
+                                          hour: '2-digit',
+                                          minute: '2-digit'
+                                        })}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  
+                                  {test.secondary && (
+                                    <div className="text-right">
+                                      <p className="text-sm text-gray-500 mb-1">Secondary:</p>
+                                      <p className="text-gray-700 font-medium">{constitutionInfo[test.secondary].name}</p>
+                                    </div>
+                                  )}
+                                </div>
+                                
+                                {/* 显示主要得分 */}
+                                <div className="mb-4">
+                                  <h5 className="text-sm font-semibold text-gray-700 mb-2">Constitution Scores:</h5>
+                                  <div className="grid grid-cols-3 gap-2 text-xs">
+                                    {Object.entries(test.scores)
+                                      .sort(([,a], [,b]) => b - a)
+                                      .slice(0, 6)
+                                      .map(([constitution, score]) => (
+                                      <div key={constitution} className="flex justify-between p-2 bg-white rounded">
+                                        <span className="text-gray-600">{constitution}</span>
+                                        <span className="font-medium">{score}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                                
+                                {/* 比较前一次结果 */}
+                                {showComparison && (
+                                  <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                                    <h5 className="text-sm font-semibold text-blue-900 mb-2">📈 Changes Since Last Test:</h5>
+                                    <div className="space-y-1">
+                                      {compareResults(test, testHistory[index - 1]).map((change, idx) => (
+                                        <p key={idx} className="text-sm text-blue-800">• {change}</p>
+                                      ))}
+                                      {compareResults(test, testHistory[index - 1]).length === 0 && (
+                                        <p className="text-sm text-blue-700">No significant changes detected</p>
+                                      )}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            )
+                          })}
+                        </div>
+                        
+                        {testHistory.length > 1 && (
+                          <div className="mt-8 p-6 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl border border-indigo-200">
+                            <h4 className="text-lg font-bold text-indigo-900 mb-3">📈 Your Constitution Journey</h4>
+                            <div className="space-y-2">
+                              <p className="text-sm text-indigo-800">
+                                <strong>Total Tests:</strong> {testHistory.length}
+                              </p>
+                              <p className="text-sm text-indigo-800">
+                                <strong>Most Common Type:</strong> {
+                                  Object.entries(
+                                    testHistory.reduce((acc, test) => {
+                                      acc[test.primary] = (acc[test.primary] || 0) + 1
+                                      return acc
+                                    }, {} as Record<string, number>)
+                                  ).sort(([,a], [,b]) => b - a)[0]?.[0] || 'N/A'
+                                }
+                              </p>
+                              <p className="text-sm text-indigo-800">
+                                <strong>Time Span:</strong> {
+                                  testHistory.length > 1 
+                                    ? `${Math.ceil((new Date(testHistory[0].date).getTime() - new Date(testHistory[testHistory.length - 1].date).getTime()) / (1000 * 60 * 60 * 24))} days`
+                                    : 'Single test'
+                                }
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="p-6 border-t border-gray-200 bg-gray-50">
+                    <div className="flex justify-between items-center">
+                      <p className="text-sm text-gray-600">
+                        Results are automatically saved for comparison
+                      </p>
+                      <button
+                        onClick={() => setShowHistoryModal(false)}
+                        className="px-6 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </main>
         </div>
       )
