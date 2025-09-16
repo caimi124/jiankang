@@ -237,7 +237,6 @@ const nextConfig = {
     // 启用tree shaking和dead code elimination + 现代化优化
     config.optimization = {
       ...config.optimization,
-      usedExports: true,
       sideEffects: false,
       // 移除旧版代码
       moduleIds: 'deterministic',
