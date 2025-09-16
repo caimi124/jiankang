@@ -10,7 +10,7 @@ const nextConfig = {
     // 优化图片尺寸
     imageSizes: [16, 32, 48, 64, 96, 128, 256],
     // 外部图片域名
-    domains: ['images.unsplash.com', 'cdn.sanity.io'],
+    domains: ['images.unsplash.com', 'cdn.sanity.io', 'herbscience.shop'],
     // 最小缓存时间
     minimumCacheTTL: 31536000, // 1年
     // 远程模式
@@ -20,7 +20,14 @@ const nextConfig = {
         hostname: 'cdn.sanity.io',
         pathname: '**',
       },
+      {
+        protocol: 'https',
+        hostname: 'herbscience.shop',
+        pathname: '/images/**',
+      },
     ],
+    // 禁用图片优化以排除问题
+    unoptimized: false,
   },
 
   // 启用压缩

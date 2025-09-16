@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import Navigation from '../../components/Navigation'
 import Breadcrumb from '../../components/Breadcrumb'
 import { 
@@ -85,10 +86,13 @@ export default function AboutClient() {
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-12">
                 <div className="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden shadow-xl border-4 border-white">
-                  <img 
-                    src="/images/about/zeng-chuping-profile.jpg" 
+                  <Image
+                    src="/images/about/zeng-chuping-profile.jpg"
                     alt="Zeng Chuping - Licensed Pharmacist & TCM Expert"
+                    width={128}
+                    height={128}
                     className="w-full h-full object-cover"
+                    priority
                   />
                 </div>
                 <h2 className="text-3xl font-bold text-gray-900 mb-4">Meet Your Expert</h2>
