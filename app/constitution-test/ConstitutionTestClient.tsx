@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import Navigation from '../../components/Navigation'
 import Breadcrumb from '../../components/Breadcrumb'
+import ErrorBoundary from '../../components/ErrorBoundary'
 import { 
   CheckCircle, 
   ArrowLeft, 
@@ -171,7 +172,7 @@ const getHerbBenefit = (herb: string, constitutionType: string) => {
   return benefits[constitutionType]?.[herb] || 'Supports your constitutional balance naturally'
 }
 
-export default function ConstitutionTestClient() {
+function ConstitutionTestClient() {
   const [currentStep, setCurrentStep] = useState<'welcome' | 'test' | 'results'>('welcome')
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [answers, setAnswers] = useState<number[]>(new Array(questions.length).fill(0))
@@ -638,8 +639,15 @@ Take the free test and find your perfect herbal match! 👇`
       }
 
       console.log('[ConstitutionTest] 开始计算体质结果...');
+      console.log('[ConstitutionTest] 答案数组:', answers.slice(0, 10)); // 只显示前10个答案
+
       const result = calculateConstitution(answers)
       console.log('[ConstitutionTest] 计算结果:', result);
+
+      // 验证结果的有效性
+      if (!result || !result.primary) {
+        throw new Error('Invalid constitution calculation result');
+      }
       
       // 保存测试结果到历史记录
       saveTestResult(result, answers)
@@ -1248,18 +1256,28 @@ Take the free test and find your perfect herbal match! 👇`
           
           <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
-              <div className="text-6xl mb-4">🔧</div>
-              <h1 className="text-2xl font-bold text-red-600 mb-4">系统错误</h1>
+              <div className="text-6xl mb-4">⚠️</div>
+              <h1 className="text-2xl font-bold text-red-600 mb-4">Something went wrong!</h1>
               <p className="text-gray-600 mb-6">
-                抱歉，系统在处理您的测试结果时出现了问题。<br/>
-                错误信息: {error instanceof Error ? error.message : '未知错误'}
+                We apologize for the inconvenience. Our team has been notified and is working to fix the issue.<br/>
+                {process.env.NODE_ENV === 'development' && (
+                  <>Error details: {error instanceof Error ? error.message : 'Unknown error'}</>
+                )}
               </p>
-              <button
-                onClick={() => setCurrentStep('welcome')}
-                className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors"
-              >
-                重新开始
-              </button>
+              <div className="space-y-3">
+                <button
+                  onClick={() => setCurrentStep('welcome')}
+                  className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors"
+                >
+                  Try again
+                </button>
+                <button
+                  onClick={() => window.location.href = '/'}
+                  className="bg-gray-600 text-white px-6 py-3 rounded-xl hover:bg-gray-700 transition-colors ml-3"
+                >
+                  Return home
+                </button>
+              </div>
             </div>
           </main>
         </div>
@@ -1577,4 +1595,13 @@ Take the free test and find your perfect herbal match! 👇`
   }
 
   return null
+}
+
+// 包装组件添加错误边界
+export default function ConstitutionTestWithErrorBoundary() {
+  return (
+    <ErrorBoundary>
+      <ConstitutionTestClient />
+    </ErrorBoundary>
+  )
 }

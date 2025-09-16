@@ -419,10 +419,16 @@ export function calculateConstitution(answers: number[]): {
   scores: ScoreMap;
   isBalanced: boolean;
 } {
-  const scores: ScoreMap = {
-    "平和": 0, "气虚": 0, "阳虚": 0, "阴虚": 0,
-    "痰湿": 0, "湿热": 0, "血瘀": 0, "气郁": 0, "特禀": 0
-  };
+  try {
+    // 输入验证
+    if (!answers || !Array.isArray(answers)) {
+      throw new Error('Invalid answers array');
+    }
+
+    const scores: ScoreMap = {
+      "平和": 0, "气虚": 0, "阳虚": 0, "阴虚": 0,
+      "痰湿": 0, "湿热": 0, "血瘀": 0, "气郁": 0, "特禀": 0
+    };
 
   // 计算各体质得分 - 只计算有效答案 (1-5)
   questions.forEach((question, index) => {
@@ -467,10 +473,29 @@ export function calculateConstitution(answers: number[]): {
 
   const hasSecondary = secondaryScore >= 40 && secondaryType !== '平和';
 
-  return {
-    primary: primaryType as ConstitutionType,
-    secondary: hasSecondary ? secondaryType as ConstitutionType : undefined,
-    scores,
-    isBalanced
-  };
+    // 最终验证
+    const finalPrimaryType = primaryType as ConstitutionType;
+    if (!constitutionInfo[finalPrimaryType]) {
+      throw new Error(`Invalid constitution type: ${primaryType}`);
+    }
+
+    return {
+      primary: finalPrimaryType,
+      secondary: hasSecondary ? secondaryType as ConstitutionType : undefined,
+      scores,
+      isBalanced
+    };
+  } catch (error) {
+    console.error('Error in calculateConstitution:', error);
+    // 返回安全的默认值
+    return {
+      primary: '平和',
+      secondary: undefined,
+      scores: {
+        "平和": 50, "气虚": 0, "阳虚": 0, "阴虚": 0,
+        "痰湿": 0, "湿热": 0, "血瘀": 0, "气郁": 0, "特禀": 0
+      },
+      isBalanced: false
+    };
+  }
 } 
