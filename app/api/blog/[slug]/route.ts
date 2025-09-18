@@ -19,7 +19,7 @@ export async function GET(
 
     // 调用Notion同步API获取文章
     const baseUrl = process.env.NODE_ENV === 'production' 
-      ? 'https://www.herbscience.shop' 
+      ? 'https://herbscience.shop' 
       : 'http://localhost:3000'
     
     const response = await fetch(`${baseUrl}/api/blog/sync-to-notion?action=get_post&slug=${slug}`, {

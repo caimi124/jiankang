@@ -82,7 +82,7 @@ export function BreadcrumbsStructuredData({ items }: { items: BreadcrumbItem[] }
       "@type": "ListItem",
       "position": index + 1,
       "name": item.label,
-      "item": item.href ? `https://www.herbscience.shop${item.href}` : undefined
+      "item": item.href ? `https://herbscience.shop${item.href}` : undefined
     }))
   }
 
