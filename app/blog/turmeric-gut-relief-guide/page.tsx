@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: 'Turmeric Made Simple: Complete Guide for Gut Relief & Pain Reduction',
     description: 'Learn how to use turmeric effectively for digestive health, inflammation, and natural pain relief. Evidence-based guide with practical tips.',
     type: 'article',
-    url: 'https://www.herbscience.shop/blog/turmeric-gut-relief-guide',
+    url: 'https://herbscience.shop/blog/turmeric-gut-relief-guide',
     siteName: 'HerbScience',
     images: [
       {

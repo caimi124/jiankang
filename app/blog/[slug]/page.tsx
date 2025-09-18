@@ -124,7 +124,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     datePublished: post.published_date || post.date,
     dateModified: post.published_date || post.date,
     keywords: post.tags?.join(', ') || '',
-    url: `https://www.herbscience.shop/blog/${resolvedParams.slug}`
+    url: `https://herbscience.shop/blog/${resolvedParams.slug}`
   }
 
   // 面包屑 JSON-LD

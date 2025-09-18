@@ -16,19 +16,19 @@ export default function ZhHome() {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: '首页', item: 'https://www.herbscience.shop/zh' }
+      { '@type': 'ListItem', position: 1, name: '首页', item: 'https://herbscience.shop/zh' }
     ]
   }
 
   return (
     <main className="min-h-screen bg-white">
       {/* 中文首页动态 OG 图 */}
-      <meta property="og:image" content="https://www.herbscience.shop/zh/opengraph-image" />
-      <meta name="twitter:image" content="https://www.herbscience.shop/zh/opengraph-image" />
+      <meta property="og:image" content="https://herbscience.shop/zh/opengraph-image" />
+      <meta name="twitter:image" content="https://herbscience.shop/zh/opengraph-image" />
       {/* hreflang alternates */}
-      <link rel="alternate" hrefLang="en" href="https://www.herbscience.shop/" />
-      <link rel="alternate" hrefLang="zh" href="https://www.herbscience.shop/zh" />
-      <link rel="alternate" hrefLang="x-default" href="https://www.herbscience.shop/" />
+      <link rel="alternate" hrefLang="en" href="https://herbscience.shop/" />
+      <link rel="alternate" hrefLang="zh" href="https://herbscience.shop/zh" />
+      <link rel="alternate" hrefLang="x-default" href="https://herbscience.shop/" />
       {/* BreadcrumbList JSON-LD */}
       <script
         type="application/ld+json"

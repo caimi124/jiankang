@@ -76,7 +76,7 @@ export default function HomeClient() {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.herbscience.shop/' }
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://herbscience.shop/' }
     ]
   }
   

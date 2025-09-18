@@ -14,14 +14,14 @@ export function middleware(request: NextRequest) {
     needsRedirect = true
   }
 
-  // Normalize hostname to www (preferred canonical)
-  if (url.hostname === 'herbscience.shop') {
-    url.hostname = 'www.herbscience.shop'
+  // 紧急修复：重定向到non-www域名（SSL证书修复前）
+  if (url.hostname === 'www.herbscience.shop') {
+    url.hostname = 'herbscience.shop'
     needsRedirect = true
   }
 
   if (needsRedirect) {
-    return NextResponse.redirect(url, 308)
+    return NextResponse.redirect(url, 301)
   }
 
   // Handle herb URL redirects

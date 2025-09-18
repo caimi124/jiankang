@@ -20,11 +20,11 @@ export const metadata: Metadata = {
     title: 'HerbScience.shop | Evidence-Based Herbal Medicine Guide',
     description: 'Discover the power of herbal medicine with our evidence-based guide. Get personalized herb recommendations, safety information, and expert insights.',
     type: 'website',
-    url: 'https://www.herbscience.shop',
+    url: 'https://herbscience.shop',
     siteName: 'HerbScience.shop',
     images: [
       {
-        url: 'https://www.herbscience.shop/opengraph-image',
+        url: 'https://herbscience.shop/opengraph-image',
         width: 1200,
         height: 630,
         alt: 'HerbScience.shop - Evidence-Based Herbal Medicine Guide'
@@ -37,17 +37,17 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'HerbScience.shop | Evidence-Based Herbal Medicine Guide',
     description: 'Discover the power of herbal medicine with our evidence-based guide.',
-    images: ['https://www.herbscience.shop/opengraph-image']
+    images: ['https://herbscience.shop/opengraph-image']
   },
   alternates: {
-    canonical: 'https://www.herbscience.shop/',
+    canonical: 'https://herbscience.shop/',
     languages: {
-      'en': 'https://www.herbscience.shop/',
-      'zh': 'https://www.herbscience.shop/zh',
-      'x-default': 'https://www.herbscience.shop/'
+      'en': 'https://herbscience.shop/',
+      'zh': 'https://herbscience.shop/zh',
+      'x-default': 'https://herbscience.shop/'
     }
   },
-  metadataBase: new URL('https://www.herbscience.shop'),
+  metadataBase: new URL('https://herbscience.shop'),
   verification: {
     google: 'your-google-verification-code-here'
   }
@@ -63,10 +63,10 @@ export default function RootLayout({
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: 'HerbScience.shop',
-    url: 'https://www.herbscience.shop',
+    url: 'https://herbscience.shop',
     potentialAction: {
       '@type': 'SearchAction',
-      target: 'https://www.herbscience.shop/herb-finder?query={search_term_string}',
+      target: 'https://herbscience.shop/herb-finder?query={search_term_string}',
       'query-input': 'required name=search_term_string'
     }
   }
@@ -74,10 +74,10 @@ export default function RootLayout({
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'HerbScience',
-    url: 'https://www.herbscience.shop',
+    url: 'https://herbscience.shop',
     logo: {
       '@type': 'ImageObject',
-      url: 'https://www.herbscience.shop/logo.png',
+      url: 'https://herbscience.shop/logo.png',
       width: 256,
       height: 256
     },

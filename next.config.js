@@ -107,18 +107,7 @@ const nextConfig = {
   // 重定向配置
   async redirects() {
     return [
-      // 域名规范化重定向 - 统一使用www
-      {
-        source: '/:path*',
-        has: [
-          {
-            type: 'host',
-            value: 'herbscience.shop',
-          },
-        ],
-        destination: 'https://www.herbscience.shop/:path*',
-        permanent: true,
-      },
+      // 域名规范化重定向 - 紧急修复：使用non-www域名
       {
         source: '/:path*',
         has: [
@@ -127,14 +116,7 @@ const nextConfig = {
             value: 'www.herbscience.shop',
           },
         ],
-        missing: [
-          {
-            type: 'header',
-            key: 'x-forwarded-proto',
-            value: 'https',
-          },
-        ],
-        destination: 'https://www.herbscience.shop/:path*',
+        destination: 'https://herbscience.shop/:path*',
         permanent: true,
       },
       // 页面重定向
