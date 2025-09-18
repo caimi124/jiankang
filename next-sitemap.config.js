@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: 'https://herbscience.shop',
+  siteUrl: 'https://www.herbscience.shop',
   generateRobotsTxt: true,
   sitemapSize: 5000,
   changefreq: 'weekly',
@@ -111,15 +111,15 @@ module.exports = {
         // 添加多语言替代版本
         alternateRefs: [
           {
-            href: 'https://herbscience.shop/',
+            href: 'https://www.herbscience.shop/',
             hreflang: 'en',
           },
           {
-            href: 'https://herbscience.shop/zh',
+            href: 'https://www.herbscience.shop/zh',
             hreflang: 'zh',
           },
           {
-            href: 'https://herbscience.shop/',
+            href: 'https://www.herbscience.shop/',
             hreflang: 'x-default',
           },
         ],

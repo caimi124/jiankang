@@ -14,9 +14,9 @@ export function middleware(request: NextRequest) {
     needsRedirect = true
   }
 
-  // Normalize hostname to apex (non-www)
-  if (url.hostname === 'www.herbscience.shop') {
-    url.hostname = 'herbscience.shop'
+  // Normalize hostname to www (preferred canonical)
+  if (url.hostname === 'herbscience.shop') {
+    url.hostname = 'www.herbscience.shop'
     needsRedirect = true
   }
 

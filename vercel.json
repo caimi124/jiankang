@@ -17,6 +17,17 @@
       "source": "/herbs/cloves",
       "destination": "/herbs/clove",
       "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "herbscience.shop"
+        }
+      ],
+      "destination": "https://www.herbscience.shop/:path*",
+      "permanent": true
     }
   ],
   "headers": [

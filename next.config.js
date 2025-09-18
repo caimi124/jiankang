@@ -107,16 +107,16 @@ const nextConfig = {
   // 重定向配置
   async redirects() {
     return [
-      // 域名规范化重定向
+      // 域名规范化重定向 - 统一使用www
       {
         source: '/:path*',
         has: [
           {
             type: 'host',
-            value: 'www.herbscience.shop',
+            value: 'herbscience.shop',
           },
         ],
-        destination: 'https://herbscience.shop/:path*',
+        destination: 'https://www.herbscience.shop/:path*',
         permanent: true,
       },
       {
@@ -124,7 +124,7 @@ const nextConfig = {
         has: [
           {
             type: 'host',
-            value: 'herbscience.shop',
+            value: 'www.herbscience.shop',
           },
         ],
         missing: [
@@ -134,7 +134,7 @@ const nextConfig = {
             value: 'https',
           },
         ],
-        destination: 'https://herbscience.shop/:path*',
+        destination: 'https://www.herbscience.shop/:path*',
         permanent: true,
       },
       // 页面重定向

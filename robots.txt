@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # 网站地图
-Sitemap: https://herbscience.shop/sitemap.xml
+Sitemap: https://www.herbscience.shop/sitemap.xml
 
 # 禁止抓取的目录（根据实际情况调整）
 Disallow: /admin/
