@@ -201,17 +201,11 @@ const nextConfig = {
 
   // 🚀 Webpack配置 - 性能优化
   webpack: (config, { dev, isServer }) => {
-    // 仅在开发环境添加基本的路径别名
-    if (dev) {
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        '@': require('path').resolve(__dirname),
-      }
-    }
-
-    // 🚀 彻底禁用polyfills和core-js + 移除未使用模块
+    // 🚀 关键修复：在所有环境添加路径别名
     config.resolve.alias = {
       ...config.resolve.alias,
+      '@': require('path').resolve(__dirname),
+      // 🚀 彻底禁用polyfills和core-js + 移除未使用模块
       'core-js': false,
       '@babel/runtime': false,
       // 移除未使用的大型依赖
