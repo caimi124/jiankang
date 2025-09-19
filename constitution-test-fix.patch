@@ -1,0 +1,131 @@
+// Constitution Test 错误修复补丁
+// 将以下代码替换到 ConstitutionTestClient.tsx 中的对应位置
+
+// 1. 修复初始化useEffect (替换行199-219)
+React.useEffect(() => {
+  if (typeof window !== 'undefined') {
+    try {
+      const urlParams = new URLSearchParams(window.location.search)
+      if (urlParams.get('start') === 'true') {
+        setCurrentStep('test')
+        // 安全地清除URL参数
+        try {
+          window.history.replaceState({}, '', '/constitution-test')
+        } catch (historyError) {
+          console.warn('Failed to update URL history:', historyError)
+        }
+      }
+
+      // 安全地加载测试历史
+      try {
+        const savedHistory = localStorage.getItem('constitutionTestHistory')
+        if (savedHistory && savedHistory.trim() !== '' && savedHistory !== 'undefined' && savedHistory !== 'null') {
+          const history = JSON.parse(savedHistory)
+          // 验证数据格式
+          if (Array.isArray(history) && history.every(item => item && typeof item === 'object' && item.id)) {
+            setTestHistory(history.slice(0, 10)) // 限制最多10条记录
+          } else {
+            console.warn('Invalid test history format, clearing...')
+            localStorage.removeItem('constitutionTestHistory')
+          }
+        }
+      } catch (storageError) {
+        console.error('Failed to load test history:', storageError)
+        // 清除损坏的数据
+        try {
+          localStorage.removeItem('constitutionTestHistory')
+        } catch (clearError) {
+          console.error('Failed to clear corrupted test history:', clearError)
+        }
+      }
+    } catch (error) {
+      console.error('Error in constitution test initialization:', error)
+      // 出错时确保组件保持在安全状态
+      setCurrentStep('welcome')
+      setTestHistory([])
+    }
+  }
+}, [])
+
+// 2. 修复handleStartTest函数 (替换行221-231)
+const handleStartTest = () => {
+  try {
+    setCurrentStep('test')
+    setCurrentQuestion(0)
+    setAnswers(new Array(questions.length).fill(0))
+    setSelectedAnswer(null)
+  } catch (error) {
+    console.error('Error starting test:', error)
+    // 安全的错误处理
+    try {
+      // 清理可能的错误状态
+      setCurrentQuestion(0)
+      setAnswers(new Array(questions.length).fill(0))
+      setSelectedAnswer(null)
+      // 再次尝试设置测试状态
+      setCurrentStep('test')
+    } catch (retryError) {
+      console.error('Failed to start test, redirecting:', retryError)
+      window.location.href = '/constitution-test?start=true'
+    }
+  }
+}
+
+// 3. 修复saveTestResult函数 (替换行545-566)
+const saveTestResult = (result: any, answers: number[]) => {
+  if (typeof window === 'undefined') return
+
+  try {
+    // 验证输入数据
+    if (!result || !result.primary || !Array.isArray(answers)) {
+      console.warn('Invalid result data, skipping save')
+      return
+    }
+
+    const newResult = {
+      id: Date.now().toString(),
+      date: new Date().toISOString(),
+      primary: result.primary,
+      secondary: result.secondary,
+      scores: result.scores || {},
+      answers: answers.slice() // 创建副本
+    }
+
+    const currentHistory = Array.isArray(testHistory) ? testHistory : []
+    const updatedHistory = [newResult, ...currentHistory].slice(0, 10) // 保留最近10次结果
+
+    setTestHistory(updatedHistory)
+
+    // 安全地保存到localStorage
+    try {
+      const jsonString = JSON.stringify(updatedHistory)
+      if (jsonString.length < 1024 * 1024) { // 限制1MB以内
+        localStorage.setItem('constitutionTestHistory', jsonString)
+      } else {
+        console.warn('Test history too large, keeping only recent 5 results')
+        const trimmedHistory = updatedHistory.slice(0, 5)
+        setTestHistory(trimmedHistory)
+        localStorage.setItem('constitutionTestHistory', JSON.stringify(trimmedHistory))
+      }
+    } catch (storageError) {
+      console.error('Failed to save to localStorage:', storageError)
+      // 如果localStorage失败，至少保持内存中的历史
+      setTestHistory(updatedHistory)
+    }
+  } catch (error) {
+    console.error('Failed to save test result:', error)
+  }
+}
+
+// 4. 在结果页面添加额外的错误检查 (在行604后添加)
+// 检查是否所有问题都已回答
+const answeredCount = answers.filter(answer => answer >= 1 && answer <= 5).length;
+const minRequiredAnswers = Math.max(3, Math.floor(questions.length * 0.5)); // 至少50%的问题
+
+// 验证答案数组
+if (!Array.isArray(answers) || answers.some(answer => isNaN(answer))) {
+  console.error('Invalid answers array detected, resetting test')
+  setCurrentStep('welcome')
+  setAnswers(new Array(questions.length).fill(0))
+  return null
+}
