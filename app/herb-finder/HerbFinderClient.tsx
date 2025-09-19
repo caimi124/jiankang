@@ -103,12 +103,12 @@ const PopularCategory = memo(({ iconName, label, onClick, isActive }: {
 PopularCategory.displayName = 'PopularCategory'
 
 const popularCategories = [
-  { iconName: 'moon' as const, label: 'Sleep & Relaxation', keywords: ['睡眠支持', '镇静安神', '情绪管理'] },
-  { iconName: 'zap' as const, label: 'Energy & Vitality', keywords: ['能量提升', '补气养血'] },
-  { iconName: 'shield' as const, label: 'Immune Support', keywords: ['免疫支持'] },
-  { iconName: 'heart' as const, label: 'Digestive Health', keywords: ['消化健康'] },
-  { iconName: 'brain' as const, label: 'Mental Clarity', keywords: ['压力与焦虑'] },
-  { iconName: 'users' as const, label: 'Women\'s Health', keywords: ['女性健康'] }
+  { iconName: 'moon' as const, label: 'Sleep & Relaxation', keywords: ['镇静安神', '情绪平衡', '改善睡眠'] },
+  { iconName: 'zap' as const, label: 'Energy & Vitality', keywords: ['能量提升', '补气养血', '体力增强'] },
+  { iconName: 'shield' as const, label: 'Immune Support', keywords: ['免疫支持', '增强免疫', '抗病毒'] },
+  { iconName: 'heart' as const, label: 'Digestive Health', keywords: ['消化健康', '健脾', '胃部调理'] },
+  { iconName: 'brain' as const, label: 'Mental Clarity', keywords: ['改善记忆', '脑部健康', '注意力'] },
+  { iconName: 'users' as const, label: 'Women\'s Health', keywords: ['女性调理', '月经调理', '美容护肤'] }
 ]
 
 export default function HerbFinderClient() {
