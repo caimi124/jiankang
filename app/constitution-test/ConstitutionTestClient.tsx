@@ -225,8 +225,11 @@ function ConstitutionTestClient() {
       setAnswers(new Array(questions.length).fill(0))
       setSelectedAnswer(null)
     } catch (error) {
+      console.error('Failed to start test:', error)
       // 强制刷新页面并添加参数
-      window.location.href = '/constitution-test?start=true'
+      if (typeof window !== 'undefined') {
+        window.location.href = '/constitution-test?start=true'
+      }
     }
   }
 

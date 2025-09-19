@@ -11,29 +11,34 @@ import {
   Moon, Zap, Shield, Heart, Brain, Users 
 } from 'lucide-react'
 
-// 🚀 优化2: 延迟加载重型组件
-const Navigation = dynamic(() => import('../../components/Navigation'), { 
+// 🚀 优化2: 稳定的延迟加载组件
+const Navigation = dynamic(() => import('../../components/Navigation').catch(() => import('../../components/Navigation')), {
   ssr: true,
   loading: () => (
     <div className="h-16 bg-white border-b border-gray-200 animate-pulse" />
   )
 })
 
-const Breadcrumb = dynamic(() => import('../../components/Breadcrumb'), { 
+const Breadcrumb = dynamic(() => import('../../components/Breadcrumb').catch(() => import('../../components/Breadcrumb')), {
   ssr: true,
   loading: () => (
     <div className="h-8 bg-gray-100 rounded animate-pulse" />
   )
 })
 
-const HerbCard = dynamic(() => 
-  import('../../components/HerbRecommendations').then(mod => ({ default: mod.HerbCard })), { 
+const HerbCard = dynamic(() =>
+  import('../../components/HerbRecommendations')
+    .then(mod => ({ default: mod.HerbCard }))
+    .catch(() => import('../../components/HerbRecommendations').then(mod => ({ default: mod.HerbCard }))), {
     ssr: false,
     loading: () => <HerbCardSkeleton />
   }
 )
 
-const HerbFinderFAQ = dynamic(() => import('../../components/HerbFinderFAQ'), { ssr: false })
+const HerbFinderFAQ = dynamic(() =>
+  import('../../components/HerbFinderFAQ').catch(() => import('../../components/HerbFinderFAQ')),
+  { ssr: false }
+)
 
 // 🚀 优化3: 骨架屏组件防止布局偏移
 const HerbCardSkeleton = memo(() => (
@@ -148,10 +153,17 @@ export default function HerbFinderClient() {
   // 🚀 优化6: 改进初始化 - 预设初始数据避免空白
   useEffect(() => {
     const timer = setTimeout(() => {
-      setFilteredHerbs(allHerbsData.slice(0, 24))
-      setIsLoading(false)
+      try {
+        setFilteredHerbs(allHerbsData.slice(0, 24))
+        setError(null)
+        setIsLoading(false)
+      } catch (error) {
+        console.error('Failed to initialize herbs:', error)
+        setError('Failed to load herbs data')
+        setIsLoading(false)
+      }
     }, 150)
-    
+
     return () => clearTimeout(timer)
   }, [allHerbsData])
 
@@ -189,7 +201,18 @@ export default function HerbFinderClient() {
       // 快速筛选 - 单次遍历避免多次filter调用
       if (filters.category || filters.constitution || filters.safety || filters.efficacy) {
         filtered = filtered.filter(herb => {
-          if (filters.category && herb.category !== filters.category) return false
+          // 热门类别筛选 - 基于关键词匹配
+          if (filters.category) {
+            const category = popularCategories.find(cat => cat.label === filters.category)
+            if (category) {
+              const hasMatchingKeyword = category.keywords.some(keyword =>
+                herb.efficacy?.includes(keyword) ||
+                herb.primary_effects?.includes(keyword) ||
+                herb.secondary_effects?.includes(keyword)
+              )
+              if (!hasMatchingKeyword) return false
+            }
+          }
           if (filters.constitution && herb.constitution_type !== filters.constitution) return false
           if (filters.safety && herb.safety_level !== filters.safety) return false
           if (filters.efficacy && 
