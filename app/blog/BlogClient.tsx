@@ -10,11 +10,9 @@ export default function BlogClient() {
   const [searchQuery, setSearchQuery] = useState('')
 
   const categories = [
-    { id: 'all', name: 'All Articles', count: 24 },
-    { id: 'research', name: 'Latest Research', count: 8 },
-    { id: 'safety', name: 'Safety & Interactions', count: 6 },
-    { id: 'traditional', name: 'Traditional Medicine', count: 5 },
-    { id: 'lifestyle', name: 'Lifestyle & Wellness', count: 5 }
+    { id: 'all', name: 'All Articles', count: 32 },
+    { id: 'lifestyle', name: 'Lifestyle', count: 18, description: 'Practical guides for daily wellness and traditional wisdom' },
+    { id: 'science', name: 'Science', count: 14, description: 'Research, safety studies, and evidence-based insights' }
   ]
 
   const featuredArticles = [
@@ -23,7 +21,7 @@ export default function BlogClient() {
       title: "Turmeric Made Simple: How to Use It Today for Real Gut Relief and Pain Reduction",
       excerpt: "Feeling bloated, achy, or tired? Discover how turmeric can help calm your gut, reduce inflammation, and boost your energy.",
       category: "lifestyle",
-      author: "HerbScience Team", 
+      author: "HerbScience Team",
       date: "2025-01-19",
       readTime: "8 min read",
       image: "🌿",
@@ -35,7 +33,7 @@ export default function BlogClient() {
       id: 2,
       title: "Breakthrough Research: Turmeric and Curcumin Show Promise in Alzheimer's Prevention",
       excerpt: "New clinical trials demonstrate significant cognitive benefits from standardized curcumin supplementation in adults over 50.",
-      category: "research",
+      category: "science",
       author: "Dr. Sarah Chen",
       date: "2024-01-15",
       readTime: "5 min read",
@@ -47,13 +45,25 @@ export default function BlogClient() {
       id: 3,
       title: "Hidden Dangers: 5 Popular Herb-Medication Combinations to Avoid",
       excerpt: "Essential safety information about dangerous interactions between common herbal supplements and prescription medications.",
-      category: "safety",
+      category: "science",
       author: "Dr. Michael Rodriguez",
       date: "2024-01-12",
       readTime: "7 min read",
       image: "⚠️",
       featured: true,
       tags: ["drug interactions", "safety", "blood thinners", "diabetes"]
+    },
+    {
+      id: 4,
+      title: "Understanding TCM Constitution Types: Your Personal Health Blueprint",
+      excerpt: "Learn about the 9 constitution types in Traditional Chinese Medicine and how they guide personalized herb selection.",
+      category: "lifestyle",
+      author: "Dr. Lisa Zhang",
+      date: "2024-01-10",
+      readTime: "10 min read",
+      image: "🧘",
+      featured: true,
+      tags: ["TCM", "constitution types", "personalized medicine", "traditional wisdom"]
     }
   ]
 
@@ -63,7 +73,7 @@ export default function BlogClient() {
       id: 3,
       title: "Best Herbs for Anxiety: Natural Alternatives to Prescription Medications",
       excerpt: "Compare the effectiveness of ashwagandha, valerian, and passionflower vs. prescription anti-anxiety drugs. Evidence-based guide with dosages.",
-      category: "research",
+      category: "science",
       author: "Dr. Sarah Chen",
       date: "2024-01-10",
       readTime: "8 min read",
@@ -75,7 +85,7 @@ export default function BlogClient() {
       id: 4,
       title: "Is Turmeric Safe During Pregnancy? Complete Safety Guide",
       excerpt: "Everything expecting mothers need to know about turmeric and curcumin supplementation, including trimester-specific recommendations.",
-      category: "safety",
+      category: "science",
       author: "Dr. Michael Rodriguez",
       date: "2024-01-08",
       readTime: "6 min read",
@@ -119,7 +129,7 @@ export default function BlogClient() {
       id: 8,
       title: "Herbs for Brain Health: Memory, Focus, and Cognitive Protection",
       excerpt: "Complete guide to nootropic herbs: ginkgo, bacopa, lion's mane, and rhodiola for memory enhancement and brain protection.",
-      category: "research",
+      category: "science",
       author: "Dr. Sarah Chen",
       date: "2023-12-30",
       readTime: "10 min read",
@@ -130,7 +140,7 @@ export default function BlogClient() {
       id: 9,
       title: "Are Herbal Supplements FDA Approved? Regulation Guide 2024",
       excerpt: "Understanding supplement regulations, what FDA approval means for herbs, and how to choose quality products.",
-      category: "safety",
+      category: "science",
       author: "Dr. Michael Rodriguez",
       date: "2023-12-28",
       readTime: "6 min read",
@@ -141,7 +151,7 @@ export default function BlogClient() {
       id: 10,
       title: "Herbs for Immunity: Boost Your Immune System Naturally",
       excerpt: "Research-backed immune herbs: echinacea, elderberry, astragalus, and medicinal mushrooms. When and how to use them effectively.",
-      category: "traditional",
+      category: "lifestyle",
       author: "Dr. Lisa Zhang",
       date: "2023-12-26",
       readTime: "8 min read",
@@ -152,7 +162,7 @@ export default function BlogClient() {
       id: 11,
       title: "Herbs vs. Prescription Drugs: Safety, Effectiveness, and Cost Comparison",
       excerpt: "Honest comparison of herbal medicine vs. pharmaceutical drugs for common conditions, including benefits, risks, and costs.",
-      category: "research",
+      category: "science",
       author: "Dr. Sarah Chen",
       date: "2023-12-24",
       readTime: "12 min read",
@@ -163,7 +173,7 @@ export default function BlogClient() {
       id: 12,
       title: "Digestive Health Herbs: Natural Remedies for Gut Issues",
       excerpt: "Traditional and modern herbs for IBS, bloating, acid reflux, and digestive wellness. Evidence-based dosing and combinations.",
-      category: "traditional",
+      category: "lifestyle",
       author: "Dr. Lisa Zhang",
       date: "2023-12-22",
       readTime: "7 min read",

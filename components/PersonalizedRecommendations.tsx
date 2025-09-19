@@ -158,41 +158,25 @@ export default function PersonalizedRecommendations() {
           </div>
         )}
 
-        {/* Quick Actions */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Link href="/herb-finder" className="group bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all border border-gray-200 hover:border-green-300">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-200 transition-colors">
-                <span className="text-xl">🔍</span>
+        {/* Core Actions - 聚焦核心功能 */}
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <Link href="/herb-finder" className="group bg-white rounded-xl p-8 shadow-md hover:shadow-lg transition-all border border-gray-200 hover:border-green-300">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center group-hover:bg-green-200 transition-colors mx-auto mb-4">
+                <span className="text-2xl">🔍</span>
               </div>
-              <div>
-                <h4 className="font-semibold text-gray-900 group-hover:text-green-700">Find Herbs by Symptom</h4>
-                <p className="text-gray-600 text-sm">Search our database</p>
-              </div>
+              <h4 className="text-lg font-semibold text-gray-900 group-hover:text-green-700 mb-2">Browse Herb Database</h4>
+              <p className="text-gray-600 text-sm">Explore 500+ herbs with detailed information, benefits, and safety guidelines</p>
             </div>
           </Link>
 
-          <Link href="/ingredient-checker" className="group bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all border border-gray-200 hover:border-blue-300">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors">
-                <span className="text-xl">🛡️</span>
+          <Link href="/blog" className="group bg-white rounded-xl p-8 shadow-md hover:shadow-lg transition-all border border-gray-200 hover:border-blue-300">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center group-hover:bg-blue-200 transition-colors mx-auto mb-4">
+                <span className="text-2xl">📚</span>
               </div>
-              <div>
-                <h4 className="font-semibold text-gray-900 group-hover:text-blue-700">Check Safety</h4>
-                <p className="text-gray-600 text-sm">Analyze interactions</p>
-              </div>
-            </div>
-          </Link>
-
-          <Link href="/dosage-calculator" className="group bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all border border-gray-200 hover:border-purple-300">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors">
-                <span className="text-xl">⚖️</span>
-              </div>
-              <div>
-                <h4 className="font-semibold text-gray-900 group-hover:text-purple-700">Calculate Dosage</h4>
-                <p className="text-gray-600 text-sm">Get proper amounts</p>
-              </div>
+              <h4 className="text-lg font-semibold text-gray-900 group-hover:text-blue-700 mb-2">Read Latest Research</h4>
+              <p className="text-gray-600 text-sm">Evidence-based articles on herbs, traditional medicine, and modern science</p>
             </div>
           </Link>
         </div>

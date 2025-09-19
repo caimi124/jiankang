@@ -34,50 +34,32 @@ export default function Navigation() {
   }
 
   const navItems: NavItem[] = [
-    { 
-      name: t.nav.home, 
+    {
+      name: t.nav.home,
       href: '/',
       ariaLabel: 'Go to homepage',
       description: 'Main page with overview of our services'
     },
-    { 
-      name: t.nav.herbFinder, 
-      href: '/herb-finder',
-      ariaLabel: 'Find herbs by symptoms',
-      description: 'Search for herbs based on your health symptoms'
-    },
-    { 
-      name: t.nav.safetyChecker, 
-      href: '/ingredient-checker',
-      ariaLabel: 'Check supplement safety',
-      description: 'Verify herb safety and drug interactions'
-    },
-    { 
-      name: t.nav.knowledgeCenter, 
-      href: '/knowledge-center',
-      ariaLabel: 'Browse herb knowledge base',
-      description: 'Comprehensive information about herbs and research'
-    },
-    { 
-      name: t.nav.constitutionTest, 
+    {
+      name: t.nav.constitutionTest,
       href: '/constitution-test',
       ariaLabel: 'Take TCM body constitution assessment',
       description: 'Discover your Traditional Chinese Medicine body type'
     },
-    { 
-      name: t.nav.userReviews, 
-      href: '/user-experiences',
-      ariaLabel: 'Read user experiences and reviews',
-      description: 'Real stories from our community members'
+    {
+      name: t.nav.herbFinder,
+      href: '/herb-finder',
+      ariaLabel: 'Find herbs by symptoms',
+      description: 'Search for herbs based on your health symptoms'
     },
-    { 
-      name: t.nav.blog, 
+    {
+      name: t.nav.blog,
       href: '/blog',
       ariaLabel: 'Read health and wellness articles',
       description: 'Latest research and insights on herbal medicine'
     },
-    { 
-      name: t.nav.about, 
+    {
+      name: t.nav.about,
       href: '/about',
       ariaLabel: 'Learn about our team and get in touch',
       description: 'Our story, team, mission, and contact information'

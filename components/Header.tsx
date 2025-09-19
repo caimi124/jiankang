@@ -21,14 +21,11 @@ export default function Header() {
   const currentLocale = useMemo(() => pathname.startsWith('/zh') ? 'zh' : 'en', [pathname])
   const t = useMemo(() => getTranslation(currentLocale), [currentLocale])
 
-  // 完整导航项目 - 恢复所有重要功能页面
+  // 精简导航项目 - 突出体质测试作为主打功能
   const navigationItems = useMemo(() => [
     { href: '/', label: t.nav.home, icon: '🏠' },
+    { href: '/constitution-test', label: t.nav.constitutionTest, icon: '🧠', featured: true },
     { href: '/herb-finder', label: t.nav.herbFinder, icon: '🔍' },
-    { href: '/constitution-test', label: t.nav.constitutionTest, icon: '🧠' },
-    { href: '/knowledge-center', label: t.nav.knowledgeCenter, icon: '📚' },
-    { href: '/ingredient-checker', label: t.nav.safetyChecker, icon: '🛡️' },
-    { href: '/user-experiences', label: t.nav.userReviews, icon: '👥' },
     { href: '/blog', label: t.nav.blog, icon: '📝' },
     { href: '/about', label: t.nav.about, icon: 'ℹ️' }
   ], [t])
@@ -105,7 +102,21 @@ export default function Header() {
               <span className="mr-2">🏠</span>
               {t.nav.home}
             </Link>
-            
+
+            {/* 突出体质测试 - 主打功能 */}
+            <Link
+              href={getLocalizedHref('/constitution-test')}
+              className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 ${
+                isActive('/constitution-test')
+                  ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-lg'
+                  : 'bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 shadow-md hover:shadow-lg'
+              } relative overflow-hidden`}
+            >
+              <span className="mr-2">🧠</span>
+              {t.nav.constitutionTest}
+              <div className="absolute top-0 right-0 -mt-1 -mr-1 w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
+            </Link>
+
             <Link
               href={getLocalizedHref('/herb-finder')}
               className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
@@ -116,18 +127,6 @@ export default function Header() {
             >
               <span className="mr-2">🔍</span>
               {t.nav.herbFinder}
-            </Link>
-            
-            <Link
-              href={getLocalizedHref('/constitution-test')}
-              className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-                isActive('/constitution-test')
-                  ? 'bg-green-600 text-white'
-                  : 'text-gray-700 hover:bg-gray-100'
-              }`}
-            >
-              <span className="mr-2">🧠</span>
-              {t.nav.constitutionTest}
             </Link>
 
             {/* 工具下拉菜单 */}
@@ -243,7 +242,7 @@ export default function Header() {
           </div>
         </div>
 
-        {/* 极简移动端导航 */}
+        {/* 移动端导航 - 突出体质测试 */}
         {isMobileMenuOpen && (
           <div className="lg:hidden absolute left-0 right-0 top-full bg-white border-b border-gray-200 shadow-lg">
             <div className="px-4 py-4 space-y-2">
@@ -252,14 +251,25 @@ export default function Header() {
                   key={item.href}
                   href={getLocalizedHref(item.href)}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`flex items-center px-3 py-2 rounded-lg ${
-                    isActive(item.href)
-                      ? 'bg-green-600 text-white'
-                      : 'text-gray-700 hover:bg-gray-100'
+                  className={`flex items-center px-3 py-2 rounded-lg transition-all ${
+                    item.featured
+                      ? isActive(item.href)
+                        ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-lg'
+                        : 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-md relative'
+                      : isActive(item.href)
+                        ? 'bg-green-600 text-white'
+                        : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >
-                  <span className="mr-3">{item.icon}</span>
-                  <span className="font-medium">{item.label}</span>
+                  <span className="mr-3 text-lg">{item.icon}</span>
+                  <span className={`font-medium ${item.featured ? 'font-semibold' : ''}`}>
+                    {item.label}
+                  </span>
+                  {item.featured && !isActive(item.href) && (
+                    <span className="ml-auto text-xs bg-yellow-400 text-yellow-900 px-2 py-1 rounded-full font-bold">
+                      Hot
+                    </span>
+                  )}
                 </Link>
               ))}
             </div>
