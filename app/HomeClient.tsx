@@ -26,91 +26,91 @@ export default function HomeClient() {
   const [selectedGoal, setSelectedGoal] = useState('')
   const t = getTranslation('en')
 
-  // 健康目标数据
+  // 健康目标数据 - 使用低竞争关键词
   const healthGoals = [
+    {
+      id: 'sleep',
+      icon: '😴',
+      title: 'Sleep Support Herbs',
+      description: 'Sleep herb valerian, chamomile tea for better rest',
+      herbs: ['Valerian Root', 'Chamomile Tea', 'Passionflower']
+    },
     {
       id: 'stress',
       icon: '😌',
-      title: 'Stress Management',
-      description: 'Natural ways to reduce stress and anxiety',
-      herbs: ['Ashwagandha', 'Rhodiola', 'Holy Basil']
+      title: 'Stress Relief Herbs',
+      description: 'Best herbs for stress and anxiety without side effects',
+      herbs: ['Ashwagandha', 'Holy Basil', 'Lemon Balm']
     },
     {
       id: 'energy',
       icon: '⚡',
-      title: 'Energy & Vitality',
-      description: 'Boost natural energy without caffeine crashes',
-      herbs: ['Ginseng', 'Cordyceps', 'Maca Root']
-    },
-    {
-      id: 'sleep',
-      icon: '😴',
-      title: 'Better Sleep',
-      description: 'Improve sleep quality naturally',
-      herbs: ['Valerian', 'Passionflower', 'Chamomile']
+      title: 'Energy & Focus Herbs',
+      description: 'Herbal teas for energy and focus, mental clarity',
+      herbs: ['Ginseng', 'Rhodiola', 'Green Tea']
     },
     {
       id: 'immunity',
       icon: '🛡️',
-      title: 'Immune Support',
-      description: 'Strengthen your natural defenses',
+      title: 'Immune Boosting Herbs',
+      description: 'Immune boosting herbs for flu season protection',
       herbs: ['Echinacea', 'Elderberry', 'Astragalus']
     }
   ]
 
-  // 用户故事数据
+  // 用户故事数据 - 强调安全和效果
   const userStories = [
     {
       name: "Sarah M.",
       location: "California, USA",
-      herb: "Ashwagandha",
-      condition: "Stress & Anxiety",
-      result: "Better sleep and less anxiety within 2 weeks",
+      herb: "Sleep Herb Valerian",
+      condition: "Sleep Problems",
+      result: "Finally sleeping through the night after 2 weeks!",
       avatar: "👩‍💼"
-    },
-    {
-      name: "Dr. Jennifer L.",
-      location: "Toronto, Canada",
-      herb: "Rhodiola & Ginseng",
-      condition: "Mental Fatigue",
-      result: "Sustained energy and clear thinking without caffeine",
-      avatar: "👩‍⚕️"
     },
     {
       name: "Michael R.",
       location: "London, UK",
-      herb: "Turmeric & Ginger",
-      condition: "Joint Pain",
-      result: "95% reduction in pain, running 5K again",
+      herb: "Ginseng & Rhodiola",
+      condition: "Low Energy",
+      result: "Full of energy without caffeine crashes",
       avatar: "🏃‍♂️"
+    },
+    {
+      name: "Dr. Jennifer L.",
+      location: "Toronto, Canada",
+      herb: "Stress Relief Herbs",
+      condition: "Work Stress",
+      result: "Calm mind and clear focus for workdays",
+      avatar: "👩‍⚕️"
     }
   ]
 
-  // 精选博客文章
+  // 精选博客文章 - 使用低竞争关键词
   const featuredArticles = [
     {
-      title: "Turmeric Made Simple: How to Use It Today for Real Gut Relief",
-      excerpt: "Discover how turmeric can help calm your gut, reduce inflammation, and boost your energy.",
+      title: "Best Herbs for Sleep Support: Natural Ways to Rest Better",
+      excerpt: "Sleep herb valerian, chamomile tea, and other natural ways to improve sleep quality.",
       readTime: "8 min read",
       category: "Lifestyle",
-      slug: "turmeric-gut-relief-guide",
-      icon: "🌿"
+      slug: "best-herbs-for-sleep-support",
+      icon: "😴"
     },
     {
-      title: "Best Herbs for Anxiety: Natural Alternatives to Prescriptions",
-      excerpt: "Compare ashwagandha, valerian, and passionflower vs. prescription anti-anxiety drugs.",
-      readTime: "8 min read",
-      category: "Science",
-      slug: "herbs-for-anxiety-natural-alternatives",
-      icon: "🧠"
-    },
-    {
-      title: "Hidden Dangers: 5 Popular Herb-Medication Combinations to Avoid",
-      excerpt: "Essential safety information about dangerous interactions between herbal supplements and medications.",
+      title: "Stress Relief Herbs Without Side Effects",
+      excerpt: "Safe, natural herbs for stress management that work without harmful side effects.",
       readTime: "7 min read",
+      category: "Lifestyle",
+      slug: "stress-relief-herbs-no-side-effects",
+      icon: "😌"
+    },
+    {
+      title: "Immune Boosting Herbs for Flu Season",
+      excerpt: "Strengthen your immune system naturally with proven herbs that protect against illness.",
+      readTime: "6 min read",
       category: "Science",
-      slug: "herb-medication-interactions",
-      icon: "⚠️"
+      slug: "immune-boosting-herbs-flu-season",
+      icon: "🛡️"
     }
   ]
 
@@ -138,17 +138,27 @@ export default function HomeClient() {
       <main id="main-content" className="min-h-screen bg-white">
         <Header />
 
-        {/* 1. Hero Banner Section */}
+        {/* 1. Hero Banner Section - 优化关键词布局 */}
         <section className="bg-gradient-to-br from-green-50 via-white to-emerald-50 py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-              Find Your Perfect Herbs
-              <span className="block text-green-600">Through Science</span>
+              Stop Guessing — Find Herbs That
+              <span className="block text-green-600">Actually Work for Your Body</span>
             </h1>
 
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              Take our TCM constitution test to get personalized herb recommendations based on your unique body type and health patterns.
+              Take our <strong>constitution test</strong> to get <strong>safe, evidence-based herbal recommendations</strong> tailored to your body type and health needs.
             </p>
+
+            {/* 痛点区域 */}
+            <div className="bg-white rounded-2xl p-6 mb-8 max-w-2xl mx-auto shadow-md">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Common Problems People Face:</h3>
+              <div className="grid md:grid-cols-3 gap-4 text-sm text-gray-600">
+                <div>"I tried herbs for sleep, but nothing worked."</div>
+                <div>"Which herbs are really safe with my medications?"</div>
+                <div>"I don't know which herbs fit my body type."</div>
+              </div>
+            </div>
 
             {/* 2. CTA - 突出体质测试 */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
@@ -156,19 +166,23 @@ export default function HomeClient() {
                 href="/constitution-test"
                 className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
               >
-                🧠 Take Constitution Test
+                Find My Herbs in 3 Minutes
               </Link>
 
               <Link
                 href="/herb-finder"
                 className="bg-white border-2 border-green-600 text-green-600 hover:bg-green-50 px-8 py-4 rounded-xl font-semibold text-lg transition-all"
               >
-                🔍 Browse Herbs Database
+                Browse Herbs by Goal
               </Link>
             </div>
 
-            {/* Trust indicators */}
+            {/* Trust indicators - 强调安全和科学 */}
             <div className="flex justify-center items-center space-x-8 text-sm text-gray-500">
+              <div className="flex items-center space-x-2">
+                <span>🛡️</span>
+                <span>Safe Herbal Use</span>
+              </div>
               <div className="flex items-center space-x-2">
                 <span>⚗️</span>
                 <span>Evidence-Based</span>
@@ -177,23 +191,19 @@ export default function HomeClient() {
                 <span>👥</span>
                 <span>10K+ Users</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <span>🌿</span>
-                <span>500+ Herbs</span>
-              </div>
             </div>
           </div>
         </section>
 
-        {/* 3. Personalized Herb Recommendations */}
+        {/* 3. Health Goals - 使用低竞争关键词 */}
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                What's Your Health Goal Today?
+                Your Health Goals — Herbs That Help
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Get instant herb recommendations based on your specific health objectives.
+                Choose your main goal and discover <strong>targeted herbs with real results</strong>:
               </p>
             </div>
 
@@ -258,15 +268,15 @@ export default function HomeClient() {
           </div>
         </section>
 
-        {/* 4. User Success Stories */}
+        {/* 4. User Success Stories - 强调安全效果 */}
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Real Results from Our Community
+                Real User Results
               </h2>
               <p className="text-xl text-gray-600">
-                See how others have transformed their health with evidence-based herbal guidance.
+                See how others found <strong>safe herbal solutions</strong> with our <strong>personalized herbal recommendations</strong>.
               </p>
             </div>
 
@@ -324,15 +334,15 @@ export default function HomeClient() {
           </div>
         </section>
 
-        {/* 5. Featured Blog Articles */}
+        {/* 5. Featured Blog Articles - 强调实用性 */}
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Latest Herb Insights
+                Latest Herbal Guides
               </h2>
               <p className="text-xl text-gray-600">
-                Evidence-based articles to guide your herbal journey.
+                Stay safe and informed with <strong>science-backed herbal guides</strong>:
               </p>
             </div>
 
@@ -377,20 +387,20 @@ export default function HomeClient() {
           </div>
         </section>
 
-        {/* Final CTA */}
+        {/* Final CTA - 重复核心关键词 */}
         <section className="py-20 bg-gradient-to-r from-green-600 to-emerald-600">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Ready to Transform Your Health?
+              Stop guessing. Start using the right herbs for your body.
             </h2>
             <p className="text-xl text-green-100 mb-8 max-w-2xl mx-auto">
-              Join thousands who've found their perfect herbs through our personalized approach.
+              Take our <strong>constitution test</strong> and get <strong>safe, evidence-based herbal guidance</strong> today.
             </p>
             <Link
               href="/constitution-test"
               className="inline-flex items-center bg-white text-green-600 px-10 py-5 rounded-xl font-bold text-lg hover:bg-green-50 transition-colors shadow-xl"
             >
-              🎯 Start Your Personalized Journey
+              Start My Test Now
             </Link>
           </div>
         </section>
