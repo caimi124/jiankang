@@ -104,8 +104,39 @@ export function HerbCard({ herb, showDetailed = false }: HerbCardProps) {
     return benefits.slice(0, 2).join(' · ') || 'Wellness Support'
   }
 
-  // 兼容 Sanity 返回的 slug 结构（可能为 { current: string }）与普通字符串
-  const herbSlug = (herb as any)?.slug?.current || (herb as any)?.slug || generateHerbSlug(herb.chinese_name, herb.english_name, herb.id)
+  // 🚀 增强slug生成 - 优先使用已知良好的slug
+  const getValidHerbSlug = (herb: any) => {
+    // 1. 优先使用已知的slug
+    if ((herb as any)?.slug?.current) return (herb as any).slug.current
+    if ((herb as any)?.slug && typeof (herb as any).slug === 'string') return (herb as any).slug
+
+    // 2. 使用预定义的安全slug映射
+    const safeSlugMap: Record<string, string> = {
+      '甘草': 'licorice-root',
+      '人参': 'ginseng',
+      '姜黄': 'turmeric',
+      '生姜': 'ginger',
+      '薄荷': 'peppermint',
+      '洋甘菊': 'chamomile',
+      '南瓜子': 'pumpkin-seeds',
+      '丁香': 'clove',
+      '肉桂': 'cinnamon',
+      '洋葱': 'onion'
+    }
+
+    // 3. 检查是否有安全映射
+    if (safeSlugMap[herb.chinese_name]) {
+      return safeSlugMap[herb.chinese_name]
+    }
+
+    // 4. 生成并验证slug
+    const generatedSlug = generateHerbSlug(herb.chinese_name, herb.english_name, herb.id)
+
+    // 5. 确保slug不为空
+    return generatedSlug || 'herb-unknown'
+  }
+
+  const herbSlug = getValidHerbSlug(herb)
   const safetyBadge = getSafetyBadge(herb.safety_level)
   const evidenceLevel = getEvidenceLevel(herb)
   const bestForScenario = getBestForScenario(herb)

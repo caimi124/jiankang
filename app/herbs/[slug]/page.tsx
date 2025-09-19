@@ -13,13 +13,19 @@ export const revalidate = 0
 // 从多个数据源获取草药数据（智能检测Sanity配置状态）
 async function getHerbData(slug: string) {
 	let normalizedSlug = normalizeSlug(slug)
-	
-	// Handle common URL aliases
+
+	// 🚀 扩展的URL别名和安全映射
 	const aliases: Record<string, string> = {
 		'pumpkin-seed': 'pumpkin-seeds',
 		'pumpkinseeds': 'pumpkin-seeds',
 		'pumpkin_seed': 'pumpkin-seeds',
-		'cloves': 'clove'
+		'cloves': 'clove',
+		'licorice': 'licorice-root',
+		'liquorice': 'licorice-root',
+		'liquorice-root': 'licorice-root',
+		'ginko': 'ginkgo',
+		'turmeric-root': 'turmeric',
+		'ginger-root': 'ginger'
 	}
 	
 	if (aliases[normalizedSlug]) {
@@ -276,19 +282,45 @@ export async function generateStaticParams() {
 		console.log('📝 Sanity未配置，直接从静态数据生成路由')
 	}
 
-	// 回退到静态数据库
+	// 回退到静态数据库 + 预定义安全slug
 	try {
 		const { HERBS_DATABASE } = await import('@/lib/herbs-data-complete')
+
+		// 🚀 预定义的安全slug映射
+		const safeSlugMap: Record<string, string> = {
+			'甘草': 'licorice-root',
+			'人参': 'ginseng',
+			'姜黄': 'turmeric',
+			'生姜': 'ginger',
+			'薄荷': 'peppermint',
+			'洋甘菊': 'chamomile',
+			'南瓜子': 'pumpkin-seeds',
+			'丁香': 'clove',
+			'肉桂': 'cinnamon',
+			'洋葱': 'onion'
+		}
+
 		const staticSlugs = HERBS_DATABASE.map(herb => {
-			const slug = generateHerbSlug(herb.chinese_name, herb.english_name, herb.id)
+			// 优先使用安全映射，回退到生成的slug
+			const slug = safeSlugMap[herb.chinese_name] || generateHerbSlug(herb.chinese_name, herb.english_name, herb.id)
 			return { slug }
 		})
-		
-		console.log('✅ 从静态数据生成', staticSlugs.length, '个草药页面')
+
+		// 🚀 确保所有安全slug都包含在内
+		const allSafeSlugs = Object.values(safeSlugMap)
+		const existingSlugs = new Set(staticSlugs.map(s => s.slug))
+
+		allSafeSlugs.forEach(safeSlug => {
+			if (!existingSlugs.has(safeSlug)) {
+				staticSlugs.push({ slug: safeSlug })
+			}
+		})
+
+		console.log('✅ 从静态数据生成', staticSlugs.length, '个草药页面（包含', allSafeSlugs.length, '个安全slug）')
 		return staticSlugs
 	} catch (error) {
 		console.error('❌ 静态数据加载失败:', error)
-		// 最后的回退选项
+		// 最后的回退选项 - 包含所有核心草药
 		return [
 			{ slug: 'clove' },
 			{ slug: 'cinnamon' },
@@ -296,6 +328,10 @@ export async function generateStaticParams() {
 			{ slug: 'ginseng' },
 			{ slug: 'ginger' },
 			{ slug: 'turmeric' },
+			{ slug: 'licorice-root' },
+			{ slug: 'peppermint' },
+			{ slug: 'chamomile' },
+			{ slug: 'onion' },
 			{ slug: 'ashwagandha' },
 			{ slug: 'echinacea' }
 		]
