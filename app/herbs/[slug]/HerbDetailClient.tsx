@@ -391,28 +391,36 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
                 <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-200">
                   <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
                     <Activity className="w-5 h-5 text-blue-600" />
-                    Is {herbData.name} Right for You?
+                    Is {herbData.name} Right for Your Body Type?
                   </h3>
                   <div className="space-y-4">
-                    <div className="flex items-start gap-3 p-4 bg-green-50 rounded-lg">
-                      <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
-                      <div>
-                        <p className="font-medium text-gray-900">Best for Cold Constitution</p>
-                        <p className="text-sm text-gray-600">People who feel cold easily, have sluggish digestion, poor circulation, or low energy</p>
+                    {herbData.constitution_match && herbData.constitution_match.length > 0 ? (
+                      herbData.constitution_match.map((match, idx) => (
+                        <div key={idx} className={`flex items-start gap-3 p-4 rounded-lg ${
+                          match.suitable === 'yes' ? 'bg-green-50' :
+                          match.suitable === 'warning' ? 'bg-yellow-50' : 'bg-red-50'
+                        }`}>
+                          {getConstitutionIcon(match.suitable)}
+                          <div>
+                            <p className="font-medium text-gray-900">{match.type}</p>
+                            <p className="text-sm text-gray-600">{match.description}</p>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
+                        <AlertCircle className="w-5 h-5 text-gray-600 mt-0.5" />
+                        <div>
+                          <p className="font-medium text-gray-900">Individual Assessment Recommended</p>
+                          <p className="text-sm text-gray-600">Constitutional suitability may vary by individual. Consult with a qualified practitioner.</p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-start gap-3 p-4 bg-yellow-50 rounded-lg">
-                      <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
-                      <div>
-                        <p className="font-medium text-gray-900">Use Caution with Hot Constitution</p>
-                        <p className="text-sm text-gray-600">Those who are easily irritated, get nosebleeds, sweat excessively, or have active ulcers</p>
-                      </div>
-                    </div>
+                    )}
                     <div className="bg-blue-100 rounded-lg p-4 mt-4">
                       <p className="text-sm text-gray-700 mb-3">
                         <span className="font-medium">Not sure about your constitution?</span> Take our free assessment to discover your body type and get personalized herb recommendations.
                       </p>
-                      <Link 
+                      <Link
                         href="/constitution-test"
                         className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
                       >
@@ -675,19 +683,83 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
             )}
 
             {activeTab === 'faq' && (
-              <div className="space-y-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Common Questions</h2>
-                {herbData.faqs?.map((faq, idx) => (
-                  <div key={idx} className="border border-gray-200 rounded-lg p-6">
-                    <h3 className="font-semibold text-gray-900 mb-3 flex items-start gap-2">
-                      <span className="text-green-600">Q:</span>
-                      {faq.question}
-                    </h3>
-                    <p className="text-gray-700 ml-6">
-                      <span className="text-blue-600 font-medium">A:</span> {faq.answer}
-                    </p>
+              <div className="space-y-8">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+                  <p className="text-gray-600 mb-8">Get answers to the most common questions about {herbData.name} safety, usage, and effectiveness.</p>
+                </div>
+
+                {herbData.faqs && herbData.faqs.length > 0 ? (
+                  <div className="space-y-6">
+                    {herbData.faqs.map((faq, idx) => (
+                      <div key={idx} className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+                        <h3 className="font-semibold text-gray-900 mb-4 flex items-start gap-3">
+                          <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">Q</div>
+                          <span className="text-lg">{faq.question}</span>
+                        </h3>
+                        <div className="ml-9">
+                          <div className="flex items-start gap-3">
+                            <div className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">A</div>
+                            <p className="text-gray-700 leading-relaxed">{faq.answer}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                ) : (
+                  <div className="text-center py-12 bg-gray-50 rounded-xl">
+                    <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">FAQs Coming Soon</h3>
+                    <p className="text-gray-600 mb-6">We're gathering the most frequently asked questions about {herbData.name}.</p>
+                    <Link
+                      href="/constitution-test"
+                      className="inline-flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 transition-colors"
+                    >
+                      <Brain className="w-4 h-4" />
+                      Take Constitution Test Instead
+                    </Link>
+                  </div>
+                )}
+
+                {/* User Stories Section */}
+                {herbData.user_stories && herbData.user_stories.length > 0 && (
+                  <div className="mt-12">
+                    <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                      <Users className="w-6 h-6 text-purple-600" />
+                      Real User Experiences
+                    </h3>
+                    <div className="grid gap-6">
+                      {herbData.user_stories.map((story, idx) => (
+                        <div key={idx} className="bg-white border border-purple-200 rounded-xl p-6 shadow-sm">
+                          <blockquote className="text-gray-800 italic mb-4 text-lg leading-relaxed">
+                            "{story.quote}"
+                          </blockquote>
+                          <div className="flex items-center gap-3">
+                            <div className="bg-purple-100 rounded-full w-10 h-10 flex items-center justify-center">
+                              <Users className="w-5 h-5 text-purple-600" />
+                            </div>
+                            <div>
+                              <p className="font-medium text-gray-900">{story.author}</p>
+                              <p className="text-sm text-gray-600">{story.location}</p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-6 p-4 bg-purple-50 rounded-lg">
+                      <p className="text-sm text-gray-700 mb-3">
+                        <strong>Disclaimer:</strong> Individual results may vary. These experiences are for informational purposes only and should not replace professional medical advice.
+                      </p>
+                      <Link
+                        href="/constitution-test"
+                        className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 text-sm font-medium"
+                      >
+                        <Brain className="w-4 h-4" />
+                        Find out if {herbData.name} is right for your body type
+                      </Link>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -719,9 +791,9 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
               <p className="text-sm text-gray-600">See herbs with similar benefits and safety profiles</p>
               <span className="inline-block mt-3 text-green-600 text-sm">Open Herb Finder →</span>
             </Link>
-            <Link href="/ingredient-checker" className="block p-6 bg-gray-50 rounded-xl border hover:border-green-300 transition-colors">
-              <h3 className="font-semibold text-gray-900 mb-2">Check Interactions</h3>
-              <p className="text-sm text-gray-600">Verify safety with your medications and current supplements</p>
+            <Link href="/constitution-test" className="block p-6 bg-gray-50 rounded-xl border hover:border-green-300 transition-colors">
+              <h3 className="font-semibold text-gray-900 mb-2">Constitution Test</h3>
+              <p className="text-sm text-gray-600">Discover if {herbData.name} is right for your body type and constitution</p>
               <span className="inline-block mt-3 text-green-600 text-sm">Open Safety Checker →</span>
             </Link>
           </div>
