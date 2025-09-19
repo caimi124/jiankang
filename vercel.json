@@ -19,6 +19,21 @@
       "permanent": true
     },
     {
+      "source": "/ingredient-checker(.*)",
+      "destination": "/constitution-test",
+      "permanent": true
+    },
+    {
+      "source": "/knowledge-center(.*)",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/user-experiences(.*)",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/(.*)",
       "has": [
         {
