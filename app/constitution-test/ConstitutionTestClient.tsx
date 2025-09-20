@@ -65,7 +65,13 @@ const getConstitutionGradient = (constitutionType: string) => {
 
 // 支持函数：获取英文吸睛总结
 const getEngineeredSummary = (constitutionType: string) => {
-  const summaries: Record<string, string> = {
+  try {
+    if (!constitutionType) {
+      console.warn('[getEngineeredSummary] Empty constitution type provided');
+      return 'You have a unique constitution that requires personalized attention.';
+    }
+
+    const summaries: Record<string, string> = {
     '平和': 'You have a Balanced Constitution — your body maintains harmony and optimal health naturally.',
     '气虚': 'You have a Qi Deficiency Constitution — your body needs energy boosting and immune strengthening.',
     '阳虚': 'You have a Yang Deficiency Constitution — your body tends to feel cold and lacks warming energy.',
@@ -75,13 +81,24 @@ const getEngineeredSummary = (constitutionType: string) => {
     '血瘀': 'You have a Blood Stasis Constitution — your circulation needs improvement and movement support.',
     '气郁': 'You have a Qi Stagnation Constitution — your energy flow is blocked and needs gentle release.',
     '特禀': 'You have a Special Constitution — your body has unique sensitivities requiring personalized care.'
+    }
+    const result = summaries[constitutionType] || 'You have a unique constitution that requires personalized attention.';
+    console.log('[getEngineeredSummary] Constitution:', constitutionType, 'Result:', result);
+    return result;
+  } catch (error) {
+    console.error('[getEngineeredSummary] Error:', error, 'Constitution type:', constitutionType);
+    return 'You have a unique constitution that requires personalized attention.';
   }
-  return summaries[constitutionType] || 'You have a unique constitution that requires personalized attention.'
 }
 
 // 支持函数：获取健康洞察
 const getHealthInsights = (constitutionType: string) => {
-  const insights: Record<string, string> = {
+  try {
+    if (!constitutionType) {
+      return 'Your constitution requires personalized care and attention.';
+    }
+
+    const insights: Record<string, string> = {
     '平和': 'Your balanced constitution indicates optimal health. Focus on maintaining this harmony through consistent lifestyle practices.',
     '气虚': 'Low energy and frequent fatigue suggest your body needs gentle strengthening. Avoid overexertion and focus on building stamina gradually.',
     '阳虚': 'Poor circulation and cold sensitivity indicate warming therapy is beneficial. Regular gentle exercise can help improve circulation.',
@@ -91,13 +108,22 @@ const getHealthInsights = (constitutionType: string) => {
     '血瘀': 'Poor circulation and stagnation suggest your body needs movement and flow enhancement. Regular exercise is crucial.',
     '气郁': 'Emotional stress and tension suggest your body needs relaxation and flow restoration. Stress management techniques are beneficial.',
     '特禀': 'Allergic tendencies suggest your body needs immune balancing and protective support. Avoid known triggers consistently.'
+    }
+    return insights[constitutionType] || 'Your constitution requires personalized care and attention.';
+  } catch (error) {
+    console.error('[getHealthInsights] Error:', error, 'Constitution type:', constitutionType);
+    return 'Your constitution requires personalized care and attention.';
   }
-  return insights[constitutionType] || 'Your constitution requires personalized care and attention.'
 }
 
 // 支持函数：获取作息建议
 const getRestRecommendations = (constitutionType: string) => {
-  const restAdvice: Record<string, string> = {
+  try {
+    if (!constitutionType) {
+      return 'Maintain regular sleep schedule and stress management practices.';
+    }
+
+    const restAdvice: Record<string, string> = {
     '平和': 'Maintain regular sleep schedule (10pm-6am). Practice relaxation techniques to preserve balance.',
     '气虚': 'Prioritize 8+ hours of sleep. Take afternoon naps when possible. Avoid late nights and excessive stimulation.',
     '阳虚': 'Sleep in warm environment. Morning sunlight exposure helps regulate circadian rhythm. Avoid cold sleeping environments.',
@@ -107,13 +133,22 @@ const getRestRecommendations = (constitutionType: string) => {
     '血瘀': 'Gentle stretching before bed improves circulation. Regular massage can help. Maintain consistent sleep schedule.',
     '气郁': 'Stress-reducing bedtime routine essential. Journaling or gentle music helps. Consistent wake times important.',
     '特禀': 'Avoid allergens in bedroom. Air purifiers recommended. Hypoallergenic bedding materials preferred.'
+    }
+    return restAdvice[constitutionType] || 'Maintain regular sleep schedule and stress management practices.';
+  } catch (error) {
+    console.error('[getRestRecommendations] Error:', error, 'Constitution type:', constitutionType);
+    return 'Maintain regular sleep schedule and stress management practices.';
   }
-  return restAdvice[constitutionType] || 'Maintain regular sleep schedule and stress management practices.'
 }
 
 // 支持函数：获取草药益处
 const getHerbBenefit = (herb: string, constitutionType: string) => {
-  const benefits: Record<string, Record<string, string>> = {
+  try {
+    if (!herb || !constitutionType) {
+      return 'Supports your constitutional balance naturally';
+    }
+
+    const benefits: Record<string, Record<string, string>> = {
     '气虚': {
       '黄芪': 'Boosts energy and strengthens immune system naturally',
       '党参': 'Gentle energy enhancement without overstimulation',
@@ -168,8 +203,12 @@ const getHerbBenefit = (herb: string, constitutionType: string) => {
       '黄芪': 'Immune support and vitality maintenance',
       '甘草': 'Harmonizing and balancing herb'
     }
+    }
+    return benefits[constitutionType]?.[herb] || 'Supports your constitutional balance naturally';
+  } catch (error) {
+    console.error('[getHerbBenefit] Error:', error, 'Herb:', herb, 'Constitution:', constitutionType);
+    return 'Supports your constitutional balance naturally';
   }
-  return benefits[constitutionType]?.[herb] || 'Supports your constitutional balance naturally'
 }
 
 function ConstitutionTestClient() {
@@ -607,12 +646,13 @@ Take the free test and find your perfect herbal match! 👇`
       // 检查是否所有问题都已回答
       const answeredCount = answers.filter(answer => answer >= 1 && answer <= 5).length;
       const minRequiredAnswers = Math.max(3, Math.floor(questions.length * 0.5)); // 至少50%的问题
-      
+
       console.log('[ConstitutionTest] 进入结果页面:', {
         answeredCount,
         minRequiredAnswers,
         totalQuestions: questions.length,
-        answers: answers.slice(0, 5) // 只显示前5个答案用于调试
+        answers: answers.slice(0, 5), // 只显示前5个答案用于调试
+        allAnswers: answers
       });
 
       if (answeredCount < minRequiredAnswers) {
@@ -644,17 +684,40 @@ Take the free test and find your perfect herbal match! 👇`
       console.log('[ConstitutionTest] 开始计算体质结果...');
       console.log('[ConstitutionTest] 答案数组:', answers.slice(0, 10)); // 只显示前10个答案
 
+      // Validate inputs before calculation
+      if (!Array.isArray(answers)) {
+        throw new Error('Answers is not an array');
+      }
+      if (!questions || questions.length === 0) {
+        throw new Error('Questions array is empty or undefined');
+      }
+
       const result = calculateConstitution(answers)
       console.log('[ConstitutionTest] 计算结果:', result);
 
       // 验证结果的有效性
       if (!result || !result.primary) {
+        console.error('[ConstitutionTest] Invalid result:', result);
         throw new Error('Invalid constitution calculation result');
       }
-      
+
+      // Verify constitutionInfo exists and has the required keys
+      if (!constitutionInfo || typeof constitutionInfo !== 'object') {
+        console.error('[ConstitutionTest] constitutionInfo is invalid:', constitutionInfo);
+        throw new Error('Constitution info database is not available');
+      }
+
+      console.log('[ConstitutionTest] Available constitution types:', Object.keys(constitutionInfo));
+      console.log('[ConstitutionTest] Looking for:', result.primary);
+
       // 保存测试结果到历史记录
-      saveTestResult(result, answers)
-      
+      try {
+        saveTestResult(result, answers)
+      } catch (saveError) {
+        console.warn('[ConstitutionTest] Failed to save test result:', saveError);
+        // Don't fail the entire component for save issues
+      }
+
       const primaryInfo = constitutionInfo[result.primary]
       const secondaryInfo = result.secondary && constitutionInfo[result.secondary] ? constitutionInfo[result.secondary] : null
 
@@ -691,6 +754,12 @@ Take the free test and find your perfect herbal match! 👇`
       }
 
       console.log('[ConstitutionTest] 准备渲染结果页面...');
+
+      // Final safety check before rendering
+      if (!primaryInfo || !primaryInfo.englishName || !primaryInfo.name) {
+        console.error('[ConstitutionTest] Primary info is incomplete:', primaryInfo);
+        throw new Error('Primary constitution info is incomplete');
+      }
 
       return (
         <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
