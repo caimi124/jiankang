@@ -671,9 +671,9 @@ Take the free test and find your perfect herbal match! 👇`
             <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
                 <div className="text-6xl mb-4">⚠️</div>
-                <h1 className="text-2xl font-bold text-red-600 mb-4">计算错误</h1>
+                <h1 className="text-2xl font-bold text-red-600 mb-4">Calculation Error</h1>
                 <p className="text-gray-600 mb-6">
-                  抱歉，体质计算出现问题。调试信息：<br/>
+                  Sorry, there was an issue with constitution calculation. Debug info:<br/>
                   Primary: {result.primary}<br/>
                   Scores: {JSON.stringify(result.scores)}<br/>
                   Available types: {Object.keys(constitutionInfo).join(', ')}
@@ -682,7 +682,7 @@ Take the free test and find your perfect herbal match! 👇`
                   onClick={() => setCurrentStep('welcome')}
                   className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors"
                 >
-                  重新测试
+                  Retake Test
                 </button>
               </div>
             </main>
@@ -702,7 +702,7 @@ Take the free test and find your perfect herbal match! 👇`
               items={[
                 { label: 'Home', href: '/' },
                 { label: 'Constitution Test', href: '/constitution-test' },
-                { label: '测试结果' }
+                { label: 'Test Results' }
               ]} 
             />
 
