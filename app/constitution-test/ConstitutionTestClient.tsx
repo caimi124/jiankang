@@ -335,44 +335,23 @@ function ConstitutionTestClient() {
 
   // CTA 按钮处理函数
   const handleHerbClick = (herb: string) => {
-    // 尝试跳转到对应的草药详情页面
-    const herbSlugMap: Record<string, string> = {
-      '黄芪': 'astragalus',
-      '党参': 'codonopsis',
-      '人参': 'ginseng',
-      '白术': 'atractylodes',
-      '附子': 'aconite',
-      '干姜': 'dried-ginger',
+    // 已知存在的草药页面
+    const availableHerbs: Record<string, string> = {
       '肉桂': 'cinnamon',
-      '鹿茸': 'deer-antler',
-      '枸杞': 'goji-berry',
-      '百合': 'lily-bulb',
-      '沙参': 'adenophora',
-      '麦冬': 'ophiopogon',
-      '陈皮': 'tangerine-peel',
-      '茯苓': 'poria',
-      '半夏': 'pinellia',
-      '薏苡仁': 'coix-seed',
-      '连翘': 'forsythia',
-      '金银花': 'honeysuckle',
-      '栀子': 'gardenia',
-      '黄连': 'coptis',
-      '当归': 'angelica',
-      '川芎': 'ligusticum',
-      '红花': 'carthamus',
-      '丹参': 'salvia',
-      '柴胡': 'bupleurum',
-      '香附': 'cyperus',
-      '薄荷': 'mint',
-      '玫瑰花': 'rose',
-      '防风': 'saposhnikovia',
-      '白芍': 'white-peony',
-      '甘草': 'licorice',
-      '乌梅': 'dark-plum'
+      '丁香': 'clove',
+      '洋葱': 'onion',
+      '南瓜子': 'pumpkin-seeds'
     }
-    
-    const slug = herbSlugMap[herb] || herb.toLowerCase().replace(/\s+/g, '-')
-    window.open(`/herbs/${slug}`, '_blank')
+
+    const slug = availableHerbs[herb]
+    if (slug) {
+      // 如果草药页面存在，直接跳转
+      window.open(`/herbs/${slug}`, '_blank')
+    } else {
+      // 如果草药页面不存在，跳转到herb-finder页面并搜索该草药
+      const searchTerm = encodeURIComponent(herb)
+      window.open(`/herb-finder?search=${searchTerm}`, '_blank')
+    }
   }
 
   const handleSubscribeClick = () => {
