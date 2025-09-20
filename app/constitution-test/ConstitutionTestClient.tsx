@@ -656,7 +656,7 @@ Take the free test and find your perfect herbal match! 👇`
       saveTestResult(result, answers)
       
       const primaryInfo = constitutionInfo[result.primary]
-      const secondaryInfo = result.secondary ? constitutionInfo[result.secondary] : null
+      const secondaryInfo = result.secondary && constitutionInfo[result.secondary] ? constitutionInfo[result.secondary] : null
 
       console.log('[ConstitutionTest] 主要体质信息:', primaryInfo ? '存在' : '不存在');
       console.log('[ConstitutionTest] 次要体质信息:', secondaryInfo ? '存在' : '不存在');
@@ -708,13 +708,13 @@ Take the free test and find your perfect herbal match! 👇`
 
             {/* 🎯 简短总结（吸睛） */}
             <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
-              <div className={`bg-gradient-to-r ${getConstitutionGradient(primaryInfo.id)} px-8 py-12 text-center text-white relative`}>
+              <div className={`bg-gradient-to-r ${getConstitutionGradient(result.primary)} px-8 py-12 text-center text-white relative`}>
                 <div className="absolute inset-0 bg-black/10"></div>
                 <div className="relative">
                   <div className="text-8xl mb-6">{primaryInfo.icon}</div>
                   <h1 className="text-4xl font-bold mb-4">{primaryInfo.englishName}</h1>
                   <div className="text-2xl font-light mb-6 max-w-3xl mx-auto leading-relaxed">
-                    {getEngineeredSummary(primaryInfo.id)}
+                    {getEngineeredSummary(result.primary)}
                   </div>
                   <div className="flex justify-center items-center gap-3 mb-4">
                     <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
@@ -775,7 +775,7 @@ Take the free test and find your perfect herbal match! 👇`
 
                 <div className="p-4 bg-gray-50 rounded-xl">
                   <h3 className="font-semibold text-gray-900 mb-2">💡 Key Insights</h3>
-                  <p className="text-gray-700 text-sm">{getHealthInsights(primaryInfo.id)}</p>
+                  <p className="text-gray-700 text-sm">{getHealthInsights(result.primary)}</p>
                 </div>
               </div>
             </div>
@@ -843,7 +843,7 @@ Take the free test and find your perfect herbal match! 👇`
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-4">Rest & Recovery</h3>
                   <div className="p-4 bg-purple-50 rounded-xl">
-                    <p className="text-purple-800">{getRestRecommendations(primaryInfo.id)}</p>
+                    <p className="text-purple-800">{getRestRecommendations(result.primary)}</p>
                   </div>
                 </div>
               </div>
@@ -865,7 +865,7 @@ Take the free test and find your perfect herbal match! 👇`
                           <Leaf className="w-8 h-8 text-green-600" />
                         </div>
                         <h3 className="text-xl font-bold text-gray-900 mb-3">{herb}</h3>
-                        <p className="text-gray-600 text-sm mb-4">{getHerbBenefit(herb, primaryInfo.id)}</p>
+                        <p className="text-gray-600 text-sm mb-4">{getHerbBenefit(herb, result.primary)}</p>
                         <button
                           onClick={() => handleHerbClick(herb)}
                           className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors text-sm font-medium"
@@ -880,7 +880,7 @@ Take the free test and find your perfect herbal match! 👇`
 
               <div className="text-center mt-8">
                 <button 
-                  onClick={() => window.open('/herb-finder?constitution=' + encodeURIComponent(primaryInfo.id), '_blank')}
+                  onClick={() => window.open('/herb-finder?constitution=' + encodeURIComponent(result.primary), '_blank')}
                   className="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-teal-600 text-white px-8 py-4 rounded-xl hover:from-green-700 hover:to-teal-700 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg font-medium"
                 >
                   <Search className="w-5 h-5" />
@@ -897,7 +897,7 @@ Take the free test and find your perfect herbal match! 👇`
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                   <button
-                    onClick={() => window.open('/herb-finder?constitution=' + encodeURIComponent(primaryInfo.id), '_blank')}
+                    onClick={() => window.open('/herb-finder?constitution=' + encodeURIComponent(result.primary), '_blank')}
                     className="group bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl p-6 hover:bg-white/30 transition-all duration-200 transform hover:scale-105"
                   >
                     <div className="text-3xl mb-3">🌿</div>
@@ -1176,6 +1176,10 @@ Take the free test and find your perfect herbal match! 👇`
                         <div className="grid gap-4">
                           {testHistory.map((test, index) => {
                             const testInfo = constitutionInfo[test.primary as ConstitutionType]
+                            if (!testInfo) {
+                              console.warn('Invalid constitution type in history:', test.primary)
+                              return null
+                            }
                             const isLatest = index === 0
                             const showComparison = index > 0 && testHistory[index - 1]
                             
@@ -1204,7 +1208,7 @@ Take the free test and find your perfect herbal match! 👇`
                                     </div>
                                   </div>
                                   
-                                  {test.secondary && (
+                                  {test.secondary && constitutionInfo[test.secondary as ConstitutionType] && (
                                     <div className="text-right">
                                       <p className="text-sm text-gray-500 mb-1">Secondary:</p>
                                       <p className="text-gray-700 font-medium">{constitutionInfo[test.secondary as ConstitutionType].name}</p>
