@@ -10,126 +10,139 @@ export interface Question {
   affects: Partial<Record<ConstitutionType, number>>;
 }
 
+// 🧪 TCM Constitution Test - Western Version (20 Questions)
+// Based on official Chinese Medicine Constitution Classification Standards
+// Optimized for Western users with lifestyle-focused questions
+
 export const questions: Question[] = [
+  // 🌿 Energy & Vitality (4 questions)
   {
     id: 1,
-    category: "基本感觉",
-    text: "你是否容易感到疲劳？",
+    category: "Energy & Vitality",
+    text: "Do you often feel tired or lack energy, even after adequate rest?",
     affects: { "气虚": 5 },
   },
   {
     id: 2,
-    category: "基本感觉", 
-    text: "你是否怕冷或手脚经常冰凉？",
+    category: "Energy & Vitality",
+    text: "Do you often feel cold, especially in your hands and feet?",
     affects: { "阳虚": 5 },
   },
   {
     id: 3,
-    category: "基本感觉",
-    text: "你是否经常口干舌燥，喜欢喝水？",
-    affects: { "阴虚": 5 },
+    category: "Energy & Vitality",
+    text: "Do you sweat easily, even without exercise or in cool weather?",
+    affects: { "阴虚": 3, "气虚": 2 },
   },
   {
     id: 4,
-    category: "外貌体征",
-    text: "你是否舌苔厚腻或口中有异味？",
-    affects: { "痰湿": 3, "湿热": 2 },
+    category: "Energy & Vitality",
+    text: "Do you recover slowly after exercise, feeling heavy or uncomfortable?",
+    affects: { "痰湿": 5 },
   },
+
+  // 🥗 Digestion & Appetite (4 questions)
   {
     id: 5,
-    category: "情绪",
-    text: "你是否容易情绪低落、焦虑或郁闷？",
-    affects: { "气郁": 5 },
+    category: "Digestion & Appetite",
+    text: "Do you often experience stomach bloating or discomfort, especially after eating?",
+    affects: { "痰湿": 4, "气虚": 2 },
   },
   {
     id: 6,
-    category: "外貌体征",
-    text: "你是否面色暗淡、有色斑或容易淤青？",
-    affects: { "血瘀": 5 },
+    category: "Digestion & Appetite",
+    text: "Do you have poor appetite or frequent indigestion?",
+    affects: { "气虚": 5 },
   },
   {
     id: 7,
-    category: "基本感觉",
-    text: "你是否容易出汗？即使轻微活动也会出汗？",
-    affects: { "气虚": 3, "阳虚": 2 },
+    category: "Digestion & Appetite",
+    text: "Do you experience constipation or diarrhea, with irregular bowel movements?",
+    affects: { "阳虚": 4, "湿热": 2 },
   },
   {
     id: 8,
-    category: "大便小便",
-    text: "你是否大便偏软，容易腹泻？",
-    affects: { "阳虚": 5 },
+    category: "Digestion & Appetite",
+    text: "Do you often crave oily foods or sweets?",
+    affects: { "痰湿": 5 },
   },
+
+  // 😴 Sleep & Emotions (4 questions)
   {
     id: 9,
-    category: "睡眠",
-    text: "你是否夜间盗汗、烦躁、易醒？",
+    category: "Sleep & Emotions",
+    text: "Do you often have trouble falling asleep or poor sleep quality, waking up frequently?",
     affects: { "阴虚": 5 },
   },
   {
     id: 10,
-    category: "外貌体征",
-    text: "你是否体型偏胖、行动缓慢？",
-    affects: { "痰湿": 5 },
+    category: "Sleep & Emotions",
+    text: "Do you often dream a lot, or sleep lightly, waking up tired in the morning?",
+    affects: { "阴虚": 4, "气郁": 2 },
   },
   {
     id: 11,
-    category: "基本感觉",
-    text: "你是否经常口苦或口干？",
-    affects: { "湿热": 5 },
-  },
-  {
-    id: 12,
-    category: "外貌体征",
-    text: "你是否易过敏，如皮肤瘙痒、打喷嚏？",
-    affects: { "特禀": 5 },
-  },
-  {
-    id: 13,
-    category: "基本感觉",
-    text: "你是否面色红润、精神饱满？",
-    affects: { "平和": 5 },
-  },
-  {
-    id: 14,
-    category: "饮食",
-    text: "你是否经常出现食欲不振、胃胀气？",
-    affects: { "气虚": 3, "痰湿": 2 },
-  },
-  {
-    id: 15,
-    category: "情绪",
-    text: "你是否容易失眠、心烦？",
-    affects: { "气郁": 3, "阴虚": 2 },
-  },
-  {
-    id: 16,
-    category: "大便小便",
-    text: "你是否经常觉得小便黄、大便粘腻？",
-    affects: { "湿热": 5 },
-  },
-  {
-    id: 17,
-    category: "外貌体征",
-    text: "你是否月经色暗、有血块或经期腹痛？（女性回答，男性选择\"不适用\"）",
-    affects: { "血瘀": 5 },
-  },
-  {
-    id: 18,
-    category: "外貌体征",
-    text: "你是否舌头常有齿痕、舌苔白滑？",
-    affects: { "阳虚": 3, "痰湿": 2 },
-  },
-  {
-    id: 19,
-    category: "情绪",
-    text: "你是否总觉得胸闷、郁结、常叹气？",
+    category: "Sleep & Emotions",
+    text: "Do you often feel anxious, tense, or have significant mood swings?",
     affects: { "气郁": 5 },
   },
   {
-    id: 20,
-    category: "基本感觉",
-    text: "你是否容易过敏性鼻炎、哮喘或有家族遗传病？",
+    id: 12,
+    category: "Sleep & Emotions",
+    text: "Do you easily feel depressed or have low moods?",
+    affects: { "气郁": 5 },
+  },
+
+  // 🩸 Skin & Appearance (4 questions)
+  {
+    id: 13,
+    category: "Skin & Appearance",
+    text: "Do you often experience dry skin, flaking, or itching?",
+    affects: { "阴虚": 5 },
+  },
+  {
+    id: 14,
+    category: "Skin & Appearance",
+    text: "Do you often have skin issues like eczema, acne, or other inflammatory skin problems?",
+    affects: { "湿热": 5 },
+  },
+  {
+    id: 15,
+    category: "Skin & Appearance",
+    text: "Do you bruise easily or have slow wound healing?",
+    affects: { "血瘀": 5 },
+  },
+  {
+    id: 16,
+    category: "Skin & Appearance",
+    text: "Do you have a pale complexion, or pale lip color?",
+    affects: { "气虚": 4, "血瘀": 2 },
+  },
+
+  // 💧 Immunity & Allergies (4 questions)
+  {
+    id: 17,
+    category: "Immunity & Allergies",
+    text: "Do you catch colds frequently, or are you sensitive to seasonal changes, getting sick easily?",
+    affects: { "气虚": 5 },
+  },
+  {
+    id: 18,
+    category: "Immunity & Allergies",
+    text: "Do you have allergic reactions to certain foods, pollen, or environmental factors?",
     affects: { "特禀": 5 },
+  },
+  {
+    id: 19,
+    category: "Immunity & Allergies",
+    text: "Do you often experience swelling, especially in your legs or around your eyes?",
+    affects: { "痰湿": 5 },
+  },
+  {
+    id: 20,
+    category: "Immunity & Allergies",
+    text: "Are you sensitive to cold or damp weather, feeling uncomfortable easily?",
+    affects: { "阳虚": 5, "痰湿": 2 },
   },
 ];
 
@@ -158,80 +171,80 @@ export const constitutionInfo: Record<ConstitutionType, ConstitutionInfo> = {
     id: "平和",
     name: "平和体质",
     englishName: "Balanced Constitution",
-    keywords: ["健康", "精神好", "吃得香"],
-    description: "恭喜！你拥有平衡的体质，表明整体健康状况良好，能量充沛，适应能力强。",
-    modernInterpretation: "基础代谢正常，免疫力强，内分泌平衡。",
+    keywords: ["optimal health", "high energy", "good appetite"],
+    description: "Congratulations! You have a balanced constitution, indicating excellent overall health with high energy and strong adaptability.",
+    modernInterpretation: "Normal metabolism, strong immune system, balanced hormones - your body functions optimally.",
     characteristics: [
-      "精力充沛，心情积极",
-      "食欲好，消化正常",
-      "睡眠稳定，免疫力强",
-      "适应环境能力强"
+      "High energy levels with positive mood",
+      "Good appetite and healthy digestion",
+      "Stable sleep patterns and strong immunity",
+      "Excellent adaptation to environmental changes"
     ],
     lifestyleAdvice: [
-      "保持规律的生活作息和健康饮食",
-      "适度运动：散步、瑜伽、游泳",
-      "季节变化时注意预防失衡"
+      "Maintain regular sleep schedule and balanced nutrition",
+      "Moderate exercise: walking, yoga, swimming",
+      "Stay mindful during seasonal changes to prevent imbalance"
     ],
     dietaryRecommendations: {
-      include: ["均衡营养", "时令食物", "清淡饮食"],
-      avoid: ["过度偏食", "暴饮暴食"]
+      include: ["balanced nutrition", "seasonal foods", "whole grains", "fresh vegetables"],
+      avoid: ["excessive eating", "extreme diets", "too much processed food"]
     },
-    recommendedHerbs: ["党参", "枸杞", "黄芪"],
+    recommendedHerbs: ["Codonopsis", "Goji Berry", "Astragalus"],
     warnings: [],
     color: "green",
     icon: "🌿"
   },
   "气虚": {
     id: "气虚",
-    name: "气虚体质", 
+    name: "气虚体质",
     englishName: "Qi Deficiency Constitution",
-    keywords: ["易疲劳", "感冒", "出汗多"],
-    description: "你的气虚体质表明能量不足，脏器功能偏弱，特别影响免疫力和消化功能。",
-    modernInterpretation: "基础代谢低，免疫力弱，容易疲劳。",
+    keywords: ["low energy", "frequent colds", "excessive sweating"],
+    description: "Your Qi Deficiency constitution indicates insufficient energy and weakened organ function, particularly affecting immunity and digestion.",
+    modernInterpretation: "Low basal metabolism, weakened immune system, chronic fatigue syndrome tendencies.",
     characteristics: [
-      "容易疲劳，精力不足",
-      "经常感冒或过敏",
-      "气短、声音小或消化弱",
-      "轻微活动就出汗"
+      "Frequent fatigue and low energy levels",
+      "Prone to colds and infections",
+      "Shortness of breath, weak voice, poor digestion",
+      "Sweating easily with minimal activity"
     ],
     lifestyleAdvice: [
-      "避免过度劳累，保证充足休息",
-      "温和运动：太极、八段锦",
-      "规律作息，避免熬夜"
+      "Avoid overexertion and ensure adequate rest",
+      "Gentle exercise: tai chi, qigong, light yoga",
+      "Regular sleep schedule, avoid staying up late"
     ],
     dietaryRecommendations: {
-      include: ["温热熟食", "健脾益气食物", "小米粥", "山药"],
-      avoid: ["生冷食物", "过度节食", "辛辣刺激"]
+      include: ["warm cooked foods", "energy-boosting foods", "oats", "sweet potato", "chicken soup"],
+      avoid: ["raw cold foods", "excessive dieting", "spicy stimulating foods"]
     },
-    recommendedHerbs: ["黄芪", "党参", "人参", "白术"],
-    warnings: ["避免剧烈运动", "注意保暖"],
+    recommendedHerbs: ["Astragalus", "Codonopsis", "Ginseng", "White Atractylodes"],
+    warnings: ["Avoid intense exercise", "Stay warm and avoid drafts"],
     color: "yellow",
     icon: "💨"
   },
   "阳虚": {
     id: "阳虚",
     name: "阳虚体质",
-    englishName: "Yang Deficiency Constitution", 
-    keywords: ["怕冷", "手脚凉", "夜尿多"],
-    description: "你的阳虚体质说明阳气不足，身体代谢机能偏弱，容易手脚冰凉、怕冷。",
-    modernInterpretation: "基础代谢低，循环差，体温调节能力弱。",
+    englishName: "Yang Deficiency Constitution",
+    keywords: ["cold sensitivity", "cold hands/feet", "frequent urination"],
+    description: "Your Yang Deficiency constitution indicates insufficient warming energy, weak metabolic function, and poor circulation.",
+    modernInterpretation: "Low basal metabolism, poor circulation, weak temperature regulation and thyroid function.",
     characteristics: [
-      "怕冷，手脚经常冰凉",
-      "容易腹泻或夜尿频繁", 
-      "精神不振，喜欢安静",
-      "舌淡苔白，脉沉迟"
+      "Cold sensitivity, especially in hands and feet",
+      "Frequent diarrhea or nighttime urination",
+      "Low energy, preference for quiet activities",
+      "Pale complexion and slow pulse"
     ],
     lifestyleAdvice: [
-      "注意保暖，避免受寒",
-      "适度运动增强阳气",
-      "艾灸、泡脚等温阳方法"
+      "Stay warm and avoid cold environments",
+      "Moderate warming exercise to boost energy",
+      "Warm baths, heating pads for circulation"
     ],
     dietaryRecommendations: {
-      include: ["温热食物", "桂圆", "干姜", "肉桂", "羊肉"],
-      avoid: ["生冷饮食", "寒凉水果", "冰饮"]
+      include: ["warm foods", "ginger tea", "cinnamon", "lamb", "warming spices"],
+      avoid: ["cold raw foods", "ice drinks", "cold fruits"]
     },
-    recommendedHerbs: ["附子", "干姜", "肉桂", "鹿茸"],
-    warnings: ["避免寒凉环境", "注意腹部保暖"],
+    recommendedHerbs: ["Dried Ginger", "Cinnamon", "Aconite", "Deer Antler"],
+    warnings: ["Avoid cold environments", "Keep abdomen warm"],
     color: "orange",
     icon: "🔥"
   },
@@ -239,26 +252,26 @@ export const constitutionInfo: Record<ConstitutionType, ConstitutionInfo> = {
     id: "阴虚",
     name: "阴虚体质",
     englishName: "Yin Deficiency Constitution",
-    keywords: ["口干", "心烦", "失眠"],
-    description: "你的阴虚体质表明体内津液不足，容易出现口干、心烦、失眠等症状。",
-    modernInterpretation: "内分泌失调，自主神经功能紊乱，容易上火。",
+    keywords: ["dry mouth", "restlessness", "insomnia"],
+    description: "Your Yin Deficiency constitution indicates insufficient body fluids, leading to dryness, restlessness, and sleep issues.",
+    modernInterpretation: "Hormonal imbalance, overactive nervous system, tendency toward inflammation and stress.",
     characteristics: [
-      "口干舌燥，喜欢喝水",
-      "夜间盗汗，烦躁易醒",
-      "手脚心热，面部潮红",
-      "大便干结，小便黄"
+      "Dry mouth and throat, increased thirst",
+      "Night sweats, restlessness, frequent waking",
+      "Hot hands and feet, facial flushing",
+      "Constipation and concentrated urine"
     ],
     lifestyleAdvice: [
-      "避免熬夜，保证充足睡眠",
-      "心理调节，减少焦虑",
-      "适当午休，避免过度用脑"
+      "Avoid staying up late, ensure adequate sleep",
+      "Stress management and relaxation techniques",
+      "Take afternoon naps, avoid mental overwork"
     ],
     dietaryRecommendations: {
-      include: ["滋阴润燥食物", "梨", "银耳", "百合", "蜂蜜"],
-      avoid: ["辛辣燥热", "烟酒", "油炸食品"]
+      include: ["moistening foods", "pears", "white fungus", "lily bulbs", "honey"],
+      avoid: ["spicy hot foods", "alcohol", "fried foods", "caffeine"]
     },
-    recommendedHerbs: ["麦冬", "沙参", "玉竹", "百合"],
-    warnings: ["避免过度劳累", "控制情绪波动"],
+    recommendedHerbs: ["Ophiopogon", "Adenophora", "Solomon's Seal", "Lily Bulb"],
+    warnings: ["Avoid overwork", "Manage emotional stress"],
     color: "blue",
     icon: "💧"
   },
@@ -266,26 +279,26 @@ export const constitutionInfo: Record<ConstitutionType, ConstitutionInfo> = {
     id: "痰湿",
     name: "痰湿体质",
     englishName: "Phlegm-Dampness Constitution",
-    keywords: ["体胖", "油腻", "痰多"],
-    description: "你的痰湿体质表明体内水液代谢失调，容易肥胖，痰湿内生。",
-    modernInterpretation: "新陈代谢慢，脂质代谢异常，容易水肿肥胖。",
+    keywords: ["overweight", "sluggish", "excess mucus"],
+    description: "Your Phlegm-Dampness constitution indicates poor fluid metabolism, tendency toward weight gain and mucus accumulation.",
+    modernInterpretation: "Slow metabolism, abnormal lipid metabolism, tendency toward obesity and water retention.",
     characteristics: [
-      "体型肥胖，腹部松软",
-      "容易困倦，头重如裹",
-      "痰多，胸闷",
-      "舌苔白腻，口中粘腻"
+      "Overweight body type with soft abdomen",
+      "Easy to feel drowsy, heavy-headed feeling",
+      "Excess phlegm and chest congestion",
+      "Thick tongue coating, sticky mouth feeling"
     ],
     lifestyleAdvice: [
-      "加强运动，控制体重",
-      "环境除湿，避免潮湿",
-      "规律作息，避免久坐"
+      "Increase exercise and maintain healthy weight",
+      "Stay in dry environments, avoid humidity",
+      "Regular schedule, avoid prolonged sitting"
     ],
     dietaryRecommendations: {
-      include: ["清淡少油", "冬瓜", "薏米", "红豆", "茯苓"],
-      avoid: ["油腻甜食", "生冷食物", "酒精"]
+      include: ["light low-fat foods", "winter melon", "barley", "adzuki beans", "poria"],
+      avoid: ["oily sweet foods", "cold raw foods", "alcohol", "dairy products"]
     },
-    recommendedHerbs: ["陈皮", "半夏", "茯苓", "薏苡仁"],
-    warnings: ["控制饮食", "避免过度进补"],
+    recommendedHerbs: ["Tangerine Peel", "Pinellia", "Poria", "Job's Tears"],
+    warnings: ["Control diet portions", "Avoid excessive supplementation"],
     color: "brown",
     icon: "🌫️"
   },
@@ -293,26 +306,26 @@ export const constitutionInfo: Record<ConstitutionType, ConstitutionInfo> = {
     id: "湿热",
     name: "湿热体质",
     englishName: "Damp-Heat Constitution",
-    keywords: ["口苦", "长痘", "大便粘"],
-    description: "你的湿热体质表明体内湿气和热气并存，容易口苦、长痘、大便粘腻。",
-    modernInterpretation: "炎症反应活跃，解毒功能负担重，容易皮肤问题。",
+    keywords: ["bitter taste", "acne", "sticky stools"],
+    description: "Your Damp-Heat constitution indicates both dampness and heat in the body, leading to bitter taste, acne, and sticky bowel movements.",
+    modernInterpretation: "Active inflammatory response, overburdened detox function, prone to skin and digestive issues.",
     characteristics: [
-      "面部油腻，容易长痘",
-      "口苦口干，口臭",
-      "大便粘腻，小便黄",
-      "情绪急躁，身体沉重"
+      "Oily facial skin prone to acne breakouts",
+      "Bitter taste in mouth, bad breath",
+      "Sticky bowel movements, dark yellow urine",
+      "Irritable mood, heavy body feeling"
     ],
     lifestyleAdvice: [
-      "清热利湿，避免闷热环境",
-      "适当运动出汗排毒",
-      "保持心情舒畅"
+      "Clear heat and drain dampness, avoid stuffy environments",
+      "Moderate exercise to sweat and detoxify",
+      "Maintain calm and positive mood"
     ],
     dietaryRecommendations: {
-      include: ["清热利湿食物", "绿豆", "苦瓜", "芹菜", "冬瓜"],
-      avoid: ["辛辣油腻", "烟酒", "甜腻食品"]
+      include: ["cooling detox foods", "mung beans", "bitter melon", "celery", "cucumber"],
+      avoid: ["spicy oily foods", "alcohol", "sweet sticky foods", "fried foods"]
     },
-    recommendedHerbs: ["黄连", "栀子", "龙胆草", "车前子"],
-    warnings: ["避免热性食物", "控制情绪"],
+    recommendedHerbs: ["Coptis", "Gardenia", "Gentian", "Plantain Seed"],
+    warnings: ["Avoid heating foods", "Manage stress and anger"],
     color: "red",
     icon: "🌶️"
   },
@@ -320,26 +333,26 @@ export const constitutionInfo: Record<ConstitutionType, ConstitutionInfo> = {
     id: "血瘀",
     name: "血瘀体质",
     englishName: "Blood Stasis Constitution",
-    keywords: ["面色暗", "痛经", "刺痛"],
-    description: "你的血瘀体质表明血液循环不畅，容易出现面色暗淡、疼痛等症状。",
-    modernInterpretation: "微循环障碍，血液粘稠度高，容易血栓形成。",
+    keywords: ["dark complexion", "menstrual pain", "sharp pains"],
+    description: "Your Blood Stasis constitution indicates poor blood circulation, leading to dark complexion and various pain symptoms.",
+    modernInterpretation: "Microcirculation disorders, high blood viscosity, increased risk of clot formation.",
     characteristics: [
-      "面色暗沉，有色斑",
-      "容易出现瘀青",
-      "月经色暗有血块（女性）",
-      "身体某处刺痛"
+      "Dark complexion with age spots or pigmentation",
+      "Easy bruising from minor bumps",
+      "Dark menstrual blood with clots (for women)",
+      "Sharp or stabbing pains in specific body areas"
     ],
     lifestyleAdvice: [
-      "适当运动促进血循环",
-      "避免久坐不动",
-      "保持心情愉快"
+      "Regular exercise to promote blood circulation",
+      "Avoid prolonged sitting or standing",
+      "Maintain positive and cheerful mood"
     ],
     dietaryRecommendations: {
-      include: ["活血化瘀食物", "黑木耳", "山楂", "红花", "桃仁"],
-      avoid: ["寒凉食物", "油腻食品"]
+      include: ["circulation-promoting foods", "black fungus", "hawthorn", "turmeric", "cherries"],
+      avoid: ["cold foods", "fatty foods", "excessive salt"]
     },
-    recommendedHerbs: ["当归", "川芎", "红花", "桃仁"],
-    warnings: ["避免外伤", "定期体检"],
+    recommendedHerbs: ["Angelica", "Ligusticum", "Safflower", "Peach Kernel"],
+    warnings: ["Avoid trauma", "Regular health checkups"],
     color: "purple",
     icon: "🩸"
   },
@@ -347,26 +360,26 @@ export const constitutionInfo: Record<ConstitutionType, ConstitutionInfo> = {
     id: "气郁",
     name: "气郁体质",
     englishName: "Qi Stagnation Constitution",
-    keywords: ["情绪低落", "爱叹气"],
-    description: "你的气郁体质表明情志不畅，气机郁滞，容易情绪低落、胸闷。",
-    modernInterpretation: "精神压力大，自主神经功能失调，容易抑郁焦虑。",
+    keywords: ["mood swings", "frequent sighing", "stress"],
+    description: "Your Qi Stagnation constitution indicates blocked energy flow, leading to mood issues and chest tightness.",
+    modernInterpretation: "High stress levels, autonomic nervous system dysfunction, tendency toward depression and anxiety.",
     characteristics: [
-      "情绪低落，容易抑郁",
-      "胸闷，经常叹气",
-      "咽部异物感",
-      "月经不调（女性）"
+      "Mood swings and tendency toward depression",
+      "Chest tightness with frequent sighing",
+      "Throat tightness or lump feeling",
+      "Irregular menstruation (for women)"
     ],
     lifestyleAdvice: [
-      "心理疏导，释放压力",
-      "培养兴趣爱好",
-      "社交活动，避免独处"
+      "Psychological counseling and stress release",
+      "Develop hobbies and creative outlets",
+      "Social activities, avoid isolation"
     ],
     dietaryRecommendations: {
-      include: ["理气解郁食物", "玫瑰花", "柑橘", "佛手", "香橼"],
-      avoid: ["过度饮酒", "辛辣刺激"]
+      include: ["mood-regulating foods", "rose tea", "citrus fruits", "fennel", "mint"],
+      avoid: ["excessive alcohol", "spicy stimulating foods", "caffeine before bed"]
     },
-    recommendedHerbs: ["柴胡", "香附", "郁金", "玫瑰花"],
-    warnings: ["避免情绪刺激", "寻求心理支持"],
+    recommendedHerbs: ["Bupleurum", "Cyperus", "Turmeric", "Rose Petals"],
+    warnings: ["Avoid emotional triggers", "Seek psychological support when needed"],
     color: "gray",
     icon: "😔"
   },
@@ -374,41 +387,43 @@ export const constitutionInfo: Record<ConstitutionType, ConstitutionInfo> = {
     id: "特禀",
     name: "特禀体质",
     englishName: "Special Constitution",
-    keywords: ["过敏", "哮喘", "遗传体质"],
-    description: "你的特禀体质表明先天禀赋不足或有遗传倾向，容易过敏反应。",
-    modernInterpretation: "免疫系统异常，容易过敏反应，有遗传倾向。",
+    keywords: ["allergies", "asthma", "genetic sensitivities"],
+    description: "Your Special constitution indicates inherited sensitivities or genetic predispositions, making you prone to allergic reactions.",
+    modernInterpretation: "Abnormal immune system response, genetic predisposition to allergies and autoimmune conditions.",
     characteristics: [
-      "容易过敏性鼻炎、哮喘",
-      "皮肤容易过敏起疹",
-      "对某些食物、药物过敏",
-      "有家族遗传病史"
+      "Prone to allergic rhinitis and asthma",
+      "Skin easily develops allergic rashes",
+      "Allergic to certain foods or medications",
+      "Family history of genetic conditions"
     ],
     lifestyleAdvice: [
-      "避免接触过敏原",
-      "增强体质，规律锻炼",
-      "保持环境清洁"
+      "Avoid known allergens and triggers",
+      "Strengthen constitution with regular gentle exercise",
+      "Maintain clean, allergen-free environment"
     ],
     dietaryRecommendations: {
-      include: ["清淡营养食物", "益气固表食物"],
-      avoid: ["已知过敏食物", "海鲜", "牛奶等易过敏食品"]
+      include: ["light nutritious foods", "immune-supporting foods", "organic produce"],
+      avoid: ["known allergenic foods", "shellfish", "dairy", "common allergens"]
     },
-    recommendedHerbs: ["黄芪", "防风", "白术", "玉屏风散"],
-    warnings: ["避免过敏原", "随身携带抗过敏药物"],
+    recommendedHerbs: ["Astragalus", "Saposhnikovia", "White Atractylodes", "Jade Screen Formula"],
+    warnings: ["Avoid allergens", "Carry antihistamines", "Medical alert bracelet recommended"],
     color: "pink",
     icon: "⚠️"
   }
 };
 
-// 评分选项
+// 📊 Likert 5-Point Scoring Scale (Western Version)
 export const scoreOptions = [
-  { value: 1, label: "从不", description: "完全不符合" },
-  { value: 2, label: "偶尔", description: "很少出现" },
-  { value: 3, label: "有时", description: "偶尔出现" },
-  { value: 4, label: "经常", description: "大部分时候" },
-  { value: 5, label: "总是", description: "几乎总是" },
+  { value: 1, label: "Never", description: "This never applies to me" },
+  { value: 2, label: "Rarely", description: "This rarely happens" },
+  { value: 3, label: "Sometimes", description: "This sometimes occurs" },
+  { value: 4, label: "Often", description: "This happens frequently" },
+  { value: 5, label: "Always", description: "This almost always applies" },
 ];
 
-// 判定算法
+// 🧮 Improved Constitution Calculation Algorithm
+// Uses weighted scoring system based on question relevance
+
 export interface ScoreMap {
   [key: string]: number;
 }
@@ -420,7 +435,7 @@ export function calculateConstitution(answers: number[]): {
   isBalanced: boolean;
 } {
   try {
-    // 输入验证
+    // Input validation
     if (!answers || !Array.isArray(answers)) {
       throw new Error('Invalid answers array');
     }
@@ -430,10 +445,10 @@ export function calculateConstitution(answers: number[]): {
       "痰湿": 0, "湿热": 0, "血瘀": 0, "气郁": 0, "特禀": 0
     };
 
-  // 计算各体质得分 - 只计算有效答案 (1-5)
+  // Calculate constitution scores - only valid answers (1-5)
   questions.forEach((question, index) => {
     const answer = answers[index];
-    // 只处理有效答案，忽略未回答的题目(0)
+    // Only process valid answers, ignore unanswered questions (0)
     if (answer >= 1 && answer <= 5) {
       Object.entries(question.affects).forEach(([type, weight]) => {
         scores[type] = (scores[type] || 0) + answer * weight;
@@ -441,11 +456,11 @@ export function calculateConstitution(answers: number[]): {
     }
   });
 
-  // 检查有效答案数量
+  // Check valid answer count
   const validAnswerCount = answers.filter(answer => answer >= 1 && answer <= 5).length;
-  const minRequiredAnswers = Math.max(3, Math.floor(questions.length * 0.3)); // 至少30%的问题
+  const minRequiredAnswers = Math.max(6, Math.floor(questions.length * 0.3)); // At least 30% of questions
 
-  // 如果回答的问题太少，提供默认结果
+  // If too few questions answered, provide default result
   if (validAnswerCount < minRequiredAnswers) {
     return {
       primary: '平和',
@@ -458,22 +473,22 @@ export function calculateConstitution(answers: number[]): {
     };
   }
 
-  // 排序得分
+  // Sort scores
   const sortedScores = Object.entries(scores)
     .sort((a, b) => b[1] - a[1])
     .filter(([_, score]) => score > 0);
 
-  // 处理没有正分的情况，默认为平和体质
+  // Handle case with no positive scores, default to balanced
   const [primaryType, primaryScore] = sortedScores[0] || ['平和', 0];
   const [secondaryType, secondaryScore] = sortedScores[1] || ['', 0];
 
-  // 判定逻辑
-  const isBalanced = primaryType === '平和' && primaryScore >= 60 && 
-    sortedScores.slice(1).every(([_, score]) => score < 30);
+  // Determination logic
+  const isBalanced = primaryType === '平和' && primaryScore >= 50 &&
+    sortedScores.slice(1).every(([_, score]) => score < 25);
 
-  const hasSecondary = secondaryScore >= 40 && secondaryType !== '平和';
+  const hasSecondary = secondaryScore >= 30 && secondaryType !== '平和';
 
-    // 最终验证
+    // Final validation
     const finalPrimaryType = primaryType as ConstitutionType;
     if (!constitutionInfo[finalPrimaryType]) {
       throw new Error(`Invalid constitution type: ${primaryType}`);
@@ -487,7 +502,7 @@ export function calculateConstitution(answers: number[]): {
     };
   } catch (error) {
     console.error('Error in calculateConstitution:', error);
-    // 返回安全的默认值
+    // Return safe default
     return {
       primary: '平和',
       secondary: undefined,

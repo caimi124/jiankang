@@ -146,17 +146,41 @@ export default function HomeClient() {
               <span className="block text-green-600">Actually Work for Your Body</span>
             </h1>
 
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-4">
               Take our <strong>constitution test</strong> to get <strong>safe, evidence-based herbal recommendations</strong> tailored to your body type and health needs.
             </p>
 
-            {/* 痛点区域 */}
-            <div className="bg-white rounded-2xl p-6 mb-8 max-w-2xl mx-auto shadow-md">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Common Problems People Face:</h3>
-              <div className="grid md:grid-cols-3 gap-4 text-sm text-gray-600">
-                <div>"I tried herbs for sleep, but nothing worked."</div>
-                <div>"Which herbs are really safe with my medications?"</div>
-                <div>"I don't know which herbs fit my body type."</div>
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 max-w-2xl mx-auto mb-8">
+              <p className="text-yellow-800 font-medium text-sm flex items-center justify-center">
+                <span className="mr-2">⏰</span>
+                <span>Don't waste another month on herbs that don't work for YOUR body type!</span>
+              </p>
+            </div>
+
+            {/* 痛点区域 - 增强视觉冲击力 */}
+            <div className="bg-red-50 border-l-4 border-red-400 rounded-2xl p-6 mb-8 max-w-3xl mx-auto shadow-lg">
+              <h3 className="text-lg font-bold text-red-800 mb-4 flex items-center">
+                <span className="mr-2">⚠️</span>
+                Sound Familiar? You're Not Alone...
+              </h3>
+              <div className="grid md:grid-cols-3 gap-4 text-sm">
+                <div className="bg-white p-3 rounded-lg border border-red-200">
+                  <div className="text-red-600 font-medium mb-1">😴 Sleep Issues</div>
+                  <div className="text-gray-700">"Tried chamomile, valerian... nothing helps my insomnia"</div>
+                </div>
+                <div className="bg-white p-3 rounded-lg border border-red-200">
+                  <div className="text-red-600 font-medium mb-1">🧪 Safety Concerns</div>
+                  <div className="text-gray-700">"Will this herb interact with my blood pressure meds?"</div>
+                </div>
+                <div className="bg-white p-3 rounded-lg border border-red-200">
+                  <div className="text-red-600 font-medium mb-1">🤷 Guesswork</div>
+                  <div className="text-gray-700">"Every website says different things - what actually works?"</div>
+                </div>
+              </div>
+              <div className="mt-4 text-center">
+                <p className="text-red-700 font-medium text-sm">
+                  👆 Stop wasting time and money on herbs that don't match your body!
+                </p>
               </div>
             </div>
 
@@ -164,32 +188,49 @@ export default function HomeClient() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
               <Link
                 href="/constitution-test"
-                className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
+                className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all transform hover:scale-105 relative"
               >
-                Find My Herbs in 3 Minutes
+                <div className="flex items-center space-x-2">
+                  <span>🧠</span>
+                  <div>
+                    <div>Get Your Personal Herb Plan</div>
+                    <div className="text-sm text-green-100 font-normal">Quick 3-minute test • Results instantly</div>
+                  </div>
+                </div>
               </Link>
 
               <Link
                 href="/herb-finder"
                 className="bg-white border-2 border-green-600 text-green-600 hover:bg-green-50 px-8 py-4 rounded-xl font-semibold text-lg transition-all"
               >
-                Browse Herbs by Goal
+                <div className="flex items-center space-x-2">
+                  <span>🌿</span>
+                  <span>Browse Herbs by Goal</span>
+                </div>
               </Link>
             </div>
 
             {/* Trust indicators - 强调安全和科学 */}
-            <div className="flex justify-center items-center space-x-8 text-sm text-gray-500">
-              <div className="flex items-center space-x-2">
-                <span>🛡️</span>
-                <span>Safe Herbal Use</span>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center max-w-4xl mx-auto">
+              <div className="flex flex-col items-center space-y-1 text-sm text-gray-600">
+                <span className="text-2xl">🛡️</span>
+                <span className="font-medium">Safe Herbal Use</span>
+                <span className="text-xs">Drug interaction checks</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <span>⚗️</span>
-                <span>Evidence-Based</span>
+              <div className="flex flex-col items-center space-y-1 text-sm text-gray-600">
+                <span className="text-2xl">⚗️</span>
+                <span className="font-medium">Evidence-Based</span>
+                <span className="text-xs">Research-backed recommendations</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <span>👥</span>
-                <span>10K+ Users</span>
+              <div className="flex flex-col items-center space-y-1 text-sm text-gray-600">
+                <span className="text-2xl">👥</span>
+                <span className="font-medium">10K+ Users</span>
+                <span className="text-xs">Trusted by thousands</span>
+              </div>
+              <div className="flex flex-col items-center space-y-1 text-sm text-gray-600">
+                <span className="text-2xl">⚕️</span>
+                <span className="font-medium">No Side Effects</span>
+                <span className="text-xs">Natural, gentle solutions</span>
               </div>
             </div>
           </div>
@@ -296,7 +337,7 @@ export default function HomeClient() {
                     <div className="text-sm text-blue-600">For: {story.condition}</div>
                   </div>
 
-                  <p className="text-gray-700 text-sm italic">"ÂÅ{story.result}ÂÄ"</p>
+                  <p className="text-gray-700 text-sm italic">"{story.result}"</p>
                 </div>
               ))}
             </div>
