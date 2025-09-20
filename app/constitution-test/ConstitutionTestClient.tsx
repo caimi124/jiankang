@@ -697,8 +697,16 @@ Take the free test and find your perfect herbal match! 👇`
         // Don't fail the entire component for save issues
       }
 
-      const primaryInfo = constitutionInfo[result.primary]
-      const secondaryInfo = result.secondary && constitutionInfo[result.secondary] ? constitutionInfo[result.secondary] : null
+      // 安全地获取体质信息，添加额外的防护
+      let primaryInfo, secondaryInfo;
+      try {
+        primaryInfo = constitutionInfo[result.primary];
+        secondaryInfo = result.secondary && constitutionInfo[result.secondary] ? constitutionInfo[result.secondary] : null;
+      } catch (infoError) {
+        console.error('[ConstitutionTest] Failed to get constitution info:', infoError);
+        primaryInfo = null;
+        secondaryInfo = null;
+      }
 
       console.log('[ConstitutionTest] 主要体质信息:', primaryInfo ? '存在' : '不存在');
       console.log('[ConstitutionTest] 次要体质信息:', secondaryInfo ? '存在' : '不存在');
@@ -784,12 +792,15 @@ Take the free test and find your perfect herbal match! 👇`
                   <h2 className="text-2xl font-bold text-gray-900">Body Traits</h2>
                 </div>
                 <div className="space-y-4">
-                  {primaryInfo.characteristics?.map((trait, index) => (
+                  {(primaryInfo.characteristics && Array.isArray(primaryInfo.characteristics) ? primaryInfo.characteristics : []).map((trait, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
                       <p className="text-gray-700">{trait}</p>
                     </div>
                   ))}
+                  {(!primaryInfo.characteristics || !Array.isArray(primaryInfo.characteristics) || primaryInfo.characteristics.length === 0) && (
+                    <p className="text-gray-500 italic">Characteristics information not available.</p>
+                  )}
                 </div>
                 
                 <div className="mt-6 p-4 bg-blue-50 rounded-xl">
@@ -807,7 +818,7 @@ Take the free test and find your perfect herbal match! 👇`
                   <h2 className="text-2xl font-bold text-gray-900">Health Considerations</h2>
                 </div>
                 
-                {primaryInfo.warnings?.length > 0 && (
+                {(primaryInfo.warnings && Array.isArray(primaryInfo.warnings) && primaryInfo.warnings.length > 0) && (
                   <div className="mb-6">
                     <h3 className="font-semibold text-orange-900 mb-3">⚠️ Important Warnings</h3>
                     <div className="space-y-2">
@@ -846,21 +857,27 @@ Take the free test and find your perfect herbal match! 👇`
                     <div className="p-4 bg-green-50 rounded-xl">
                       <h4 className="font-semibold text-green-900 mb-2">✅ Include More:</h4>
                       <div className="flex flex-wrap gap-2">
-                        {primaryInfo.dietaryRecommendations?.include?.map((food, index) => (
+                        {(primaryInfo.dietaryRecommendations?.include && Array.isArray(primaryInfo.dietaryRecommendations.include) ? primaryInfo.dietaryRecommendations.include : []).map((food, index) => (
                           <span key={index} className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
                             {food}
                           </span>
                         ))}
+                        {(!primaryInfo.dietaryRecommendations?.include || !Array.isArray(primaryInfo.dietaryRecommendations.include) || primaryInfo.dietaryRecommendations.include.length === 0) && (
+                          <span className="text-green-700 text-sm italic">No specific recommendations available.</span>
+                        )}
                       </div>
                     </div>
                     <div className="p-4 bg-red-50 rounded-xl">
                       <h4 className="font-semibold text-red-900 mb-2">❌ Avoid:</h4>
                       <div className="flex flex-wrap gap-2">
-                        {primaryInfo.dietaryRecommendations?.avoid?.map((food, index) => (
+                        {(primaryInfo.dietaryRecommendations?.avoid && Array.isArray(primaryInfo.dietaryRecommendations.avoid) ? primaryInfo.dietaryRecommendations.avoid : []).map((food, index) => (
                           <span key={index} className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">
                             {food}
                           </span>
                         ))}
+                        {(!primaryInfo.dietaryRecommendations?.avoid || !Array.isArray(primaryInfo.dietaryRecommendations.avoid) || primaryInfo.dietaryRecommendations.avoid.length === 0) && (
+                          <span className="text-red-700 text-sm italic">No specific restrictions available.</span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -874,12 +891,15 @@ Take the free test and find your perfect herbal match! 👇`
                   <h3 className="text-xl font-bold text-gray-900 mb-4">Exercise & Activity</h3>
                   <div className="p-4 bg-blue-50 rounded-xl">
                     <div className="space-y-3">
-                      {primaryInfo.lifestyleAdvice?.map((advice, index) => (
+                      {(primaryInfo.lifestyleAdvice && Array.isArray(primaryInfo.lifestyleAdvice) ? primaryInfo.lifestyleAdvice : []).map((advice, index) => (
                         <div key={index} className="flex items-start gap-3">
                           <Star className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
                           <p className="text-blue-800 text-sm text-left">{advice}</p>
                         </div>
                       ))}
+                      {(!primaryInfo.lifestyleAdvice || !Array.isArray(primaryInfo.lifestyleAdvice) || primaryInfo.lifestyleAdvice.length === 0) && (
+                        <p className="text-blue-700 text-sm italic">Lifestyle advice not available.</p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -905,7 +925,7 @@ Take the free test and find your perfect herbal match! 👇`
               </div>
 
               <div className="grid md:grid-cols-3 gap-6">
-                {primaryInfo.recommendedHerbs?.slice(0, 3).map((herb, index) => (
+                {(primaryInfo.recommendedHerbs && Array.isArray(primaryInfo.recommendedHerbs) ? primaryInfo.recommendedHerbs.slice(0, 3) : []).map((herb, index) => (
                   <div key={index} className="group cursor-pointer transform transition-all duration-200 hover:scale-105">
                     <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-200">
                       <div className="text-center">
@@ -924,6 +944,12 @@ Take the free test and find your perfect herbal match! 👇`
                     </div>
                   </div>
                 ))}
+                {(!primaryInfo.recommendedHerbs || !Array.isArray(primaryInfo.recommendedHerbs) || primaryInfo.recommendedHerbs.length === 0) && (
+                  <div className="col-span-full text-center py-8">
+                    <div className="text-4xl mb-4">🌿</div>
+                    <p className="text-gray-600">Herb recommendations will be available soon for your constitution type.</p>
+                  </div>
+                )}
               </div>
 
               <div className="text-center mt-8">
@@ -1352,27 +1378,43 @@ Take the free test and find your perfect herbal match! 👇`
 
     } catch (error) {
       console.error('[ConstitutionTest] 结果页面渲染错误:', error);
+      console.error('[ConstitutionTest] 当前答案数组:', answers);
+      console.error('[ConstitutionTest] 当前步骤:', currentStep);
+
+      // 尝试重置到安全状态
+      React.useEffect(() => {
+        setCurrentStep('welcome')
+        setAnswers(new Array(questions.length).fill(0))
+        setCurrentQuestion(0)
+        setSelectedAnswer(null)
+      }, [])
+
       return (
         <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50">
           <style dangerouslySetInnerHTML={{ __html: customAnimations }} />
           <Navigation />
-          
+
           <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
               <div className="text-6xl mb-4">⚠️</div>
               <h1 className="text-2xl font-bold text-red-600 mb-4">Something went wrong!</h1>
               <p className="text-gray-600 mb-6">
-                We apologize for the inconvenience. Our team has been notified and is working to fix the issue.<br/>
+                We apologize for the inconvenience. The page will automatically reload to reset the test.
                 {process.env.NODE_ENV === 'development' && (
-                  <>Error details: {error instanceof Error ? error.message : 'Unknown error'}</>
+                  <>
+                    <br/><br/>
+                    <strong>Error details:</strong> {error instanceof Error ? error.message : 'Unknown error'}<br/>
+                    <strong>Answers length:</strong> {answers.length}<br/>
+                    <strong>Valid answers:</strong> {answers.filter(a => a >= 1 && a <= 5).length}
+                  </>
                 )}
               </p>
               <div className="space-y-3">
                 <button
-                  onClick={() => setCurrentStep('welcome')}
+                  onClick={() => window.location.reload()}
                   className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors"
                 >
-                  Try again
+                  Restart Test
                 </button>
                 <button
                   onClick={() => window.location.href = '/'}

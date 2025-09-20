@@ -488,9 +488,10 @@ export function calculateConstitution(answers: number[]): {
 
   const hasSecondary = secondaryScore >= 30 && secondaryType !== '平和';
 
-    // Final validation
+    // Final validation - check if it's a valid constitution type
+    const validTypes: ConstitutionType[] = ['平和', '气虚', '阳虚', '阴虚', '痰湿', '湿热', '血瘀', '气郁', '特禀'];
     const finalPrimaryType = primaryType as ConstitutionType;
-    if (!constitutionInfo[finalPrimaryType]) {
+    if (!validTypes.includes(finalPrimaryType)) {
       throw new Error(`Invalid constitution type: ${primaryType}`);
     }
 
