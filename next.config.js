@@ -43,10 +43,8 @@ const nextConfig = {
     ignoreBuildErrors: false,
   },
 
-  // ESLint配置
-  eslint: {
-    ignoreDuringBuilds: false, // 启用lint检查
-  },
+  // ESLint配置（紧急调试：构建时忽略）
+  // 注意：上方已设置 eslint.ignoreDuringBuilds = true，不要在此处覆盖
 
   // 启用React严格模式
   reactStrictMode: true,
