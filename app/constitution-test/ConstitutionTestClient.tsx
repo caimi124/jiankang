@@ -335,22 +335,34 @@ function ConstitutionTestClient() {
 
   // CTA 按钮处理函数
   const handleHerbClick = (herb: string) => {
-    // 已知存在的草药页面
-    const availableHerbs: Record<string, string> = {
-      '肉桂': 'cinnamon',
-      '丁香': 'clove',
-      '洋葱': 'onion',
-      '南瓜子': 'pumpkin-seeds'
-    }
+    try {
+      // 已知存在的草药页面
+      const availableHerbs: Record<string, string> = {
+        '肉桂': 'cinnamon',
+        '丁香': 'clove',
+        '洋葱': 'onion',
+        '南瓜子': 'pumpkin-seeds'
+      }
 
-    const slug = availableHerbs[herb]
-    if (slug) {
-      // 如果草药页面存在，直接跳转
-      window.open(`/herbs/${slug}`, '_blank')
-    } else {
-      // 如果草药页面不存在，跳转到herb-finder页面并搜索该草药
-      const searchTerm = encodeURIComponent(herb)
-      window.open(`/herb-finder?search=${searchTerm}`, '_blank')
+      const slug = availableHerbs[herb]
+      if (slug) {
+        // 如果草药页面存在，直接跳转
+        if (typeof window !== 'undefined') {
+          window.open(`/herbs/${slug}`, '_blank')
+        }
+      } else {
+        // 如果草药页面不存在，跳转到herb-finder页面并搜索该草药
+        const searchTerm = encodeURIComponent(herb)
+        if (typeof window !== 'undefined') {
+          window.open(`/herb-finder?search=${searchTerm}`, '_blank')
+        }
+      }
+    } catch (error) {
+      console.error('[ConstitutionTest] Error in handleHerbClick:', error)
+      // 后备方案：跳转到herb-finder主页
+      if (typeof window !== 'undefined') {
+        window.open('/herb-finder', '_blank')
+      }
     }
   }
 
@@ -390,13 +402,17 @@ function ConstitutionTestClient() {
       // 模拟API调用
       await new Promise(resolve => setTimeout(resolve, 2000))
       
-      // 实际项目中应该调用真实的邮件API
-      // const response = await fetch('/api/constitution/send-guide', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(emailData)
-      // })
-      // if (!response.ok) throw new Error('Failed to send email')
+      // 调用邮件API
+      const response = await fetch('/api/constitution/send-guide', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(emailData)
+      })
+      
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to send email')
+      }
       
       setEmailSubmitted(true)
       
@@ -1381,14 +1397,7 @@ Take the free test and find your perfect herbal match! 👇`
       console.error('[ConstitutionTest] 当前答案数组:', answers);
       console.error('[ConstitutionTest] 当前步骤:', currentStep);
 
-      // 尝试重置到安全状态
-      React.useEffect(() => {
-        setCurrentStep('welcome')
-        setAnswers(new Array(questions.length).fill(0))
-        setCurrentQuestion(0)
-        setSelectedAnswer(null)
-      }, [])
-
+      // 显示错误界面，由ErrorBoundary处理错误状态重置
       return (
         <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50">
           <style dangerouslySetInnerHTML={{ __html: customAnimations }} />
@@ -1399,7 +1408,7 @@ Take the free test and find your perfect herbal match! 👇`
               <div className="text-6xl mb-4">⚠️</div>
               <h1 className="text-2xl font-bold text-red-600 mb-4">Something went wrong!</h1>
               <p className="text-gray-600 mb-6">
-                We apologize for the inconvenience. The page will automatically reload to reset the test.
+                We apologize for the inconvenience. Please restart the test to continue.
                 {process.env.NODE_ENV === 'development' && (
                   <>
                     <br/><br/>
@@ -1411,7 +1420,10 @@ Take the free test and find your perfect herbal match! 👇`
               </p>
               <div className="space-y-3">
                 <button
-                  onClick={() => window.location.reload()}
+                  onClick={() => {
+                    // 安全地重置状态而不触发无限循环
+                    window.location.href = '/constitution-test'
+                  }}
                   className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors"
                 >
                   Restart Test
