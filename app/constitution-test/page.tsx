@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import React from 'react'
-import ConstitutionTestClient from './ConstitutionTestClient'
+import ConstitutionTestClient from './ConstitutionTestClientDebug'
 
 export const metadata: Metadata = {
   title: 'TCM Constitution Test - Discover Your Body Type | Free Health Assessment',
