@@ -8,7 +8,7 @@ export const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2024-01
 
 // 检查Sanity配置是否有效
 const isValidConfig = 
-  projectId && projectId !== 'your-project-id' && projectId !== 'your-project-id-here' && projectId.length > 8
+  projectId && projectId !== 'your-project-id' && projectId !== 'your-project-id-here' && projectId.length >= 8
 
 // Sanity客户端
 export const client = createClient({
