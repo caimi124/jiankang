@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { questions, scoreOptions, calculateConstitution, constitutionInfo, type ConstitutionType } from './questions'
 
 /**
@@ -15,14 +15,25 @@ export default function ConstitutionTestClientDebug() {
   const [answers, setAnswers] = useState<number[]>(new Array(questions.length).fill(0))
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [debugInfo, setDebugInfo] = useState<string[]>([])
+  const logsRef = useRef<string[]>([])
 
   // 调试日志函数
   const debugLog = (message: string, data?: any) => {
     const timestamp = new Date().toISOString().split('T')[1].slice(0, 8)
     const logMessage = `[${timestamp}] ${message}`
     console.log(logMessage, data || '')
-    setDebugInfo(prev => [...prev, logMessage + (data ? ` ${JSON.stringify(data)}` : '')])
+    // 避免在渲染期直接setState，先写入ref，统一批量刷新
+    try {
+      logsRef.current.push(logMessage + (data ? ` ${JSON.stringify(data)}` : ''))
+    } catch {
+      logsRef.current.push(logMessage)
+    }
   }
+
+  // 批量将日志刷新到UI，避免渲染期间setState引发错误边界
+  useEffect(() => {
+    setDebugInfo([...logsRef.current])
+  }, [currentStep, currentQuestion])
 
   useEffect(() => {
     debugLog('🚀 ConstitutionTestClientDebug 组件初始化')
@@ -65,7 +76,8 @@ export default function ConstitutionTestClientDebug() {
 
   // 结果页面处理（带详细调试）
   if (currentStep === 'results') {
-    debugLog('🎯 进入结果页面')
+    // 仅在效果中记录，避免render中多次setState
+    useEffect(() => { debugLog('🎯 进入结果页面') }, [])
     
     try {
       // 步骤1: 验证输入数据
