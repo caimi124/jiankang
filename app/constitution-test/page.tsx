@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import React from 'react'
-import ConstitutionTestClient from './ConstitutionTestClientDebug'
+import ConstitutionTestClientDebug from './ConstitutionTestClientDebug'
+import ErrorBoundary from '../../components/ErrorBoundary'
 
 export const metadata: Metadata = {
   title: 'TCM Constitution Test - Discover Your Body Type | Free Health Assessment',
@@ -59,7 +60,7 @@ export default function ConstitutionTestPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ConstitutionTestClient />
+      <ConstitutionTestClientDebug />
     </>
   )
 } 

@@ -35,6 +35,13 @@ export default function ConstitutionTestClientDebug() {
     setDebugInfo([...logsRef.current])
   }, [currentStep, currentQuestion])
 
+  // 监听步骤变化，进入结果页时记录日志（在顶层调用Hook，避免条件Hook违规）
+  useEffect(() => {
+    if (currentStep === 'results') {
+      debugLog('🎯 进入结果页面')
+    }
+  }, [currentStep])
+
   useEffect(() => {
     debugLog('🚀 ConstitutionTestClientDebug 组件初始化')
     debugLog('📊 Questions 数据', { length: questions?.length, firstQuestion: questions?.[0]?.text?.slice(0, 50) })
@@ -76,8 +83,6 @@ export default function ConstitutionTestClientDebug() {
 
   // 结果页面处理（带详细调试）
   if (currentStep === 'results') {
-    // 仅在效果中记录，避免render中多次setState
-    useEffect(() => { debugLog('🎯 进入结果页面') }, [])
     
     try {
       // 步骤1: 验证输入数据
