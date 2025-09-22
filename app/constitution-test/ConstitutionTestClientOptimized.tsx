@@ -1,7 +1,16 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import dynamic from 'next/dynamic'
 import { questions, scoreOptions, calculateConstitution, constitutionInfo, type ConstitutionType } from './questions'
+
+// 延迟加载Header组件
+const Header = dynamic(() => import('../../components/Header'), {
+  ssr: false,
+  loading: () => (
+    <div className="bg-white/95 backdrop-blur-md border-b border-gray-200/50 h-20" />
+  )
+})
 
 /**
  * 🌿 TCM Constitution Test - Optimized Production Version
@@ -67,22 +76,7 @@ export default function ConstitutionTestClientOptimized() {
   if (currentStep === 'welcome') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50">
-        {/* Navigation Bar */}
-        <nav className="bg-white/90 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
-          <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center">
-                <span className="text-2xl font-bold text-green-600">🌿 HerbScience</span>
-              </div>
-              <div className="hidden md:flex items-center space-x-8">
-                <a href="/" className="text-gray-600 hover:text-green-600 transition-colors">Home</a>
-                <a href="/herbs" className="text-gray-600 hover:text-green-600 transition-colors">Herbs</a>
-                <a href="/constitution-test" className="text-green-600 font-medium">Constitution Test</a>
-                <a href="/blog" className="text-gray-600 hover:text-green-600 transition-colors">Blog</a>
-              </div>
-            </div>
-          </div>
-        </nav>
+        <Header />
 
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto">
@@ -177,22 +171,7 @@ export default function ConstitutionTestClientOptimized() {
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50">
-        {/* Navigation Bar */}
-        <nav className="bg-white/90 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
-          <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center">
-                <span className="text-2xl font-bold text-green-600">🌿 HerbScience</span>
-              </div>
-              <div className="hidden md:flex items-center space-x-8">
-                <a href="/" className="text-gray-600 hover:text-green-600 transition-colors">Home</a>
-                <a href="/herbs" className="text-gray-600 hover:text-green-600 transition-colors">Herbs</a>
-                <a href="/constitution-test" className="text-green-600 font-medium">Constitution Test</a>
-                <a href="/blog" className="text-gray-600 hover:text-green-600 transition-colors">Blog</a>
-              </div>
-            </div>
-          </div>
-        </nav>
+        <Header />
 
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-3xl mx-auto">
@@ -295,22 +274,7 @@ export default function ConstitutionTestClientOptimized() {
 
       return (
         <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50">
-          {/* Navigation Bar */}
-          <nav className="bg-white/90 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
-            <div className="container mx-auto px-4">
-              <div className="flex items-center justify-between h-16">
-                <div className="flex items-center">
-                  <span className="text-2xl font-bold text-green-600">🌿 HerbScience</span>
-                </div>
-                <div className="hidden md:flex items-center space-x-8">
-                  <a href="/" className="text-gray-600 hover:text-green-600 transition-colors">Home</a>
-                  <a href="/herbs" className="text-gray-600 hover:text-green-600 transition-colors">Herbs</a>
-                  <a href="/constitution-test" className="text-green-600 font-medium">Constitution Test</a>
-                  <a href="/blog" className="text-gray-600 hover:text-green-600 transition-colors">Blog</a>
-                </div>
-              </div>
-            </div>
-          </nav>
+          <Header />
 
           <div className="container mx-auto px-4 py-8">
             <div className="max-w-4xl mx-auto">
