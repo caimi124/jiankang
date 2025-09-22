@@ -4,6 +4,8 @@ import Navigation from '../../../components/Navigation'
 import Breadcrumb from '../../../components/Breadcrumb'
 import { Calendar, User, Tag, ArrowLeft, Clock, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
+import { getBlogPostBySlug } from '../../../lib/sanity.js'
+import { PortableText } from '@portabletext/react'
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -11,29 +13,27 @@ interface BlogPostPageProps {
   }>
 }
 
-// 从Notion获取博客文章数据
-async function getBlogPostFromNotion(slug: string) {
+// 从Sanity获取博客文章数据
+async function getBlogPost(slug: string) {
   try {
-    const response = await fetch(`${process.env.NODE_ENV === 'production' ? 'https://herbscience.shop' : 'http://localhost:3000'}/api/blog/sync-to-notion?action=get_post&slug=${slug}`, {
-      cache: 'no-store'
-    })
-    
-    if (!response.ok) {
-      return null
+    // Try Sanity first
+    const sanityPost = await getBlogPostBySlug(slug)
+    if (sanityPost) {
+      return sanityPost
     }
-    
-    const data = await response.json()
-    return data.success ? data.data : null
+
+    // Fallback to local data
+    return getLocalBlogPost(slug)
   } catch (error) {
     console.error('Error fetching blog post:', error)
-    return null
+    return getLocalBlogPost(slug)
   }
 }
 
 // 生成元数据
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const resolvedParams = await params
-  const post = await getBlogPostFromNotion(resolvedParams.slug)
+  const post = await getBlogPost(resolvedParams.slug)
   
   if (!post) {
     return {
@@ -43,10 +43,10 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   }
 
   return {
-    title: `${post.title} | HerbScience Blog`,
-    description: post.excerpt || post.description || `Read about ${post.title} on HerbScience - evidence-based herbal medicine insights.`,
-    keywords: post.seo_keywords?.join(', ') || post.tags?.join(', '),
-    authors: [{ name: post.author || 'HerbScience Team' }],
+    title: post.seoTitle || `${post.title} | HerbScience Blog`,
+    description: post.seoDescription || post.excerpt || post.description || `Read about ${post.title} on HerbScience - evidence-based herbal medicine insights.`,
+    keywords: post.seoKeywords?.join(', ') || post.tags?.map((tag: any) => typeof tag === 'string' ? tag : tag.title).join(', '),
+    authors: [{ name: post.author?.name || post.author || 'HerbScience Team' }],
     openGraph: {
       title: post.title,
       description: post.excerpt || post.description,
@@ -92,13 +92,8 @@ export async function generateStaticParams() {
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const resolvedParams = await params
-  let post = await getBlogPostFromNotion(resolvedParams.slug)
-  
-  // 如果Notion中没有找到，使用本地数据作为备用
-  if (!post) {
-    post = getLocalBlogPost(resolvedParams.slug)
-  }
-  
+  const post = await getBlogPost(resolvedParams.slug)
+
   if (!post) {
     notFound()
   }
@@ -111,7 +106,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     description: post.excerpt || post.description,
     author: {
       '@type': 'Person',
-      name: post.author || 'HerbScience Team'
+      name: post.author?.name || post.author || 'HerbScience Team'
     },
     publisher: {
       '@type': 'Organization',
@@ -121,9 +116,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         url: 'https://herbscience.shop/logo.png'
       }
     },
-    datePublished: post.published_date || post.date,
-    dateModified: post.published_date || post.date,
-    keywords: post.tags?.join(', ') || '',
+    datePublished: post.publishedAt || post.published_date || post.date,
+    dateModified: post.publishedAt || post.published_date || post.date,
+    keywords: post.tags?.map((tag: any) => typeof tag === 'string' ? tag : tag.title).join(', ') || '',
     url: `https://herbscience.shop/blog/${resolvedParams.slug}`
   }
 
@@ -206,16 +201,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     )}
                     <span className="flex items-center">
                       <Calendar className="h-4 w-4 mr-1" />
-                      {post.published_date || post.date}
+                      {new Date(post.publishedAt || post.published_date || post.date).toLocaleDateString()}
                     </span>
                     <span className="flex items-center">
                       <User className="h-4 w-4 mr-1" />
-                      {post.author || 'HerbScience Team'}
+                      {post.author?.name || post.author || 'HerbScience Team'}
                     </span>
-                    {post.read_time && (
+                    {(post.readTime || post.read_time) && (
                       <span className="flex items-center">
                         <Clock className="h-4 w-4 mr-1" />
-                        {post.read_time}
+                        {post.readTime || post.read_time} min read
                       </span>
                     )}
                   </div>
@@ -234,13 +229,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 {/* 标签 */}
                 {post.tags && post.tags.length > 0 && (
                   <div className="flex flex-wrap gap-2">
-                                         {post.tags.map((tag: string, index: number) => (
+                    {post.tags.map((tag: any, index: number) => (
                        <span
                          key={index}
                          className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-700"
                        >
                          <Tag className="h-3 w-3 mr-1" />
-                         {tag}
+                         {typeof tag === 'string' ? tag : tag.title}
                        </span>
                      ))}
                   </div>
@@ -250,7 +245,35 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               {/* 文章正文 */}
               <div className="p-8">
                 <div className="prose prose-lg max-w-none">
-                  {post.content ? (
+                  {Array.isArray(post.content) ? (
+                    // Sanity PortableText content
+                    <PortableText
+                      value={post.content}
+                      components={{
+                        block: {
+                          h1: ({children}) => <h1 className="text-3xl font-bold text-gray-900 mt-8 mb-4">{children}</h1>,
+                          h2: ({children}) => <h2 className="text-2xl font-bold text-gray-900 mt-6 mb-3">{children}</h2>,
+                          h3: ({children}) => <h3 className="text-xl font-semibold text-gray-900 mt-4 mb-2">{children}</h3>,
+                          normal: ({children}) => <p className="text-gray-700 leading-relaxed mb-4">{children}</p>,
+                          blockquote: ({children}) => <blockquote className="border-l-4 border-green-500 pl-4 italic text-gray-600 my-4">{children}</blockquote>,
+                        },
+                        marks: {
+                          strong: ({children}) => <strong className="font-bold text-gray-900">{children}</strong>,
+                          em: ({children}) => <em className="italic">{children}</em>,
+                          code: ({children}) => <code className="bg-gray-100 px-2 py-1 rounded text-sm font-mono">{children}</code>,
+                        },
+                        list: {
+                          bullet: ({children}) => <ul className="list-disc list-inside space-y-2 my-4">{children}</ul>,
+                          number: ({children}) => <ol className="list-decimal list-inside space-y-2 my-4">{children}</ol>,
+                        },
+                        listItem: {
+                          bullet: ({children}) => <li className="text-gray-700">{children}</li>,
+                          number: ({children}) => <li className="text-gray-700">{children}</li>,
+                        }
+                      }}
+                    />
+                  ) : post.content ? (
+                    // HTML content
                     <div dangerouslySetInnerHTML={{ __html: post.content }} />
                   ) : (
                     <div className="text-gray-700 leading-relaxed space-y-6">

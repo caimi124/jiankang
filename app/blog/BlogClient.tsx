@@ -1,84 +1,77 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Navigation from '../../components/Navigation'
 import Breadcrumb from '../../components/Breadcrumb'
 import { Calendar, User, Tag, ArrowRight, Search, Filter } from 'lucide-react'
+import { getAllBlogPosts, getFeaturedBlogPosts, getBlogCategories, staticBlogData } from '../../lib/sanity.js'
+import Link from 'next/link'
 
 export default function BlogClient() {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
+  const [posts, setPosts] = useState([])
+  const [featuredPosts, setFeaturedPosts] = useState([])
+  const [categories, setCategories] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  const categories = [
-    { id: 'all', name: 'All Articles', count: 32 },
-    { id: 'lifestyle', name: 'Lifestyle', count: 18, description: 'Practical guides for daily wellness and traditional wisdom' },
-    { id: 'science', name: 'Science', count: 14, description: 'Research, safety studies, and evidence-based insights' }
-  ]
+  useEffect(() => {
+    async function loadBlogData() {
+      try {
+        setLoading(true)
 
-  const featuredArticles = [
-    {
-      id: 1,
-      title: "Turmeric Made Simple: How to Use It Today for Real Gut Relief and Pain Reduction",
-      excerpt: "Feeling bloated, achy, or tired? Discover how turmeric can help calm your gut, reduce inflammation, and boost your energy.",
-      category: "lifestyle",
-      author: "HerbScience Team",
-      date: "2025-01-19",
-      readTime: "8 min read",
-      image: "🌿",
-      featured: true,
-      slug: "turmeric-gut-relief-guide",
-      tags: ["turmeric benefits", "gut health", "natural pain relief", "inflammation"]
-    },
-    {
-      id: 2,
-      title: "Breakthrough Research: Turmeric and Curcumin Show Promise in Alzheimer's Prevention",
-      excerpt: "New clinical trials demonstrate significant cognitive benefits from standardized curcumin supplementation in adults over 50.",
-      category: "science",
-      author: "Dr. Sarah Chen",
-      date: "2024-01-15",
-      readTime: "5 min read",
-      image: "🧠",
-      featured: true,
-      tags: ["turmeric", "alzheimer's", "cognitive health", "clinical trial"]
-    },
-    {
-      id: 3,
-      title: "Hidden Dangers: 5 Popular Herb-Medication Combinations to Avoid",
-      excerpt: "Essential safety information about dangerous interactions between common herbal supplements and prescription medications.",
-      category: "science",
-      author: "Dr. Michael Rodriguez",
-      date: "2024-01-12",
-      readTime: "7 min read",
-      image: "⚠️",
-      featured: true,
-      tags: ["drug interactions", "safety", "blood thinners", "diabetes"]
-    },
-    {
-      id: 4,
-      title: "Understanding TCM Constitution Types: Your Personal Health Blueprint",
-      excerpt: "Learn about the 9 constitution types in Traditional Chinese Medicine and how they guide personalized herb selection.",
-      category: "lifestyle",
-      author: "Dr. Lisa Zhang",
-      date: "2024-01-10",
-      readTime: "10 min read",
-      image: "🧘",
-      featured: true,
-      tags: ["TCM", "constitution types", "personalized medicine", "traditional wisdom"]
+        // Try to fetch from Sanity first, fallback to static data
+        const [allPosts, featured, cats] = await Promise.all([
+          getAllBlogPosts().catch(() => []),
+          getFeaturedBlogPosts().catch(() => staticBlogData.featuredPosts),
+          getBlogCategories().catch(() => staticBlogData.categories)
+        ])
+
+        setPosts(allPosts.length > 0 ? allPosts : staticArticles)
+        setFeaturedPosts(featured.length > 0 ? featured : staticBlogData.featuredPosts)
+
+        // Add "All Articles" option to categories
+        const formattedCategories = [
+          { id: 'all', name: 'All Articles', count: allPosts.length || staticArticles.length },
+          ...cats.map(cat => ({
+            id: cat.title,
+            name: cat.title.charAt(0).toUpperCase() + cat.title.slice(1),
+            count: cat.postCount,
+            description: cat.description
+          }))
+        ]
+        setCategories(formattedCategories)
+
+      } catch (error) {
+        console.error('Error loading blog data:', error)
+        // Use static fallback
+        setPosts(staticArticles)
+        setFeaturedPosts(staticBlogData.featuredPosts)
+        setCategories([
+          { id: 'all', name: 'All Articles', count: 32 },
+          { id: 'lifestyle', name: 'Lifestyle', count: 18, description: 'Practical guides for daily wellness and traditional wisdom' },
+          { id: 'science', name: 'Science', count: 14, description: 'Research, safety studies, and evidence-based insights' }
+        ])
+      } finally {
+        setLoading(false)
+      }
     }
-  ]
 
-  const articles = [
-    // High-traffic SEO optimized articles
+    loadBlogData()
+  }, [])
+
+  // Static fallback articles (existing content)
+  const staticArticles = [
     {
       id: 3,
       title: "Best Herbs for Anxiety: Natural Alternatives to Prescription Medications",
       excerpt: "Compare the effectiveness of ashwagandha, valerian, and passionflower vs. prescription anti-anxiety drugs. Evidence-based guide with dosages.",
       category: "science",
       author: "Dr. Sarah Chen",
-      date: "2024-01-10",
-      readTime: "8 min read",
-      image: "🧠",
-      slug: "herbs-for-anxiety-natural-alternatives",
+      publishedAt: "2024-01-10",
+      readTime: 8,
+      featured_image: null,
+      slug: { current: "herbs-for-anxiety-natural-alternatives" },
       tags: ["anxiety", "herbs vs drugs", "ashwagandha", "prescription alternatives"]
     },
     {
@@ -87,9 +80,10 @@ export default function BlogClient() {
       excerpt: "Everything expecting mothers need to know about turmeric and curcumin supplementation, including trimester-specific recommendations.",
       category: "science",
       author: "Dr. Michael Rodriguez",
-      date: "2024-01-08",
-      readTime: "6 min read",
-      image: "🤰",
+      publishedAt: "2024-01-08",
+      readTime: 6,
+      featured_image: null,
+      slug: { current: "turmeric-pregnancy-safety-guide" },
       tags: ["turmeric pregnancy", "curcumin safety", "pregnancy herbs", "expecting mothers"]
     },
     {
@@ -98,110 +92,34 @@ export default function BlogClient() {
       excerpt: "Scientific comparison of valerian, chamomile, passionflower, and melatonin. Which sleep herbs have the strongest evidence?",
       category: "lifestyle",
       author: "Dr. Sarah Chen",
-      date: "2024-01-06",
-      readTime: "7 min read",
-      image: "🌙",
+      publishedAt: "2024-01-06",
+      readTime: 7,
+      featured_image: null,
+      slug: { current: "herbs-for-sleep-insomnia" },
       tags: ["herbs for sleep", "insomnia", "valerian vs melatonin", "natural sleep aids"]
-    },
-    {
-      id: 6,
-      title: "Ginseng vs. Coffee: Which is Better for Energy and Focus?",
-      excerpt: "Head-to-head comparison of ginseng and caffeine for mental energy, with pros, cons, and ideal use cases for each.",
-      category: "lifestyle",
-      author: "Dr. Michael Rodriguez",
-      date: "2024-01-04",
-      readTime: "5 min read",
-      image: "⚡",
-      tags: ["ginseng vs coffee", "natural energy", "focus supplements", "caffeine alternatives"]
-    },
-    {
-      id: 7,
-      title: "Herbs for Women's Health: Hormonal Balance and Menstrual Support",
-      excerpt: "Evidence-based guide to chasteberry, evening primrose, and other herbs for PMS, irregular periods, and hormone balance.",
-      category: "lifestyle",
-      author: "Dr. Lisa Zhang",
-      date: "2024-01-02",
-      readTime: "9 min read",
-      image: "🌸",
-      tags: ["women's health", "hormonal balance", "menstrual herbs", "PMS relief"]
-    },
-    {
-      id: 8,
-      title: "Herbs for Brain Health: Memory, Focus, and Cognitive Protection",
-      excerpt: "Complete guide to nootropic herbs: ginkgo, bacopa, lion's mane, and rhodiola for memory enhancement and brain protection.",
-      category: "science",
-      author: "Dr. Sarah Chen",
-      date: "2023-12-30",
-      readTime: "10 min read",
-      image: "🧬",
-      tags: ["brain health", "memory herbs", "cognitive enhancement", "nootropics"]
-    },
-    {
-      id: 9,
-      title: "Are Herbal Supplements FDA Approved? Regulation Guide 2024",
-      excerpt: "Understanding supplement regulations, what FDA approval means for herbs, and how to choose quality products.",
-      category: "science",
-      author: "Dr. Michael Rodriguez",
-      date: "2023-12-28",
-      readTime: "6 min read",
-      image: "🏛️",
-      tags: ["FDA approval", "supplement regulation", "quality standards", "herb safety"]
-    },
-    {
-      id: 10,
-      title: "Herbs for Immunity: Boost Your Immune System Naturally",
-      excerpt: "Research-backed immune herbs: echinacea, elderberry, astragalus, and medicinal mushrooms. When and how to use them effectively.",
-      category: "lifestyle",
-      author: "Dr. Lisa Zhang",
-      date: "2023-12-26",
-      readTime: "8 min read",
-      image: "🛡️",
-      tags: ["immune herbs", "echinacea", "elderberry", "immune support"]
-    },
-    {
-      id: 11,
-      title: "Herbs vs. Prescription Drugs: Safety, Effectiveness, and Cost Comparison",
-      excerpt: "Honest comparison of herbal medicine vs. pharmaceutical drugs for common conditions, including benefits, risks, and costs.",
-      category: "science",
-      author: "Dr. Sarah Chen",
-      date: "2023-12-24",
-      readTime: "12 min read",
-      image: "⚖️",
-      tags: ["herbs vs drugs", "natural vs pharmaceutical", "treatment comparison", "healthcare costs"]
-    },
-    {
-      id: 12,
-      title: "Digestive Health Herbs: Natural Remedies for Gut Issues",
-      excerpt: "Traditional and modern herbs for IBS, bloating, acid reflux, and digestive wellness. Evidence-based dosing and combinations.",
-      category: "lifestyle",
-      author: "Dr. Lisa Zhang",
-      date: "2023-12-22",
-      readTime: "7 min read",
-      image: "🫶",
-      tags: ["digestive herbs", "gut health", "IBS herbs", "stomach remedies"]
     }
   ]
 
-  const filteredArticles = articles.filter(article => {
+  const filteredArticles = posts.filter(article => {
     const matchesCategory = selectedCategory === 'all' || article.category === selectedCategory
-    const matchesSearch = searchQuery === '' || 
+    const matchesSearch = searchQuery === '' ||
       article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       article.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      article.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+      (article.tags && article.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())))
     return matchesCategory && matchesSearch
   })
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
-      
+
       <main className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Breadcrumb 
+          <Breadcrumb
             items={[
               { label: 'Home', href: '/' },
               { label: 'Health Blog', href: '/blog' }
-            ]} 
+            ]}
           />
 
           {/* Header */}
@@ -245,99 +163,119 @@ export default function BlogClient() {
             </div>
           </div>
 
-          {/* Featured Articles */}
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Featured Articles</h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              {featuredArticles.map((article) => (
-                <div key={article.id} className="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                  <div className="p-8">
-                    <div className="text-4xl mb-4">{article.image}</div>
-                    <div className="flex items-center space-x-2 mb-3">
-                      <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm capitalize">
-                        {article.category}
-                      </span>
-                      <span className="text-sm text-gray-500">{article.readTime}</span>
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-3 leading-tight">
-                      {article.title}
-                    </h3>
-                    <p className="text-gray-600 mb-4 leading-relaxed">
-                      {article.excerpt}
-                    </p>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {article.tags.map((tag, index) => (
-                        <span key={index} className="bg-gray-100 text-gray-600 px-2 py-1 rounded-lg text-xs">
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <User className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm text-gray-600">{article.author}</span>
-                        <Calendar className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm text-gray-600">{article.date}</span>
-                      </div>
-                      <button className="text-green-600 hover:text-green-700 flex items-center space-x-1">
-                        <span className="text-sm font-medium">Read More</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
+          {/* Loading State */}
+          {loading && (
+            <div className="text-center py-12">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+              <p className="mt-4 text-gray-600">Loading blog articles...</p>
             </div>
-          </div>
+          )}
 
-          {/* Recent Articles */}
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              Recent Articles {selectedCategory !== 'all' && `(${selectedCategory})`}
-            </h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredArticles.map((article) => (
-                <div key={article.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                  <div className="p-6">
-                    <div className="text-3xl mb-3">{article.image}</div>
-                    <div className="flex items-center space-x-2 mb-3">
-                      <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs capitalize">
-                        {article.category}
-                      </span>
-                      <span className="text-xs text-gray-500">{article.readTime}</span>
-                    </div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-3 leading-tight">
-                      {article.title}
-                    </h3>
-                    <p className="text-gray-600 mb-4 text-sm leading-relaxed">
-                      {article.excerpt}
-                    </p>
-                    <div className="flex flex-wrap gap-1 mb-4">
-                      {article.tags.slice(0, 3).map((tag, index) => (
-                        <span key={index} className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="text-xs text-gray-500">
-                        {article.author} • {article.date}
+          {/* Featured Articles */}
+          {!loading && (
+            <>
+              <div className="mb-12">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Featured Articles</h2>
+                <div className="grid md:grid-cols-2 gap-8">
+                  {featuredPosts.map((article) => (
+                    <div key={article._id || article.id} className="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                      <div className="p-8">
+                        <div className="text-4xl mb-4">🌿</div>
+                        <div className="flex items-center space-x-2 mb-3">
+                          <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm capitalize">
+                            {article.category}
+                          </span>
+                          <span className="text-sm text-gray-500">{article.readTime} min read</span>
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-900 mb-3 leading-tight">
+                          {article.title}
+                        </h3>
+                        <p className="text-gray-600 mb-4 leading-relaxed">
+                          {article.excerpt}
+                        </p>
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {(article.tags || []).slice(0, 3).map((tag, index) => (
+                            <span key={index} className="bg-gray-100 text-gray-600 px-2 py-1 rounded-lg text-xs">
+                              #{typeof tag === 'string' ? tag : tag.title || tag}
+                            </span>
+                          ))}
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-3">
+                            <User className="w-4 h-4 text-gray-400" />
+                            <span className="text-sm text-gray-600">{article.author}</span>
+                            <Calendar className="w-4 h-4 text-gray-400" />
+                            <span className="text-sm text-gray-600">
+                              {new Date(article.publishedAt || article.date).toLocaleDateString()}
+                            </span>
+                          </div>
+                          <Link
+                            href={`/blog/${article.slug?.current || article.slug}`}
+                            className="text-green-600 hover:text-green-700 flex items-center space-x-1"
+                          >
+                            <span className="text-sm font-medium">Read More</span>
+                            <ArrowRight className="w-4 h-4" />
+                          </Link>
+                        </div>
                       </div>
-                      <button className="text-green-600 hover:text-green-700">
-                        <ArrowRight className="w-4 h-4" />
-                      </button>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
+
+              {/* Recent Articles */}
+              <div className="mb-12">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                  Recent Articles {selectedCategory !== 'all' && `(${selectedCategory})`}
+                </h2>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {filteredArticles.map((article) => (
+                    <div key={article._id || article.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                      <div className="p-6">
+                        <div className="text-3xl mb-3">🌿</div>
+                        <div className="flex items-center space-x-2 mb-3">
+                          <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs capitalize">
+                            {article.category}
+                          </span>
+                          <span className="text-xs text-gray-500">{article.readTime} min read</span>
+                        </div>
+                        <h3 className="text-lg font-bold text-gray-900 mb-3 leading-tight">
+                          {article.title}
+                        </h3>
+                        <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+                          {article.excerpt}
+                        </p>
+                        <div className="flex flex-wrap gap-1 mb-4">
+                          {(article.tags || []).slice(0, 3).map((tag, index) => (
+                            <span key={index} className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">
+                              #{typeof tag === 'string' ? tag : tag.title || tag}
+                            </span>
+                          ))}
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="text-xs text-gray-500">
+                            {article.author} • {new Date(article.publishedAt || article.date).toLocaleDateString()}
+                          </div>
+                          <Link
+                            href={`/blog/${article.slug?.current || article.slug}`}
+                            className="text-green-600 hover:text-green-700"
+                          >
+                            <ArrowRight className="w-4 h-4" />
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
 
           {/* Newsletter Signup */}
           <div className="bg-gradient-to-br from-green-600 to-green-700 rounded-3xl p-8 text-center text-white">
             <h2 className="text-2xl font-bold mb-4">Stay Updated</h2>
             <p className="text-green-100 mb-6 max-w-2xl mx-auto">
-              Get the latest research, safety alerts, and health insights delivered to your inbox weekly. 
+              Get the latest research, safety alerts, and health insights delivered to your inbox weekly.
               Join 10,000+ readers who trust our expert analysis.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">

@@ -1,22 +1,94 @@
 User-agent: *
 Allow: /
-
-# 网站地图
-Sitemap: https://herbscience.shop/sitemap.xml
-
-# 禁止抓取的目录（根据实际情况调整）
-Disallow: /admin/
 Disallow: /api/
 Disallow: /_next/
-Disallow: /tmp/
-Disallow: /*.json$
-Disallow: /*?*
+Disallow: /test*
+Disallow: /zh/test*
+Disallow: /*?*utm_*
+Disallow: /*?*ref=*
+Disallow: /*?*fbclid=*
 
-# 允许重要资源
-Allow: /css/
-Allow: /js/
-Allow: /images/
-Allow: /fonts/
-
-# 抓取延迟（可选，防止服务器过载）
+# Enhanced crawling permissions for major search engines
+User-agent: Googlebot
+Allow: /
 Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 2
+
+# Social media crawlers for better sharing
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: TwitterBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: TelegramBot
+Allow: /
+
+User-agent: SkypeUriPreview
+Allow: /
+
+User-agent: vkShare
+Allow: /
+
+User-agent: redditbot
+Allow: /
+
+User-agent: Pinterest
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+# Chinese search engines for TCM content
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
+
+User-agent: Sogou web spider
+Allow: /
+Crawl-delay: 2
+
+User-agent: 360Spider
+Allow: /
+Crawl-delay: 2
+
+User-agent: YisouSpider
+Allow: /
+Crawl-delay: 2
+
+# Medical and health content specific crawlers
+User-agent: HealthBot
+Allow: /
+
+User-agent: MedBot
+Allow: /
+
+# Block problematic crawlers
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+# Sitemaps
+Sitemap: https://herbscience.shop/sitemap-index.xml
+Sitemap: https://herbscience.shop/sitemap.xml
+
+# Additional metadata
+Host: herbscience.shop
