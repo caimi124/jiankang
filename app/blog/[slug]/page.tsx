@@ -4,7 +4,7 @@ import Navigation from '../../../components/Navigation'
 import Breadcrumb from '../../../components/Breadcrumb'
 import { Calendar, User, Tag, ArrowLeft, Clock, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
-import { getBlogPostBySlug } from '../../../lib/sanity.js'
+import { getBlogPostBySlug } from '../../../lib/sanity'
 import { PortableText } from '@portabletext/react'
 
 interface BlogPostPageProps {
@@ -43,13 +43,13 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   }
 
   return {
-    title: post.seoTitle || `${post.title} | HerbScience Blog`,
-    description: post.seoDescription || post.excerpt || post.description || `Read about ${post.title} on HerbScience - evidence-based herbal medicine insights.`,
-    keywords: post.seoKeywords?.join(', ') || post.tags?.map((tag: any) => typeof tag === 'string' ? tag : tag.title).join(', '),
-    authors: [{ name: post.author?.name || post.author || 'HerbScience Team' }],
+    title: (post as any).seoTitle || `${post.title} | HerbScience Blog`,
+    description: (post as any).seoDescription || post.excerpt || (post as any).description || `Read about ${post.title} on HerbScience - evidence-based herbal medicine insights.`,
+    keywords: (post as any).seoKeywords?.join(', ') || post.tags?.map((tag: any) => typeof tag === 'string' ? tag : tag.title).join(', '),
+    authors: [{ name: (post.author as any)?.name || post.author || 'HerbScience Team' }],
     openGraph: {
       title: post.title,
-      description: post.excerpt || post.description,
+      description: post.excerpt || (post as any).description,
       type: 'article',
       url: `https://herbscience.shop/blog/${resolvedParams.slug}`,
       siteName: 'HerbScience',
@@ -65,7 +65,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     twitter: {
       card: 'summary_large_image',
       title: post.title,
-      description: post.excerpt || post.description,
+      description: post.excerpt || (post as any).description,
       images: ['/hero-bg.svg']
     },
     alternates: {
@@ -103,10 +103,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: post.title,
-    description: post.excerpt || post.description,
+    description: post.excerpt || (post as any).description,
     author: {
       '@type': 'Person',
-      name: post.author?.name || post.author || 'HerbScience Team'
+      name: (post.author as any)?.name || post.author || 'HerbScience Team'
     },
     publisher: {
       '@type': 'Organization',
@@ -116,8 +116,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         url: 'https://herbscience.shop/logo.png'
       }
     },
-    datePublished: post.publishedAt || post.published_date || post.date,
-    dateModified: post.publishedAt || post.published_date || post.date,
+    datePublished: (post as any).publishedAt || (post as any).published_date || (post as any).date,
+    dateModified: (post as any).publishedAt || (post as any).published_date || (post as any).date,
     keywords: post.tags?.map((tag: any) => typeof tag === 'string' ? tag : tag.title).join(', ') || '',
     url: `https://herbscience.shop/blog/${resolvedParams.slug}`
   }
@@ -134,10 +134,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   // FAQPage JSON-LD（如果文章包含 faqs 字段）
-  const faqJsonLd = Array.isArray(post.faqs) && post.faqs.length > 0 ? {
+  const faqJsonLd = Array.isArray((post as any).faqs) && (post as any).faqs.length > 0 ? {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: post.faqs.map((faq: any) => ({
+    mainEntity: (post as any).faqs.map((faq: any) => ({
       '@type': 'Question',
       name: faq.question,
       acceptedAnswer: { '@type': 'Answer', text: faq.answer }
@@ -201,16 +201,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     )}
                     <span className="flex items-center">
                       <Calendar className="h-4 w-4 mr-1" />
-                      {new Date(post.publishedAt || post.published_date || post.date).toLocaleDateString()}
+                      {new Date((post as any).publishedAt || (post as any).published_date || (post as any).date).toLocaleDateString()}
                     </span>
                     <span className="flex items-center">
                       <User className="h-4 w-4 mr-1" />
-                      {post.author?.name || post.author || 'HerbScience Team'}
+                      {(post.author as any)?.name || post.author || 'HerbScience Team'}
                     </span>
-                    {(post.readTime || post.read_time) && (
+                    {((post as any).readTime || (post as any).read_time) && (
                       <span className="flex items-center">
                         <Clock className="h-4 w-4 mr-1" />
-                        {post.readTime || post.read_time} min read
+                        {(post as any).readTime || (post as any).read_time} min read
                       </span>
                     )}
                   </div>
@@ -245,10 +245,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               {/* 文章正文 */}
               <div className="p-8">
                 <div className="prose prose-lg max-w-none">
-                  {Array.isArray(post.content) ? (
+                  {Array.isArray((post as any).content) ? (
                     // Sanity PortableText content
                     <PortableText
-                      value={post.content}
+                      value={(post as any).content}
                       components={{
                         block: {
                           h1: ({children}) => <h1 className="text-3xl font-bold text-gray-900 mt-8 mb-4">{children}</h1>,
@@ -272,13 +272,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                         }
                       }}
                     />
-                  ) : post.content ? (
+                  ) : (post as any).content ? (
                     // HTML content
-                    <div dangerouslySetInnerHTML={{ __html: post.content }} />
+                    <div dangerouslySetInnerHTML={{ __html: (post as any).content }} />
                   ) : (
                     <div className="text-gray-700 leading-relaxed space-y-6">
                       <p>
-                        {post.description || 'This article is currently being updated with the latest information. Please check back soon for the complete content.'}
+                        {(post as any).description || 'This article is currently being updated with the latest information. Please check back soon for the complete content.'}
                       </p>
                       
                       {resolvedParams.slug === 'turmeric-gut-relief-guide' && (

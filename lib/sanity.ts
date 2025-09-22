@@ -1,277 +1,274 @@
-import { createClient } from 'next-sanity'
+import { createClient } from '@sanity/client'
 import imageUrlBuilder from '@sanity/image-url'
 
-// Sanity配置
-export const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'your-project-id'
-export const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
-export const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2024-01-01'
+interface BlogPost {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  excerpt: string;
+  content?: any[];
+  publishedAt: string;
+  readTime: number;
+  featured?: boolean;
+  author: string | { name: string; bio?: string; expertise?: string[] };
+  category: string;
+  tags: string[] | { title: string }[];
+  featured_image?: any;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string[];
+  status?: string;
+}
 
-// 检查Sanity配置是否有效
-const isValidConfig = 
-  projectId && projectId !== 'your-project-id' && projectId !== 'your-project-id-here' && projectId.length >= 8
+interface Category {
+  _id: string;
+  title: string;
+  slug?: { current: string };
+  description?: string;
+  postCount?: number;
+}
 
-// Sanity客户端
 export const client = createClient({
-  projectId,
-  dataset,
-  apiVersion,
-  useCdn: process.env.NODE_ENV === 'production', // 生产环境使用CDN
-  token: process.env.SANITY_API_TOKEN, // 用于写操作
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
+  apiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2024-01-01',
+  useCdn: process.env.NODE_ENV === 'production',
+  token: process.env.NEXT_PUBLIC_SANITY_READ_TOKEN,
 })
 
-// 预览模式客户端（不使用CDN，获取最新数据）
-export const previewClient = createClient({
-  projectId,
-  dataset,
-  apiVersion,
-  useCdn: false,
-  token: process.env.SANITY_API_TOKEN,
-})
-
-// 获取客户端（根据预览模式）
-export const getClient = (usePreview = false) => (usePreview ? previewClient : client)
-
-// 图片URL构建器
 const builder = imageUrlBuilder(client)
-export const urlFor = (source: any) => builder.image(source)
 
-// 通用查询函数
+export function urlFor(source: any) {
+  return builder.image(source)
+}
+
+// sanityFetch function for compatibility
 export async function sanityFetch<T = any>(
   query: string,
-  params: any = {},
-  options: { 
-    next?: { revalidate?: number | false; tags?: string[] }
-    cache?: RequestCache
-  } = {}
+  params: Record<string, any> = {},
+  options?: { next?: { revalidate?: number } }
 ): Promise<T> {
-  const { next = { revalidate: 60 }, cache = 'force-cache' } = options
-  
-  // 检查配置是否有效，无效则直接抛出错误
-  if (!isValidConfig) {
-    throw new Error('Sanity configuration is invalid or missing. Please set up valid environment variables.')
-  }
-  
   try {
-    return await client.fetch<T>(query, params, {
-      cache,
-      next,
-    })
+    return await client.fetch<T>(query, params, options)
   } catch (error) {
-    console.error('Sanity fetch error:', error)
+    console.error('Error in sanityFetch:', error)
     throw error
   }
 }
 
-// 博客相关查询
-export const blogQueries = {
-  // 获取所有已发布的博客文章
-  getAllPosts: `
-    *[_type == "blogPost" && status == "published"] | order(publishedAt desc) {
-      _id,
-      title,
-      slug,
-      excerpt,
-      publishedAt,
-      readTime,
-      featured,
-      "author": author->{name, slug, avatar, title},
-      "category": category->{title, slug, color, icon},
-      "tags": tags[]->{title, slug},
-      featured_image,
-      seoTitle,
-      seoDescription,
-      seoKeywords
-    }
-  `,
-  
-  // 根据slug获取单篇文章
-  getPostBySlug: `
-    *[_type == "blogPost" && slug.current == $slug && status == "published"][0] {
-      _id,
-      title,
-      slug,
-      excerpt,
-      content,
-      publishedAt,
-      readTime,
-      featured,
-      "author": author->{name, slug, avatar, title, bio, credentials, specialties},
-      "category": category->{title, slug, color, icon},
-      "tags": tags[]->{title, slug},
-      featured_image,
-      seoTitle,
-      seoDescription,
-      seoKeywords,
-      status
-    }
-  `,
-  
-  // 获取特色文章
-  getFeaturedPosts: `
-    *[_type == "blogPost" && status == "published" && featured == true] | order(publishedAt desc) [0...3] {
-      _id,
-      title,
-      slug,
-      excerpt,
-      publishedAt,
-      readTime,
-      "author": author->{name, slug},
-      "category": category->{title, slug, color, icon},
-      "tags": tags[]->{title, slug},
-      featured_image
-    }
-  `,
-  
-  // 根据分类获取文章
-  getPostsByCategory: `
-    *[_type == "blogPost" && status == "published" && category._ref == $categoryId] | order(publishedAt desc) {
-      _id,
-      title,
-      slug,
-      excerpt,
-      publishedAt,
-      readTime,
-      "author": author->{name, slug},
-      "category": category->{title, slug, color, icon},
-      featured_image
-    }
-  `,
-  
-  // 获取相关文章
-  getRelatedPosts: `
-    *[_type == "blogPost" && status == "published" && _id != $postId && count(tags[@._ref in *[_type == "blogPost" && _id == $postId][0].tags[]._ref]) > 0] | order(publishedAt desc) [0...3] {
-      _id,
-      title,
-      slug,
-      excerpt,
-      publishedAt,
-      "author": author->{name, slug},
-      "category": category->{title, slug}
-    }
-  `
+// Blog post queries
+export const blogPostQueries = {
+  // Get all published blog posts with basic info
+  getAllPosts: `*[_type == "blogPost" && status == "published"] | order(publishedAt desc) {
+    _id,
+    title,
+    slug,
+    excerpt,
+    publishedAt,
+    readTime,
+    featured,
+    "author": author->name,
+    "category": category->title,
+    "tags": tags[]->title,
+    featured_image,
+    seoTitle,
+    seoDescription
+  }`,
+
+  // Get featured blog posts
+  getFeaturedPosts: `*[_type == "blogPost" && status == "published" && featured == true] | order(publishedAt desc) [0...4] {
+    _id,
+    title,
+    slug,
+    excerpt,
+    publishedAt,
+    readTime,
+    "author": author->name,
+    "category": category->title,
+    "tags": tags[]->title,
+    featured_image,
+    seoTitle,
+    seoDescription
+  }`,
+
+  // Get blog post by slug
+  getPostBySlug: `*[_type == "blogPost" && slug.current == $slug && status == "published"][0] {
+    _id,
+    title,
+    slug,
+    excerpt,
+    content,
+    publishedAt,
+    readTime,
+    featured,
+    "author": author->{name, bio, expertise},
+    "category": category->{title, description},
+    "tags": tags[]->{title, slug},
+    featured_image,
+    seoTitle,
+    seoDescription,
+    seoKeywords
+  }`,
+
+  // Get posts by category
+  getPostsByCategory: `*[_type == "blogPost" && status == "published" && category->title == $category] | order(publishedAt desc) {
+    _id,
+    title,
+    slug,
+    excerpt,
+    publishedAt,
+    readTime,
+    "author": author->name,
+    "category": category->title,
+    "tags": tags[]->title,
+    featured_image,
+    seoTitle,
+    seoDescription
+  }`,
+
+  // Get all categories with post counts
+  getCategories: `*[_type == "category"] {
+    _id,
+    title,
+    slug,
+    description,
+    "postCount": count(*[_type == "blogPost" && status == "published" && references(^._id)])
+  } | order(title asc)`,
+
+  // Get all tags with post counts
+  getTags: `*[_type == "tag"] {
+    _id,
+    title,
+    slug,
+    "postCount": count(*[_type == "blogPost" && status == "published" && references(^._id)])
+  } | order(title asc)`,
+
+  // Search posts
+  searchPosts: `*[_type == "blogPost" && status == "published" && (
+    title match $searchTerm + "*" ||
+    excerpt match $searchTerm + "*" ||
+    author->name match $searchTerm + "*" ||
+    tags[]->title match $searchTerm + "*"
+  )] | order(publishedAt desc) {
+    _id,
+    title,
+    slug,
+    excerpt,
+    publishedAt,
+    readTime,
+    "author": author->name,
+    "category": category->title,
+    "tags": tags[]->title,
+    featured_image,
+    seoTitle,
+    seoDescription
+  }`
 }
 
-// 其他查询
-export const queries = {
-  // 获取所有分类
-  getAllCategories: `
-    *[_type == "category"] | order(title asc) {
-      _id,
-      title,
-      slug,
-      description,
-      color,
-      icon,
-      "postCount": count(*[_type == "blogPost" && category._ref == ^._id && status == "published"])
-    }
-  `,
-  
-  // 获取所有标签
-  getAllTags: `
-    *[_type == "tag"] | order(title asc) {
-      _id,
-      title,
-      slug,
-      description,
-      "postCount": count(*[_type == "blogPost" && references(^._id) && status == "published"])
-    }
-  `,
-  
-  // 获取所有作者
-  getAllAuthors: `
-    *[_type == "author"] | order(name asc) {
-      _id,
-      name,
-      slug,
-      avatar,
-      title,
-      bio,
-      credentials,
-      specialties,
-      "postCount": count(*[_type == "blogPost" && author._ref == ^._id && status == "published"])
-    }
-  `,
-  
-  // 获取站点设置
-  getSiteSettings: `
-    *[_type == "siteSettings"][0] {
-      title,
-      description,
-      keywords,
-      logo,
-      favicon,
-      socialMedia,
-      analytics
-    }
-  `
-}
-
-// 类型定义
-export interface BlogPost {
-  _id: string
-  title: string
-  slug: { current: string }
-  excerpt: string
-  content?: any[]
-  publishedAt: string
-  readTime: number
-  featured: boolean
-  author: Author
-  category: Category
-  tags: Tag[]
-  featured_image?: any
-  seoTitle?: string
-  seoDescription?: string
-  seoKeywords?: string[]
-  status: 'draft' | 'published' | 'archived'
-}
-
-export interface Author {
-  _id?: string
-  name: string
-  slug: { current: string }
-  avatar?: any
-  title?: string
-  bio?: string
-  credentials?: string[]
-  specialties?: string[]
-  social?: {
-    website?: string
-    linkedin?: string
-    twitter?: string
+// Helper functions for fetching data
+export async function getAllBlogPosts(): Promise<BlogPost[]> {
+  try {
+    return await client.fetch(blogPostQueries.getAllPosts)
+  } catch (error) {
+    console.error('Error fetching blog posts:', error)
+    return []
   }
 }
 
-export interface Category {
-  _id?: string
-  title: string
-  slug: { current: string }
-  description?: string
-  color?: { hex: string }
-  icon?: string
+export async function getFeaturedBlogPosts(): Promise<BlogPost[]> {
+  try {
+    return await client.fetch(blogPostQueries.getFeaturedPosts)
+  } catch (error) {
+    console.error('Error fetching featured posts:', error)
+    return []
+  }
 }
 
-export interface Tag {
-  _id?: string
-  title: string
-  slug: { current: string }
-  description?: string
+export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
+  try {
+    return await client.fetch(blogPostQueries.getPostBySlug, { slug })
+  } catch (error) {
+    console.error('Error fetching blog post:', error)
+    return null
+  }
 }
 
-export interface SiteSettings {
-  title: string
-  description: string
-  keywords: string[]
-  logo?: any
-  favicon?: any
-  socialMedia?: {
-    twitter?: string
-    facebook?: string
-    instagram?: string
-    youtube?: string
+export async function getBlogPostsByCategory(category: string): Promise<BlogPost[]> {
+  try {
+    return await client.fetch(blogPostQueries.getPostsByCategory, { category })
+  } catch (error) {
+    console.error('Error fetching posts by category:', error)
+    return []
   }
-  analytics?: {
-    googleAnalytics?: string
-    googleTagManager?: string
+}
+
+export async function getBlogCategories(): Promise<Category[]> {
+  try {
+    return await client.fetch(blogPostQueries.getCategories)
+  } catch (error) {
+    console.error('Error fetching categories:', error)
+    return []
   }
-} 
+}
+
+export async function searchBlogPosts(searchTerm: string): Promise<BlogPost[]> {
+  try {
+    return await client.fetch(blogPostQueries.searchPosts, { searchTerm })
+  } catch (error) {
+    console.error('Error searching posts:', error)
+    return []
+  }
+}
+
+// Static data fallback for development/testing
+export const staticBlogData = {
+  featuredPosts: [
+    {
+      _id: '1',
+      title: "Why Personalized Herbal Supplements Work Better Than One-Size-Fits-All Remedies",
+      slug: { current: "personalized-herbal-supplements-constitution-based" },
+      excerpt: "Discover why some herbs work for you while others don't, and how TCM constitution testing can help you choose the right herbal remedies for your unique body type.",
+      publishedAt: "2024-01-19",
+      readTime: 8,
+      author: "HerbScience Expert Team",
+      category: "lifestyle",
+      tags: ["TCM", "constitution types", "personalized medicine", "herbal safety"],
+      featured_image: null,
+      seoTitle: "Personalized Herbal Supplements: Why Constitution Testing Works Better",
+      seoDescription: "Discover why some herbs work for you while others don't. Learn how TCM constitution testing helps you choose the right herbal remedies for your unique body type."
+    },
+    {
+      _id: '2',
+      title: "The 9 TCM Constitution Types: Your Personal Guide to Herbal Selection",
+      slug: { current: "tcm-constitution-types-herbal-guide" },
+      excerpt: "Learn about the 9 constitution types in Traditional Chinese Medicine and how they guide personalized herb selection for optimal health and wellness.",
+      publishedAt: "2024-01-17",
+      readTime: 12,
+      author: "HerbScience Expert Team",
+      category: "lifestyle",
+      tags: ["TCM", "constitution types", "traditional medicine", "personalized health"],
+      featured_image: null,
+      seoTitle: "9 TCM Constitution Types: Complete Guide to Herbal Selection",
+      seoDescription: "Learn the 9 TCM constitution types and how they guide personalized herbal selection. Take our constitution test to find the right herbs for your body type."
+    },
+    {
+      _id: '3',
+      title: "Best Immune Boosting Herbs: Science-Based Guide for Each Constitution Type",
+      slug: { current: "immune-boosting-herbs-constitution-guide" },
+      excerpt: "Discover which immune boosting herbs work best for your constitution type. Evidence-based guide to echinacea, astragalus, elderberry and more.",
+      publishedAt: "2024-01-15",
+      readTime: 10,
+      author: "HerbScience Expert Team",
+      category: "science",
+      tags: ["immune support", "evidence-based", "TCM", "herbal safety"],
+      featured_image: null,
+      seoTitle: "Best Immune Boosting Herbs by Constitution Type: Science-Based Guide",
+      seoDescription: "Learn which immune boosting herbs work best for your constitution. Evidence-based guide to astragalus, elderberry, echinacea and more based on TCM principles."
+    }
+  ],
+
+  categories: [
+    { _id: '1', title: 'lifestyle', description: 'Practical guides for daily wellness and traditional wisdom', postCount: 18 },
+    { _id: '2', title: 'science', description: 'Research, safety studies, and evidence-based insights', postCount: 14 }
+  ]
+}

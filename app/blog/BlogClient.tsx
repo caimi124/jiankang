@@ -4,15 +4,15 @@ import { useState, useEffect } from 'react'
 import Navigation from '../../components/Navigation'
 import Breadcrumb from '../../components/Breadcrumb'
 import { Calendar, User, Tag, ArrowRight, Search, Filter } from 'lucide-react'
-import { getAllBlogPosts, getFeaturedBlogPosts, getBlogCategories, staticBlogData } from '../../lib/sanity.js'
+import { getAllBlogPosts, getFeaturedBlogPosts, getBlogCategories, staticBlogData } from '../../lib/sanity'
 import Link from 'next/link'
 
 export default function BlogClient() {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
-  const [posts, setPosts] = useState([])
-  const [featuredPosts, setFeaturedPosts] = useState([])
-  const [categories, setCategories] = useState([])
+  const [posts, setPosts] = useState<any[]>([])
+  const [featuredPosts, setFeaturedPosts] = useState<any[]>([])
+  const [categories, setCategories] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -105,7 +105,7 @@ export default function BlogClient() {
     const matchesSearch = searchQuery === '' ||
       article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       article.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (article.tags && article.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())))
+      (article.tags && article.tags.some((tag: any) => tag.toLowerCase().includes(searchQuery.toLowerCase())))
     return matchesCategory && matchesSearch
   })
 
@@ -194,7 +194,7 @@ export default function BlogClient() {
                           {article.excerpt}
                         </p>
                         <div className="flex flex-wrap gap-2 mb-4">
-                          {(article.tags || []).slice(0, 3).map((tag, index) => (
+                          {(article.tags || []).slice(0, 3).map((tag: any, index: number) => (
                             <span key={index} className="bg-gray-100 text-gray-600 px-2 py-1 rounded-lg text-xs">
                               #{typeof tag === 'string' ? tag : tag.title || tag}
                             </span>
@@ -246,7 +246,7 @@ export default function BlogClient() {
                           {article.excerpt}
                         </p>
                         <div className="flex flex-wrap gap-1 mb-4">
-                          {(article.tags || []).slice(0, 3).map((tag, index) => (
+                          {(article.tags || []).slice(0, 3).map((tag: any, index: number) => (
                             <span key={index} className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">
                               #{typeof tag === 'string' ? tag : tag.title || tag}
                             </span>
