@@ -86,25 +86,38 @@ export default function ConstitutionTestClientOptimized() {
                 <span className="text-3xl text-white">🌿</span>
               </div>
               <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-                <span className="text-green-600">TCM Body Constitution Test</span>
+                <span className="text-green-600">TCM Body Constitution Test</span> | 5-Minute Body Type Quiz
               </h1>
               <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
-                Take our <strong>5-minute TCM body type quiz</strong> to discover your Chinese medicine constitution.
-                Get <strong>personalized herbal recommendations</strong>, evidence-based diet guidance, and holistic health insights
-                tailored to your unique body type from our comprehensive constitution assessment.
+                Discover your unique body type with our quick and evidence-based Traditional Chinese Medicine constitution test.
+                In just 5 minutes, answer 20 simple questions to uncover your constitution type and get
+                <strong> personalized herbal recommendations, safe diet guidance, and holistic lifestyle tips</strong>.
               </p>
+
+              {/* Primary CTA Button */}
+              <div className="mb-8">
+                <button
+                  onClick={handleStartTest}
+                  className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-10 py-4 rounded-xl text-xl font-bold hover:from-green-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
+                >
+                  Start Free Constitution Test
+                </button>
+                <p className="text-sm text-gray-500 mt-3">
+                  ✨ Free • No Registration Required • Instant Results
+                </p>
+              </div>
             </div>
 
             {/* Why Take This TCM Constitution Test */}
             <div className="mb-12">
               <h2 className="text-3xl font-bold text-gray-800 text-center mb-8">
-                Why Take This <span className="text-green-600">TCM Body Type Quiz</span>?
+                Why Take This <span className="text-green-600">Holistic Health Quiz</span>?
               </h2>
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
                   <div className="text-3xl mb-4">⚡</div>
                   <h3 className="text-lg font-semibold text-gray-800 mb-2">Evidence-Based Assessment</h3>
-                  <p className="text-gray-600">20 scientific questions based on official Chinese medicine constitution test standards and TCM constitution types</p>
+                  <p className="text-gray-600">Based on official TCM Constitution Classification Standards (China Association of Chinese Medicine, 2009), covering all <strong>9 TCM body constitutions</strong></p>
                 </div>
                 <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
                   <div className="text-3xl mb-4">🎯</div>
@@ -113,8 +126,8 @@ export default function ConstitutionTestClientOptimized() {
                 </div>
                 <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
                   <div className="text-3xl mb-4">🌱</div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">Holistic Health Quiz</h3>
-                  <p className="text-gray-600">Complete wellness insights including energy herbs, sleep support herbs, and immune boosting herbs recommendations</p>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">Holistic Wellness Insights</h3>
+                  <p className="text-gray-600">Complete wellness guidance including <strong>energy herbs, sleep support herbs, and immune boosting herbs</strong> recommendations for better sleep, energy, and immunity</p>
                 </div>
               </div>
             </div>
@@ -125,10 +138,10 @@ export default function ConstitutionTestClientOptimized() {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <h3 className="text-lg font-semibold text-green-700 mb-3">🎯 Your TCM Constitution Type</h3>
-                  <p className="text-gray-700 mb-4">Discover if you're Balanced, Yang-deficient, Qi-deficient, Blood-stasis, or one of 9 unique constitution types</p>
+                  <p className="text-gray-700 mb-4">Discover which of the <strong>9 TCM body constitutions</strong> you belong to: Balanced, Qi-deficient, Yang-deficient, Yin-deficient, Blood-stasis, Phlegm-damp, Damp-heat, Qi-stagnation, or Special constitution</p>
 
-                  <h3 className="text-lg font-semibold text-green-700 mb-3">🌿 Safe Herbal Guidance</h3>
-                  <p className="text-gray-700">Evidence-based herb suggestions including stress relief herbs and immune boosting herbs for your body type</p>
+                  <h3 className="text-lg font-semibold text-green-700 mb-3">🌿 Safe Herbal Recommendations</h3>
+                  <p className="text-gray-700">Personalized herb suggestions including <strong>immune boosting herbs, stress relief herbs, and natural supplements</strong> that actually work for your constitution</p>
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-green-700 mb-3">🍽️ Diet & Lifestyle Tips</h3>
@@ -140,20 +153,44 @@ export default function ConstitutionTestClientOptimized() {
               </div>
             </div>
 
-            {/* CTA Section */}
+            {/* FAQ Section */}
+            <div className="mb-12">
+              <h2 className="text-3xl font-bold text-gray-800 text-center mb-8">Frequently Asked Questions</h2>
+              <div className="space-y-6">
+                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-3">Q1: How accurate is this TCM body type quiz?</h3>
+                  <p className="text-gray-600">This quiz is based on the official TCM Constitution Classification Standards used by practitioners worldwide. While it provides valuable insights, it is not a substitute for professional medical advice.</p>
+                </div>
+                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-3">Q2: Do I need to register or pay to see my results?</h3>
+                  <p className="text-gray-600">No. The TCM Body Constitution Test is <strong>free, requires no registration</strong>, and you'll get instant results after completing the 20 questions.</p>
+                </div>
+                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-3">Q3: What makes this different from a regular body type quiz?</h3>
+                  <p className="text-gray-600">Unlike general "body type" quizzes, this assessment is rooted in Traditional Chinese Medicine and backed by clinical research, covering <strong>9 constitution types</strong>.</p>
+                </div>
+                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-3">Q4: Can I use the herbal recommendations immediately?</h3>
+                  <p className="text-gray-600">Yes, but always consult a qualified TCM practitioner before starting any herbal supplement, especially if you are pregnant, breastfeeding, or on medication.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Final CTA Section */}
             <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 text-center shadow-xl">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Ready to Begin Your TCM Body Constitution Test?</h2>
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">Ready to Begin?</h2>
               <p className="text-gray-600 mb-6">
-                This <strong>5-minute body type quiz</strong> takes only 20 questions. Answer honestly for the most accurate Chinese medicine constitution test results.
+                This <strong>5-minute TCM Constitution Test</strong> includes 20 easy-to-answer questions.
+                Answer honestly for the most accurate results and unlock your <strong>personalized herbal recommendations</strong> today.
               </p>
               <button
                 onClick={handleStartTest}
-                className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-green-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
+                className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-10 py-4 rounded-xl text-xl font-bold hover:from-green-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
               >
-                Start Your Constitution Assessment
+                Start My Constitution Assessment
               </button>
               <p className="text-sm text-gray-500 mt-4">
-                ✨ Free • No Registration Required • Instant Personalized Results
+                ✨ Free • No Registration Required • Instant Results
               </p>
               <p className="text-xs text-gray-400 mt-2">
                 This assessment is for educational purposes only • Consult a qualified TCM practitioner for treatment
