@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import React from 'react'
-import ConstitutionTestClientDebug from './ConstitutionTestClientDebug'
+import ConstitutionTestClientOptimized from './ConstitutionTestClientOptimized'
 import ErrorBoundary from '../../components/ErrorBoundary'
 
 export const metadata: Metadata = {
@@ -60,7 +60,9 @@ export default function ConstitutionTestPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ConstitutionTestClientDebug />
+      <ErrorBoundary>
+        <ConstitutionTestClientOptimized />
+      </ErrorBoundary>
     </>
   )
 } 
