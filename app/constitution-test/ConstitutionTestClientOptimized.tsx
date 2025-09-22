@@ -67,6 +67,23 @@ export default function ConstitutionTestClientOptimized() {
   if (currentStep === 'welcome') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50">
+        {/* Navigation Bar */}
+        <nav className="bg-white/90 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center justify-between h-16">
+              <div className="flex items-center">
+                <span className="text-2xl font-bold text-green-600">🌿 HerbScience</span>
+              </div>
+              <div className="hidden md:flex items-center space-x-8">
+                <a href="/" className="text-gray-600 hover:text-green-600 transition-colors">Home</a>
+                <a href="/herbs" className="text-gray-600 hover:text-green-600 transition-colors">Herbs</a>
+                <a href="/constitution-test" className="text-green-600 font-medium">Constitution Test</a>
+                <a href="/blog" className="text-gray-600 hover:text-green-600 transition-colors">Blog</a>
+              </div>
+            </div>
+          </div>
+        </nav>
+
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto">
             {/* Hero Section */}
@@ -75,47 +92,77 @@ export default function ConstitutionTestClientOptimized() {
                 <span className="text-3xl text-white">🌿</span>
               </div>
               <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-                Discover Your <span className="text-green-600">TCM Constitution</span>
+                <span className="text-green-600">TCM Body Constitution Test</span>
               </h1>
               <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
-                Uncover your unique Traditional Chinese Medicine body type with our comprehensive assessment.
-                Get personalized health insights, dietary recommendations, and herbal suggestions tailored to your constitution.
+                Take our <strong>5-minute TCM body type quiz</strong> to discover your Chinese medicine constitution.
+                Get <strong>personalized herbal recommendations</strong>, evidence-based diet guidance, and holistic health insights
+                tailored to your unique body type from our comprehensive constitution assessment.
               </p>
             </div>
 
-            {/* Features */}
-            <div className="grid md:grid-cols-3 gap-6 mb-12">
-              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
-                <div className="text-3xl mb-4">⚡</div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">Quick Assessment</h3>
-                <p className="text-gray-600">Only 20 thoughtfully crafted questions based on official TCM standards</p>
+            {/* Why Take This TCM Constitution Test */}
+            <div className="mb-12">
+              <h2 className="text-3xl font-bold text-gray-800 text-center mb-8">
+                Why Take This <span className="text-green-600">TCM Body Type Quiz</span>?
+              </h2>
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
+                  <div className="text-3xl mb-4">⚡</div>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">Evidence-Based Assessment</h3>
+                  <p className="text-gray-600">20 scientific questions based on official Chinese medicine constitution test standards and TCM constitution types</p>
+                </div>
+                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
+                  <div className="text-3xl mb-4">🎯</div>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">Personalized Herbal Recommendations</h3>
+                  <p className="text-gray-600">Get safe herbal guidance and body type analysis with lifestyle recommendations tailored to your constitution</p>
+                </div>
+                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
+                  <div className="text-3xl mb-4">🌱</div>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">Holistic Health Quiz</h3>
+                  <p className="text-gray-600">Complete wellness insights including energy herbs, sleep support herbs, and immune boosting herbs recommendations</p>
+                </div>
               </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
-                <div className="text-3xl mb-4">🎯</div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">Personalized Results</h3>
-                <p className="text-gray-600">Detailed constitution analysis with lifestyle and dietary recommendations</p>
-              </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
-                <div className="text-3xl mb-4">🌱</div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">Herbal Guidance</h3>
-                <p className="text-gray-600">Receive curated herb recommendations based on your unique constitution</p>
+            </div>
+
+            {/* What You'll Get Section */}
+            <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-8 mb-8">
+              <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">What You'll Get After This Constitution Test</h2>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="text-lg font-semibold text-green-700 mb-3">🎯 Your TCM Constitution Type</h3>
+                  <p className="text-gray-700 mb-4">Discover if you're Balanced, Yang-deficient, Qi-deficient, Blood-stasis, or one of 9 unique constitution types</p>
+
+                  <h3 className="text-lg font-semibold text-green-700 mb-3">🌿 Safe Herbal Guidance</h3>
+                  <p className="text-gray-700">Evidence-based herb suggestions including stress relief herbs and immune boosting herbs for your body type</p>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-green-700 mb-3">🍽️ Diet & Lifestyle Tips</h3>
+                  <p className="text-gray-700 mb-4">Practical, everyday adjustments for better energy, sleep, and immunity based on your constitution</p>
+
+                  <h3 className="text-lg font-semibold text-green-700 mb-3">⚕️ Wellness Insights</h3>
+                  <p className="text-gray-700">Understand your natural tendencies and how to restore balance with personalized recommendations</p>
+                </div>
               </div>
             </div>
 
             {/* CTA Section */}
             <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 text-center shadow-xl">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Ready to Begin?</h2>
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">Ready to Begin Your TCM Body Constitution Test?</h2>
               <p className="text-gray-600 mb-6">
-                The assessment takes about 5-10 minutes. Answer honestly for the most accurate results.
+                This <strong>5-minute body type quiz</strong> takes only 20 questions. Answer honestly for the most accurate Chinese medicine constitution test results.
               </p>
               <button
                 onClick={handleStartTest}
                 className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-green-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
               >
-                Start Your Assessment
+                Start Your Constitution Assessment
               </button>
               <p className="text-sm text-gray-500 mt-4">
-                ✨ Free • No Registration Required • Instant Results
+                ✨ Free • No Registration Required • Instant Personalized Results
+              </p>
+              <p className="text-xs text-gray-400 mt-2">
+                This assessment is for educational purposes only • Consult a qualified TCM practitioner for treatment
               </p>
             </div>
           </div>
@@ -130,6 +177,23 @@ export default function ConstitutionTestClientOptimized() {
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50">
+        {/* Navigation Bar */}
+        <nav className="bg-white/90 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center justify-between h-16">
+              <div className="flex items-center">
+                <span className="text-2xl font-bold text-green-600">🌿 HerbScience</span>
+              </div>
+              <div className="hidden md:flex items-center space-x-8">
+                <a href="/" className="text-gray-600 hover:text-green-600 transition-colors">Home</a>
+                <a href="/herbs" className="text-gray-600 hover:text-green-600 transition-colors">Herbs</a>
+                <a href="/constitution-test" className="text-green-600 font-medium">Constitution Test</a>
+                <a href="/blog" className="text-gray-600 hover:text-green-600 transition-colors">Blog</a>
+              </div>
+            </div>
+          </div>
+        </nav>
+
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-3xl mx-auto">
             {/* Progress Bar */}
@@ -231,6 +295,23 @@ export default function ConstitutionTestClientOptimized() {
 
       return (
         <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50">
+          {/* Navigation Bar */}
+          <nav className="bg-white/90 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
+            <div className="container mx-auto px-4">
+              <div className="flex items-center justify-between h-16">
+                <div className="flex items-center">
+                  <span className="text-2xl font-bold text-green-600">🌿 HerbScience</span>
+                </div>
+                <div className="hidden md:flex items-center space-x-8">
+                  <a href="/" className="text-gray-600 hover:text-green-600 transition-colors">Home</a>
+                  <a href="/herbs" className="text-gray-600 hover:text-green-600 transition-colors">Herbs</a>
+                  <a href="/constitution-test" className="text-green-600 font-medium">Constitution Test</a>
+                  <a href="/blog" className="text-gray-600 hover:text-green-600 transition-colors">Blog</a>
+                </div>
+              </div>
+            </div>
+          </nav>
+
           <div className="container mx-auto px-4 py-8">
             <div className="max-w-4xl mx-auto">
               {/* Results Header */}
