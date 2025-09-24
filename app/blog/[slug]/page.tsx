@@ -383,7 +383,7 @@ function getLocalBlogPost(slug: string) {
     },
     'why-some-herbs-work-for-you-and-others-dont': {
       title: 'Why Personalized Herbal Supplements Work Better Than One-Size-Fits-All Herbal Remedies',
-      excerpt: 'Walk into any supplement store and you'll see shelves stacked with herbal capsules and teas. But why do some herbs work for you while others don't? Discover how constitution tests and body type assessments help you find safe herbal supplements that actually work.',
+      excerpt: 'Walk into any supplement store and you\'ll see shelves stacked with herbal capsules and teas. But why do some herbs work for you while others don\'t? Discover how constitution tests and body type assessments help you find safe herbal supplements that actually work.',
       author: 'Dr. Sarah Chen',
       date: '2024-01-15',
       read_time: '9',
@@ -513,10 +513,9 @@ function getLocalBlogPost(slug: string) {
 <p>Take our <a href="/constitution-test"><strong>TCM Constitution Test</strong></a> to understand your unique <strong>body type</strong> and get <strong>personalized herbal supplement</strong> recommendations based on your individual constitution and health patterns. It's free, takes 5 minutes, and gives you a personalized roadmap to <strong>safe herbal use</strong>.</p>
   `,
       description: 'Discover the fascinating science behind individual herb effectiveness. Learn why the same herb can work wonders for some people but not others, and how to find what works best for your unique body chemistry.'
-    },
-}
+    }
     // 可以添加更多本地文章数据
   }
-  
+
   return localPosts[slug as keyof typeof localPosts] || null
 } 
