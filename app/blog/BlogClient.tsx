@@ -10,102 +10,61 @@ import Link from 'next/link'
 export default function BlogClient() {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
-  const [posts, setPosts] = useState<any[]>([])
-  const [featuredPosts, setFeaturedPosts] = useState<any[]>([])
-  const [categories, setCategories] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
+  const [posts, setPosts] = useState<any[]>(staticArticles) // Start with static data
+  const [featuredPosts, setFeaturedPosts] = useState<any[]>(staticBlogData.featuredPosts)
+  const [categories, setCategories] = useState<any[]>([
+    { id: 'all', name: 'All Articles', count: staticArticles.length },
+    ...staticBlogData.categories.map(cat => ({
+      id: cat.title || cat.id,
+      name: (cat.title || cat.name || '').charAt(0).toUpperCase() + (cat.title || cat.name || '').slice(1),
+      count: cat.postCount || 0,
+      description: cat.description
+    }))
+  ])
+  const [loading, setLoading] = useState(false) // Start with loading false
 
   useEffect(() => {
-    async function loadBlogData() {
-      console.log('🔄 Starting blog data load...')
-
+    // Try to load Sanity data in background, but don't block the UI
+    async function loadSanityData() {
       try {
-        setLoading(true)
+        console.log('🔄 Loading Sanity data in background...')
 
-        // Set a timeout to prevent infinite loading
-        const timeoutId = setTimeout(() => {
-          console.log('⏰ Data loading timeout, using static data')
-          setPosts(staticArticles)
-          setFeaturedPosts(staticBlogData.featuredPosts)
-          setCategories([
-            { id: 'all', name: 'All Articles', count: staticArticles.length },
-            ...staticBlogData.categories.map(cat => ({
+        const [allPosts, featured, cats] = await Promise.all([
+          getAllBlogPosts().catch(() => []),
+          getFeaturedBlogPosts().catch(() => staticBlogData.featuredPosts),
+          getBlogCategories().catch(() => staticBlogData.categories)
+        ])
+
+        // Only update if we got better data
+        if (allPosts && allPosts.length > 0) {
+          console.log('✅ Got Sanity data, updating...')
+          setPosts(allPosts)
+        }
+
+        if (featured && featured.length > 0) {
+          setFeaturedPosts(featured)
+        }
+
+        if (cats && cats.length > 0) {
+          const formattedCategories = [
+            { id: 'all', name: 'All Articles', count: (allPosts && allPosts.length > 0) ? allPosts.length : staticArticles.length },
+            ...cats.map(cat => ({
               id: cat.title || cat.id,
               name: (cat.title || cat.name || '').charAt(0).toUpperCase() + (cat.title || cat.name || '').slice(1),
               count: cat.postCount || 0,
               description: cat.description
             }))
-          ])
-          setLoading(false)
-        }, 5000) // 5-second timeout
-
-        console.log('📡 Attempting to fetch data from Sanity...')
-
-        // Try to fetch from Sanity first, fallback to static data
-        const [allPosts, featured, cats] = await Promise.all([
-          getAllBlogPosts().catch((error) => {
-            console.warn('⚠️ Sanity getAllBlogPosts failed:', error?.message || error)
-            return []
-          }),
-          getFeaturedBlogPosts().catch((error) => {
-            console.warn('⚠️ Sanity getFeaturedBlogPosts failed:', error?.message || error)
-            return staticBlogData.featuredPosts
-          }),
-          getBlogCategories().catch((error) => {
-            console.warn('⚠️ Sanity getBlogCategories failed:', error?.message || error)
-            return staticBlogData.categories
-          })
-        ])
-
-        // Clear timeout since we got data
-        clearTimeout(timeoutId)
-
-        console.log('📊 Data fetched:', {
-          allPostsCount: allPosts?.length || 0,
-          featuredCount: featured?.length || 0,
-          categoriesCount: cats?.length || 0
-        })
-
-        // Use static articles if Sanity data is empty
-        const postsToUse = (allPosts && allPosts.length > 0) ? allPosts : staticArticles
-        const featuredToUse = (featured && featured.length > 0) ? featured : staticBlogData.featuredPosts
-
-        setPosts(postsToUse)
-        setFeaturedPosts(featuredToUse)
-
-        // Add "All Articles" option to categories
-        const formattedCategories = [
-          { id: 'all', name: 'All Articles', count: postsToUse.length },
-          ...(cats || staticBlogData.categories).map(cat => ({
-            id: cat.title || cat.id,
-            name: (cat.title || cat.name || '').charAt(0).toUpperCase() + (cat.title || cat.name || '').slice(1),
-            count: cat.postCount || 0,
-            description: cat.description
-          }))
-        ]
-        setCategories(formattedCategories)
-
-        console.log('✅ Blog data loaded successfully')
+          ]
+          setCategories(formattedCategories)
+        }
 
       } catch (error) {
-        console.error('❌ Critical error loading blog data:', error)
-
-        // Emergency static fallback
-        console.log('🚨 Using emergency static fallback')
-        setPosts(staticArticles)
-        setFeaturedPosts(staticBlogData.featuredPosts)
-        setCategories([
-          { id: 'all', name: 'All Articles', count: staticArticles.length },
-          { id: 'lifestyle', name: 'Lifestyle', count: 18, description: 'Practical guides for daily wellness and traditional wisdom' },
-          { id: 'science', name: 'Science', count: 14, description: 'Research, safety studies, and evidence-based insights' }
-        ])
-      } finally {
-        console.log('🏁 Blog data loading finished, setting loading to false')
-        setLoading(false)
+        console.log('⚠️ Sanity loading failed, keeping static data:', error)
       }
     }
 
-    loadBlogData()
+    // Load Sanity data without blocking UI
+    loadSanityData()
   }, [])
 
   // Static fallback articles (existing content)

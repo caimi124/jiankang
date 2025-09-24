@@ -90,7 +90,7 @@ export default function ConstitutionTestClientOptimized() {
               </h1>
               <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
                 Discover your unique body type with our quick and evidence-based Traditional Chinese Medicine constitution test.
-                In just 5 minutes, answer 20 simple questions to uncover your constitution type and get
+                In just 5 minutes, answer 35 simple questions to uncover your constitution type and get
                 <strong> personalized herbal recommendations, safe diet guidance, and holistic lifestyle tips</strong>.
               </p>
 
@@ -163,7 +163,7 @@ export default function ConstitutionTestClientOptimized() {
                 </div>
                 <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg">
                   <h3 className="text-lg font-semibold text-gray-800 mb-3">Q2: Do I need to register or pay to see my results?</h3>
-                  <p className="text-gray-600">No. The TCM Body Constitution Test is <strong>free, requires no registration</strong>, and you'll get instant results after completing the 20 questions.</p>
+                  <p className="text-gray-600">No. The TCM Body Constitution Test is <strong>free, requires no registration</strong>, and you'll get instant results after completing the 35 questions.</p>
                 </div>
                 <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg">
                   <h3 className="text-lg font-semibold text-gray-800 mb-3">Q3: What makes this different from a regular body type quiz?</h3>
@@ -180,7 +180,7 @@ export default function ConstitutionTestClientOptimized() {
             <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 text-center shadow-xl">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">Ready to Begin?</h2>
               <p className="text-gray-600 mb-6">
-                This <strong>5-minute TCM Constitution Test</strong> includes 20 easy-to-answer questions.
+                This <strong>5-minute TCM Constitution Test</strong> includes 35 easy-to-answer questions.
                 Answer honestly for the most accurate results and unlock your <strong>personalized herbal recommendations</strong> today.
               </p>
               <button

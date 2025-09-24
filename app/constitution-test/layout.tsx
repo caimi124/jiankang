@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'TCM Constitution Test | Discover Your Body Type | HerbScience',
-  description: 'Take our comprehensive TCM constitution test to discover your body type and get personalized herbal recommendations. 20-question assessment based on traditional Chinese medicine.',
+  description: 'Take our comprehensive TCM constitution test to discover your body type and get personalized herbal recommendations. 35-question assessment based on traditional Chinese medicine.',
   keywords: [
     'TCM constitution test',
     'body type test',
