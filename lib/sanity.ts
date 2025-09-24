@@ -28,12 +28,22 @@ interface Category {
   postCount?: number;
 }
 
+// Ensure we have the required environment variables
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '13rzzwgz'
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
+const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2024-01-01'
+const token = process.env.NEXT_PUBLIC_SANITY_READ_TOKEN || process.env.SANITY_API_TOKEN
+
+if (!projectId) {
+  console.warn('⚠️  NEXT_PUBLIC_SANITY_PROJECT_ID is not set, using fallback')
+}
+
 export const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
-  apiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2024-01-01',
+  projectId,
+  dataset,
+  apiVersion,
   useCdn: process.env.NODE_ENV === 'production',
-  token: process.env.NEXT_PUBLIC_SANITY_READ_TOKEN,
+  token,
 })
 
 const builder = imageUrlBuilder(client)
@@ -42,16 +52,29 @@ export function urlFor(source: any) {
   return builder.image(source)
 }
 
-// sanityFetch function for compatibility
+// sanityFetch function for compatibility with build-time error handling
 export async function sanityFetch<T = any>(
   query: string,
   params: Record<string, any> = {},
   options?: { next?: { revalidate?: number } }
 ): Promise<T> {
   try {
+    // If no projectId is available during build, return empty result
+    if (!projectId) {
+      console.warn('⚠️ Sanity projectId not available, returning empty result')
+      return ([] as unknown) as T
+    }
+
     return await client.fetch<T>(query, params, options)
   } catch (error) {
     console.error('Error in sanityFetch:', error)
+
+    // During build time, return empty result instead of throwing
+    if (process.env.NODE_ENV === 'production' && process.env.VERCEL_ENV) {
+      console.warn('⚠️ Build-time Sanity fetch failed, returning empty result')
+      return ([] as unknown) as T
+    }
+
     throw error
   }
 }

@@ -1,9 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sanityFetch } from '@/lib/sanity'
 
+// Skip this API route during build if Sanity is not configured
+if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID && process.env.VERCEL_ENV) {
+  console.warn('⚠️ Skipping Sanity API route during build - no projectId')
+}
+
 // 🚀 性能优化：增加缓存时间，减少重复查询
 export async function GET(request: NextRequest) {
 	try {
+		// Return early if Sanity is not properly configured during build
+		if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) {
+			return NextResponse.json({
+				success: false,
+				error: 'Sanity not configured',
+				data: [],
+				meta: { total: 0, page: 1, limit: 0, totalPages: 0 }
+			}, { status: 503 })
+		}
 		const { searchParams } = new URL(request.url)
 		const limitParam = searchParams.get('limit')
 		const pageParam = searchParams.get('page')
