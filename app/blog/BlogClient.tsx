@@ -10,7 +10,7 @@ import Link from 'next/link'
 export default function BlogClient() {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
-  const [posts, setPosts] = useState<any[]>(staticArticles) // Start with static data
+  const [posts, setPosts] = useState<any[]>(staticArticles)
   const [featuredPosts, setFeaturedPosts] = useState<any[]>(staticBlogData.featuredPosts)
   const [categories, setCategories] = useState<any[]>([
     { id: 'all', name: 'All Articles', count: staticArticles.length },
@@ -21,51 +21,7 @@ export default function BlogClient() {
       description: cat.description
     }))
   ])
-  const [loading, setLoading] = useState(false) // Start with loading false
-
-  useEffect(() => {
-    // Try to load Sanity data in background, but don't block the UI
-    async function loadSanityData() {
-      try {
-        console.log('🔄 Loading Sanity data in background...')
-
-        const [allPosts, featured, cats] = await Promise.all([
-          getAllBlogPosts().catch(() => []),
-          getFeaturedBlogPosts().catch(() => staticBlogData.featuredPosts),
-          getBlogCategories().catch(() => staticBlogData.categories)
-        ])
-
-        // Only update if we got better data
-        if (allPosts && allPosts.length > 0) {
-          console.log('✅ Got Sanity data, updating...')
-          setPosts(allPosts)
-        }
-
-        if (featured && featured.length > 0) {
-          setFeaturedPosts(featured)
-        }
-
-        if (cats && cats.length > 0) {
-          const formattedCategories = [
-            { id: 'all', name: 'All Articles', count: (allPosts && allPosts.length > 0) ? allPosts.length : staticArticles.length },
-            ...cats.map(cat => ({
-              id: cat.title || cat.id,
-              name: (cat.title || cat.name || '').charAt(0).toUpperCase() + (cat.title || cat.name || '').slice(1),
-              count: cat.postCount || 0,
-              description: cat.description
-            }))
-          ]
-          setCategories(formattedCategories)
-        }
-
-      } catch (error) {
-        console.log('⚠️ Sanity loading failed, keeping static data:', error)
-      }
-    }
-
-    // Load Sanity data without blocking UI
-    loadSanityData()
-  }, [])
+  const [loading, setLoading] = useState(false)
 
   // Static fallback articles (existing content)
   const staticArticles = [
@@ -182,113 +138,101 @@ export default function BlogClient() {
             </div>
           </div>
 
-          {/* Loading State */}
-          {loading && (
-            <div className="text-center py-12">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
-              <p className="mt-4 text-gray-600">Loading blog articles...</p>
-            </div>
-          )}
-
           {/* Featured Articles */}
-          {!loading && (
-            <>
-              <div className="mb-12">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Featured Articles</h2>
-                <div className="grid md:grid-cols-2 gap-8">
-                  {featuredPosts.map((article) => (
-                    <div key={article._id || article.id} className="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                      <div className="p-8">
-                        <div className="text-4xl mb-4">🌿</div>
-                        <div className="flex items-center space-x-2 mb-3">
-                          <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm capitalize">
-                            {article.category}
-                          </span>
-                          <span className="text-sm text-gray-500">{article.readTime} min read</span>
-                        </div>
-                        <h3 className="text-xl font-bold text-gray-900 mb-3 leading-tight">
-                          {article.title}
-                        </h3>
-                        <p className="text-gray-600 mb-4 leading-relaxed">
-                          {article.excerpt}
-                        </p>
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {(article.tags || []).slice(0, 3).map((tag: any, index: number) => (
-                            <span key={index} className="bg-gray-100 text-gray-600 px-2 py-1 rounded-lg text-xs">
-                              #{typeof tag === 'string' ? tag : tag.title || tag}
-                            </span>
-                          ))}
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-3">
-                            <User className="w-4 h-4 text-gray-400" />
-                            <span className="text-sm text-gray-600">{article.author}</span>
-                            <Calendar className="w-4 h-4 text-gray-400" />
-                            <span className="text-sm text-gray-600">
-                              {new Date(article.publishedAt || article.date).toLocaleDateString()}
-                            </span>
-                          </div>
-                          <Link
-                            href={`/blog/${article.slug?.current || article.slug}`}
-                            className="text-green-600 hover:text-green-700 flex items-center space-x-1"
-                          >
-                            <span className="text-sm font-medium">Read More</span>
-                            <ArrowRight className="w-4 h-4" />
-                          </Link>
-                        </div>
-                      </div>
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Featured Articles</h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              {featuredPosts.map((article) => (
+                <div key={article._id || article.id} className="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                  <div className="p-8">
+                    <div className="text-4xl mb-4">🌿</div>
+                    <div className="flex items-center space-x-2 mb-3">
+                      <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm capitalize">
+                        {article.category}
+                      </span>
+                      <span className="text-sm text-gray-500">{article.readTime} min read</span>
                     </div>
-                  ))}
+                    <h3 className="text-xl font-bold text-gray-900 mb-3 leading-tight">
+                      {article.title}
+                    </h3>
+                    <p className="text-gray-600 mb-4 leading-relaxed">
+                      {article.excerpt}
+                    </p>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {(article.tags || []).slice(0, 3).map((tag: any, index: number) => (
+                        <span key={index} className="bg-gray-100 text-gray-600 px-2 py-1 rounded-lg text-xs">
+                          #{typeof tag === 'string' ? tag : tag.title || tag}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <User className="w-4 h-4 text-gray-400" />
+                        <span className="text-sm text-gray-600">{article.author}</span>
+                        <Calendar className="w-4 h-4 text-gray-400" />
+                        <span className="text-sm text-gray-600">
+                          {new Date(article.publishedAt || article.date).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <Link
+                        href={`/blog/${article.slug?.current || article.slug}`}
+                        className="text-green-600 hover:text-green-700 flex items-center space-x-1"
+                      >
+                        <span className="text-sm font-medium">Read More</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ))}
+            </div>
+          </div>
 
-              {/* Recent Articles */}
-              <div className="mb-12">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                  Recent Articles {selectedCategory !== 'all' && `(${selectedCategory})`}
-                </h2>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {filteredArticles.map((article) => (
-                    <div key={article._id || article.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                      <div className="p-6">
-                        <div className="text-3xl mb-3">🌿</div>
-                        <div className="flex items-center space-x-2 mb-3">
-                          <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs capitalize">
-                            {article.category}
-                          </span>
-                          <span className="text-xs text-gray-500">{article.readTime} min read</span>
-                        </div>
-                        <h3 className="text-lg font-bold text-gray-900 mb-3 leading-tight">
-                          {article.title}
-                        </h3>
-                        <p className="text-gray-600 mb-4 text-sm leading-relaxed">
-                          {article.excerpt}
-                        </p>
-                        <div className="flex flex-wrap gap-1 mb-4">
-                          {(article.tags || []).slice(0, 3).map((tag: any, index: number) => (
-                            <span key={index} className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">
-                              #{typeof tag === 'string' ? tag : tag.title || tag}
-                            </span>
-                          ))}
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <div className="text-xs text-gray-500">
-                            {article.author} • {new Date(article.publishedAt || article.date).toLocaleDateString()}
-                          </div>
-                          <Link
-                            href={`/blog/${article.slug?.current || article.slug}`}
-                            className="text-green-600 hover:text-green-700"
-                          >
-                            <ArrowRight className="w-4 h-4" />
-                          </Link>
-                        </div>
-                      </div>
+          {/* Recent Articles */}
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Recent Articles {selectedCategory !== 'all' && `(${selectedCategory})`}
+            </h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredArticles.map((article) => (
+                <div key={article._id || article.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                  <div className="p-6">
+                    <div className="text-3xl mb-3">🌿</div>
+                    <div className="flex items-center space-x-2 mb-3">
+                      <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs capitalize">
+                        {article.category}
+                      </span>
+                      <span className="text-xs text-gray-500">{article.readTime} min read</span>
                     </div>
-                  ))}
+                    <h3 className="text-lg font-bold text-gray-900 mb-3 leading-tight">
+                      {article.title}
+                    </h3>
+                    <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+                      {article.excerpt}
+                    </p>
+                    <div className="flex flex-wrap gap-1 mb-4">
+                      {(article.tags || []).slice(0, 3).map((tag: any, index: number) => (
+                        <span key={index} className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">
+                          #{typeof tag === 'string' ? tag : tag.title || tag}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="text-xs text-gray-500">
+                        {article.author} • {new Date(article.publishedAt || article.date).toLocaleDateString()}
+                      </div>
+                      <Link
+                        href={`/blog/${article.slug?.current || article.slug}`}
+                        className="text-green-600 hover:text-green-700"
+                      >
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </>
-          )}
+              ))}
+            </div>
+          </div>
 
           {/* Newsletter Signup */}
           <div className="bg-gradient-to-br from-green-600 to-green-700 rounded-3xl p-8 text-center text-white">
