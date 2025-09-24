@@ -62,6 +62,18 @@ export default function BlogClient() {
 
   // Static fallback articles (existing content)
   const staticArticles = [
+  {
+      id: 1758713619586,
+      title: "Why Personalized Herbal Supplements Work Better Than One-Size-Fits-All Herbal Remedies",
+      excerpt: "Walk into any supplement store and you'll see shelves stacked with herbal capsules and teas. But why do some herbs work for you while others don't? Discover how constitution tests and body type assessments help you find safe herbal supplements that actually work.",
+      category: "science",
+      author: "Dr. Sarah Chen",
+      publishedAt: "2024-01-15",
+      readTime: 9,
+      featured_image: null,
+      slug: { current: "why-some-herbs-work-for-you-and-others-dont" },
+      tags: ["personalized herbal supplements","herbal remedies","constitution test","body type test","safe herbal supplements","natural supplements","immune boosting herbs","stress relief herbs","herbs for focus and energy"]
+    },
     {
       id: 3,
       title: "Best Herbs for Anxiety: Natural Alternatives to Prescription Medications",
