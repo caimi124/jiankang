@@ -17,42 +17,70 @@ export default function BlogClient() {
 
   useEffect(() => {
     async function loadBlogData() {
+      console.log('🔄 Starting blog data load...')
+
       try {
         setLoading(true)
 
+        console.log('📡 Attempting to fetch data from Sanity...')
+
         // Try to fetch from Sanity first, fallback to static data
         const [allPosts, featured, cats] = await Promise.all([
-          getAllBlogPosts().catch(() => []),
-          getFeaturedBlogPosts().catch(() => staticBlogData.featuredPosts),
-          getBlogCategories().catch(() => staticBlogData.categories)
+          getAllBlogPosts().catch((error) => {
+            console.warn('⚠️ Sanity getAllBlogPosts failed:', error?.message || error)
+            return []
+          }),
+          getFeaturedBlogPosts().catch((error) => {
+            console.warn('⚠️ Sanity getFeaturedBlogPosts failed:', error?.message || error)
+            return staticBlogData.featuredPosts
+          }),
+          getBlogCategories().catch((error) => {
+            console.warn('⚠️ Sanity getBlogCategories failed:', error?.message || error)
+            return staticBlogData.categories
+          })
         ])
 
-        setPosts(allPosts.length > 0 ? allPosts : staticArticles)
-        setFeaturedPosts(featured.length > 0 ? featured : staticBlogData.featuredPosts)
+        console.log('📊 Data fetched:', {
+          allPostsCount: allPosts?.length || 0,
+          featuredCount: featured?.length || 0,
+          categoriesCount: cats?.length || 0
+        })
+
+        // Use static articles if Sanity data is empty
+        const postsToUse = (allPosts && allPosts.length > 0) ? allPosts : staticArticles
+        const featuredToUse = (featured && featured.length > 0) ? featured : staticBlogData.featuredPosts
+
+        setPosts(postsToUse)
+        setFeaturedPosts(featuredToUse)
 
         // Add "All Articles" option to categories
         const formattedCategories = [
-          { id: 'all', name: 'All Articles', count: allPosts.length || staticArticles.length },
-          ...cats.map(cat => ({
+          { id: 'all', name: 'All Articles', count: postsToUse.length },
+          ...(cats || staticBlogData.categories).map(cat => ({
             id: cat.title,
             name: cat.title.charAt(0).toUpperCase() + cat.title.slice(1),
-            count: cat.postCount,
+            count: cat.postCount || 0,
             description: cat.description
           }))
         ]
         setCategories(formattedCategories)
 
+        console.log('✅ Blog data loaded successfully')
+
       } catch (error) {
-        console.error('Error loading blog data:', error)
-        // Use static fallback
+        console.error('❌ Critical error loading blog data:', error)
+
+        // Emergency static fallback
+        console.log('🚨 Using emergency static fallback')
         setPosts(staticArticles)
         setFeaturedPosts(staticBlogData.featuredPosts)
         setCategories([
-          { id: 'all', name: 'All Articles', count: 32 },
+          { id: 'all', name: 'All Articles', count: staticArticles.length },
           { id: 'lifestyle', name: 'Lifestyle', count: 18, description: 'Practical guides for daily wellness and traditional wisdom' },
           { id: 'science', name: 'Science', count: 14, description: 'Research, safety studies, and evidence-based insights' }
         ])
       } finally {
+        console.log('🏁 Blog data loading finished, setting loading to false')
         setLoading(false)
       }
     }
