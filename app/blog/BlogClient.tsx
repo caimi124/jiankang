@@ -57,8 +57,8 @@ export default function BlogClient() {
         const formattedCategories = [
           { id: 'all', name: 'All Articles', count: postsToUse.length },
           ...(cats || staticBlogData.categories).map(cat => ({
-            id: cat.title,
-            name: cat.title.charAt(0).toUpperCase() + cat.title.slice(1),
+            id: cat.title || cat.id,
+            name: (cat.title || cat.name || '').charAt(0).toUpperCase() + (cat.title || cat.name || '').slice(1),
             count: cat.postCount || 0,
             description: cat.description
           }))
