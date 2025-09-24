@@ -22,6 +22,23 @@ export default function BlogClient() {
       try {
         setLoading(true)
 
+        // Set a timeout to prevent infinite loading
+        const timeoutId = setTimeout(() => {
+          console.log('⏰ Data loading timeout, using static data')
+          setPosts(staticArticles)
+          setFeaturedPosts(staticBlogData.featuredPosts)
+          setCategories([
+            { id: 'all', name: 'All Articles', count: staticArticles.length },
+            ...staticBlogData.categories.map(cat => ({
+              id: cat.title || cat.id,
+              name: (cat.title || cat.name || '').charAt(0).toUpperCase() + (cat.title || cat.name || '').slice(1),
+              count: cat.postCount || 0,
+              description: cat.description
+            }))
+          ])
+          setLoading(false)
+        }, 5000) // 5-second timeout
+
         console.log('📡 Attempting to fetch data from Sanity...')
 
         // Try to fetch from Sanity first, fallback to static data
@@ -39,6 +56,9 @@ export default function BlogClient() {
             return staticBlogData.categories
           })
         ])
+
+        // Clear timeout since we got data
+        clearTimeout(timeoutId)
 
         console.log('📊 Data fetched:', {
           allPostsCount: allPosts?.length || 0,
