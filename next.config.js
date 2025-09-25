@@ -11,6 +11,9 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   trailingSlash: false,
+
+  // 确保没有额外的重定向
+  skipTrailingSlashRedirect: true,
   
   // 临时禁用ESLint检查 - 紧急调试模式
   eslint: {

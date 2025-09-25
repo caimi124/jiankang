@@ -5,9 +5,24 @@ import { useState } from 'react'
 interface SmartSearchProps {
   placeholder: string
   onSearch: (query: string, filters: any) => void
+  searchButtonText?: string
+  suggestionsTitle?: string
+  suggestions?: string[]
 }
 
-export default function SmartSearch({ placeholder, onSearch }: SmartSearchProps) {
+export default function SmartSearch({
+  placeholder,
+  onSearch,
+  searchButtonText = "Search",
+  suggestionsTitle = "Popular Searches",
+  suggestions = [
+    "anxiety natural remedies",
+    "turmeric benefits",
+    "ginseng dosage",
+    "sleep herbs",
+    "digestive enzymes"
+  ]
+}: SmartSearchProps) {
   const [query, setQuery] = useState('')
   const [isExpanded, setIsExpanded] = useState(false)
 
@@ -17,14 +32,6 @@ export default function SmartSearch({ placeholder, onSearch }: SmartSearchProps)
       onSearch(query, {})
     }
   }
-
-  const suggestions = [
-    "anxiety natural remedies",
-    "turmeric benefits",
-    "ginseng dosage",
-    "sleep herbs",
-    "digestive enzymes"
-  ]
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -46,7 +53,7 @@ export default function SmartSearch({ placeholder, onSearch }: SmartSearchProps)
             type="submit"
             className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 font-semibold transition-colors"
           >
-            Search
+            {searchButtonText}
           </button>
         </div>
         
@@ -54,7 +61,7 @@ export default function SmartSearch({ placeholder, onSearch }: SmartSearchProps)
         {isExpanded && (
           <div className="absolute top-full left-0 right-0 bg-white mt-2 rounded-xl shadow-lg border border-gray-200 z-10">
             <div className="p-4">
-              <h4 className="text-sm font-semibold text-gray-700 mb-3">Popular Searches</h4>
+              <h4 className="text-sm font-semibold text-gray-700 mb-3">{suggestionsTitle}</h4>
               <div className="space-y-2">
                 {suggestions.map((suggestion, index) => (
                   <button

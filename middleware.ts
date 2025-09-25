@@ -3,24 +3,10 @@ import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
   const url = new URL(request.url)
-  let needsRedirect = false
 
-  // 仅在生产环境强制 HTTPS（排除 localhost 开发环境）
-  const isProduction = process.env.NODE_ENV === 'production'
-  const isLocalhost = url.hostname === 'localhost' || url.hostname === '127.0.0.1'
-  
-  if (isProduction && !isLocalhost && url.protocol === 'http:') {
-    url.protocol = 'https:'
-    needsRedirect = true
-  }
-
-  // 紧急修复：重定向到non-www域名（SSL证书修复前）
+  // 只处理必要的www重定向，避免其他重定向链
   if (url.hostname === 'www.herbscience.shop') {
     url.hostname = 'herbscience.shop'
-    needsRedirect = true
-  }
-
-  if (needsRedirect) {
     return NextResponse.redirect(url, 301)
   }
 

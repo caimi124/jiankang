@@ -69,8 +69,11 @@ export default function ZhHome() {
             
             {/* Enhanced Search Bar */}
             <div className="mb-8">
-              <SmartSearch 
+              <SmartSearch
                 placeholder="搜索草药、症状或获取安全信息..."
+                searchButtonText="搜索"
+                suggestionsTitle="热门搜索"
+                suggestions={["焦虑天然疗法", "姜黄功效", "人参剂量", "睡眠草药", "消化酶"]}
                 onSearch={(query, filters) => {
                   // Handle search - could redirect to search results page
                   console.log('Search:', query, filters);
