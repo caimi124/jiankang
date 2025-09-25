@@ -7,6 +7,58 @@ import { Calendar, User, Tag, ArrowRight, Search, Filter } from 'lucide-react'
 import { getAllBlogPosts, getFeaturedBlogPosts, getBlogCategories, staticBlogData } from '../../lib/sanity'
 import Link from 'next/link'
 
+// Static fallback articles (defined outside component)
+const staticArticles = [
+  {
+    id: 1758713619586,
+    title: "Why Personalized Herbal Supplements Work Better Than One-Size-Fits-All Herbal Remedies",
+    excerpt: "Walk into any supplement store and you'll see shelves stacked with herbal capsules and teas. But why do some herbs work for you while others don't? Discover how constitution tests and body type assessments help you find safe herbal supplements that actually work.",
+    category: "science",
+    author: "Dr. Sarah Chen",
+    publishedAt: "2024-01-15",
+    readTime: 9,
+    featured_image: null,
+    slug: { current: "why-some-herbs-work-for-you-and-others-dont" },
+    tags: ["personalized herbal supplements","herbal remedies","constitution test","body type test","safe herbal supplements","natural supplements","immune boosting herbs","stress relief herbs","herbs for focus and energy"]
+  },
+  {
+    id: 3,
+    title: "Best Herbs for Anxiety: Natural Alternatives to Prescription Medications",
+    excerpt: "Compare the effectiveness of ashwagandha, valerian, and passionflower vs. prescription anti-anxiety drugs. Evidence-based guide with dosages.",
+    category: "science",
+    author: "Dr. Sarah Chen",
+    publishedAt: "2024-01-10",
+    readTime: 8,
+    featured_image: null,
+    slug: { current: "herbs-for-anxiety-natural-alternatives" },
+    tags: ["anxiety", "herbs vs drugs", "ashwagandha", "prescription alternatives"]
+  },
+  {
+    id: 4,
+    title: "Is Turmeric Safe During Pregnancy? Complete Safety Guide",
+    excerpt: "Everything expecting mothers need to know about turmeric and curcumin supplementation, including trimester-specific recommendations.",
+    category: "science",
+    author: "Dr. Michael Rodriguez",
+    publishedAt: "2024-01-08",
+    readTime: 6,
+    featured_image: null,
+    slug: { current: "turmeric-pregnancy-safety-guide" },
+    tags: ["turmeric pregnancy", "curcumin safety", "pregnancy herbs", "expecting mothers"]
+  },
+  {
+    id: 5,
+    title: "Best Herbs for Sleep: What Actually Works for Insomnia",
+    excerpt: "Scientific comparison of valerian, chamomile, passionflower, and melatonin. Which sleep herbs have the strongest evidence?",
+    category: "lifestyle",
+    author: "Dr. Sarah Chen",
+    publishedAt: "2024-01-06",
+    readTime: 7,
+    featured_image: null,
+    slug: { current: "herbs-for-sleep-insomnia" },
+    tags: ["herbs for sleep", "insomnia", "valerian vs melatonin", "natural sleep aids"]
+  }
+]
+
 export default function BlogClient() {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
@@ -15,65 +67,13 @@ export default function BlogClient() {
   const [categories, setCategories] = useState<any[]>([
     { id: 'all', name: 'All Articles', count: staticArticles.length },
     ...staticBlogData.categories.map(cat => ({
-      id: cat.title || cat.id,
-      name: (cat.title || cat.name || '').charAt(0).toUpperCase() + (cat.title || cat.name || '').slice(1),
+      id: cat.title,
+      name: cat.title.charAt(0).toUpperCase() + cat.title.slice(1),
       count: cat.postCount || 0,
       description: cat.description
     }))
   ])
   const [loading, setLoading] = useState(false)
-
-  // Static fallback articles (existing content)
-  const staticArticles = [
-  {
-      id: 1758713619586,
-      title: "Why Personalized Herbal Supplements Work Better Than One-Size-Fits-All Herbal Remedies",
-      excerpt: "Walk into any supplement store and you'll see shelves stacked with herbal capsules and teas. But why do some herbs work for you while others don't? Discover how constitution tests and body type assessments help you find safe herbal supplements that actually work.",
-      category: "science",
-      author: "Dr. Sarah Chen",
-      publishedAt: "2024-01-15",
-      readTime: 9,
-      featured_image: null,
-      slug: { current: "why-some-herbs-work-for-you-and-others-dont" },
-      tags: ["personalized herbal supplements","herbal remedies","constitution test","body type test","safe herbal supplements","natural supplements","immune boosting herbs","stress relief herbs","herbs for focus and energy"]
-    },
-    {
-      id: 3,
-      title: "Best Herbs for Anxiety: Natural Alternatives to Prescription Medications",
-      excerpt: "Compare the effectiveness of ashwagandha, valerian, and passionflower vs. prescription anti-anxiety drugs. Evidence-based guide with dosages.",
-      category: "science",
-      author: "Dr. Sarah Chen",
-      publishedAt: "2024-01-10",
-      readTime: 8,
-      featured_image: null,
-      slug: { current: "herbs-for-anxiety-natural-alternatives" },
-      tags: ["anxiety", "herbs vs drugs", "ashwagandha", "prescription alternatives"]
-    },
-    {
-      id: 4,
-      title: "Is Turmeric Safe During Pregnancy? Complete Safety Guide",
-      excerpt: "Everything expecting mothers need to know about turmeric and curcumin supplementation, including trimester-specific recommendations.",
-      category: "science",
-      author: "Dr. Michael Rodriguez",
-      publishedAt: "2024-01-08",
-      readTime: 6,
-      featured_image: null,
-      slug: { current: "turmeric-pregnancy-safety-guide" },
-      tags: ["turmeric pregnancy", "curcumin safety", "pregnancy herbs", "expecting mothers"]
-    },
-    {
-      id: 5,
-      title: "Best Herbs for Sleep: What Actually Works for Insomnia",
-      excerpt: "Scientific comparison of valerian, chamomile, passionflower, and melatonin. Which sleep herbs have the strongest evidence?",
-      category: "lifestyle",
-      author: "Dr. Sarah Chen",
-      publishedAt: "2024-01-06",
-      readTime: 7,
-      featured_image: null,
-      slug: { current: "herbs-for-sleep-insomnia" },
-      tags: ["herbs for sleep", "insomnia", "valerian vs melatonin", "natural sleep aids"]
-    }
-  ]
 
   const filteredArticles = posts.filter(article => {
     const matchesCategory = selectedCategory === 'all' || article.category === selectedCategory
