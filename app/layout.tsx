@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import GoogleAnalytics, { GoogleTagManagerNoScript } from '../components/GoogleAnalytics'
 
 export const metadata: Metadata = {
   title: 'HerbScience.shop | Evidence-Based Herbal Medicine Guide',
@@ -48,8 +49,12 @@ export const metadata: Metadata = {
     }
   },
   metadataBase: new URL('https://herbscience.shop'),
+  // Google Search Console verification
+  // 1. Go to https://search.google.com/search-console/
+  // 2. Add property: https://herbscience.shop
+  // 3. Use HTML tag method and paste the content value below
   verification: {
-    google: 'your-google-verification-code-here'
+    google: process.env.GOOGLE_VERIFICATION_CODE || undefined
   }
 }
 
@@ -130,8 +135,13 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} 
           defer
         />
+        
+        {/* Google Analytics 和 Google Tag Manager */}
+        <GoogleAnalytics />
       </head>
       <body className="antialiased">
+        {/* Google Tag Manager (noscript) - 必须放在body开始处 */}
+        <GoogleTagManagerNoScript />
         {children}
       </body>
     </html>

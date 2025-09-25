@@ -38,6 +38,11 @@ const nextConfig = {
         destination: '/herbs/pumpkin-seeds',
         permanent: true,
       },
+      {
+        source: '/herbs/cloves',
+        destination: '/herbs/clove',
+        permanent: true,
+      },
     ]
   },
 

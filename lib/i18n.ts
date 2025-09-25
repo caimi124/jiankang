@@ -100,20 +100,152 @@ export interface TranslationKeys {
     title: string
     subtitle: string
     description: string
-    findHerbs: string
-    checkSafety: string
-    heroStats: {
-      herbs: string
-      users: string
-      research: string
-      database: string
+    urgencyAlert: string
+    painPointsTitle: string
+    painPoints: {
+      sleep: {
+        title: string
+        description: string
+      }
+      safety: {
+        title: string
+        description: string
+      }
+      guesswork: {
+        title: string
+        description: string
+      }
     }
-    heroSubtitle: string
-    sectionTitle: string
-    sectionDescription: string
-    ctaTitle: string
-    ctaDescription: string
-    ctaButton: string
+    painPointsFooter: string
+    primaryCta: {
+      title: string
+      subtitle: string
+    }
+    secondaryCta: string
+    trustIndicators: {
+      safe: {
+        title: string
+        subtitle: string
+      }
+      evidenceBased: {
+        title: string
+        subtitle: string
+      }
+      users: {
+        title: string
+        subtitle: string
+      }
+      noSideEffects: {
+        title: string
+        subtitle: string
+      }
+    }
+    healthGoalsSection: {
+      title: string
+      description: string
+    }
+    healthGoals: {
+      sleep: {
+        title: string
+        description: string
+        herbs: string[]
+      }
+      stress: {
+        title: string
+        description: string
+        herbs: string[]
+      }
+      energy: {
+        title: string
+        description: string
+        herbs: string[]
+      }
+      immunity: {
+        title: string
+        description: string
+        herbs: string[]
+      }
+    }
+    personalizedCta: {
+      title: string
+      description: string
+      button: string
+    }
+    noSelectionCta: {
+      title: string
+      description: string
+      button: string
+    }
+    userStoriesSection: {
+      title: string
+      description: string
+    }
+    userStories: {
+      sarah: {
+        name: string
+        location: string
+        herb: string
+        condition: string
+        result: string
+        avatar: string
+      }
+      michael: {
+        name: string
+        location: string
+        herb: string
+        condition: string
+        result: string
+        avatar: string
+      }
+      jennifer: {
+        name: string
+        location: string
+        herb: string
+        condition: string
+        result: string
+        avatar: string
+      }
+    }
+    successMetrics: {
+      positiveResults: string
+      timeToResults: string
+      recommend: string
+      activeUsers: string
+    }
+    communityJoin: string
+    blogSection: {
+      title: string
+      description: string
+    }
+    featuredArticles: {
+      sleep: {
+        title: string
+        excerpt: string
+        category: string
+        readTime: string
+        icon: string
+      }
+      stress: {
+        title: string
+        excerpt: string
+        category: string
+        readTime: string
+        icon: string
+      }
+      immunity: {
+        title: string
+        excerpt: string
+        category: string
+        readTime: string
+        icon: string
+      }
+    }
+    viewAllArticles: string
+    finalCta: {
+      title: string
+      description: string
+      button: string
+    }
   }
   herbFinder: {
     title: string
@@ -151,6 +283,9 @@ export interface TranslationKeys {
     about: string
     contact: string
     privacy: string
+    recommendedFor: string
+    getPersonalPlan: string
+    readMore: string
   }
 }
 
@@ -168,23 +303,155 @@ export const translations: Record<string, TranslationKeys> = {
       language: 'Language'
     },
     home: {
-      title: 'Herbal Supplements,',
-      subtitle: 'Demystified',
-      description: 'Understand what you take. Discover what works. Make informed decisions about herbal supplements with science-backed insights and personalized recommendations.',
-      findHerbs: 'Find Your Herbs',
-      checkSafety: 'Check Safety',
-      heroStats: {
-        herbs: 'Herbs Analyzed',
-        users: 'Users Helped',
-        research: 'Research Citations',
-        database: 'Updated Database'
+      title: 'Stop Guessing — Find Herbs That',
+      subtitle: 'Actually Work for Your Body',
+      description: 'Take our constitution test to get safe, evidence-based herbal recommendations tailored to your body type and health needs.',
+      urgencyAlert: "Don't waste another month on herbs that don't work for YOUR body type!",
+      painPointsTitle: 'Sound Familiar? You\'re Not Alone...',
+      painPoints: {
+        sleep: {
+          title: '😴 Sleep Issues',
+          description: '"Tried chamomile, valerian... nothing helps my insomnia"'
+        },
+        safety: {
+          title: '🧪 Safety Concerns',
+          description: '"Will this herb interact with my blood pressure meds?"'
+        },
+        guesswork: {
+          title: '🤷 Guesswork',
+          description: '"Every website says different things - what actually works?"'
+        }
       },
-      heroSubtitle: 'Trusted by 50,000+ Users',
-      sectionTitle: 'Everything You Need to Navigate Herbal Supplements',
-      sectionDescription: 'From safety checking to personalized recommendations, our evidence-based tools guide you every step of the way.',
-      ctaTitle: 'Not Sure Where to Start?',
-      ctaDescription: 'Take our quick 2-minute assessment to get personalized recommendations based on your health goals and concerns.',
-      ctaButton: 'Get Personalized Recommendations'
+      painPointsFooter: '👆 Stop wasting time and money on herbs that don\'t match your body!',
+      primaryCta: {
+        title: 'Get Your Personal Herb Plan',
+        subtitle: 'Quick 3-minute test • Results instantly'
+      },
+      secondaryCta: 'Browse Herbs by Goal',
+      trustIndicators: {
+        safe: {
+          title: 'Safe Herbal Use',
+          subtitle: 'Drug interaction checks'
+        },
+        evidenceBased: {
+          title: 'Evidence-Based',
+          subtitle: 'Research-backed recommendations'
+        },
+        users: {
+          title: '10K+ Users',
+          subtitle: 'Trusted by thousands'
+        },
+        noSideEffects: {
+          title: 'No Side Effects',
+          subtitle: 'Natural, gentle solutions'
+        }
+      },
+      healthGoalsSection: {
+        title: 'Your Health Goals — Herbs That Help',
+        description: 'Choose your main goal and discover targeted herbs with real results:'
+      },
+      healthGoals: {
+        sleep: {
+          title: 'Sleep Support Herbs',
+          description: 'Sleep herb valerian, chamomile tea for better rest',
+          herbs: ['Valerian Root', 'Chamomile Tea', 'Passionflower']
+        },
+        stress: {
+          title: 'Stress Relief Herbs',
+          description: 'Best herbs for stress and anxiety without side effects',
+          herbs: ['Ashwagandha', 'Holy Basil', 'Lemon Balm']
+        },
+        energy: {
+          title: 'Energy & Focus Herbs',
+          description: 'Herbal teas for energy and focus, mental clarity',
+          herbs: ['Ginseng', 'Rhodiola', 'Green Tea']
+        },
+        immunity: {
+          title: 'Immune Boosting Herbs',
+          description: 'Immune boosting herbs for flu season protection',
+          herbs: ['Echinacea', 'Elderberry', 'Astragalus']
+        }
+      },
+      personalizedCta: {
+        title: 'Want Personalized Recommendations?',
+        description: 'Take our TCM constitution assessment to get recommendations tailored to your unique body type.',
+        button: '🧠 Take Constitution Test →'
+      },
+      noSelectionCta: {
+        title: 'Get Personal Plan →',
+        description: '',
+        button: ''
+      },
+      userStoriesSection: {
+        title: 'Real User Results',
+        description: 'See how others found safe herbal solutions with our personalized herbal recommendations.'
+      },
+      userStories: {
+        sarah: {
+          name: 'Sarah M.',
+          location: 'California, USA',
+          herb: 'Sleep Herb Valerian',
+          condition: 'Sleep Problems',
+          result: 'Finally sleeping through the night after 2 weeks!',
+          avatar: '👩‍💼'
+        },
+        michael: {
+          name: 'Michael R.',
+          location: 'London, UK',
+          herb: 'Ginseng & Rhodiola',
+          condition: 'Low Energy',
+          result: 'Full of energy without caffeine crashes',
+          avatar: '🏃‍♂️'
+        },
+        jennifer: {
+          name: 'Dr. Jennifer L.',
+          location: 'Toronto, Canada',
+          herb: 'Stress Relief Herbs',
+          condition: 'Work Stress',
+          result: 'Calm mind and clear focus for workdays',
+          avatar: '👩‍⚕️'
+        }
+      },
+      successMetrics: {
+        positiveResults: '89% Report Positive Results',
+        timeToResults: '2-4 Weeks to See Benefits',
+        recommend: '94% Would Recommend',
+        activeUsers: '10K+ Active Users'
+      },
+      communityJoin: 'Join Our Community - Start Your Test →',
+      blogSection: {
+        title: 'Latest Herbal Guides',
+        description: 'Stay safe and informed with science-backed herbal guides:'
+      },
+      featuredArticles: {
+        sleep: {
+          title: 'Best Herbs for Sleep Support: Natural Ways to Rest Better',
+          excerpt: 'Sleep herb valerian, chamomile tea, and other natural ways to improve sleep quality.',
+          category: 'Lifestyle',
+          readTime: '8 min read',
+          icon: '😴'
+        },
+        stress: {
+          title: 'Stress Relief Herbs Without Side Effects',
+          excerpt: 'Safe, natural herbs for stress management that work without harmful side effects.',
+          category: 'Lifestyle',
+          readTime: '7 min read',
+          icon: '😌'
+        },
+        immunity: {
+          title: 'Immune Boosting Herbs for Flu Season',
+          excerpt: 'Strengthen your immune system naturally with proven herbs that protect against illness.',
+          category: 'Science',
+          readTime: '6 min read',
+          icon: '🛡️'
+        }
+      },
+      viewAllArticles: 'View All Articles →',
+      finalCta: {
+        title: 'Stop guessing. Start using the right herbs for your body.',
+        description: 'Take our constitution test and get safe, evidence-based herbal guidance today.',
+        button: 'Start My Test Now'
+      }
     },
     herbFinder: {
       title: 'Herb Finder',
@@ -221,7 +488,10 @@ export const translations: Record<string, TranslationKeys> = {
       community: 'Community',
       about: 'About Us',
       contact: 'Contact',
-      privacy: 'Privacy Policy'
+      privacy: 'Privacy Policy',
+      recommendedFor: 'Recommended for',
+      getPersonalPlan: 'Get Personal Plan →',
+      readMore: 'Read More →'
     }
   },
   zh: {
@@ -237,23 +507,155 @@ export const translations: Record<string, TranslationKeys> = {
       language: '语言'
     },
     home: {
-      title: '中草药补充剂，',
-      subtitle: '专业解读',
-      description: '了解您服用的草药。发现有效的方案。基于科学依据和个性化推荐，做出明智的中草药补充剂决策。',
-      findHerbs: '查找草药',
-      checkSafety: '安全检查',
-      heroStats: {
-        herbs: '已分析草药',
-        users: '帮助用户',
-        research: '研究引用',
-        database: '数据库更新'
+      title: '停止猜测——找到真正',
+      subtitle: '适合您体质的草药',
+      description: '通过我们的体质测试，获得根据您的体质类型和健康需求量身定制的安全、循证草药建议。',
+      urgencyAlert: '不要再浪费一个月的时间在不适合您体质的草药上！',
+      painPointsTitle: '听起来很熟悉？您并不孤单...',
+      painPoints: {
+        sleep: {
+          title: '😴 睡眠问题',
+          description: '"试过洋甘菊、缬草...但都无法帮助我的失眠"'
+        },
+        safety: {
+          title: '🧪 安全担忧',
+          description: '"这种草药会与我的降压药产生相互作用吗？"'
+        },
+        guesswork: {
+          title: '🤷 盲目猜测',
+          description: '"每个网站说的都不一样——什么真正有效？"'
+        }
       },
-      heroSubtitle: '50,000+ 用户信赖',
-      sectionTitle: '您需要的所有中草药补充剂导航工具',
-      sectionDescription: '从安全检查到个性化推荐，我们的循证工具为您提供全方位指导。',
-      ctaTitle: '不知道从哪里开始？',
-      ctaDescription: '参与我们的2分钟快速评估，根据您的健康目标和关注点获得个性化推荐。',
-      ctaButton: '获取个性化推荐'
+      painPointsFooter: '👆 停止浪费时间和金钱在不适合您体质的草药上！',
+      primaryCta: {
+        title: '获取您的个人草药方案',
+        subtitle: '3分钟快速测试 • 立即获得结果'
+      },
+      secondaryCta: '按目标浏览草药',
+      trustIndicators: {
+        safe: {
+          title: '安全草药使用',
+          subtitle: '药物相互作用检查'
+        },
+        evidenceBased: {
+          title: '循证医学',
+          subtitle: '研究支持的建议'
+        },
+        users: {
+          title: '1万+ 用户',
+          subtitle: '受到数千人信赖'
+        },
+        noSideEffects: {
+          title: '无副作用',
+          subtitle: '天然温和的解决方案'
+        }
+      },
+      healthGoalsSection: {
+        title: '您的健康目标——有效的草药',
+        description: '选择您的主要目标，发现有真实效果的针对性草药：'
+      },
+      healthGoals: {
+        sleep: {
+          title: '助眠草药',
+          description: '助眠草药缬草、洋甘菊茶改善休息',
+          herbs: ['缬草根', '洋甘菊茶', '西番莲']
+        },
+        stress: {
+          title: '缓解压力草药',
+          description: '最佳抗压力和焦虑草药，无副作用',
+          herbs: ['南非醉茄', '圣罗勒', '柠檬香蜂草']
+        },
+        energy: {
+          title: '精力与专注草药',
+          description: '提神益智的草药茶，增强精神清晰度',
+          herbs: ['人参', '红景天', '绿茶']
+        },
+        immunity: {
+          title: '增强免疫力草药',
+          description: '流感季节的免疫增强草药',
+          herbs: ['紫锥菊', '接骨木浆果', '黄芪']
+        }
+      },
+      personalizedCta: {
+        title: '想要个性化建议？',
+        description: '参加我们的中医体质评估，获得针对您独特体质的定制建议。',
+        button: '🧠 参加体质测试 →'
+      },
+      noSelectionCta: {
+        title: '获取个人方案 →',
+        description: '',
+        button: ''
+      },
+      userStoriesSection: {
+        title: '真实用户成果',
+        description: '看看其他人如何通过我们的个性化草药建议找到安全的草药解决方案。'
+      },
+      userStories: {
+        sarah: {
+          name: '莎拉·M',
+          location: '美国加利福尼亚',
+          herb: '助眠草药缬草',
+          condition: '睡眠问题',
+          result: '两周后终于能一觉睡到天亮！',
+          avatar: '👩‍💼'
+        },
+        michael: {
+          name: '迈克尔·R',
+          location: '英国伦敦',
+          herb: '人参和红景天',
+          condition: '精力不足',
+          result: '精力充沛，不再有咖啡因崩溃',
+          avatar: '🏃‍♂️'
+        },
+        jennifer: {
+          name: '詹妮弗·L博士',
+          location: '加拿大多伦多',
+          herb: '缓解压力草药',
+          condition: '工作压力',
+          result: '工作日心境平和，思路清晰',
+          avatar: '👩‍⚕️'
+        }
+      },
+      successMetrics: {
+        positiveResults: '89% 的用户报告积极效果',
+        timeToResults: '2-4 周内看到效果',
+        recommend: '94% 愿意推荐',
+        activeUsers: '1万+ 活跃用户'
+      },
+      communityJoin: '加入我们的社区 - 开始您的测试 →',
+      blogSection: {
+        title: '最新草药指南',
+        description: '通过科学支持的草药指南保持安全和知情：'
+      },
+      featuredArticles: {
+        sleep: {
+          title: '最佳助眠草药：改善睡眠的天然方法',
+          excerpt: '助眠草药缬草、洋甘菊茶以及其他改善睡眠质量的天然方法。',
+          category: '生活方式',
+          readTime: '8分钟阅读',
+          icon: '😴'
+        },
+        stress: {
+          title: '无副作用的缓解压力草药',
+          excerpt: '安全、天然的压力管理草药，有效且无害副作用。',
+          category: '生活方式',
+          readTime: '7分钟阅读',
+          icon: '😌'
+        },
+        immunity: {
+          title: '流感季节的免疫增强草药',
+          excerpt: '用经过验证的草药自然增强您的免疫系统，预防疾病。',
+          category: '科学',
+          readTime: '6分钟阅读',
+          icon: '🛡️'
+        }
+      },
+      viewAllArticles: '查看所有文章 →',
+      finalCta: {
+        title: '停止猜测。开始使用适合您体质的正确草药。',
+        description: '参加我们的体质测试，今天就获得安全、循证的草药指导。',
+        button: '立即开始我的测试'
+      }
     },
     herbFinder: {
       title: '草药查找器',
@@ -290,7 +692,10 @@ export const translations: Record<string, TranslationKeys> = {
       community: '社区',
       about: '关于我们',
       contact: '联系我们',
-      privacy: '隐私政策'
+      privacy: '隐私政策',
+      recommendedFor: '推荐用于',
+      getPersonalPlan: '获取个人方案 →',
+      readMore: '阅读更多 →'
     }
   }
 }

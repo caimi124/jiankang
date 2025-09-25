@@ -14,14 +14,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url, 301)
   }
 
-  // Handle herb URL redirects
-  if (url.pathname === '/herbs/pumpkin-seed') {
-    return NextResponse.redirect(new URL('/herbs/pumpkin-seeds', request.url), 301)
-  }
-  
-  if (url.pathname === '/herbs/cloves') {
-    return NextResponse.redirect(new URL('/herbs/clove', request.url), 301)
-  }
+  // Handle herb URL redirects - moved to next.config.js to avoid conflicts
 
   const response = NextResponse.next()
 

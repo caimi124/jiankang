@@ -2,6 +2,13 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Navigation from '../../../components/Navigation'
 import Breadcrumb from '../../../components/Breadcrumb'
+import TableOfContents from '../../../components/TableOfContents'
+import ReadingProgress from '../../../components/ReadingProgress'
+import SocialShare from '../../../components/SocialShare'
+import EnhancedCTA from '../../../components/EnhancedCTA'
+import ReadingExperience from '../../../components/ReadingExperience'
+import RelatedArticles from '../../../components/RelatedArticles'
+import PerformanceMonitor from '../../../components/PerformanceMonitor'
 import { Calendar, User, Tag, ArrowLeft, Clock, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import { getBlogPostBySlug } from '../../../lib/sanity'
@@ -145,6 +152,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     }))
   } : null
 
+  // 获取文章内容用于目录生成
+  const articleContent = Array.isArray((post as any).content) 
+    ? '' // Sanity PortableText 暂时不支持目录解析
+    : (post as any).content || ''
+
   return (
     <>
       {/* 使用路由级 OpenGraph 生成图像（/blog/[slug]/opengraph-image） */}
@@ -166,11 +178,23 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         />
       )}
       
-      <div className="min-h-screen bg-gray-50">
+      {/* 阅读进度条 */}
+      <ReadingProgress />
+      
+      {/* 目录导航 */}
+      {articleContent && <TableOfContents content={articleContent} />}
+      
+      {/* 阅读体验控制 */}
+      <ReadingExperience />
+      
+      {/* 性能监控 */}
+      <PerformanceMonitor pageType="blog" pageSlug={resolvedParams.slug} />
+      
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
         <Navigation />
         
         <main className="py-8">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <Breadcrumb 
               items={[
                 { label: 'Home', href: '/' },
@@ -190,9 +214,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
 
             {/* 文章内容 */}
-            <article className="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <article className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-colors">
               {/* 文章头部 */}
-              <div className="p-8 border-b border-gray-200">
+              <div className="p-8 border-b border-gray-200 dark:border-gray-700">
                 <div className="mb-6">
                   <div className="flex items-center space-x-2 text-sm text-gray-500 mb-3">
                     {post.category && (
@@ -216,15 +240,24 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     )}
                   </div>
                   
-                  <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-4">
+                  <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white leading-tight mb-4">
                     {post.title}
                   </h1>
                   
                   {post.excerpt && (
-                    <p className="text-xl text-gray-600 leading-relaxed">
+                    <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
                       {post.excerpt}
                     </p>
                   )}
+                  
+                  {/* 分享按钮 */}
+                  <div className="flex justify-end">
+                    <SocialShare 
+                      title={post.title}
+                      url={`https://herbscience.shop/blog/${resolvedParams.slug}`}
+                      description={post.excerpt || (post as any).description}
+                    />
+                  </div>
                 </div>
 
                 {/* 标签 */}
@@ -245,7 +278,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
               {/* 文章正文 */}
               <div className="p-8">
-                <div className="prose prose-lg max-w-none">
+                <div className="prose prose-lg max-w-none dark:prose-invert dark:prose-headings:text-white dark:prose-p:text-gray-300 dark:prose-li:text-gray-300 dark:prose-strong:text-white">
                   {Array.isArray((post as any).content) ? (
                     // Sanity PortableText content
                     <PortableText
@@ -323,21 +356,26 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 </div>
               </div>
 
+              {/* 增强CTA区域 */}
+              <div className="p-8 border-t border-gray-200 dark:border-gray-700">
+                <EnhancedCTA type="constitution-test" />
+              </div>
+
               {/* 相关链接 */}
-              <div className="p-8 bg-gray-50 border-t border-gray-200">
-                <h3 className="text-xl font-semibold text-gray-900 mb-6">Related Resources</h3>
+              <div className="p-8 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Related Resources</h3>
                 <div className="grid md:grid-cols-2 gap-6">
                   <Link 
                     href="/herbs/turmeric"
-                    className="group block p-6 bg-white rounded-xl hover:shadow-md transition-shadow"
+                    className="group block p-6 bg-white dark:bg-gray-800 rounded-xl hover:shadow-md transition-all duration-200 border border-transparent hover:border-green-200 dark:hover:border-green-700"
                   >
-                    <h4 className="font-semibold text-gray-900 group-hover:text-green-600 mb-2">
+                    <h4 className="font-semibold text-gray-900 dark:text-white group-hover:text-green-600 dark:group-hover:text-green-400 mb-2">
                       Complete Turmeric Herb Profile
                     </h4>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-gray-600 dark:text-gray-300 text-sm">
                       Detailed scientific information about turmeric's properties, dosage, and safety.
                     </p>
-                    <div className="flex items-center text-blue-600 mt-3">
+                    <div className="flex items-center text-blue-600 dark:text-blue-400 mt-3">
                       <span className="text-sm">Learn more</span>
                       <ExternalLink className="h-3 w-3 ml-1" />
                     </div>
@@ -345,15 +383,15 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   
                   <Link 
                     href="/ingredient-checker"
-                    className="group block p-6 bg-white rounded-xl hover:shadow-md transition-shadow"
+                    className="group block p-6 bg-white dark:bg-gray-800 rounded-xl hover:shadow-md transition-all duration-200 border border-transparent hover:border-green-200 dark:hover:border-green-700"
                   >
-                    <h4 className="font-semibold text-gray-900 group-hover:text-green-600 mb-2">
+                    <h4 className="font-semibold text-gray-900 dark:text-white group-hover:text-green-600 dark:group-hover:text-green-400 mb-2">
                       Check Turmeric Safety
                     </h4>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-gray-600 dark:text-gray-300 text-sm">
                       Analyze turmeric interactions with your medications and supplements.
                     </p>
-                    <div className="flex items-center text-blue-600 mt-3">
+                    <div className="flex items-center text-blue-600 dark:text-blue-400 mt-3">
                       <span className="text-sm">Check safety</span>
                       <ExternalLink className="h-3 w-3 ml-1" />
                     </div>
@@ -361,6 +399,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 </div>
               </div>
             </article>
+
+            {/* 相关文章推荐 */}
+            <RelatedArticles 
+              currentSlug={resolvedParams.slug}
+              category={post.category}
+              tags={post.tags?.map((tag: any) => typeof tag === 'string' ? tag : tag.title) || []}
+            />
           </div>
         </main>
       </div>

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import GoogleAnalytics, { GoogleTagManagerNoScript } from '../../components/GoogleAnalytics'
 
 export const metadata: Metadata = {
   title: 'HerbScience.shop | 循证草药医学指南',
@@ -53,5 +54,17 @@ export default function ZhLayout({
 }: {
   children: React.ReactNode
 }) {
-  return children
+  return (
+    <html lang="zh-CN">
+      <head>
+        {/* Google Analytics 和 Google Tag Manager */}
+        <GoogleAnalytics />
+      </head>
+      <body>
+        {/* Google Tag Manager (noscript) - 必须放在body开始处 */}
+        <GoogleTagManagerNoScript />
+        {children}
+      </body>
+    </html>
+  )
 } 

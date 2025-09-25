@@ -18,9 +18,8 @@ module.exports = {
     '/not-found',
     // 排除重定向源页面，避免404
     '/home',
-    '/index.html',
-    // 排除herb-finder动态路由（重定向页面）
-    '/herb-finder/*'
+    '/index.html'
+    // 移除 /herb-finder/* 排除以改善SEO收录
   ],
   
   // 添加额外的路径或自定义页面
@@ -136,24 +135,37 @@ module.exports = {
       }
     }
 
-    // 核心工具页面高优先级 - 暂时移除hreflang以避免next-sitemap的bug
+    // 核心工具页面高优先级
     if (path.includes('constitution-test') || path.includes('herb-finder') || path.includes('knowledge-center') || path.includes('ingredient-checker') || path.includes('dosage-calculator') || path.includes('user-experiences') || path.includes('about') || path.includes('articles') || path.includes('blog') || path.includes('privacy')) {
       return {
         loc: path,
         changefreq: 'weekly',
         priority: 0.9,
-        lastmod: new Date().toISOString()
-        // 暂时移除 alternateRefs 以避免URL重复问题
+        lastmod: new Date().toISOString(),
+        // 为核心页面添加hreflang支持
+        alternateRefs: [
+          {
+            href: `https://herbscience.shop${path.startsWith('/zh') ? path.replace('/zh', '') : path}`,
+            hreflang: 'en',
+          },
+          {
+            href: `https://herbscience.shop/zh${path.startsWith('/zh') ? path.replace('/zh', '') : path}`,
+            hreflang: 'zh',
+          },
+          {
+            href: `https://herbscience.shop${path.startsWith('/zh') ? path.replace('/zh', '') : path}`,
+            hreflang: 'x-default',
+          },
+        ],
       }
     }
 
-    // 其他页面标准优先级 - 暂时移除hreflang
+    // 其他页面标准优先级
     return {
       loc: path,
       changefreq: config.changefreq,
       priority: config.priority,
       lastmod: new Date().toISOString()
-      // 暂时移除所有 alternateRefs 以避免URL重复问题
     }
   },
 
