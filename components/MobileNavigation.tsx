@@ -17,35 +17,29 @@ export default function MobileNavigation() {
 
   const menuItems = [
     {
-      title: 'Tools',
-      href: '/tools',
-      icon: '🔧',
-      children: [
-        { title: 'Herb Finder', href: '/herb-finder', icon: '🔍' },
-        { title: 'Ingredient Checker', href: '/ingredient-checker', icon: '🛡️' },
-        { title: 'Constitution Quiz', href: '/constitution-test', icon: '🧠' },
-        { title: 'Dosage Calculator', href: '/dosage-calculator', icon: '⚖️' }
-      ]
+      title: t.nav.home,
+      href: '/',
+      icon: '🏠'
     },
     {
-      title: 'Learn',
-      href: '/learn',
-      icon: '📚',
-      children: [
-        { title: 'Knowledge Center', href: '/knowledge-center', icon: '📖' },
-        { title: 'Articles', href: '/articles', icon: '📝' },
-        { title: 'Research', href: '/research', icon: '🔬' }
-      ]
+      title: t.nav.herbFinder,
+      href: '/herb-finder',
+      icon: '🔍'
     },
     {
-      title: 'Community',
-      href: '/community',
-      icon: '👥',
-      children: [
-        { title: 'User Experiences', href: '/user-experiences', icon: '💬' },
-        { title: 'Expert Q&A', href: '/expert-qa', icon: '🎓' },
-        { title: 'Forum', href: '/forum', icon: '💭' }
-      ]
+      title: t.nav.constitutionTest,
+      href: '/constitution-test',
+      icon: '🧠'
+    },
+    {
+      title: t.nav.blog,
+      href: '/blog',
+      icon: '📝'
+    },
+    {
+      title: t.nav.about,
+      href: '/about',
+      icon: 'ℹ️'
     }
   ]
 
@@ -105,63 +99,31 @@ export default function MobileNavigation() {
             <div className="flex-1 overflow-y-auto">
               <nav className="p-4 space-y-2">
                 {menuItems.map((item) => (
-                  <div key={item.title}>
-                    <button
-                      onClick={() => toggleExpanded(item.title)}
-                      className="w-full flex items-center justify-between p-3 text-left text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
-                    >
-                      <div className="flex items-center">
-                        <span className="mr-3 text-lg">{item.icon}</span>
-                        <span className="font-medium">{item.title}</span>
-                      </div>
-                      <ChevronDown 
-                        size={16} 
-                        className={`transform transition-transform ${
-                          expandedSection === item.title ? 'rotate-180' : ''
-                        }`}
-                      />
-                    </button>
-                    
-                    {expandedSection === item.title && (
-                      <div className="ml-4 mt-2 space-y-1">
-                        {item.children.map((child) => (
-                          <Link
-                            key={child.href}
-                            href={child.href}
-                            onClick={() => setIsOpen(false)}
-                            className="flex items-center p-3 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                          >
-                            <span className="mr-3">{child.icon}</span>
-                            <span>{child.title}</span>
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))}
-                
-                {/* Quick Links */}
-                <div className="border-t border-gray-200 pt-4 mt-4">
                   <Link
-                    href="/about"
+                    key={item.href}
+                    href={currentLocale === 'zh' ? `/zh${item.href}` : item.href}
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center p-3 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                    className={`flex items-center p-3 rounded-lg transition-colors ${
+                      pathname === item.href || pathname === `/zh${item.href}`
+                        ? 'bg-green-600 text-white'
+                        : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                    }`}
                   >
-                    <span className="mr-3">ℹ️</span>
-                    <span>{t.nav.about}</span>
+                    <span className="mr-3 text-lg">{item.icon}</span>
+                    <span className="font-medium">{item.title}</span>
                   </Link>
-                </div>
+                ))}
               </nav>
             </div>
 
             {/* Footer CTA */}
             <div className="p-4 border-t border-gray-200 bg-gray-50">
               <Link
-                href="/constitution-test"
+                href={currentLocale === 'zh' ? '/zh/constitution-test' : '/constitution-test'}
                 onClick={() => setIsOpen(false)}
                 className="block w-full bg-green-600 text-white text-center py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
               >
-                🎯 Take Constitution Quiz
+                🎯 {t.nav.constitutionTest}
               </Link>
             </div>
           </div>

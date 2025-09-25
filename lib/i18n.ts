@@ -88,10 +88,7 @@ export interface TranslationKeys {
   nav: {
     home: string
     herbFinder: string
-    safetyChecker: string
-    knowledgeCenter: string
     constitutionTest: string
-    userReviews: string
     blog: string
     about: string
     language: string
@@ -294,10 +291,7 @@ export const translations: Record<string, TranslationKeys> = {
     nav: {
       home: 'Home',
       herbFinder: 'Herb Finder',
-      safetyChecker: 'Safety Checker',
-      knowledgeCenter: 'Knowledge Center',
       constitutionTest: 'Constitution Test',
-      userReviews: 'User Reviews',
       blog: 'Blog',
       about: 'About',
       language: 'Language'
@@ -498,10 +492,7 @@ export const translations: Record<string, TranslationKeys> = {
     nav: {
       home: '首页',
       herbFinder: '草药搜索器',
-      safetyChecker: '安全检查器',
-      knowledgeCenter: '知识中心',
       constitutionTest: '体质测试',
-      userReviews: '用户评论',
       blog: '博客',
       about: '关于我们',
       language: '语言'

@@ -58,18 +58,12 @@ module.exports = {
 
     const extraPaths = [
       // 核心功能页面
-      await config.transform(config, '/knowledge-center'),
-      await config.transform(config, '/zh/knowledge-center'),
       await config.transform(config, '/constitution-test'),
       await config.transform(config, '/zh/constitution-test'),
       await config.transform(config, '/herb-finder'),
       await config.transform(config, '/zh/herb-finder'),
-      await config.transform(config, '/ingredient-checker'),
-      await config.transform(config, '/zh/ingredient-checker'),
       await config.transform(config, '/dosage-calculator'),
       await config.transform(config, '/zh/dosage-calculator'),
-      await config.transform(config, '/user-experiences'),
-      await config.transform(config, '/zh/user-experiences'),
       await config.transform(config, '/about'),
       await config.transform(config, '/zh/about'),
       await config.transform(config, '/articles'),
