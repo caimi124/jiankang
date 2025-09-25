@@ -74,6 +74,7 @@ export default function ZhHome() {
                 searchButtonText="搜索"
                 suggestionsTitle="热门搜索"
                 suggestions={["焦虑天然疗法", "姜黄功效", "人参剂量", "睡眠草药", "消化酶"]}
+                quickFilterTags={['焦虑', '睡眠', '消化', '能量', '免疫']}
                 onSearch={(query, filters) => {
                   // Handle search - could redirect to search results page
                   console.log('Search:', query, filters);

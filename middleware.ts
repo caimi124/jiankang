@@ -4,6 +4,10 @@ import type { NextRequest } from 'next/server'
 export function middleware(request: NextRequest) {
   const url = new URL(request.url)
 
+  // Environment detection
+  const isProduction = process.env.NODE_ENV === 'production'
+  const isLocalhost = url.hostname === 'localhost' || url.hostname === '127.0.0.1'
+
   // 只处理必要的www重定向，避免其他重定向链
   if (url.hostname === 'www.herbscience.shop') {
     url.hostname = 'herbscience.shop'

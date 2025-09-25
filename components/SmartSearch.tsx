@@ -8,6 +8,7 @@ interface SmartSearchProps {
   searchButtonText?: string
   suggestionsTitle?: string
   suggestions?: string[]
+  quickFilterTags?: string[]
 }
 
 export default function SmartSearch({
@@ -21,7 +22,8 @@ export default function SmartSearch({
     "ginseng dosage",
     "sleep herbs",
     "digestive enzymes"
-  ]
+  ],
+  quickFilterTags = ['Anxiety', 'Sleep', 'Digestion', 'Energy', 'Immunity']
 }: SmartSearchProps) {
   const [query, setQuery] = useState('')
   const [isExpanded, setIsExpanded] = useState(false)
@@ -84,7 +86,7 @@ export default function SmartSearch({
       
       {/* Quick Filter Tags */}
       <div className="mt-4 flex flex-wrap gap-2 justify-center">
-        {['Anxiety', 'Sleep', 'Digestion', 'Energy', 'Immunity'].map((tag) => (
+        {quickFilterTags.map((tag) => (
           <button
             key={tag}
             onClick={() => {
