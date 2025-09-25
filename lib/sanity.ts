@@ -249,7 +249,7 @@ export const staticBlogData = {
     {
       _id: '1',
       title: "Why Personalized Herbal Supplements Work Better Than One-Size-Fits-All Remedies",
-      slug: { current: "personalized-herbal-supplements-constitution-based" },
+      slug: { current: "why-some-herbs-work-for-you-and-others-dont" },
       excerpt: "Discover why some herbs work for you while others don't, and how TCM constitution testing can help you choose the right herbal remedies for your unique body type.",
       publishedAt: "2024-01-19",
       readTime: 8,
@@ -262,31 +262,31 @@ export const staticBlogData = {
     },
     {
       _id: '2',
-      title: "The 9 TCM Constitution Types: Your Personal Guide to Herbal Selection",
-      slug: { current: "tcm-constitution-types-herbal-guide" },
-      excerpt: "Learn about the 9 constitution types in Traditional Chinese Medicine and how they guide personalized herb selection for optimal health and wellness.",
+      title: "Best Herbs for Anxiety: Natural Alternatives to Prescription Medications",
+      slug: { current: "herbs-for-anxiety-natural-alternatives" },
+      excerpt: "Compare the effectiveness of ashwagandha, valerian, and passionflower vs. prescription anti-anxiety drugs. Evidence-based guide with dosages.",
       publishedAt: "2024-01-17",
-      readTime: 12,
-      author: "HerbScience Expert Team",
-      category: "lifestyle",
-      tags: ["TCM", "constitution types", "traditional medicine", "personalized health"],
+      readTime: 8,
+      author: "Dr. Sarah Chen",
+      category: "science",
+      tags: ["anxiety", "herbs vs drugs", "ashwagandha", "prescription alternatives"],
       featured_image: null,
-      seoTitle: "9 TCM Constitution Types: Complete Guide to Herbal Selection",
-      seoDescription: "Learn the 9 TCM constitution types and how they guide personalized herbal selection. Take our constitution test to find the right herbs for your body type."
+      seoTitle: "Best Herbs for Anxiety: Natural Alternatives to Prescription Medications",
+      seoDescription: "Compare the effectiveness of ashwagandha, valerian, and passionflower vs. prescription anti-anxiety drugs. Evidence-based guide with dosages."
     },
     {
       _id: '3',
-      title: "Best Immune Boosting Herbs: Science-Based Guide for Each Constitution Type",
-      slug: { current: "immune-boosting-herbs-constitution-guide" },
-      excerpt: "Discover which immune boosting herbs work best for your constitution type. Evidence-based guide to echinacea, astragalus, elderberry and more.",
+      title: "Best Herbs for Sleep: What Actually Works for Insomnia",
+      slug: { current: "herbs-for-sleep-insomnia" },
+      excerpt: "Scientific comparison of valerian, chamomile, passionflower, and melatonin. Which sleep herbs have the strongest evidence?",
       publishedAt: "2024-01-15",
-      readTime: 10,
-      author: "HerbScience Expert Team",
-      category: "science",
-      tags: ["immune support", "evidence-based", "TCM", "herbal safety"],
+      readTime: 7,
+      author: "Dr. Sarah Chen",
+      category: "lifestyle",
+      tags: ["herbs for sleep", "insomnia", "valerian vs melatonin", "natural sleep aids"],
       featured_image: null,
-      seoTitle: "Best Immune Boosting Herbs by Constitution Type: Science-Based Guide",
-      seoDescription: "Learn which immune boosting herbs work best for your constitution. Evidence-based guide to astragalus, elderberry, echinacea and more based on TCM principles."
+      seoTitle: "Best Herbs for Sleep: What Actually Works for Insomnia",
+      seoDescription: "Scientific comparison of valerian, chamomile, passionflower, and melatonin. Which sleep herbs have the strongest evidence?"
     }
   ],
 
