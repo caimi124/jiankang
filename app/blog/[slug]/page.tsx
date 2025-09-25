@@ -9,6 +9,7 @@ import EnhancedCTA from '../../../components/EnhancedCTA'
 import ReadingExperience from '../../../components/ReadingExperience'
 import RelatedArticles from '../../../components/RelatedArticles'
 import PerformanceMonitor from '../../../components/PerformanceMonitor'
+import EnhancedBlogContent from '../../../components/EnhancedBlogContent'
 import { Calendar, User, Tag, ArrowLeft, Clock, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import { getBlogPostBySlug } from '../../../lib/sanity'
@@ -278,82 +279,90 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
               {/* 文章正文 */}
               <div className="p-8">
-                <div className="prose prose-lg max-w-none dark:prose-invert dark:prose-headings:text-white dark:prose-p:text-gray-300 dark:prose-li:text-gray-300 dark:prose-strong:text-white">
-                  {Array.isArray((post as any).content) ? (
-                    // Sanity PortableText content
-                    <PortableText
-                      value={(post as any).content}
-                      components={{
-                        block: {
-                          h1: ({children}) => <h1 className="text-3xl font-bold text-gray-900 mt-8 mb-4">{children}</h1>,
-                          h2: ({children}) => <h2 className="text-2xl font-bold text-gray-900 mt-6 mb-3">{children}</h2>,
-                          h3: ({children}) => <h3 className="text-xl font-semibold text-gray-900 mt-4 mb-2">{children}</h3>,
-                          normal: ({children}) => <p className="text-gray-700 leading-relaxed mb-4">{children}</p>,
-                          blockquote: ({children}) => <blockquote className="border-l-4 border-green-500 pl-4 italic text-gray-600 my-4">{children}</blockquote>,
-                        },
-                        marks: {
-                          strong: ({children}) => <strong className="font-bold text-gray-900">{children}</strong>,
-                          em: ({children}) => <em className="italic">{children}</em>,
-                          code: ({children}) => <code className="bg-gray-100 px-2 py-1 rounded text-sm font-mono">{children}</code>,
-                        },
-                        list: {
-                          bullet: ({children}) => <ul className="list-disc list-inside space-y-2 my-4">{children}</ul>,
-                          number: ({children}) => <ol className="list-decimal list-inside space-y-2 my-4">{children}</ol>,
-                        },
-                        listItem: {
-                          bullet: ({children}) => <li className="text-gray-700">{children}</li>,
-                          number: ({children}) => <li className="text-gray-700">{children}</li>,
-                        }
-                      }}
-                    />
-                  ) : (post as any).content ? (
-                    // HTML content
-                    <div dangerouslySetInnerHTML={{ __html: (post as any).content }} />
-                  ) : (
-                    <div className="text-gray-700 leading-relaxed space-y-6">
-                      <p>
-                        {(post as any).description || 'This article is currently being updated with the latest information. Please check back soon for the complete content.'}
-                      </p>
-                      
-                      {resolvedParams.slug === 'turmeric-gut-relief-guide' && (
-                        <div className="space-y-6">
-                          <h2 className="text-2xl font-bold text-gray-900">What Is Turmeric — Explained Simply</h2>
-                          <p>
-                            Turmeric is a bright yellow root used for thousands of years in cooking and traditional medicine, especially in Asia. Its main active compound, <strong>curcumin</strong>, is known for powerful anti-inflammatory and antioxidant effects.
-                          </p>
-                          <p>
-                            In simple terms, turmeric helps reduce "inflammation fires" in your body—those hidden causes behind bloating, joint pain, and sluggish digestion.
-                          </p>
+                {/* 特殊优化的文章 - 使用增强版组件 */}
+                {resolvedParams.slug === 'why-some-herbs-work-for-you-and-others-dont' ? (
+                  <EnhancedBlogContent 
+                    content={(post as any).content || ''}
+                    title={post.title}
+                  />
+                ) : (
+                  <div className="prose prose-lg max-w-none dark:prose-invert dark:prose-headings:text-white dark:prose-p:text-gray-300 dark:prose-li:text-gray-300 dark:prose-strong:text-white">
+                    {Array.isArray((post as any).content) ? (
+                      // Sanity PortableText content
+                      <PortableText
+                        value={(post as any).content}
+                        components={{
+                          block: {
+                            h1: ({children}) => <h1 className="text-3xl font-bold text-gray-900 mt-8 mb-4">{children}</h1>,
+                            h2: ({children}) => <h2 className="text-2xl font-bold text-gray-900 mt-6 mb-3">{children}</h2>,
+                            h3: ({children}) => <h3 className="text-xl font-semibold text-gray-900 mt-4 mb-2">{children}</h3>,
+                            normal: ({children}) => <p className="text-gray-700 leading-relaxed mb-4">{children}</p>,
+                            blockquote: ({children}) => <blockquote className="border-l-4 border-green-500 pl-4 italic text-gray-600 my-4">{children}</blockquote>,
+                          },
+                          marks: {
+                            strong: ({children}) => <strong className="font-bold text-gray-900">{children}</strong>,
+                            em: ({children}) => <em className="italic">{children}</em>,
+                            code: ({children}) => <code className="bg-gray-100 px-2 py-1 rounded text-sm font-mono">{children}</code>,
+                          },
+                          list: {
+                            bullet: ({children}) => <ul className="list-disc list-inside space-y-2 my-4">{children}</ul>,
+                            number: ({children}) => <ol className="list-decimal list-inside space-y-2 my-4">{children}</ol>,
+                          },
+                          listItem: {
+                            bullet: ({children}) => <li className="text-gray-700">{children}</li>,
+                            number: ({children}) => <li className="text-gray-700">{children}</li>,
+                          }
+                        }}
+                      />
+                    ) : (post as any).content ? (
+                      // HTML content
+                      <div dangerouslySetInnerHTML={{ __html: (post as any).content }} />
+                    ) : (
+                      <div className="text-gray-700 leading-relaxed space-y-6">
+                        <p>
+                          {(post as any).description || 'This article is currently being updated with the latest information. Please check back soon for the complete content.'}
+                        </p>
+                        
+                        {resolvedParams.slug === 'turmeric-gut-relief-guide' && (
+                          <div className="space-y-6">
+                            <h2 className="text-2xl font-bold text-gray-900">What Is Turmeric — Explained Simply</h2>
+                            <p>
+                              Turmeric is a bright yellow root used for thousands of years in cooking and traditional medicine, especially in Asia. Its main active compound, <strong>curcumin</strong>, is known for powerful anti-inflammatory and antioxidant effects.
+                            </p>
+                            <p>
+                              In simple terms, turmeric helps reduce "inflammation fires" in your body—those hidden causes behind bloating, joint pain, and sluggish digestion.
+                            </p>
 
-                          <h2 className="text-2xl font-bold text-gray-900">How Turmeric Can Help You Feel Better</h2>
-                          <ul className="list-disc pl-6 space-y-2">
-                            <li><strong>Soothes bloating and digestive discomfort</strong> by calming irritated gut tissues.</li>
-                            <li><strong>Reduces joint pain and stiffness</strong>, helping you move more comfortably.</li>
-                            <li><strong>Supports your immune system</strong> and promotes overall wellness.</li>
-                          </ul>
-                          <p>Many people report feeling lighter, less achy, and more energetic after adding turmeric to their daily routine.</p>
+                            <h2 className="text-2xl font-bold text-gray-900">How Turmeric Can Help You Feel Better</h2>
+                            <ul className="list-disc pl-6 space-y-2">
+                              <li><strong>Soothes bloating and digestive discomfort</strong> by calming irritated gut tissues.</li>
+                              <li><strong>Reduces joint pain and stiffness</strong>, helping you move more comfortably.</li>
+                              <li><strong>Supports your immune system</strong> and promotes overall wellness.</li>
+                            </ul>
+                            <p>Many people report feeling lighter, less achy, and more energetic after adding turmeric to their daily routine.</p>
 
-                          <h2 className="text-2xl font-bold text-gray-900">How to Start Using Turmeric Right Now</h2>
-                          
-                          <h3 className="text-xl font-semibold text-gray-900">1. Add Turmeric Powder to Your Meals</h3>
-                          <p>
-                            Start by mixing <strong>½ to 1 teaspoon</strong> of turmeric powder into your soups, scrambled eggs, rice, or smoothies daily. It adds a mild earthy flavor and a golden color.
-                          </p>
+                            <h2 className="text-2xl font-bold text-gray-900">How to Start Using Turmeric Right Now</h2>
+                            
+                            <h3 className="text-xl font-semibold text-gray-900">1. Add Turmeric Powder to Your Meals</h3>
+                            <p>
+                              Start by mixing <strong>½ to 1 teaspoon</strong> of turmeric powder into your soups, scrambled eggs, rice, or smoothies daily. It adds a mild earthy flavor and a golden color.
+                            </p>
 
-                          <h3 className="text-xl font-semibold text-gray-900">2. Make Turmeric Tea</h3>
-                          <p>
-                            Boil 1 teaspoon of turmeric powder with a pinch of black pepper (this helps your body absorb turmeric better) in water. Add lemon or honey for taste. Drink 1-2 cups a day for gut comfort.
-                          </p>
+                            <h3 className="text-xl font-semibold text-gray-900">2. Make Turmeric Tea</h3>
+                            <p>
+                              Boil 1 teaspoon of turmeric powder with a pinch of black pepper (this helps your body absorb turmeric better) in water. Add lemon or honey for taste. Drink 1-2 cups a day for gut comfort.
+                            </p>
 
-                          <h3 className="text-xl font-semibold text-gray-900">3. Take Turmeric Capsules</h3>
-                          <p>
-                            Look for supplements with <strong>standardized curcumin extract</strong> and black pepper (piperine). Recommended dosage is <strong>500-1000 mg daily</strong>, split into 1-2 doses. Capsules are convenient and ensure consistent intake.
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
+                            <h3 className="text-xl font-semibold text-gray-900">3. Take Turmeric Capsules</h3>
+                            <p>
+                              Look for supplements with <strong>standardized curcumin extract</strong> and black pepper (piperine). Recommended dosage is <strong>500-1000 mg daily</strong>, split into 1-2 doses. Capsules are convenient and ensure consistent intake.
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* 增强CTA区域 */}

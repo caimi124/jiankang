@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Enhanced Blog Styles */
+@import '../styles/enhanced-blog.css';
+
 /* Font Variables */
 :root {
   --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
