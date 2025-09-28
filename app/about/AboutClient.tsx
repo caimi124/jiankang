@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import Navigation from '../../components/Navigation'
 import Breadcrumb from '../../components/Breadcrumb'
 import { 
@@ -66,6 +67,25 @@ export default function AboutClient() {
               finding reliable, <strong>science-backed herbal guidance</strong> is nearly impossible. That&apos;s why we created 
               <strong>HerbScience</strong>—to deliver <strong>safe, professional herbal medicine advice</strong> you can trust.
             </p>
+            <div className="mt-6 max-w-3xl mx-auto">
+              <p className="text-lg text-gray-600 leading-relaxed mb-6">
+                Start your personalized herbal journey with our <Link href="/constitution-test" className="text-green-600 hover:text-green-700 font-semibold underline">TCM Body Constitution Test</Link> or explore our comprehensive <Link href="/herb-finder" className="text-green-600 hover:text-green-700 font-semibold underline">Herbal Database</Link> for <strong>evidence-based herbal medicine</strong> information.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link 
+                  href="/constitution-test"
+                  className="inline-flex items-center bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
+                >
+                  Take Our TCM Constitution Test
+                </Link>
+                <Link 
+                  href="/herb-finder"
+                  className="inline-flex items-center border border-green-600 text-green-600 px-6 py-3 rounded-lg font-semibold hover:bg-green-50 transition-colors"
+                >
+                  Browse Herb Database
+                </Link>
+              </div>
+            </div>
             <div className="flex justify-center space-x-8 text-sm text-gray-500">
               <div className="flex items-center">
                 <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
@@ -95,7 +115,8 @@ export default function AboutClient() {
             </h1>
             <p className="text-gray-600 leading-relaxed mb-6">
               Confused by conflicting <strong>herbal advice</strong> online? <strong>HerbScience</strong> provides 
-              <strong>safe, professional guidance</strong> from licensed experts trained in both pharmacy and Traditional Chinese Medicine.
+              <strong>safe, professional guidance</strong> from licensed experts trained in both pharmacy and Traditional Chinese Medicine. 
+              Take our <Link href="/constitution-test" className="text-green-600 hover:text-green-700 font-medium underline">constitution test</Link> to get started.
             </p>
           </div>
 
@@ -106,7 +127,7 @@ export default function AboutClient() {
                 <div className="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden shadow-xl border-4 border-white">
                   <Image
                     src="/images/about/zeng-chuping-profile.jpg"
-                    alt="Zeng Chuping - Licensed Pharmacist & TCM Expert"
+                    alt="Zeng Chuping, Licensed Pharmacist and Certified TCM Dispenser specializing in evidence-based herbal medicine and herb-drug interaction safety"
                     width={128}
                     height={128}
                     className="w-full h-full object-cover"
@@ -156,19 +177,40 @@ export default function AboutClient() {
                     <h4 className="text-xl font-bold text-gray-900">Areas of Expertise</h4>
                   </div>
                   <div className="space-y-3">
-                    {[
-                      'Pharmacology & Herb-Drug Interaction Safety',
-                      'Traditional Chinese Medicine & Body Constitution',
-                      'Herbal Medicine Safety Assessment',
-                      'Evidence-Based Natural Health Support',
-                      'Patient Safety & Risk Management',
-                      'Herbal Quality & Purity Analysis'
-                    ].map((expertise, index) => (
-                      <div key={index} className="flex items-center space-x-3">
-                        <CheckCircle className="w-4 h-4 text-green-500" />
-                        <span className="text-gray-700">{expertise}</span>
-                      </div>
-                    ))}
+                    <div className="flex items-center space-x-3">
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <span className="text-gray-700">
+                        Pharmacology & <Link href="/blog" className="text-green-600 hover:text-green-700 underline">Herb-Drug Interaction Safety</Link>
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <span className="text-gray-700">
+                        <Link href="/constitution-test" className="text-green-600 hover:text-green-700 underline">Traditional Chinese Medicine & Body Constitution</Link>
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <span className="text-gray-700">
+                        <Link href="/blog" className="text-green-600 hover:text-green-700 underline">Herbal Medicine Safety Assessment</Link>
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <span className="text-gray-700">
+                        <Link href="/herb-finder" className="text-green-600 hover:text-green-700 underline">Evidence-Based Natural Health Support</Link>
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <span className="text-gray-700">Patient Safety & Risk Management</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <span className="text-gray-700">
+                        <Link href="/herb-finder" className="text-green-600 hover:text-green-700 underline">Herbal Quality & Purity Analysis</Link>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -193,7 +235,7 @@ export default function AboutClient() {
               <div className="w-20 h-20 rounded-full mx-auto mb-4 overflow-hidden shadow-lg border-2 border-green-100">
                 <Image
                   src="/images/about/zeng-chuping-profile.jpg"
-                  alt="Zeng Chuping - Licensed Pharmacist & TCM Expert"
+                  alt="Zeng Chuping, Licensed Pharmacist and Certified TCM Expert providing safe herbal supplement advice"
                   width={80}
                   height={80}
                   className="w-full h-full object-cover"
@@ -238,7 +280,8 @@ export default function AboutClient() {
                 <h3 className="text-xl font-bold text-gray-900 mb-4">🚫 Dangerous Misinformation</h3>
                 <p className="text-gray-600 mb-4">
                   Social media &ldquo;experts&rdquo; without medical training promote harmful &ldquo;miracle cures.&rdquo; 
-                  Wrong dosages, risky herb combinations, and misleading claims can put your health at risk.
+                  Wrong dosages, risky herb combinations, and misleading claims can put your health at risk. 
+                  That&apos;s why we provide <Link href="/blog" className="text-green-600 hover:text-green-700 underline font-semibold">evidence-based herbal medicine</Link> guidance.
                 </p>
                 <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                   <p className="text-sm text-red-800">
@@ -255,7 +298,8 @@ export default function AboutClient() {
                 <h3 className="text-xl font-bold text-gray-900 mb-4">⚠️ Drug Interaction Risks</h3>
                 <p className="text-gray-600 mb-4">
                   Doctors often overlook <strong>herb-drug interactions</strong>. Without proper screening, 
-                  combining herbs with prescription medications can cause severe complications.
+                  combining herbs with prescription medications can cause severe complications. 
+                  Our <Link href="/herb-finder" className="text-green-600 hover:text-green-700 underline font-semibold">herb database</Link> includes comprehensive safety information for each herb.
                 </p>
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                   <p className="text-sm text-yellow-800">
@@ -272,7 +316,7 @@ export default function AboutClient() {
                 <h3 className="text-xl font-bold text-gray-900 mb-4">💸 Wasted Money & Time</h3>
                 <p className="text-gray-600 mb-4">
                   Without professional advice, people spend hundreds of dollars on the wrong herbs, brands, 
-                  or dosages—with little or no results.
+                  or dosages—with little or no results. Start with our <Link href="/constitution-test" className="text-green-600 hover:text-green-700 underline font-semibold">constitution test</Link> to find herbs that match your body type.
                 </p>
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <p className="text-sm text-blue-800">
@@ -311,7 +355,7 @@ export default function AboutClient() {
                   <Heart className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="font-bold text-lg mb-2">Safety First</h3>
-                <p className="text-white/80 text-sm">comprehensive herbal safety checks and drug interaction reviews</p>
+                <p className="text-white/80 text-sm">comprehensive <Link href="/blog" className="text-white hover:text-green-100 underline">herbal safety checks</Link> and drug interaction reviews</p>
               </div>
 
               <div className="text-center">
@@ -377,7 +421,8 @@ export default function AboutClient() {
             
             <div className="space-y-3">
               <p className="text-sm text-gray-600">
-                Have questions? Need <strong>safe herbal supplement advice</strong>? Contact us via email or visit our office in San Francisco.
+                Have questions? Need <strong>safe herbal supplement advice</strong>? Contact us via email or visit our office in San Francisco. 
+                Read our <Link href="/blog" className="text-green-600 hover:text-green-700 underline">blog</Link> for more <strong>evidence-based herbal medicine</strong> tips.
               </p>
               <div className="bg-red-50 border border-red-200 rounded-lg p-3">
                 <p className="text-xs text-red-800">
@@ -393,7 +438,7 @@ export default function AboutClient() {
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Get in Touch</h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
                 Have questions about herbs, need <strong>safe herbal supplement advice</strong>, or want to share feedback? 
-                Our expert team is here to support your natural health journey.
+                Our expert team is here to support your natural health journey. Check out our <Link href="/blog" className="text-green-600 hover:text-green-700 underline font-semibold">latest articles</Link> on herbal safety and effectiveness.
               </p>
             </div>
 
@@ -522,6 +567,34 @@ export default function AboutClient() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Knowledge Resources Footer */}
+          <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-8 text-center">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">Explore Our Resources</h3>
+            <p className="text-gray-600 mb-6">
+              Discover more about <strong>evidence-based herbal medicine</strong> and <strong>safe herbal supplement advice</strong> through our comprehensive resources.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link 
+                href="/blog" 
+                className="bg-white text-green-600 px-6 py-3 rounded-lg font-semibold hover:bg-green-50 transition-colors shadow-sm border border-green-200"
+              >
+                📚 Herbal Medicine Blog
+              </Link>
+              <Link 
+                href="/constitution-test" 
+                className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors shadow-sm border border-blue-200"
+              >
+                🧠 Constitution Test
+              </Link>
+              <Link 
+                href="/herb-finder" 
+                className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-purple-50 transition-colors shadow-sm border border-purple-200"
+              >
+                🔍 Herbal Database
+              </Link>
             </div>
           </div>
         </div>

@@ -3,21 +3,25 @@ import React from 'react'
 import AboutClient from './AboutClient'
 
 export const metadata: Metadata = {
-  title: 'About HerbScience – Licensed Pharmacist & Evidence-Based Herbal Medicine',
-  description: 'HerbScience provides professional, evidence-based herbal guidance from licensed pharmacist Zeng Chuping. Get safe herbal supplement advice, herb-drug interaction safety, and professional herbal recommendations.',
+  title: 'About HerbScience – Licensed Pharmacist & TCM Expert | Evidence-Based Herbal Medicine',
+  description: 'HerbScience provides professional, evidence-based herbal guidance from licensed pharmacist Zeng Chuping. Get safe herbal supplement advice, herb-drug interaction safety, and proven herbal recommendations. 50,000+ people helped with 98% safety success rate.',
   keywords: [
     'evidence-based herbal medicine',
     'licensed pharmacist herbal advice', 
     'safe herbal supplement advice',
     'herb-drug interaction safety',
     'professional herbal guidance',
-    'TCM expert',
+    'TCM expert consultation',
     'herbal medicine safety assessment',
     'qualified herbal consultant',
     'traditional chinese medicine expert',
     'herbal supplement safety',
     'natural health professional',
-    'certified herbal specialist'
+    'certified herbal specialist',
+    'herbal safety checks',
+    'professional herbal recommendations',
+    'herbal medicine credentials',
+    'pharmacy herbal expertise'
   ],
   authors: [
     {
@@ -26,8 +30,8 @@ export const metadata: Metadata = {
     }
   ],
   openGraph: {
-    title: 'About HerbScience – Licensed Pharmacist & Evidence-Based Herbal Medicine', 
-    description: 'Professional, evidence-based herbal guidance from licensed pharmacist. Safe herbal supplement advice, herb-drug interaction safety, and proven herbal recommendations.',
+    title: 'About HerbScience – Licensed Pharmacist & TCM Expert | Evidence-Based Herbal Medicine', 
+    description: 'HerbScience provides safe herbal supplement advice from licensed pharmacist Zeng Chuping. Get evidence-based herbal guidance, herb-drug interaction safety, and professional herbal recommendations.',
     type: 'website',
     url: 'https://herbscience.shop/about',
     siteName: 'HerbScience',
