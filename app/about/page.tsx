@@ -3,18 +3,20 @@ import React from 'react'
 import AboutClient from './AboutClient'
 
 export const metadata: Metadata = {
-  title: 'About HerbScience | Licensed Pharmacist & TCM Expert | Evidence-Based Herbal Medicine',
-  description: 'Meet Zeng Chuping, Licensed Pharmacist (China) & Certified TCM Dispenser. Learn why thousands trust HerbScience for safe, evidence-based herbal medicine guidance combining traditional wisdom with modern science.',
+  title: 'About HerbScience – Licensed Pharmacist & Evidence-Based Herbal Medicine',
+  description: 'HerbScience provides professional, evidence-based herbal guidance from licensed pharmacist Zeng Chuping. Get safe herbal supplement advice, herb-drug interaction safety, and professional herbal recommendations.',
   keywords: [
-    'licensed pharmacist herbal medicine',
-    'TCM expert herbal supplements',
-    'evidence based herbal medicine',
+    'evidence-based herbal medicine',
+    'licensed pharmacist herbal advice', 
+    'safe herbal supplement advice',
+    'herb-drug interaction safety',
+    'professional herbal guidance',
+    'TCM expert',
+    'herbal medicine safety assessment',
     'qualified herbal consultant',
     'traditional chinese medicine expert',
-    'herbal medicine safety',
-    'herb supplement expert',
+    'herbal supplement safety',
     'natural health professional',
-    'herbal medicine credentials',
     'certified herbal specialist'
   ],
   authors: [
@@ -24,8 +26,8 @@ export const metadata: Metadata = {
     }
   ],
   openGraph: {
-    title: 'About HerbScience | Licensed Pharmacist & TCM Expert',
-    description: 'Meet our expert team led by Licensed Pharmacist Zeng Chuping. Discover why professionals and individuals worldwide trust HerbScience for evidence-based herbal medicine guidance.',
+    title: 'About HerbScience – Licensed Pharmacist & Evidence-Based Herbal Medicine', 
+    description: 'Professional, evidence-based herbal guidance from licensed pharmacist. Safe herbal supplement advice, herb-drug interaction safety, and proven herbal recommendations.',
     type: 'website',
     url: 'https://herbscience.shop/about',
     siteName: 'HerbScience',

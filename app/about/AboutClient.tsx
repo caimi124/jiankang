@@ -50,8 +50,8 @@ export default function AboutClient() {
             ]} 
           />
 
-          {/* Hero Section - Professional Credentials Focus */}
-          <div className="text-center mb-16">
+          {/* Hero Section - Desktop Version (Full) */}
+          <div className="text-center mb-16 hidden md:block">
             <div className="flex justify-center mb-6">
               <div className="inline-flex items-center bg-green-100 text-green-800 px-6 py-3 rounded-full font-semibold">
                 <Shield className="w-5 h-5 mr-2" />
@@ -62,8 +62,9 @@ export default function AboutClient() {
               Your Trusted Source for Evidence-Based Herbal Medicine
             </h1>
             <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed mb-8">
-              <strong>Confused by conflicting herbal advice online?</strong> You&apos;re not alone. With so much misinformation about herbal supplements, 
-              finding <em>reliable, professional guidance</em> is nearly impossible. That&apos;s why we created HerbScience.
+              <strong>Confused by conflicting herbal supplement advice online?</strong> You&apos;re not alone. With so much misinformation about herbs, 
+              finding reliable, <strong>science-backed herbal guidance</strong> is nearly impossible. That&apos;s why we created 
+              <strong>HerbScience</strong>—to deliver <strong>safe, professional herbal medicine advice</strong> you can trust.
             </p>
             <div className="flex justify-center space-x-8 text-sm text-gray-500">
               <div className="flex items-center">
@@ -81,8 +82,25 @@ export default function AboutClient() {
             </div>
           </div>
 
-          {/* Expert Profile - E-A-T Focus */}
-          <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-3xl p-12 mb-16">
+          {/* Mobile Hero Section - Simplified */}
+          <div className="text-center mb-12 md:hidden">
+            <div className="flex justify-center mb-4">
+              <div className="inline-flex items-center bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold">
+                <Shield className="w-4 h-4 mr-2" />
+                Licensed Pharmacist & TCM Expert
+              </div>
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">
+              🌿 HerbScience – Evidence-Based Herbal Guidance
+            </h1>
+            <p className="text-gray-600 leading-relaxed mb-6">
+              Confused by conflicting <strong>herbal advice</strong> online? <strong>HerbScience</strong> provides 
+              <strong>safe, professional guidance</strong> from licensed experts trained in both pharmacy and Traditional Chinese Medicine.
+            </p>
+          </div>
+
+          {/* Expert Profile - Desktop Version */}
+          <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-3xl p-12 mb-16 hidden md:block">
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-12">
                 <div className="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden shadow-xl border-4 border-white">
@@ -95,9 +113,8 @@ export default function AboutClient() {
                     priority
                   />
                 </div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">Meet Your Expert</h2>
-                <h3 className="text-2xl font-semibold text-green-600 mb-2">Zeng Chuping</h3>
-                <p className="text-lg text-gray-600">Licensed Pharmacist & Certified TCM Dispenser</p>
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Meet Your Expert: Zeng Chuping</h2>
+                <p className="text-lg text-gray-600"><strong>Licensed Pharmacist & Certified TCM Dispenser</strong></p>
               </div>
 
               <div className="grid md:grid-cols-2 gap-8">
@@ -140,10 +157,10 @@ export default function AboutClient() {
                   </div>
                   <div className="space-y-3">
                     {[
-                      'Pharmacology & Drug Interactions',
-                      'Traditional Chinese Medicine',
+                      'Pharmacology & Herb-Drug Interaction Safety',
+                      'Traditional Chinese Medicine & Body Constitution',
                       'Herbal Medicine Safety Assessment',
-                      'Evidence-Based Natural Health',
+                      'Evidence-Based Natural Health Support',
                       'Patient Safety & Risk Management',
                       'Herbal Quality & Purity Analysis'
                     ].map((expertise, index) => (
@@ -161,20 +178,55 @@ export default function AboutClient() {
                 <blockquote className="text-lg text-gray-700 italic text-center leading-relaxed">
                   &ldquo;My mission is to bridge the gap between traditional herbal wisdom and modern pharmaceutical science. 
                   Too many people suffer from unreliable online advice or dangerous herb-drug interactions. 
-                  With my dual training in pharmacy and TCM, I provide the professional guidance you deserve.&rdquo;
+                  With my dual training in pharmacy and TCM, I provide the <strong>evidence-based herbal guidance</strong> you deserve.&rdquo;
                 </blockquote>
                 <div className="text-center mt-4">
-                  <cite className="text-green-600 font-semibold">— Zeng Chuping, Licensed Pharmacist</cite>
+                  <cite className="text-green-600 font-semibold">— Zeng Chuping, Licensed Pharmacist & TCM Expert</cite>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* User Pain Points Section */}
-          <div className="bg-white rounded-3xl shadow-xl p-12 mb-16">
+          {/* Mobile Expert Profile - Simplified */}
+          <div className="bg-white rounded-2xl p-6 mb-12 shadow-lg md:hidden">
+            <div className="text-center mb-6">
+              <div className="w-20 h-20 rounded-full mx-auto mb-4 overflow-hidden shadow-lg border-2 border-green-100">
+                <Image
+                  src="/images/about/zeng-chuping-profile.jpg"
+                  alt="Zeng Chuping - Licensed Pharmacist & TCM Expert"
+                  width={80}
+                  height={80}
+                  className="w-full h-full object-cover"
+                  priority
+                />
+              </div>
+              <h2 className="text-xl font-bold text-gray-900 mb-2">Meet Zeng Chuping</h2>
+              <p className="text-gray-600">Licensed Pharmacist & Certified TCM Dispenser with expertise in pharmacology, <strong>herb-drug interactions</strong>, and <strong>herbal medicine safety</strong>.</p>
+            </div>
+            
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-gray-900">Why Professional Guidance Matters:</h3>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li className="flex items-start">
+                  <span className="text-red-500 mr-2 mt-1">⚠</span>
+                  <span>Avoid Dangerous Misinformation – risky social media advice</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-yellow-500 mr-2 mt-1">⚠</span>
+                  <span>Prevent Herb-Drug Interactions – 40% of adults use herbs with prescriptions</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-500 mr-2 mt-1">💰</span>
+                  <span>Save Money & Time – stop wasting hundreds on ineffective supplements</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* User Pain Points Section - Desktop */}
+          <div className="bg-white rounded-3xl shadow-xl p-12 mb-16 hidden md:block">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Professional Guidance Matters</h2>
-              <p className="text-xl text-gray-600">The hidden dangers of DIY herbal medicine</p>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Professional Herbal Guidance Matters</h2>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
@@ -183,14 +235,14 @@ export default function AboutClient() {
                 <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <AlertCircle className="w-8 h-8 text-red-600" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Dangerous Misinformation</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">🚫 Dangerous Misinformation</h3>
                 <p className="text-gray-600 mb-4">
-                  Social media &ldquo;experts&rdquo; without medical training give dangerous advice. 
-                  Wrong dosages, harmful combinations, and fake &ldquo;miracle cures&rdquo; put your health at risk.
+                  Social media &ldquo;experts&rdquo; without medical training promote harmful &ldquo;miracle cures.&rdquo; 
+                  Wrong dosages, risky herb combinations, and misleading claims can put your health at risk.
                 </p>
                 <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                   <p className="text-sm text-red-800">
-                    <strong>Real Risk:</strong> 50,000+ supplement-related ER visits annually in the US alone
+                    <strong>Fact:</strong> Over <strong>50,000 ER visits annually in the US</strong> are linked to supplements.
                   </p>
                 </div>
               </div>
@@ -200,14 +252,14 @@ export default function AboutClient() {
                 <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Stethoscope className="w-8 h-8 text-yellow-600" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Drug Interactions</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">⚠️ Drug Interaction Risks</h3>
                 <p className="text-gray-600 mb-4">
-                  Your doctor may not know about herbal interactions with your medications. 
-                  This knowledge gap can lead to serious, even life-threatening complications.
+                  Doctors often overlook <strong>herb-drug interactions</strong>. Without proper screening, 
+                  combining herbs with prescription medications can cause severe complications.
                 </p>
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                   <p className="text-sm text-yellow-800">
-                    <strong>Hidden Danger:</strong> 40% of adults take herbs with prescription drugs
+                    <strong>Fact:</strong> Nearly <strong>40% of adults</strong> use herbs alongside prescription drugs.
                   </p>
                 </div>
               </div>
@@ -217,25 +269,24 @@ export default function AboutClient() {
                 <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Target className="w-8 h-8 text-blue-600" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Wasted Money & Time</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">💸 Wasted Money & Time</h3>
                 <p className="text-gray-600 mb-4">
-                  Without proper guidance, you buy the wrong herbs, wrong brands, or wrong dosages. 
-                  Years pass with no results, costing hundreds in wasted supplements.
+                  Without professional advice, people spend hundreds of dollars on the wrong herbs, brands, 
+                  or dosages—with little or no results.
                 </p>
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <p className="text-sm text-blue-800">
-                    <strong>Average Cost:</strong> $300-500 wasted annually on ineffective supplements
+                    <strong>Average Loss:</strong> $300–500 wasted annually on ineffective supplements.
                   </p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Solution - What Makes Us Different */}
-          <div className="bg-gradient-to-r from-green-600 to-blue-600 rounded-3xl p-12 mb-16 text-white">
+          {/* Solution - Desktop Version */}
+          <div className="bg-gradient-to-r from-green-600 to-blue-600 rounded-3xl p-12 mb-16 text-white hidden md:block">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4">The HerbScience Difference</h2>
-              <p className="text-xl opacity-90">Professional expertise you can trust</p>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -244,15 +295,15 @@ export default function AboutClient() {
                   <Shield className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="font-bold text-lg mb-2">Licensed Professional</h3>
-                <p className="text-white/80 text-sm">Real credentials, not just online courses</p>
+                <p className="text-white/80 text-sm">real credentials, not online certificates</p>
               </div>
 
               <div className="text-center">
                 <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <BookOpen className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="font-bold text-lg mb-2">Evidence-Based</h3>
-                <p className="text-white/80 text-sm">Scientific research, not anecdotal stories</p>
+                <h3 className="font-bold text-lg mb-2">Evidence-Based Herbal Medicine</h3>
+                <p className="text-white/80 text-sm">built on research, not anecdotes</p>
               </div>
 
               <div className="text-center">
@@ -260,7 +311,7 @@ export default function AboutClient() {
                   <Heart className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="font-bold text-lg mb-2">Safety First</h3>
-                <p className="text-white/80 text-sm">Comprehensive drug interaction screening</p>
+                <p className="text-white/80 text-sm">comprehensive herbal safety checks and drug interaction reviews</p>
               </div>
 
               <div className="text-center">
@@ -268,35 +319,70 @@ export default function AboutClient() {
                   <TrendingUp className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="font-bold text-lg mb-2">Proven Results</h3>
-                <p className="text-white/80 text-sm">Thousands of success stories worldwide</p>
+                <p className="text-white/80 text-sm">thousands worldwide guided safely and effectively</p>
               </div>
             </div>
           </div>
 
-          {/* Trust Indicators */}
-          <div className="bg-gray-50 rounded-3xl p-12 mb-16">
+          {/* Mobile Promise Section */}
+          <div className="bg-green-50 rounded-2xl p-6 mb-12 md:hidden">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Our Promise:</h2>
+            <ul className="space-y-3 text-gray-700">
+              <li className="flex items-center">
+                <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
+                <span><strong>Licensed & Experienced Professionals</strong></span>
+              </li>
+              <li className="flex items-center">
+                <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
+                <span><strong>Evidence-Based Recommendations</strong></span>
+              </li>
+              <li className="flex items-center">
+                <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
+                <span><strong>Safety First with Drug Interaction Screening</strong></span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Trust Indicators - Desktop */}
+          <div className="bg-gray-50 rounded-3xl p-12 mb-16 hidden md:block">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Trusted by Thousands Worldwide</h2>
-              <p className="text-xl text-gray-600">See why professionals and individuals choose HerbScience</p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
               <div className="bg-white rounded-2xl p-8 shadow-lg text-center">
                 <div className="text-4xl font-bold text-green-600 mb-2">50,000+</div>
                 <p className="text-gray-900 font-semibold mb-2">People Helped</p>
-                <p className="text-gray-600 text-sm">Individuals worldwide have received safe, professional herbal guidance</p>
+                <p className="text-gray-600 text-sm">safe, professional herbal guidance delivered globally</p>
               </div>
 
               <div className="bg-white rounded-2xl p-8 shadow-lg text-center">
                 <div className="text-4xl font-bold text-blue-600 mb-2">98%</div>
                 <p className="text-gray-900 font-semibold mb-2">Safety Success Rate</p>
-                <p className="text-gray-600 text-sm">Users report no adverse reactions when following our guidance</p>
+                <p className="text-gray-600 text-sm">users report no adverse reactions when following our guidance</p>
               </div>
 
               <div className="bg-white rounded-2xl p-8 shadow-lg text-center">
                 <div className="text-4xl font-bold text-purple-600 mb-2">15+</div>
                 <p className="text-gray-900 font-semibold mb-2">Years Experience</p>
-                <p className="text-gray-600 text-sm">Combined experience in pharmacy and traditional medicine</p>
+                <p className="text-gray-600 text-sm">in both pharmacy and Traditional Chinese Medicine</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Trust Section */}
+          <div className="bg-gray-50 rounded-2xl p-6 mb-12 md:hidden">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Trusted by Thousands</h2>
+            <p className="text-gray-600 mb-4">50,000+ people helped worldwide, 98% safety success rate, 15+ years of combined experience in pharmacy and TCM.</p>
+            
+            <div className="space-y-3">
+              <p className="text-sm text-gray-600">
+                Have questions? Need <strong>safe herbal supplement advice</strong>? Contact us via email or visit our office in San Francisco.
+              </p>
+              <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                <p className="text-xs text-red-800">
+                  <strong>Medical Emergency:</strong> Call 911 immediately for severe reactions.
+                </p>
               </div>
             </div>
           </div>
@@ -306,8 +392,8 @@ export default function AboutClient() {
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Get in Touch</h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Have questions about herbs, need safety advice, or want to share feedback? 
-                Our expert team is here to help you on your herbal health journey.
+                Have questions about herbs, need <strong>safe herbal supplement advice</strong>, or want to share feedback? 
+                Our expert team is here to support your natural health journey.
               </p>
             </div>
 
