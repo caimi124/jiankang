@@ -1,4 +1,4 @@
-/* Enhanced Blog Article Styles */
+/* Enhanced Blog Article Styles - Dark Mode Compatible */
 
 /* Custom scrollbar for better UX */
 .enhanced-article-container::-webkit-scrollbar {
@@ -10,22 +10,40 @@
   border-radius: 3px;
 }
 
+@media (prefers-color-scheme: dark) {
+  .enhanced-article-container::-webkit-scrollbar-track {
+    background: #374151;
+  }
+}
+
 .enhanced-article-container::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 3px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .enhanced-article-container::-webkit-scrollbar-thumb {
+    background: #6b7280;
+  }
 }
 
 .enhanced-article-container::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
 
-/* Typography enhancements */
+@media (prefers-color-scheme: dark) {
+  .enhanced-article-container::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+  }
+}
+
+/* Typography enhancements - Dark Mode Compatible */
 .enhanced-content h1,
 .enhanced-content h2,
 .enhanced-content h3 {
   line-height: 1.3;
   font-weight: 700;
-  color: #1f2937;
+  /* 移除硬编码颜色，让Tailwind的dark模式生效 */
 }
 
 .enhanced-content h1 {
@@ -45,11 +63,11 @@
   margin-bottom: 1rem;
 }
 
-/* Improved paragraph spacing */
+/* Improved paragraph spacing - Dark Mode Compatible */
 .enhanced-content p {
   line-height: 1.75;
   margin-bottom: 1.5rem;
-  color: #374151;
+  /* 移除硬编码颜色，让Tailwind的dark模式生效 */
   max-width: 65ch;
 }
 
