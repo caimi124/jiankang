@@ -5,32 +5,32 @@
   "redirects": [
     {
       "source": "/index.html",
-      "destination": "/",
+      "destination": "https://herbscience.shop/",
       "permanent": true
     },
     {
       "source": "/herbs/pumpkin-seed",
-      "destination": "/herbs/pumpkin-seeds",
+      "destination": "https://herbscience.shop/herbs/pumpkin-seeds",
       "permanent": true
     },
     {
       "source": "/herbs/cloves",
-      "destination": "/herbs/clove",
+      "destination": "https://herbscience.shop/herbs/clove",
       "permanent": true
     },
     {
       "source": "/ingredient-checker(.*)",
-      "destination": "/constitution-test",
+      "destination": "https://herbscience.shop/constitution-test",
       "permanent": true
     },
     {
       "source": "/knowledge-center(.*)",
-      "destination": "/blog",
+      "destination": "https://herbscience.shop/blog",
       "permanent": true
     },
     {
       "source": "/user-experiences(.*)",
-      "destination": "/",
+      "destination": "https://herbscience.shop/",
       "permanent": true
     },
     {
@@ -45,6 +45,11 @@
       "permanent": true
     }
   ],
+  "functions": {
+    "app/api/**": {
+      "maxDuration": 10
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",
@@ -67,7 +72,7 @@
         },
         {
           "key": "Strict-Transport-Security",
-          "value": "max-age=31536000; includeSubDomains; preload"
+          "value": "max-age=63072000; includeSubDomains; preload"
         }
       ]
     },

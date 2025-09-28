@@ -1,180 +1,284 @@
 #!/usr/bin/env node
 
 /**
- * 重定向测试脚本 - 验证所有重定向规则是否正确工作
- * 修复Google Search Console重定向错误
+ * 全面测试网站重定向问题诊断脚本
+ * 检查可能导致Google未编入索引的重定向问题
  */
 
 const https = require('https');
 const http = require('http');
+const { URL } = require('url');
 
-// 测试URL列表 - 基于Google Search Console报告的错误页面
+// 测试的URL列表
 const testUrls = [
-  // 基础重定向测试
   'http://herbscience.shop/',
-  'http://www.herbscience.shop/',
   'https://herbscience.shop/',
+  'http://www.herbscience.shop/',
   'https://www.herbscience.shop/',
-  
-  // Google Search Console错误页面
-  'https://www.herbscience.shop/user-experiences',
-  'https://www.herbscience.shop/herb-finder', 
-  'https://www.herbscience.shop/herbs/ginger',
-  'https://www.herbscience.shop/blog',
-  'https://www.herbscience.shop/constitution-test',
-  'https://www.herbscience.shop/about',
-  
-  // 对应的non-www版本（应该重定向到www）
-  'https://herbscience.shop/user-experiences',
-  'https://herbscience.shop/herb-finder',
-  'https://herbscience.shop/herbs/ginger', 
+  'https://herbscience.shop/index.html',
+  'http://herbscience.shop/index.html',
+  'https://www.herbscience.shop/index.html',
   'https://herbscience.shop/blog',
   'https://herbscience.shop/constitution-test',
-  'https://herbscience.shop/about',
-  
-  // 草药别名重定向
-  'https://www.herbscience.shop/herbs/pumpkin-seed',
-  'https://www.herbscience.shop/herbs/cloves',
-  'https://herbscience.shop/herbs/pumpkin-seed',
-  'https://herbscience.shop/herbs/cloves',
+  'https://herbscience.shop/herb-finder'
 ];
 
-/**
- * 发送HTTP请求并返回重定向信息
- */
-function testRedirect(url) {
-  return new Promise((resolve) => {
-    const urlObj = new URL(url);
-    const client = urlObj.protocol === 'https:' ? https : http;
-    
-    const options = {
-      hostname: urlObj.hostname,
-      port: urlObj.port || (urlObj.protocol === 'https:' ? 443 : 80),
-      path: urlObj.pathname + urlObj.search,
-      method: 'HEAD',
-      timeout: 10000,
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; RedirectTester/1.0)'
-      }
-    };
-
-    const req = client.request(options, (res) => {
-      resolve({
-        url,
-        statusCode: res.statusCode,
-        location: res.headers.location || null,
-        isRedirect: res.statusCode >= 300 && res.statusCode < 400,
-        isFinal: res.statusCode === 200
-      });
-    });
-
-    req.on('error', (error) => {
-      resolve({
-        url,
-        statusCode: 'ERROR',
-        location: null,
-        isRedirect: false,
-        isFinal: false,
-        error: error.message
-      });
-    });
-
-    req.on('timeout', () => {
-      req.destroy();
-      resolve({
-        url,
-        statusCode: 'TIMEOUT', 
-        location: null,
-        isRedirect: false,
-        isFinal: false,
-        error: 'Request timeout'
-      });
-    });
-
-    req.end();
-  });
-}
-
-/**
- * 主测试函数
- */
-async function runRedirectTests() {
-  console.log('🔍 开始测试重定向配置...\n');
-  console.log('📋 测试目标：修复Google Search Console重定向错误\n');
-  
-  const results = [];
-  let passCount = 0;
-  let failCount = 0;
-
-  for (const url of testUrls) {
-    const result = await testRedirect(url);
-    results.push(result);
-    
-    // 分析结果
-    let status = '❌ FAIL';
-    let message = '';
-
-    if (result.error) {
-      message = `错误: ${result.error}`;
-      failCount++;
-    } else if (result.statusCode === 200) {
-      // 最终页面，检查是否是正确的www域名
-      if (url.includes('www.herbscience.shop')) {
-        status = '✅ PASS';
-        message = '最终页面正确访问';
-        passCount++;
-      } else {
-        status = '⚠️  WARN'; 
-        message = '应该重定向到www版本';
-        failCount++;
-      }
-    } else if (result.isRedirect) {
-      // 重定向，检查目标是否正确
-      if (result.location && result.location.includes('www.herbscience.shop')) {
-        status = '✅ PASS';
-        message = `正确重定向到: ${result.location}`;
-        passCount++;
-      } else {
-        message = `重定向目标错误: ${result.location}`;
-        failCount++;
-      }
-    } else {
-      message = `状态码: ${result.statusCode}`;
-      failCount++;
-    }
-
-    console.log(`${status} ${url}`);
-    console.log(`   状态: ${result.statusCode} | ${message}`);
-    if (result.location) {
-      console.log(`   重定向到: ${result.location}`);
-    }
-    console.log('');
+class RedirectChecker {
+  constructor() {
+    this.results = [];
+    this.issues = [];
   }
 
-  // 总结报告
-  console.log('📊 测试总结:');
-  console.log(`✅ 通过: ${passCount}`);
-  console.log(`❌ 失败: ${failCount}`);
-  console.log(`📈 成功率: ${Math.round((passCount / (passCount + failCount)) * 100)}%\n`);
+  async checkUrl(url, maxRedirects = 10) {
+    return new Promise((resolve) => {
+      const redirectChain = [];
+      let currentUrl = url;
+      let redirectCount = 0;
 
-  // 预期重定向链分析
-  console.log('🎯 预期重定向链:');
-  console.log('   http://herbscience.shop/ → https://www.herbscience.shop/');
-  console.log('   https://herbscience.shop/ → https://www.herbscience.shop/');
-  console.log('   https://www.herbscience.shop/ → 200 OK (最终页面)');
-  
-  if (failCount === 0) {
-    console.log('\n🎉 所有重定向测试通过！Google Search Console错误应该得到解决。');
-  } else {
-    console.log('\n⚠️  发现问题，需要进一步检查配置文件。');
+      const checkSingleUrl = (targetUrl) => {
+        if (redirectCount >= maxRedirects) {
+          resolve({
+            originalUrl: url,
+            finalUrl: targetUrl,
+            redirectChain,
+            status: 'TOO_MANY_REDIRECTS',
+            redirectCount,
+            issue: 'Redirect loop detected'
+          });
+          return;
+        }
+
+        const urlObj = new URL(targetUrl);
+        const isHttps = urlObj.protocol === 'https:';
+        const client = isHttps ? https : http;
+        const port = urlObj.port || (isHttps ? 443 : 80);
+
+        const options = {
+          hostname: urlObj.hostname,
+          port: port,
+          path: urlObj.pathname + urlObj.search,
+          method: 'HEAD',
+          timeout: 10000,
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (compatible; RedirectChecker/1.0; +https://herbscience.shop/)'
+          }
+        };
+
+        const req = client.request(options, (res) => {
+          const statusCode = res.statusCode;
+          const location = res.headers.location;
+
+          redirectChain.push({
+            url: targetUrl,
+            statusCode,
+            location,
+            headers: {
+              'content-type': res.headers['content-type'],
+              'cache-control': res.headers['cache-control'],
+              'x-robots-tag': res.headers['x-robots-tag']
+            }
+          });
+
+          if (statusCode >= 300 && statusCode < 400 && location) {
+            // 处理重定向
+            redirectCount++;
+            const nextUrl = new URL(location, targetUrl).href;
+            checkSingleUrl(nextUrl);
+          } else {
+            // 最终响应
+            resolve({
+              originalUrl: url,
+              finalUrl: targetUrl,
+              redirectChain,
+              status: statusCode >= 200 && statusCode < 300 ? 'SUCCESS' : 'ERROR',
+              redirectCount,
+              finalStatusCode: statusCode
+            });
+          }
+        });
+
+        req.on('error', (err) => {
+          resolve({
+            originalUrl: url,
+            finalUrl: targetUrl,
+            redirectChain,
+            status: 'ERROR',
+            redirectCount,
+            error: err.message
+          });
+        });
+
+        req.on('timeout', () => {
+          req.destroy();
+          resolve({
+            originalUrl: url,
+            finalUrl: targetUrl,
+            redirectChain,
+            status: 'TIMEOUT',
+            redirectCount,
+            error: 'Request timeout'
+          });
+        });
+
+        req.end();
+      };
+
+      checkSingleUrl(currentUrl);
+    });
   }
 
-  return { passCount, failCount, results };
+  analyzeRedirects(result) {
+    const issues = [];
+
+    // 检查重定向次数
+    if (result.redirectCount > 3) {
+      issues.push(`Too many redirects (${result.redirectCount})`);
+    }
+
+    // 检查重定向循环
+    const urlsSeen = new Set();
+    for (const redirect of result.redirectChain) {
+      if (urlsSeen.has(redirect.url)) {
+        issues.push('Redirect loop detected');
+        break;
+      }
+      urlsSeen.add(redirect.url);
+    }
+
+    // 检查HTTP->HTTPS->HTTP循环
+    let hasHttp = false;
+    let hasHttps = false;
+    for (const redirect of result.redirectChain) {
+      if (redirect.url.startsWith('http://')) hasHttp = true;
+      if (redirect.url.startsWith('https://')) hasHttps = true;
+    }
+    if (hasHttp && hasHttps && result.redirectCount > 1) {
+      issues.push('Mixed HTTP/HTTPS redirects');
+    }
+
+    // 检查www子域名重定向
+    let hasWww = false;
+    let hasNonWww = false;
+    for (const redirect of result.redirectChain) {
+      const url = new URL(redirect.url);
+      if (url.hostname.startsWith('www.')) hasWww = true;
+      else hasNonWww = true;
+    }
+    if (hasWww && hasNonWww && result.redirectCount > 1) {
+      issues.push('www subdomain redirect chain');
+    }
+
+    // 检查最终状态码
+    if (result.finalStatusCode !== 200) {
+      issues.push(`Final status code: ${result.finalStatusCode}`);
+    }
+
+    return issues;
+  }
+
+  async runTests() {
+    console.log('🔍 开始全面重定向诊断...\n');
+
+    for (const url of testUrls) {
+      console.log(`Testing: ${url}`);
+      const result = await this.checkUrl(url);
+      const issues = this.analyzeRedirects(result);
+
+      this.results.push(result);
+      if (issues.length > 0) {
+        this.issues.push({ url, issues });
+      }
+
+      // 显示重定向链
+      if (result.redirectChain.length > 1) {
+        console.log('  Redirect chain:');
+        result.redirectChain.forEach((redirect, index) => {
+          const isLast = index === result.redirectChain.length - 1;
+          console.log(`    ${index + 1}. ${redirect.url} → ${redirect.statusCode}${isLast ? '' : ' → ' + redirect.location}`);
+        });
+      } else {
+        console.log(`  Direct response: ${result.finalStatusCode || result.status}`);
+      }
+
+      if (issues.length > 0) {
+        console.log(`  ⚠️  Issues: ${issues.join(', ')}`);
+      } else {
+        console.log('  ✅ No issues detected');
+      }
+      console.log();
+    }
+
+    this.generateReport();
+  }
+
+  generateReport() {
+    console.log('\n📊 重定向问题诊断报告\n');
+    console.log('=' .repeat(50));
+
+    if (this.issues.length === 0) {
+      console.log('✅ 未发现重定向问题');
+      return;
+    }
+
+    console.log(`❌ 发现 ${this.issues.length} 个问题URL:\n`);
+
+    this.issues.forEach(issue => {
+      console.log(`URL: ${issue.url}`);
+      console.log(`问题: ${issue.issues.join(', ')}\n`);
+    });
+
+    // 分析常见问题模式
+    console.log('🔧 建议的修复方案:\n');
+
+    const allIssues = this.issues.flatMap(issue => issue.issues);
+    const issueCount = {};
+    allIssues.forEach(issue => {
+      issueCount[issue] = (issueCount[issue] || 0) + 1;
+    });
+
+    if (issueCount['Redirect loop detected']) {
+      console.log('1. 修复重定向循环:');
+      console.log('   - 检查 vercel.json 和 middleware.ts 中的重定向配置');
+      console.log('   - 确保没有相互冲突的重定向规则');
+      console.log();
+    }
+
+    if (issueCount['Too many redirects']) {
+      console.log('2. 减少重定向次数:');
+      console.log('   - 直接重定向到最终URL，避免多次跳转');
+      console.log('   - 整合 vercel.json 和 next.config.js 中的重定向配置');
+      console.log();
+    }
+
+    if (issueCount['Mixed HTTP/HTTPS redirects']) {
+      console.log('3. 修复HTTP/HTTPS混合重定向:');
+      console.log('   - 确保所有重定向都直接指向HTTPS版本');
+      console.log('   - 添加HSTS头强制HTTPS');
+      console.log();
+    }
+
+    if (issueCount['www subdomain redirect chain']) {
+      console.log('4. 优化www子域名重定向:');
+      console.log('   - 在DNS级别直接重定向www到非www');
+      console.log('   - 或在服务器级别统一重定向策略');
+      console.log();
+    }
+
+    console.log('5. Google Search Console 建议:');
+    console.log('   - 在GSC中提交正确的sitemap.xml');
+    console.log('   - 使用"网址检查"工具检查具体页面');
+    console.log('   - 检查robots.txt是否正确');
+    console.log('   - 确保canonical标签指向正确的URL');
+  }
 }
 
-// 运行测试
+async function main() {
+  const checker = new RedirectChecker();
+  await checker.runTests();
+}
+
 if (require.main === module) {
-  runRedirectTests().catch(console.error);
+  main().catch(console.error);
 }
 
-module.exports = { runRedirectTests, testRedirect };
+module.exports = RedirectChecker;

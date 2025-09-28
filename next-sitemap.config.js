@@ -16,10 +16,15 @@ module.exports = {
     '/loading',
     '/error',
     '/not-found',
-    // 排除重定向源页面，避免404
+    // 排除重定向源页面，避免404和重复内容
     '/home',
-    '/index.html'
-    // 移除 /herb-finder/* 排除以改善SEO收录
+    '/index.html',
+    '/ingredient-checker',
+    '/knowledge-center', 
+    '/user-experiences',
+    '/zh/ingredient-checker',
+    '/zh/knowledge-center',
+    '/zh/user-experiences'
   ],
   
   // 添加额外的路径或自定义页面

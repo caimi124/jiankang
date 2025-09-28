@@ -2,25 +2,18 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  const url = new URL(request.url)
+  const response = NextResponse.next()
 
   // Environment detection
   const isProduction = process.env.NODE_ENV === 'production'
+  const url = new URL(request.url)
   const isLocalhost = url.hostname === 'localhost' || url.hostname === '127.0.0.1'
+  
+  // 重定向交给vercel.json处理，middleware只负责安全头
+  // 这样避免重复重定向和冲突
 
-  // 只处理必要的www重定向，避免其他重定向链
-  if (url.hostname === 'www.herbscience.shop') {
-    url.hostname = 'herbscience.shop'
-    return NextResponse.redirect(url, 301)
-  }
-
-  // Handle herb URL redirects - moved to next.config.js to avoid conflicts
-
-  const response = NextResponse.next()
-
-  // 只在生产环境添加适度的安全头，避免阻止JavaScript执行
+  // 只在生产环境添加CSP头
   if (isProduction && !isLocalhost) {
-    // 更宽松的CSP策略，允许必要的JavaScript执行
     const cspHeader = `
       default-src 'self' 'unsafe-inline' 'unsafe-eval';
       script-src 'self' 'unsafe-inline' 'unsafe-eval' https: blob: data:;
@@ -36,15 +29,10 @@ export function middleware(request: NextRequest) {
     `.replace(/\s{2,}/g, ' ').trim()
 
     response.headers.set('Content-Security-Policy', cspHeader)
-    response.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload')
   }
 
   // 基本安全头（开发和生产环境都添加）
   response.headers.set('X-DNS-Prefetch-Control', 'on')
-  response.headers.set('X-XSS-Protection', '1; mode=block')
-  response.headers.set('X-Frame-Options', 'SAMEORIGIN')
-  response.headers.set('X-Content-Type-Options', 'nosniff')
-  response.headers.set('Referrer-Policy', 'origin-when-cross-origin')
   response.headers.set('Permissions-Policy', 
     'camera=(), microphone=(), geolocation=(), interest-cohort=()'
   )
