@@ -302,29 +302,55 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
                     <Coffee className="w-5 h-5 text-green-600" />
                     How to Use {herbData.name}
                   </h3>
-                  <div className="space-y-3">
-                    <div className="flex items-start gap-3">
-                      <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">1</div>
-                      <div>
-                        <p className="font-medium text-gray-900">Morning Routine</p>
-                        <p className="text-gray-700 text-sm">Start with ginger tea after breakfast to aid digestion and boost circulation</p>
+                  {slug === 'onion' ? (
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">1</div>
+                        <div>
+                          <p className="font-medium text-gray-900">Onion Soup (Daily Warmth)</p>
+                          <p className="text-gray-700 text-sm">Simmer sliced onions with bone broth or vegetable stock 20–30 minutes; add a pinch of black pepper. Enjoy 3–5 times/week to support circulation and digestion.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">2</div>
+                        <div>
+                          <p className="font-medium text-gray-900">Raw Onion Salad (Quercetin Focus)</p>
+                          <p className="text-gray-700 text-sm">Combine thinly sliced red onion with tomatoes and olive oil. Aim for 1/2–1 medium onion/day. For pairing, explore <Link href="/herb-finder?search=turmeric" className="text-green-700 hover:text-green-800 underline">turmeric</Link> or <Link href="/herb-finder?search=garlic" className="text-green-700 hover:text-green-800 underline">garlic</Link>.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">3</div>
+                        <div>
+                          <p className="font-medium text-gray-900">Pickled Onions (Gut-Friendly)</p>
+                          <p className="text-gray-700 text-sm">Add 2–3 tbsp/day as a condiment for probiotic support plus onion antioxidants. Start small if you have a sensitive stomach.</p>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3">
-                      <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">2</div>
-                      <div>
-                        <p className="font-medium text-gray-900">Before Meals</p>
-                        <p className="text-gray-700 text-sm">Take 15-30 minutes before eating to optimize digestive benefits</p>
+                  ) : (
+                    <div className="space-y-3">
+                      <div className="flex items-start gap-3">
+                        <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">1</div>
+                        <div>
+                          <p className="font-medium text-gray-900">Morning Routine</p>
+                          <p className="text-gray-700 text-sm">Start with ginger tea after breakfast to aid digestion and boost circulation</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">2</div>
+                        <div>
+                          <p className="font-medium text-gray-900">Before Meals</p>
+                          <p className="text-gray-700 text-sm">Take 15-30 minutes before eating to optimize digestive benefits</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">3</div>
+                        <div>
+                          <p className="font-medium text-gray-900">Winter Wellness</p>
+                          <p className="text-gray-700 text-sm">Combine with lemon and honey for a warming winter tonic</p>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3">
-                      <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">3</div>
-                      <div>
-                        <p className="font-medium text-gray-900">Winter Wellness</p>
-                        <p className="text-gray-700 text-sm">Combine with lemon and honey for a warming winter tonic</p>
-                      </div>
-                    </div>
-                  </div>
+                  )}
                 </div>
               </div>
             )}
@@ -498,8 +524,24 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
                     <FlaskConical className="w-6 h-6 text-blue-600" />
                     Scientific Evidence & Research
                   </h2>
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 space-y-4">
                     <p className="text-gray-800 leading-relaxed">{herbData.scientific_evidence}</p>
+                    {slug === 'onion' && (
+                      <ul className="list-disc pl-5 text-sm text-blue-900 space-y-2">
+                        <li>
+                          PMC: Onion anthocyanins – extraction, stability, bioavailability and health benefits. 
+                          <a className="text-blue-700 underline ml-1" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9363841/" target="_blank" rel="noopener noreferrer">View study</a>
+                        </li>
+                        <li>
+                          PMC: Unlocking the Health Secrets of Onions – bioactive compounds and mechanisms. 
+                          <a className="text-blue-700 underline ml-1" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12029492/" target="_blank" rel="noopener noreferrer">View review</a>
+                        </li>
+                        <li>
+                          AlloHealth: Quercetin-rich onions and potential male sexual health implications. 
+                          <a className="text-blue-700 underline ml-1" href="https://www.allohealth.com/blog/sexual-dysfunction/erectile-dysfunction/is-onion-good-for-erectile-dysfunction" target="_blank" rel="noopener noreferrer">Read article</a>
+                        </li>
+                      </ul>
+                    )}
                   </div>
                 </div>
 
@@ -648,6 +690,12 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
                           <p className="text-xs text-gray-600">
                             <span className="font-medium">Best for:</span> Cold hands and feet, poor circulation, winter wellness
                           </p>
+                          {slug === 'onion' && (
+                            <p className="text-xs text-gray-600 mt-2">
+                              <span className="font-medium">Pairs well with onion:</span> add sautéed <Link href="/herbs/turmeric" className="text-green-700 hover:text-green-800 underline">turmeric</Link> or
+                              <Link href="/herbs/cinnamon" className="text-green-700 hover:text-green-800 underline ml-1">cinnamon</Link> to enhance antioxidant synergy.
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -660,6 +708,13 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
                           <p className="text-xs text-gray-600">
                             <span className="font-medium">Best for:</span> Exercise recovery, joint discomfort, overall inflammation
                           </p>
+                          {slug === 'onion' && (
+                            <p className="text-xs text-gray-600 mt-2">
+                              <span className="font-medium">Onion pairing tip:</span> roasted onions with
+                              <Link href="/herbs/garlic" className="text-green-700 hover:text-green-800 underline ml-1">garlic</Link> and
+                              <Link href="/herbs/turmeric" className="text-green-700 hover:text-green-800 underline ml-1">turmeric</Link> for cardiometabolic support.
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>
