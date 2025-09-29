@@ -96,6 +96,7 @@ export async function generateStaticParams() {
     { slug: 'herbs-for-sleep-insomnia' },
     { slug: 'ginseng-vs-coffee-energy' },
     { slug: 'why-some-herbs-work-for-you-and-others-dont' },
+    { slug: 'herb-drug-interaction-safety' },
 ]
 }
 
@@ -425,6 +426,55 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 // 本地博客文章数据作为备用
 function getLocalBlogPost(slug: string) {
   const localPosts = {
+    'herb-drug-interaction-safety': {
+      title: 'Herb-Drug Interaction Safety: Evidence-Based Guide to Using Herbs with Medications',
+      excerpt: 'Learn how to safely combine herbal supplements with prescription medications. Evidence-based interactions, risk factors, and practical safety steps.',
+      author: 'HerbScience Team',
+      date: '2025-09-28',
+      read_time: '8',
+      category: 'safety',
+      tags: ['herb-drug interaction safety','herbal safety','evidence-based herbal medicine','supplement interactions','patient safety'],
+      content: `
+<p>Combining <strong>herbal supplements</strong> with prescription medications can be beneficial, but it also carries risks if not done carefully. This guide explains the most important <strong>herb–drug interactions</strong>, who is at higher risk, and how to use herbs safely with evidence-based best practices.</p>
+
+<h2>Why Herb–Drug Interaction Safety Matters</h2>
+<ul>
+  <li><strong>Enzyme interactions</strong>: Some herbs affect CYP450 enzymes (e.g., CYP3A4), changing drug levels.</li>
+  <li><strong>Pharmacodynamic overlap</strong>: Herbs and drugs with similar effects may <em>add up</em> (e.g., sedatives).</li>
+  <li><strong>High‑risk groups</strong>: Polypharmacy, chronic illness, liver/kidney impairment, pregnancy.</li>
+  <li><strong>Data quality</strong>: Evidence ranges from case reports to clinical trials—always weigh certainty.</li>
+  
+</ul>
+
+<h2>Common Interaction Examples (Illustrative)</h2>
+<ul>
+  <li><strong>St. John’s Wort</strong> (CYP3A4 induction): May lower levels of many drugs (e.g., some antidepressants, oral contraceptives).</li>
+  <li><strong>Ginkgo</strong>: May increase bleeding risk when combined with anticoagulants/antiplatelets.</li>
+  <li><strong>Valerian</strong>: Sedation may be additive with CNS depressants.</li>
+  <li><strong>Licorice (glycyrrhizin)</strong>: May elevate blood pressure and potassium loss—caution with diuretics.</li>
+  <li><strong>Goldenseal</strong> (CYP3A4/CYP2D6 inhibition): Potential to raise levels of some drugs.</li>
+</ul>
+
+<h2>Practical 5‑Step Safety Framework</h2>
+<ol>
+  <li><strong>List everything</strong>: Include prescription drugs, OTC meds, and all supplements.</li>
+  <li><strong>Check interactions</strong>: Use trusted resources; start with single herbs before blends.</li>
+  <li><strong>Start low, go slow</strong>: Titrate cautiously; track changes for 2–4 weeks.</li>
+  <li><strong>Monitor signals</strong>: Watch for bleeding, dizziness, sedation, blood pressure changes, GI issues.</li>
+  <li><strong>Consult professionals</strong>: Discuss plans with your clinician and pharmacist when on prescriptions.</li>
+</ol>
+
+<h2>Who Should Be Extra Careful</h2>
+<ul>
+  <li>Adults over 65, pregnant/breastfeeding individuals</li>
+  <li>People with liver/kidney conditions</li>
+  <li>Anyone taking anticoagulants, anti‑seizure meds, immunosuppressants, or narrow therapeutic index drugs</li>
+</ul>
+
+<h2>Key Takeaway</h2>
+<p>Herbs can be powerful allies when used <strong>evidence‑based and safely</strong>. Focus on <strong>interaction checks</strong>, conservative dosing, and professional guidance when using herbs alongside medications.</p>
+`
+    },
     'turmeric-gut-relief-guide': {
       title: 'Turmeric Made Simple: How to Use It Today for Real Gut Relief and Pain Reduction',
       excerpt: 'Feeling bloated, achy, or tired? Discover how turmeric can help calm your gut, reduce inflammation, and boost your energy.',

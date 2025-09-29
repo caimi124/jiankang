@@ -180,7 +180,7 @@ export default function AboutClient() {
                     <div className="flex items-center space-x-3">
                       <CheckCircle className="w-4 h-4 text-green-500" />
                       <span className="text-gray-700">
-                        Pharmacology & <Link href="/blog" className="text-green-600 hover:text-green-700 underline">Herb-Drug Interaction Safety</Link>
+                        Pharmacology & <Link href="/blog/herb-drug-interaction-safety" className="text-green-600 hover:text-green-700 underline">Herb-Drug Interaction Safety</Link>
                       </span>
                     </div>
                     <div className="flex items-center space-x-3">
