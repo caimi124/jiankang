@@ -4,6 +4,11 @@
   "framework": "nextjs",
   "redirects": [
     {
+      "source": "/about-us",
+      "destination": "https://herbscience.shop/about",
+      "permanent": true
+    },
+    {
       "source": "/index.html",
       "destination": "https://herbscience.shop/",
       "permanent": true
