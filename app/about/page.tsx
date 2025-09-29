@@ -51,7 +51,12 @@ export const metadata: Metadata = {
     images: ['https://herbscience.shop/images/about/team-expertise.jpg']
   },
   alternates: {
-    canonical: 'https://herbscience.shop/about'
+    canonical: 'https://herbscience.shop/about',
+    languages: {
+      'en': 'https://herbscience.shop/about',
+      'zh': 'https://herbscience.shop/zh/about',
+      'x-default': 'https://herbscience.shop/about'
+    }
   },
   other: {
     'article:author': 'Zeng Chuping',
@@ -128,6 +133,8 @@ export default function AboutPage() {
       'https://herbscience.shop/about'
     ]
   }
+
+  
 
   const aboutPageSchema = {
     '@context': 'https://schema.org',
@@ -221,6 +228,54 @@ export default function AboutPage() {
     expertise: 'Combining modern pharmaceutical knowledge with traditional Chinese medicine to provide evidence-based herbal health guidance'
   }
 
+  // FAQPage JSON-LD for rich results
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'What makes HerbScience evidence-based?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Our recommendations are guided by peer-reviewed research, safety data, and clinical experience, led by a licensed pharmacist and TCM expert.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'How do you ensure herb-drug interaction safety?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'We screen for known interactions and contraindications, and encourage users to consult healthcare providers when combining herbs with prescription medications.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'Where should I start if I am new to herbs?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Begin with our TCM Constitution Test to identify your body type, browse the Herb Finder for evidence-based profiles, and read our blog for practical safety guidance.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'Is the advice personalized?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'We provide educational guidance aligned with body constitution patterns and safety best practices; for medical advice, consult your clinician.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'Do you cover supplement quality and purity?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes. We highlight standardized extracts, third-party testing, and quality indicators to help you choose reliable products.'
+        }
+      }
+    ]
+  }
+
   return (
     <>
       {/* Enhanced structured data for E-A-T */}
@@ -235,6 +290,10 @@ export default function AboutPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(professionalSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       
       <AboutClient />

@@ -2,6 +2,7 @@ import React from 'react'
 import { Metadata } from 'next'
 import Navigation from '../../../components/Navigation'
 import Breadcrumb from '../../../components/Breadcrumb'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: '关于我们 | HerbScience.shop',
@@ -30,8 +31,13 @@ export default function About() {
               ℹ️ 关于我们
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              HerbScience.shop 致力于为全球用户提供科学、可靠的中草药补充剂指导，
-              帮助每个人做出明智的健康决策。
+              HerbScience.shop 致力于为全球用户提供科学、可靠的中草药补充剂指导，帮助每个人做出明智的健康决策。
+              立即尝试
+              <Link href="/zh/constitution-test" className="text-green-600 hover:text-green-700 underline mx-1">体质测试</Link>
+              、浏览
+              <Link href="/zh/herb-finder" className="text-green-600 hover:text-green-700 underline mx-1">草药数据库</Link>
+              ，或阅读我们的
+              <Link href="/zh/blog" className="text-green-600 hover:text-green-700 underline mx-1">循证博客</Link>。
             </p>
           </div>
         </div>
@@ -189,9 +195,7 @@ export default function About() {
               </div>
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-6">
-                📝 留言给我们
-              </h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-6">📝 留言给我们</h3>
               <form className="space-y-4">
                 <input
                   type="text"
@@ -212,6 +216,33 @@ export default function About() {
                   发送留言
                 </button>
               </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">❓ 常见问题（FAQ）</h2>
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">你们的内容如何做到“循证”？</h3>
+              <p className="text-gray-600">我们基于同行评审研究、权威数据库与临床经验进行内容整理，并由具有药师与中医背景的专业人士把关。</p>
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">如何避免草药与药物相互作用？</h3>
+              <p className="text-gray-600">请参考我们的安全指引，并在合用处方药时咨询医生。建议先做
+                <Link href="/zh/constitution-test" className="text-green-600 hover:text-green-700 underline mx-1">体质测试</Link>
+                ，并在
+                <Link href="/zh/herb-finder" className="text-green-600 hover:text-green-700 underline mx-1">草药数据库</Link>
+                中查看每味草药的禁忌与注意事项。</p>
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">新手如何开始？</h3>
+              <p className="text-gray-600">从单味草药开始，按照循证剂量试用2-4周并记录感受。可先阅读
+                <Link href="/zh/blog" className="text-green-600 hover:text-green-700 underline mx-1">循证博客</Link>
+                获取实用指南。</p>
             </div>
           </div>
         </div>
@@ -243,6 +274,43 @@ export default function About() {
           </div>
         </div>
       </section>
+
+      {/* JSON-LD FAQ */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: [
+              {
+                '@type': 'Question',
+                name: '你们的内容如何做到“循证”？',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: '我们基于同行评审研究、权威数据库与临床经验进行内容整理，并由具有药师与中医背景的专业人士把关。'
+                }
+              },
+              {
+                '@type': 'Question',
+                name: '如何避免草药与药物相互作用？',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: '请参考我们的安全指引，并在合用处方药时咨询医生。建议先做体质测试，并在草药数据库中查看每味草药的禁忌与注意事项。'
+                }
+              },
+              {
+                '@type': 'Question',
+                name: '新手如何开始？',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: '从单味草药开始，按照循证剂量试用2-4周并记录感受。建议阅读循证博客获取实用指南。'
+                }
+              }
+            ]
+          })
+        }}
+      />
       </div>
     </div>
   )
