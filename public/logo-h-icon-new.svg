@@ -1,0 +1,58 @@
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="testTubeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#374151;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1f2937;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="leafGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Test Tube (Left side of H) -->
+  <g transform="translate(16, 8)">
+    <!-- Test tube body -->
+    <rect x="4" y="0" width="8" height="48" rx="2" fill="url(#testTubeGradient)"/>
+    
+    <!-- Test tube opening -->
+    <rect x="2" y="0" width="12" height="4" rx="2" fill="url(#testTubeGradient)"/>
+    
+    <!-- Measurement marks -->
+    <line x1="0" y1="8" x2="4" y2="8" stroke="#f5f5f4" stroke-width="1"/>
+    <line x1="0" y1="16" x2="4" y2="16" stroke="#f5f5f4" stroke-width="1"/>
+    <line x1="0" y1="24" x2="4" y2="24" stroke="#f5f5f4" stroke-width="1"/>
+    <line x1="0" y1="32" x2="4" y2="32" stroke="#f5f5f4" stroke-width="1"/>
+    <line x1="0" y1="40" x2="4" y2="40" stroke="#f5f5f4" stroke-width="1"/>
+    <line x1="0" y1="48" x2="6" y2="48" stroke="#f5f5f4" stroke-width="1"/>
+    
+    <!-- Test tube bottom curve (forms part of H) -->
+    <path d="M 8 48 Q 8 52, 12 52 L 24 52 Q 28 52, 28 48" fill="url(#testTubeGradient)"/>
+  </g>
+  
+  <!-- Leaf (Right side of H) -->
+  <g transform="translate(32, 8)">
+    <!-- Leaf shape -->
+    <path d="M 0 48 
+             Q -8 44, -6 36
+             Q -4 28, 0 24
+             Q 4 20, 8 24
+             Q 12 28, 14 36
+             Q 16 44, 8 48
+             Q 4 46, 0 48 Z" 
+          fill="url(#leafGradient)"/>
+    
+    <!-- Leaf vein -->
+    <path d="M 4 24 Q 4 32, 4 40 Q 4 46, 4 48" 
+          stroke="#047857" 
+          stroke-width="1" 
+          fill="none"/>
+    
+    <!-- Leaf stem (connects to test tube) -->
+    <path d="M 0 48 Q 4 50, 8 48" 
+          stroke="#374151" 
+          stroke-width="2" 
+          fill="none" 
+          stroke-linecap="round"/>
+  </g>
+</svg>

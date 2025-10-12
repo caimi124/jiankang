@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { getTranslation } from '../lib/i18n'
+import Logo from './Logo'
 
 interface NavItem {
   name: string
@@ -139,56 +140,43 @@ export default function AccessibleNavigation() {
 
   return (
     <nav 
-      className="bg-white shadow-lg sticky top-0 z-50" 
+      className="bg-white/95 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50 shadow-sm" 
       role="navigation"
       aria-label="Main navigation"
     >
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="flex items-center">
-            <Link 
-              href="/" 
-              className="flex items-center space-x-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2 rounded-lg p-1"
-              aria-label="HerbScience.shop homepage"
-            >
-              <div className="relative">
-                <div className="w-10 h-10 bg-gradient-to-br from-green-600 to-green-700 rounded-full flex items-center justify-center shadow-lg">
-                  <span className="text-white text-lg font-bold" role="img" aria-label="Herb icon">🌿</span>
-                </div>
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
-                  <span className="text-white text-xs" role="img" aria-label="Science icon">⚗️</span>
-                </div>
-              </div>
-              <div>
-                <span className="text-xl font-bold text-green-700">HerbScience</span>
-                <div className="text-xs text-gray-500 -mt-1">Evidence-Based Guidance</div>
-              </div>
-            </Link>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16 lg:h-18">
+          {/* Left Side: Logo + Navigation (Premium Western Style) */}
+          <div className="flex items-center gap-8">
+            {/* Logo */}
+            <Logo href="/" priority={true} />
+
+            {/* Desktop Navigation - Premium Spacing */}
+            <div className="hidden lg:flex items-center gap-1" role="menubar">
+              {navItems.map((item) => {
+                const isCurrentPage = pathname === item.href || pathname.startsWith(item.href + '/')
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2 ${
+                      isCurrentPage
+                        ? 'bg-green-600 text-white shadow-sm'
+                        : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                    }`}
+                    role="menuitem"
+                    aria-label={item.ariaLabel}
+                    title={item.description}
+                  >
+                    {item.name}
+                  </Link>
+                )
+              })}
+            </div>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8" role="menubar">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2 rounded-lg ${
-                  pathname === item.href
-                    ? 'text-green-600 border-b-2 border-green-600'
-                    : 'text-gray-700 hover:text-green-600'
-                }`}
-                role="menuitem"
-                aria-label={item.ariaLabel}
-                title={item.description}
-              >
-                {item.name}
-              </Link>
-            ))}
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden" ref={menuRef}>
+          {/* Right Side: Mobile menu button */}
+          <div className="lg:hidden" ref={menuRef}>
             <button
               ref={menuButtonRef}
               onClick={toggleMenu}

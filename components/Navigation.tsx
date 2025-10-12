@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { getTranslation } from '../lib/i18n'
+import Logo from './Logo'
 
 interface NavItem {
   name: string
@@ -171,47 +172,34 @@ export default function Navigation() {
       </a>
 
       <nav 
-        className="bg-white shadow-lg sticky top-0 z-50" 
+        className="bg-white/95 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50 shadow-sm" 
         role="navigation"
         aria-label="Main navigation"
       >
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <div className="flex items-center">
-              <Link 
-                href={addLocalePrefix('/')} 
-                className="flex items-center space-x-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2 rounded-lg p-1"
-                aria-label="HerbScience.shop homepage"
-              >
-                <div className="relative">
-                  <div className="w-10 h-10 bg-gradient-to-br from-green-600 to-green-700 rounded-full flex items-center justify-center shadow-lg">
-                    <span className="text-white text-lg font-bold" role="img" aria-label="Herb icon">🌿</span>
-                  </div>
-                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
-                    <span className="text-white text-xs" role="img" aria-label="Science icon">⚗️</span>
-                  </div>
-                </div>
-                <div>
-                  <span className="text-xl font-bold text-green-700">HerbScience</span>
-                  <div className="text-xs text-gray-500 -mt-1">Evidence-Based Guidance</div>
-                </div>
-              </Link>
-            </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16 lg:h-18">
+            {/* Left Side: Logo + Navigation (Premium Western Style) */}
+            <div className="flex items-center gap-8">
+              {/* Logo */}
+              <Logo 
+                href="/" 
+                locale={currentLocale}
+                priority={true} 
+              />
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
-              <div className="flex space-x-6" role="menubar">
+              {/* Desktop Navigation - Premium Spacing */}
+              <div className="hidden lg:flex items-center gap-1" role="menubar">
                 {navItems.map((item) => {
                   const localizedHref = addLocalePrefix(item.href)
+                  const isCurrentPage = pathname === localizedHref || pathname.startsWith(localizedHref + '/')
                   return (
                     <Link
                       key={item.name}
                       href={localizedHref}
-                      className={`px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2 rounded-lg ${
-                        pathname === localizedHref
-                          ? 'text-green-600 border-b-2 border-green-600'
-                          : 'text-gray-700 hover:text-green-600'
+                      className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2 ${
+                        isCurrentPage
+                          ? 'bg-green-600 text-white shadow-sm'
+                          : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
                       }`}
                       role="menuitem"
                       aria-label={item.ariaLabel}
@@ -222,34 +210,41 @@ export default function Navigation() {
                   )
                 })}
               </div>
+            </div>
+
+            {/* Right Side: Language Switcher & Mobile Menu */}
+            <div className="hidden md:flex items-center gap-3">
               
-              {/* Language Switcher */}
+              {/* Premium Language Switcher */}
               <div className="relative">
-                <div className="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
-                  {/* 按钮版本 */}
+                <div className="flex items-center gap-1 bg-gray-100/80 rounded-lg p-1">
+                  {/* EN Button */}
                   <button
                     onClick={() => handleLanguageSwitch('en')}
-                    className={`px-3 py-1 text-sm font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 ${
+                    className={`flex flex-col items-center justify-center px-3 py-1.5 text-xs font-medium rounded-md transition-all duration-200 min-w-[3rem] focus:outline-none focus:ring-2 focus:ring-green-500 ${
                       currentLocale === 'en' 
                         ? 'bg-white text-green-600 shadow-sm' 
-                        : 'text-gray-600 hover:text-gray-900'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-white/50'
                     }`}
                     type="button"
                     aria-label="切换到英文版本"
                   >
-                    🇺🇸 EN
+                    <span className="text-lg mb-0.5">🇺🇸</span>
+                    <span className="text-[10px] font-semibold">EN</span>
                   </button>
+                  {/* ZH Button */}
                   <button
                     onClick={() => handleLanguageSwitch('zh')}
-                    className={`px-3 py-1 text-sm font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 ${
+                    className={`flex flex-col items-center justify-center px-3 py-1.5 text-xs font-medium rounded-md transition-all duration-200 min-w-[3rem] focus:outline-none focus:ring-2 focus:ring-green-500 ${
                       currentLocale === 'zh' 
                         ? 'bg-white text-green-600 shadow-sm' 
-                        : 'text-gray-600 hover:text-gray-900'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-white/50'
                     }`}
                     type="button"
                     aria-label="切换到中文版本"
                   >
-                    🇨🇳 中文
+                    <span className="text-lg mb-0.5">🇨🇳</span>
+                    <span className="text-[10px] font-semibold">ZH</span>
                   </button>
                   
                   {/* 备用链接版本 - 仅在按钮不工作时显示 */}

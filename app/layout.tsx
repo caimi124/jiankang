@@ -55,6 +55,16 @@ export const metadata: Metadata = {
   // 3. Use HTML tag method and paste the content value below
   verification: {
     google: process.env.GOOGLE_VERIFICATION_CODE || undefined
+  },
+  // Favicon configuration
+  icons: {
+    icon: [
+      { url: '/favicon.png', type: 'image/png' },
+      { url: '/icon.png', sizes: '192x192', type: 'image/png' }
+    ],
+    apple: [
+      { url: '/icon.png', sizes: '180x180', type: 'image/png' }
+    ]
   }
 }
 
@@ -79,10 +89,12 @@ export default function RootLayout({
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'HerbScience',
+    alternateName: 'HERB SCIENCE',
+    description: 'Health Customization through Evidence-Based Herbal Medicine',
     url: 'https://herbscience.shop',
     logo: {
       '@type': 'ImageObject',
-      url: 'https://herbscience.shop/logo.png',
+      url: 'https://herbscience.shop/logo.svg',
       width: 256,
       height: 256
     },
@@ -122,8 +134,14 @@ export default function RootLayout({
           `
         }} />
         
+        {/* Favicon and app icons */}
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" href="/icon-192x192.svg" />
+        <link rel="manifest" href="/manifest.json" />
+        
         {/* Preload critical resources */}
-        <link rel="preload" href="/logo.png" as="image" type="image/png" fetchPriority="high" />
+        <link rel="preload" href="/logo.svg" as="image" type="image/svg+xml" fetchPriority="high" />
         {/* Structured data - non-blocking */}
         <script 
           type="application/ld+json" 

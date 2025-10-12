@@ -4,6 +4,7 @@ import { useState, useMemo, useCallback } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { getTranslation, supportedLanguages } from '../lib/i18n'
+import Logo from './Logo'
 
 // 懒加载图标
 import dynamic from 'next/dynamic'
@@ -55,126 +56,101 @@ export default function Header() {
   }, [currentLocale])
 
   return (
-    <header className="bg-white/95 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50 shadow-lg">
+    <header className="bg-white/95 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          {/* Enhanced Logo */}
-          <div className="flex items-center">
-            <Link 
-              href={getLocalizedHref('/')}
-              className="group flex items-center space-x-3 transition-all duration-300 hover:scale-105"
-            >
-              <div className="relative">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:rotate-6">
-                  <span className="text-2xl filter drop-shadow-sm">🌿</span>
-                </div>
-                <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center shadow-md">
-                  <span className="text-xs text-white">⚗️</span>
-                </div>
-              </div>
-              <div className="hidden sm:block">
-                <div className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                  HerbScience
-                </div>
-                <div className="text-xs text-gray-500 -mt-1 font-medium">
-                  Evidence-Based Guidance
-                </div>
-              </div>
-              <div className="sm:hidden">
-                <div className="text-xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                  HerbScience
-                </div>
-              </div>
-            </Link>
+        <div className="flex justify-between items-center h-16 lg:h-18">
+          {/* Left Side: Logo + Navigation (Premium Western Style) */}
+          <div className="flex items-center gap-8">
+            {/* Logo */}
+            <Logo 
+              href="/"
+              locale={currentLocale}
+              priority={true}
+            />
+
+            {/* Desktop Navigation - Premium Spacing */}
+            <nav className="hidden lg:flex items-center gap-1">
+              <Link
+                href={getLocalizedHref('/')}
+                className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                  isActive('/')
+                    ? 'bg-green-600 text-white shadow-sm'
+                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                }`}
+              >
+                <span className="text-base">🏠</span>
+                <span>{t.nav.home}</span>
+              </Link>
+
+              <Link
+                href={getLocalizedHref('/constitution-test')}
+                className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                  isActive('/constitution-test')
+                    ? 'bg-green-600 text-white shadow-sm'
+                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                }`}
+              >
+                <span className="text-base">🧠</span>
+                <span>{t.nav.constitutionTest}</span>
+              </Link>
+
+              <Link
+                href={getLocalizedHref('/herb-finder')}
+                className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                  isActive('/herb-finder')
+                    ? 'bg-green-600 text-white shadow-sm'
+                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                }`}
+              >
+                <span className="text-base">🔍</span>
+                <span>{t.nav.herbFinder}</span>
+              </Link>
+
+              <Link
+                href={getLocalizedHref('/blog')}
+                className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                  isActive('/blog')
+                    ? 'bg-green-600 text-white shadow-sm'
+                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                }`}
+              >
+                <span className="text-base">📝</span>
+                <span>{t.nav.blog}</span>
+              </Link>
+              
+              <Link
+                href={getLocalizedHref('/about')}
+                className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                  isActive('/about')
+                    ? 'bg-green-600 text-white shadow-sm'
+                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                }`}
+              >
+                <span className="text-base">ℹ️</span>
+                <span>{t.nav.about}</span>
+              </Link>
+            </nav>
           </div>
 
-          {/* 桌面导航 - 核心功能 + 工具下拉菜单 */}
-          <nav className="hidden lg:flex items-center space-x-1">
-            {/* 核心导航项 */}
-            <Link
-              href={getLocalizedHref('/')}
-              className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-                isActive('/')
-                  ? 'bg-green-600 text-white'
-                  : 'text-gray-700 hover:bg-gray-100'
-              }`}
-            >
-              <span className="mr-2">🏠</span>
-              {t.nav.home}
-            </Link>
-
-            {/* 突出体质测试 - 主打功能 */}
-            <Link
-              href={getLocalizedHref('/constitution-test')}
-              className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 ${
-                isActive('/constitution-test')
-                  ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-lg'
-                  : 'bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 shadow-md hover:shadow-lg'
-              } relative overflow-hidden`}
-            >
-              <span className="mr-2">🧠</span>
-              {t.nav.constitutionTest}
-              <div className="absolute top-0 right-0 -mt-1 -mr-1 w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
-            </Link>
-
-            <Link
-              href={getLocalizedHref('/herb-finder')}
-              className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-                isActive('/herb-finder')
-                  ? 'bg-green-600 text-white'
-                  : 'text-gray-700 hover:bg-gray-100'
-              }`}
-            >
-              <span className="mr-2">🔍</span>
-              {t.nav.herbFinder}
-            </Link>
-
-            <Link
-              href={getLocalizedHref('/blog')}
-              className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-                isActive('/blog')
-                  ? 'bg-green-600 text-white'
-                  : 'text-gray-700 hover:bg-gray-100'
-              }`}
-            >
-              <span className="mr-2">📝</span>
-              {t.nav.blog}
-            </Link>
-            
-            <Link
-              href={getLocalizedHref('/about')}
-              className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-                isActive('/about')
-                  ? 'bg-green-600 text-white'
-                  : 'text-gray-700 hover:bg-gray-100'
-              }`}
-            >
-              <span className="mr-2">ℹ️</span>
-              {t.nav.about}
-            </Link>
-          </nav>
-
           {/* Right Side - Language Switcher & Mobile Menu */}
-          <div className="flex items-center space-x-4">
-            {/* Enhanced Language Switcher */}
-            <div className="relative">
-              <div className="flex items-center bg-gray-100/80 backdrop-blur-sm rounded-xl p-1 shadow-inner">
-                {supportedLanguages.map((language) => (
-                  <button
-                    key={language.code}
-                    onClick={() => handleLanguageChange(language.code)}
-                    aria-label={`Switch to ${language.name}`}
-                    className={`flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 min-w-[3.5rem] h-10 ${
-                      currentLocale === language.code
-                        ? 'bg-white text-green-600 shadow-md transform scale-105'
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-white/50'
-                    }`}
-                  >
-                    <span className="mr-2 text-base">{language.flag}</span>
-                    <span className="hidden sm:inline">{language.code.toUpperCase()}</span>
-                  </button>
-                ))}
-              </div>
+          <div className="flex items-center gap-3">
+            {/* Premium Language Switcher */}
+            <div className="hidden lg:flex items-center gap-1 bg-gray-100/80 rounded-lg p-1">
+              {supportedLanguages.map((language) => (
+                <button
+                  key={language.code}
+                  onClick={() => handleLanguageChange(language.code)}
+                  aria-label={`Switch to ${language.name}`}
+                  className={`flex flex-col items-center justify-center px-3 py-1.5 text-xs font-medium rounded-md transition-all duration-200 min-w-[3rem] ${
+                    currentLocale === language.code
+                      ? 'bg-white text-green-600 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-white/50'
+                  }`}
+                >
+                  <span className="text-lg mb-0.5">{language.flag}</span>
+                  <span className="text-[10px] font-semibold">{language.code.toUpperCase()}</span>
+                </button>
+              ))}
             </div>
 
             {/* Enhanced Mobile Menu Button */}
