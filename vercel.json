@@ -40,6 +40,11 @@
       "permanent": true
     },
     {
+      "source": "/herbs/%E5%8D%B0%E5%BA%A6%E4%BA%BA%E5%8F%82",
+      "destination": "https://herbscience.shop/herbs/ashwagandha",
+      "permanent": true
+    },
+    {
       "source": "/ingredient-checker(.*)",
       "destination": "https://herbscience.shop/constitution-test",
       "permanent": true
