@@ -45,6 +45,11 @@
       "permanent": true
     },
     {
+      "source": "/herbs/%E5%A7%9C%E9%BB%84",
+      "destination": "https://herbscience.shop/herbs/turmeric",
+      "permanent": true
+    },
+    {
       "source": "/ingredient-checker(.*)",
       "destination": "https://herbscience.shop/constitution-test",
       "permanent": true
