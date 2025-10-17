@@ -2151,43 +2151,6 @@ export const HERBS_DATABASE: Herb[] = [
     ]
   },
   {
-    "id": "2156f14b-923c-8156-b583-da887bc753e3",
-    "chinese_name": "Turmeric / 姜黄",
-    "english_name": "姜黄",
-    "latin_name": "Turmeric / 姜黄",
-    "category": "general",
-    "constitution_type": "damp_heat",
-    "primary_effects": [
-      "消化健康",
-      "炎症管理"
-    ],
-    "secondary_effects": [],
-    "efficacy": [
-      "消化健康",
-      "炎症管理"
-    ],
-    "dosage": "请咨询专业医师",
-    "safety_level": "high",
-    "contraindications": "孕妇禁用、胆结石患者禁用、血液疾病患者慎用、手术前2周停止使用",
-    "description": "抗炎、关节疼痛、肠胃调节",
-    "traditional_use": "抗炎、关节疼痛、肠胃调节",
-    "modern_applications": "案例A：45岁女性，轻度骨关节炎，每日400mg姜黄素餐后服用，连续3个月，关节疼痛减轻60%，活动度明显改善，无明显不良反应",
-    "taste": "",
-    "meridians": [],
-    "part_used": "",
-    "source": "",
-    "growing_regions": [],
-    "price_range": "moderate",
-    "availability": "common",
-    "quality_score": 75,
-    "popularity_score": 70,
-    "usage_suggestions": "饭后服用，避免空腹。建议餐后30分钟内服用，可与黑胡椒配合提高吸收率",
-    "ingredients": [
-      "姜黄素",
-      "挥发油"
-    ]
-  },
-  {
     "id": "2156f14b-923c-808d-a02c-c608534c256a",
     "chinese_name": "Turmeric",
     "english_name": "姜黄",
@@ -4617,80 +4580,6 @@ export const CONSTITUTION_HERB_MAPPING = {
     "ingredients": [
       "薄荷脑",
       "薄荷酮"
-    ]
-  },
-  {
-    "id": "2156f14b-923c-8156-b583-da887bc753e3",
-    "chinese_name": "Turmeric / 姜黄",
-    "english_name": "姜黄",
-    "latin_name": "Turmeric / 姜黄",
-    "category": "general",
-    "constitution_type": "damp_heat",
-    "primary_effects": [
-      "消化健康",
-      "炎症管理"
-    ],
-    "secondary_effects": [],
-    "efficacy": [
-      "消化健康",
-      "炎症管理"
-    ],
-    "dosage": "请咨询专业医师",
-    "safety_level": "high",
-    "contraindications": "孕妇禁用、胆结石患者禁用、血液疾病患者慎用、手术前2周停止使用",
-    "description": "抗炎、关节疼痛、肠胃调节",
-    "traditional_use": "抗炎、关节疼痛、肠胃调节",
-    "modern_applications": "案例A：45岁女性，轻度骨关节炎，每日400mg姜黄素餐后服用，连续3个月，关节疼痛减轻60%，活动度明显改善，无明显不良反应",
-    "taste": "",
-    "meridians": [],
-    "part_used": "",
-    "source": "",
-    "growing_regions": [],
-    "price_range": "moderate",
-    "availability": "common",
-    "quality_score": 75,
-    "popularity_score": 70,
-    "usage_suggestions": "饭后服用，避免空腹。建议餐后30分钟内服用，可与黑胡椒配合提高吸收率",
-    "ingredients": [
-      "姜黄素",
-      "挥发油"
-    ]
-  },
-  {
-    "id": "2156f14b-923c-808d-a02c-c608534c256a",
-    "chinese_name": "Turmeric",
-    "english_name": "姜黄",
-    "latin_name": "Turmeric",
-    "category": "general",
-    "constitution_type": "damp_heat",
-    "primary_effects": [
-      "清热解毒",
-      "活血化瘀"
-    ],
-    "secondary_effects": [],
-    "efficacy": [
-      "清热解毒",
-      "活血化瘀"
-    ],
-    "dosage": "每日300-500mg，可分2-3次服用。长期使用建议在专业医师指导下进行。",
-    "safety_level": "high",
-    "contraindications": "孕妇禁用；有胆囊疾病者慎用；服用抗凝血药物者需咨询医生后使用；手术前两周建议停用。",
-    "description": "姜黄是一种黄色的根茎类香料和药材，具有显著的抗炎作用，常用于缓解关节疼痛和调节肠胃功能。在传统医学中有着悠久的应用历史。",
-    "traditional_use": "姜黄是一种黄色的根茎类香料和药材，具有显著的抗炎作用，常用于缓解关节疼痛和调节肠胃功能。在传统医学中有着悠久的应用历史。",
-    "modern_applications": "用户A，53岁，关节炎患者，服用姜黄提取物300mg，每日两次，持续3个月。结果显示关节疼痛症状明显改善，晨僵时间从45分钟减少到15分钟，活动范围增加30%。同时注意到消化功能也有所改善，但个别案例出现轻微胃部不适，建议饭后服用。",
-    "taste": "",
-    "meridians": [],
-    "part_used": "",
-    "source": "",
-    "growing_regions": [],
-    "price_range": "moderate",
-    "availability": "common",
-    "quality_score": 75,
-    "popularity_score": 70,
-    "usage_suggestions": "建议在饭后服用，避免空腹服用以减少对胃部的刺激。可制成胶囊、粉末或添加到食物中食用。",
-    "ingredients": [
-      "挥发油",
-      "黄酮类"
     ]
   }
 ],
