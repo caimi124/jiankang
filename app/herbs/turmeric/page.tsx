@@ -137,22 +137,29 @@ export default function turmericPage() {
         {/* 主要内容区域 */}
         <article className="max-w-4xl mx-auto px-4 py-12">
           
-          {/* 科学证据部分 */}
+          {/* 科学证据部分 - 使用折叠效果 */}
           <section id="benefits" className="mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-6">Turmeric Benefits: What Does Turmeric Do for the Body?</h2>
             
-            <div className="prose prose-lg max-w-none">
+            {/* 概述部分保持可见 */}
+            <div className="prose prose-lg max-w-none mb-8">
               <p className="text-gray-700 leading-relaxed mb-6">
                 Turmeric (<em>Curcuma longa</em>) is a golden spice long prized for its <strong>anti-inflammatory and antioxidant properties</strong>. Its star active compound, <strong>curcumin</strong>, supports joint comfort, liver detox, and metabolic balance. Many people ask, <em>"what is turmeric good for?"</em> — the benefits go beyond just flavor in cooking, blending ancient Ayurvedic tradition with modern science.
               </p>
 
-              <p className="text-gray-700 leading-relaxed mb-8">
+              <p className="text-gray-700 leading-relaxed mb-6">
                 <strong>Curcumin benefits</strong> are particularly well-studied. This compound works through multiple mechanisms: it downregulates inflammatory pathways (NF-κB, COX-2), acts as a powerful antioxidant scavenging free radicals, supports liver & bile secretion for detoxification, and even modulates the gut microbiome by promoting beneficial bacteria like <em>Lactobacillus</em> and <em>Bifidobacterium</em>.
               </p>
+            </div>
 
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4">✅ What Turmeric Helps With:</h3>
-              
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
+            {/* 详细功效 - 折叠展示 */}
+            <details open className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl mb-6 group">
+              <summary className="text-2xl font-semibold text-gray-900 mb-4 cursor-pointer list-none flex items-center justify-between">
+                <span>✅ What Turmeric Helps With</span>
+                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+
+              <div className="grid md:grid-cols-2 gap-6 mt-6">
                 <div className="bg-amber-50 p-6 rounded-xl border-l-4 border-amber-500">
                   <h4 className="font-semibold text-amber-900 mb-3">🔥 Inflammation & Joint Pain Relief</h4>
                   <p className="text-gray-700 mb-3">
@@ -201,10 +208,16 @@ export default function turmericPage() {
                   <p className="text-sm text-pink-700 mt-2">Evidence: ⭐⭐⭐ (Traditional use + emerging studies)</p>
                 </div>
               </div>
+            </details>
 
-              {/* Active Compounds */}
-              <div className="bg-gray-50 p-6 rounded-xl mb-8">
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">🔬 Key Active Compounds</h3>
+            {/* 活性成分 - 折叠展示 */}
+            <details className="bg-gray-50 p-6 rounded-xl mb-6 group">
+              <summary className="text-xl font-semibold text-gray-900 cursor-pointer list-none flex items-center justify-between">
+                <span>🔬 Key Active Compounds</span>
+                <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              
+              <div className="mt-4">
                 <p className="text-gray-700 mb-3">
                   <strong>Curcumin benefits</strong> are central to turmeric's health promise, but it's not the only player:
                 </p>
@@ -214,8 +227,8 @@ export default function turmericPage() {
                   <li>• <strong>Turmerones (ar-turmerone, α-turmerone, β-turmerone):</strong> Volatile oils that support liver function and neuroprotection</li>
                   <li>• <strong>Essential Oils:</strong> Contribute to digestive support and bioavailability</li>
                 </ul>
-              </div>
             </div>
+            </details>
           </section>
 
           {/* 剂量指南 */}
@@ -307,26 +320,39 @@ export default function turmericPage() {
             </div>
           </section>
 
-          {/* 安全性信息 */}
+          {/* 安全性信息 - 使用折叠效果 */}
           <section id="safety" className="mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-6">10 Serious Side Effects of Turmeric & Safety Guidelines</h2>
-            
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-xl font-semibold mb-3">Common Side Effects (Mild, Usually Temporary)</h3>
-                <p className="text-gray-700 mb-4">
-                  Most people tolerate turmeric well at typical culinary doses. However, <strong>turmeric supplement side effects</strong> may occur, especially with high-dose extracts (&gt;1,500mg curcumin/day):
-                </p>
-                <ul className="space-y-2 text-gray-700 ml-6">
-                  <li>• <strong>Mild GI discomfort:</strong> Nausea, diarrhea, or stomach upset (usually resolves when taken with food)</li>
-                  <li>• <strong>Dyspepsia:</strong> Acid reflux or bloating in sensitive individuals</li>
-                  <li>• <strong>Yellow staining:</strong> Temporary yellow discoloration of skin or urine (harmless, cosmetic only)</li>
-                  <li>• <strong>Headache:</strong> Rare, typically at very high doses</li>
-                </ul>
-              </div>
 
-              <div className="bg-red-50 border-2 border-red-300 p-6 rounded-xl">
-                <h3 className="text-xl font-semibold text-red-900 mb-4">⚠️ 10 Serious Side Effects of Turmeric (Rare but Important)</h3>
+            <div className="space-y-4">
+              {/* 常见副作用 - 折叠 */}
+              <details className="bg-gray-50 p-6 rounded-xl group">
+                <summary className="text-xl font-semibold cursor-pointer list-none flex items-center justify-between">
+                  <span>Common Side Effects (Mild, Usually Temporary)</span>
+                  <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+                </summary>
+                
+                <div className="mt-4">
+                  <p className="text-gray-700 mb-4">
+                    Most people tolerate turmeric well at typical culinary doses. However, <strong>turmeric supplement side effects</strong> may occur, especially with high-dose extracts (&gt;1,500mg curcumin/day):
+                  </p>
+                  <ul className="space-y-2 text-gray-700 ml-6">
+                    <li>• <strong>Mild GI discomfort:</strong> Nausea, diarrhea, or stomach upset (usually resolves when taken with food)</li>
+                    <li>• <strong>Dyspepsia:</strong> Acid reflux or bloating in sensitive individuals</li>
+                    <li>• <strong>Yellow staining:</strong> Temporary yellow discoloration of skin or urine (harmless, cosmetic only)</li>
+                    <li>• <strong>Headache:</strong> Rare, typically at very high doses</li>
+                  </ul>
+                </div>
+              </details>
+
+              {/* 严重副作用 - 折叠 */}
+              <details open className="bg-red-50 border-2 border-red-300 p-6 rounded-xl group">
+                <summary className="text-xl font-semibold text-red-900 cursor-pointer list-none flex items-center justify-between">
+                  <span>⚠️ 10 Serious Side Effects of Turmeric (Rare but Important)</span>
+                  <span className="text-red-600 group-open:rotate-180 transition-transform">▼</span>
+                </summary>
+                
+                <div className="mt-4">
                 <ol className="space-y-3 text-gray-800 list-decimal ml-6">
                   <li>
                     <strong>Liver Enzyme Elevation / Liver Damage:</strong> High-dose curcumin supplements (particularly certain formulations) have triggered elevated liver enzymes (ALT, AST) in rare cases. This is why many people ask <strong>"is turmeric bad for your liver?"</strong> — the answer is <em>usually no</em> at typical doses, but monitor if using high-dose extracts long-term.
@@ -360,9 +386,16 @@ export default function turmericPage() {
                   </li>
                 </ol>
               </div>
+              </details>
 
-              <div className="bg-yellow-50 border-l-4 border-yellow-500 p-6 rounded-r-xl">
-                <h3 className="text-xl font-semibold text-yellow-900 mb-3">❌ When NOT to Use Turmeric (Contraindications)</h3>
+              {/* 禁忌症 - 折叠 */}
+              <details className="bg-yellow-50 border-l-4 border-yellow-500 p-6 rounded-r-xl group">
+                <summary className="text-xl font-semibold text-yellow-900 cursor-pointer list-none flex items-center justify-between">
+                  <span>❌ When NOT to Use Turmeric (Contraindications)</span>
+                  <span className="text-yellow-600 group-open:rotate-180 transition-transform">▼</span>
+                </summary>
+                
+                <div className="mt-4">
                 <ul className="space-y-3 text-gray-800">
                   <li>
                     <strong>❌ Pregnancy & Breastfeeding:</strong> High doses may stimulate uterine contractions. Culinary amounts are generally safe, but avoid supplements.
@@ -387,9 +420,16 @@ export default function turmericPage() {
                   </li>
                 </ul>
               </div>
+              </details>
 
-              <div>
-                <h3 className="text-xl font-semibold mb-3">💊 Drug Interactions</h3>
+              {/* 药物相互作用 - 折叠 */}
+              <details className="bg-gray-50 p-6 rounded-xl group">
+                <summary className="text-xl font-semibold cursor-pointer list-none flex items-center justify-between">
+                  <span>💊 Drug Interactions</span>
+                  <span className="text-green-600 group-open:rotate-180 transition-transform">▼</span>
+                </summary>
+                
+                <div className="mt-4">
                 <p className="text-gray-800 mb-4 font-semibold">
                   Turmeric may interact with the following medications:
                 </p>
@@ -417,18 +457,26 @@ export default function turmericPage() {
                   ⚠️ <strong>Is turmeric bad for your liver?</strong> In rare cases, yes — high-dose supplements have caused liver enzyme elevation. If using &gt;1,000mg curcumin daily for extended periods, monitor liver function (ALT/AST tests) with your doctor.
                 </p>
               </div>
+              </details>
             </div>
           </section>
 
-          {/* TCM视角 */}
+          {/* TCM视角 - 使用折叠效果 */}
           <section id="tcm" className="mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-6">Traditional Medicine & Constitution Matching</h2>
-            
+
             <p className="text-gray-700 mb-6">
               In both Ayurvedic and Traditional Chinese Medicine, turmeric is considered a <strong>warming, blood-moving herb</strong> that supports circulation, digestion, and vitality. In TCM, it's known as "Jiāng Huáng" (姜黄) and has been used for centuries to treat stagnation and pain.
             </p>
 
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
+            {/* TCM属性 - 折叠展示 */}
+            <details open className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl mb-6 group">
+              <summary className="text-xl font-semibold cursor-pointer list-none flex items-center justify-between mb-4">
+                <span>🌿 TCM Energy Properties & Body Type Matching</span>
+                <span className="text-purple-600 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+
+            <div className="grid md:grid-cols-3 gap-6 mb-8 mt-6">
               <div className="bg-amber-50 p-6 rounded-xl">
                 <h4 className="font-semibold text-amber-900 mb-2">🔥 Energy Properties</h4>
                 <p className="text-gray-700">
@@ -467,6 +515,7 @@ export default function turmericPage() {
                 <li>• <strong>Tip:</strong> If you have internal heat or dryness, balance turmeric with cooling foods like cucumber, mint, or pears. Limit dose and monitor symptoms.</li>
               </ul>
             </div>
+            </details>
           </section>
 
           {/* FAQ部分 - People Also Ask优化 */}
