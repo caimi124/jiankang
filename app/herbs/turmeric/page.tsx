@@ -107,8 +107,8 @@ export default function turmericPage() {
 
               <div className="relative">
                 <Image
-                  src={`/images/herbs/${herb.slug}.jpg`}
-                  alt={`${herb.name} herb`}
+                  src="/images/herbs/turmeric.jpg"
+                  alt="Turmeric (Curcuma longa) herb - golden spice for anti-inflammatory and antioxidant support"
                   width={600}
                   height={400}
                   className="rounded-2xl shadow-2xl"
