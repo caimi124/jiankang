@@ -382,28 +382,44 @@ export default async function HerbDetailPage({ params }: { params: Promise<{ slu
 		console.log('🆘 最终兜底激活:', slug)
 	}
 
-	// 生成JSON-LD结构化数据 - 修复为合适的schema类型
+	// 生成JSON-LD结构化数据 - 符合Google Rich Results要求
 	const jsonLd = {
 		'@context': 'https://schema.org',
 		'@type': 'Article',
+		'@id': `https://herbscience.shop/herbs/${slug}#article`,
+		mainEntityOfPage: {
+			'@type': 'WebPage',
+			'@id': `https://herbscience.shop/herbs/${slug}`
+		},
 		headline: `${herbData.name} Benefits and Uses - Natural Health Guide`,
 		description: herbData.overview,
+		image: {
+			'@type': 'ImageObject',
+			url: `https://herbscience.shop/herbs/${slug}/opengraph-image`,
+			width: 1200,
+			height: 630
+		},
 		author: {
 			'@type': 'Organization',
+			'@id': 'https://herbscience.shop/#organization',
 			name: 'HerbScience',
 			url: 'https://herbscience.shop'
 		},
 		publisher: {
 			'@type': 'Organization',
+			'@id': 'https://herbscience.shop/#organization',
 			name: 'HerbScience',
+			url: 'https://herbscience.shop',
 			logo: {
 				'@type': 'ImageObject',
-				url: 'https://herbscience.shop/logo.png'
+				url: 'https://herbscience.shop/logo.png',
+				width: 256,
+				height: 256
 			}
 		},
-		datePublished: new Date().toISOString(),
+		datePublished: '2024-10-01T00:00:00Z',
 		dateModified: new Date().toISOString(),
-		image: `https://herbscience.shop/herbs/${slug}/opengraph-image`,
+		inLanguage: 'en',
 		mainEntity: {
 			'@type': 'Thing',
 			'@id': `https://herbscience.shop/herbs/${slug}#herb`,

@@ -76,7 +76,12 @@ export default function AboutPage() {
     '@id': 'https://herbscience.shop/#organization',
     name: 'HerbScience',
     url: 'https://herbscience.shop',
-    logo: 'https://herbscience.shop/logo.png',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://herbscience.shop/logo.png',
+      width: 256,
+      height: 256
+    },
     description: 'Evidence-based herbal medicine platform led by licensed pharmacist and TCM expert Zeng Chuping, providing safe, reliable guidance on herbal supplements and traditional medicine.',
     founder: {
       '@type': 'Person',

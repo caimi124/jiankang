@@ -56,21 +56,29 @@ export const metadata: Metadata = {
 const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
+  '@id': 'https://herbscience.shop/#website',
   'name': 'HerbScience',
   'url': 'https://herbscience.shop',
   'description': 'Evidence-based herbal medicine platform with personalized recommendations',
+  'inLanguage': 'en',
   'potentialAction': {
     '@type': 'SearchAction',
-    'target': 'https://herbscience.shop/herb-finder?q={search_term_string}',
+    'target': {
+      '@type': 'EntryPoint',
+      'urlTemplate': 'https://herbscience.shop/herb-finder?q={search_term_string}'
+    },
     'query-input': 'required name=search_term_string'
   },
   'publisher': {
     '@type': 'Organization',
+    '@id': 'https://herbscience.shop/#organization',
     'name': 'HerbScience',
     'url': 'https://herbscience.shop',
     'logo': {
       '@type': 'ImageObject',
-      'url': 'https://herbscience.shop/logo.png'
+      'url': 'https://herbscience.shop/logo.png',
+      'width': 256,
+      'height': 256
     },
     'sameAs': [
       'https://twitter.com/herbscience',
