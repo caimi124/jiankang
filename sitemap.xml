@@ -68,14 +68,8 @@
     <priority>0.9</priority>
   </url>
 
-  <url>
-    <loc>https://herbscience.shop/herbs/ashwagandha</loc>
-    <lastmod>2025-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
   <!-- 动态草药页面通过动态路由 [slug] 生成，不需要在sitemap中逐一列出 -->
+  <!-- 包括: ashwagandha, ginger, ginseng, cinnamon等31个草药 -->
   <!-- 所有草药都可以通过 herb-finder 发现 -->
 
 </urlset>
