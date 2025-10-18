@@ -1,215 +1,134 @@
 import { Metadata } from 'next'
-import HerbDetailClient from '../[slug]/HerbDetailClient'
+import Header from '@/components/Header'
+import HerbDetailTabUI from '@/components/HerbDetailTabUI'
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: 'Clove Benefits and Uses | HerbScience',
-    description: 'Explore the benefits of clove (Syzygium aromaticum) for digestion, oral health, and inflammation. Learn about its active compounds, uses, and contraindications.',
-    keywords: 'Clove benefits, Clove uses, Clove tea, Clove oil benefits, Clove for digestion, Clove for oral health',
-  };
-}
-
-async function getCloveData() {
-  return {
-    id: 'clove',
-    name: 'Clove',
-    latin_name: 'Syzygium aromaticum',
-    slug: 'clove',
-    overview: 'Clove is a powerful aromatic spice with both culinary and medicinal uses. Native to Indonesia, clove buds have been valued for centuries to relieve digestive discomfort, freshen breath, ease tooth pain, and support men\'s reproductive health.',
-    benefits: ['Oral health and dental care', 'Digestive support and nausea relief', 'Anti-inflammatory pain relief'],
-    active_compounds: 'Eugenol, Tannins, Flavonoids, Volatile oils',
-    traditional_uses: 'In Traditional Chinese Medicine, clove (Ding Xiang) is considered a warming herb that strengthens the spleen and kidneys, warms the middle burner, and stops nausea. It has been used to treat digestive weakness, impotence, and cold-related abdominal pain.',
-    suitable_for: ['People with digestive issues', 'Dental problems', 'Cold constitution'],
-    not_suitable_for: ['Acid reflux or stomach ulcers', 'Pregnancy', 'Children under 12 unless supervised'],
-    dosage_forms: [
-      { form: 'Whole cloves (tea)', dosage: '1-3 g/day', usage: 'Steep in hot water' },
-      { form: 'Powder', dosage: '0.5-1 g/day', usage: 'Mix with food or water' },
-      { form: 'Oil (external)', dosage: '1-2 diluted drops', usage: 'Apply topically' }
-    ],
-    safety_warnings: ['Not for acid reflux or stomach ulcers', 'Avoid during pregnancy', 'Not for children under 12 unless supervised'],
-    interactions: ['May interact with blood thinning medications'],
-    scientific_evidence: 'Modern research confirms clove\'s antimicrobial, analgesic, and anti-inflammatory properties. Studies show effectiveness for dental pain, digestive issues, and as a natural preservative with strong antioxidant activity.',
-    constitution_match: [
-      { type: 'Cold Constitution', suitable: 'yes' as const, description: 'Warming properties help cold conditions' },
-      { type: 'Hot Constitution', suitable: 'warning' as const, description: 'Use with caution as it may aggravate heat symptoms' }
-    ],
-    pairs_well_with: ['Ginger', 'Cinnamon', 'Cardamom'],
-    user_stories: [
-      { quote: 'Clove oil helped my toothache immediately.', author: 'John D.', location: 'New York, USA' }
-    ],
-    faqs: [
-      { 
-        question: 'Is clove oil safe for toothache?', 
-        answer: 'Yes, clove oil can be effective for toothache relief, but it must always be diluted with a carrier oil. Apply 1-2 drops mixed with coconut or olive oil directly to the affected tooth. Never use undiluted clove oil as it can cause irritation.' 
-      },
-      {
-        question: 'What are the main health benefits of cloves?',
-        answer: 'Cloves offer several health benefits including natural pain relief, antimicrobial properties for oral health, digestive support, anti-inflammatory effects, and antioxidant protection. They are particularly effective for dental pain and digestive issues.'
-      },
-      {
-        question: 'How should I use cloves for digestive health?',
-        answer: 'For digestive support, you can chew 1-2 whole cloves after meals, drink clove tea (steep 1-2 cloves in hot water for 10 minutes), or add ground cloves to your cooking. Start with small amounts as cloves are potent.'
-      },
-      {
-        question: 'Are there any side effects of using cloves?',
-        answer: 'Cloves are generally safe when used in culinary amounts. However, large doses may cause stomach upset, heartburn, or interact with blood-thinning medications. Avoid during pregnancy and don\'t give to children under 12 without supervision.'
-      },
-      {
-        question: 'Can I use cloves if I have a hot constitution in TCM?',
-        answer: 'People with hot constitution should use cloves cautiously as they are warming in nature and may aggravate heat symptoms. If you have hot constitution, use small amounts and monitor your body\'s response, or consult a TCM practitioner.'
-      }
-    ],
-    seo_keywords: ['clove benefits', 'clove uses', 'clove tea', 'clove oil benefits'],
-    evidence_level: 'Moderate' as const,
-    category: 'Warming Herbs',
-    properties: ['Warming', 'Antimicrobial', 'Analgesic', 'Anti-inflammatory']
+// SEO优化的元数据
+export const metadata: Metadata = {
+  title: 'Clove: Benefits, Dosage, Side Effects & Reviews | HerbScience',
+  description: 'Complete guide to Clove: scientific evidence, traditional use, dosage recommendations, safety information, and real user reviews. Evidence-based herbal medicine.',
+  keywords: [
+    'clove',
+    'clove benefits',
+    'clove side effects',
+    'clove dosage',
+    'clove reviews',
+    'what is clove',
+    'clove supplements'
+  ],
+  openGraph: {
+    title: 'Clove: Complete Evidence-Based Guide',
+    description: 'Scientific benefits, safe dosage, and real user experiences with Clove',
+    images: ['/images/herbs/clove.jpg'],
+    type: 'article'
+  },
+  alternates: {
+    canonical: 'https://herbscience.shop/herbs/clove'
   }
 }
 
-export default async function ClovePage() {
-  const herbData = await getCloveData()
-  
-  // JSON-LD structured data for better SEO
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: 'Clove (Syzygium aromaticum): Benefits, Uses & Safety Guide',
-    description: herbData.overview,
-    author: {
-      '@type': 'Organization',
-      name: 'HerbScience',
-      url: 'https://herbscience.shop'
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: 'HerbScience',
-      logo: {
-        '@type': 'ImageObject',
-        url: 'https://herbscience.shop/logo.png'
-      }
-    },
-    datePublished: '2025-01-19',
-    dateModified: new Date().toISOString().split('T')[0],
-    mainEntity: {
-      '@type': 'Thing',
-      '@id': 'https://herbscience.shop/herbs/clove#herb',
-      name: 'Clove',
-      alternateName: 'Syzygium aromaticum',
-      description: herbData.overview,
-      category: 'Warming Herbs',
-      additionalProperty: [
-        {
-          '@type': 'PropertyValue',
-          name: 'Active Compounds',
-          value: herbData.active_compounds
-        },
-        {
-          '@type': 'PropertyValue',
-          name: 'Traditional Uses',
-          value: herbData.traditional_uses
-        },
-        {
-          '@type': 'PropertyValue',
-          name: 'Evidence Level',
-          value: 'Moderate'
-        }
-      ],
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        '@id': 'https://herbscience.shop/herbs/clove#aggregateRating',
-        ratingValue: '4.9',
-        reviewCount: herbData.user_stories.length.toString(),
-        bestRating: '5',
-        worstRating: '1'
-      },
-      review: herbData.user_stories.map((story, index) => ({
-        '@type': 'Review',
-        '@id': `https://herbscience.shop/herbs/clove#review-${index}`,
-        reviewRating: { 
-          '@type': 'Rating', 
-          ratingValue: '5', 
-          bestRating: '5',
-          worstRating: '1'
-        },
-        author: { 
-          '@type': 'Person', 
-          name: story.author,
-          '@id': `https://herbscience.shop/herbs/clove#author-${index}`
-        },
-        reviewBody: story.quote,
-        datePublished: new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1).toISOString().split('T')[0],
-        dateCreated: new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1).toISOString(),
-        headline: `Clove Health Benefits Review by ${story.author}`,
-        reviewAspect: 'effectiveness',
-        itemReviewed: {
-          '@type': 'Thing',
-          name: 'Clove',
-          '@id': 'https://herbscience.shop/herbs/clove#herb'
-        }
-      }))
-    }
-  }
+// 结构化数据
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  'name': 'Clove Guide',
+  'description': 'Complete guide to Clove benefits, dosage, and safety',
+  'about': {
+    '@type': 'Drug',
+    'name': 'Clove',
+    'description': 'Herbal supplement',
+    'proprietaryName': 'Clove'
+  },
+  'lastReviewed': new Date().toISOString().split('T')[0]
+}
 
-  // FAQ structured data
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    '@id': 'https://herbscience.shop/herbs/clove#faq',
-    mainEntity: herbData.faqs.map((faq, index) => ({
-      '@type': 'Question',
-      '@id': `https://herbscience.shop/herbs/clove#faq-${index}`,
-      name: faq.question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        '@id': `https://herbscience.shop/herbs/clove#answer-${index}`,
-        text: faq.answer
-      }
-    }))
-  }
-
-  // Breadcrumb structured data
-  const breadcrumbSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Home',
-        item: 'https://herbscience.shop/'
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: 'Herbs',
-        item: 'https://herbscience.shop/herb-finder'
-      },
-      {
-        '@type': 'ListItem',
-        position: 3,
-        name: 'Clove Benefits',
-        item: 'https://herbscience.shop/herbs/clove'
-      }
-    ]
-  }
-
+export default function clovePage() {
   return (
     <>
-      {/* Structured data scripts */}
+      <Header />
+      
+      {/* 结构化数据 */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       
-      <HerbDetailClient herbData={herbData} slug="clove" />
+      <HerbDetailTabUI
+        name="Clove"
+        latinName="Syzygium aromaticum"
+        slug="clove"
+        category="Pain Relief"
+        properties={['Warming', 'Traditional Use']}
+        evidenceLevel="Moderate"
+        overview={
+          <>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">What is Clove?</h2>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              Clove (Syzygium aromaticum) is a traditional herbal medicine with a rich history of use in various healing systems. 
+              Modern research has begun to validate many of its traditional applications, revealing its potential for supporting overall health and wellness.
+            </p>
+            <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-6 rounded-xl">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">🔬 Key Active Compounds</h3>
+              <p className="text-gray-700">
+                Clove contains various bioactive compounds that contribute to its therapeutic properties. 
+                Research continues to explore these constituents and their mechanisms of action.
+              </p>
+            </div>
+          </>
+        }
+        benefits={
+          <>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Clove Benefits & Uses</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-green-50 p-6 rounded-xl border-l-4 border-green-500">
+                <h4 className="font-semibold text-green-900 mb-3">Traditional Uses</h4>
+                <p className="text-gray-700">
+                  Clove has been used traditionally for various health conditions. Modern research is exploring these traditional applications.
+                </p>
+              </div>
+              <div className="bg-blue-50 p-6 rounded-xl border-l-4 border-blue-500">
+                <h4 className="font-semibold text-blue-900 mb-3">Modern Applications</h4>
+                <p className="text-gray-700">
+                  Contemporary studies are investigating the potential benefits of Clove for modern health concerns.
+                </p>
+              </div>
+            </div>
+          </>
+        }
+        safety={
+          <>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Safety & Dosage Guide</h2>
+            <div className="bg-gradient-to-br from-amber-50 to-orange-50 p-6 rounded-xl mb-6">
+              <h3 className="text-xl font-semibold mb-4">Recommended Dosage</h3>
+              <p className="text-gray-700 mb-4">
+                Consult with a qualified healthcare provider for personalized dosage recommendations.
+                Typical dosages vary based on the form and intended use.
+              </p>
+            </div>
+            <div className="bg-red-50 border-2 border-red-300 p-6 rounded-xl">
+              <h3 className="text-xl font-semibold text-red-900 mb-3">⚠️ Safety Considerations</h3>
+              <ul className="space-y-2 text-gray-800">
+                <li>• Consult a healthcare provider before use, especially if pregnant or breastfeeding</li>
+                <li>• May interact with certain medications</li>
+                <li>• Follow recommended dosages</li>
+                <li>• Discontinue use if adverse reactions occur</li>
+              </ul>
+            </div>
+          </>
+        }
+        faq={
+          <>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
+            <details className="bg-gray-50 p-6 rounded-xl">
+              <summary className="font-semibold text-gray-900 cursor-pointer">
+                Q: What is Clove used for?
+              </summary>
+              <p className="mt-4 text-gray-700">
+                Clove has been traditionally used for various health purposes. Modern research continues to explore its potential applications.
+              </p>
+            </details>
+          </>
+        }
+      />
     </>
   )
 }

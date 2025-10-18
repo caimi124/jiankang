@@ -4,25 +4,25 @@ import HerbDetailTabUI from '@/components/HerbDetailTabUI'
 
 // SEO优化的元数据
 export const metadata: Metadata = {
-  title: 'Pumpkin Seeds: Benefits, Dosage, Side Effects & Reviews | HerbScience',
-  description: 'Complete guide to Pumpkin Seeds: scientific evidence, traditional use, dosage recommendations, safety information, and real user reviews. Evidence-based herbal medicine.',
+  title: 'Lion's Mane: Benefits, Dosage, Side Effects & Reviews | HerbScience',
+  description: 'Complete guide to Lion's Mane: scientific evidence, traditional use, dosage recommendations, safety information, and real user reviews. Evidence-based herbal medicine.',
   keywords: [
-    'pumpkin-seeds',
-    'pumpkin-seeds benefits',
-    'pumpkin-seeds side effects',
-    'pumpkin-seeds dosage',
-    'pumpkin-seeds reviews',
-    'what is pumpkin-seeds',
-    'pumpkin-seeds supplements'
+    'lions-mane',
+    'lions-mane benefits',
+    'lions-mane side effects',
+    'lions-mane dosage',
+    'lions-mane reviews',
+    'what is lions-mane',
+    'lions-mane supplements'
   ],
   openGraph: {
-    title: 'Pumpkin Seeds: Complete Evidence-Based Guide',
-    description: 'Scientific benefits, safe dosage, and real user experiences with Pumpkin Seeds',
-    images: ['/images/herbs/pumpkin-seeds.jpg'],
+    title: 'Lion's Mane: Complete Evidence-Based Guide',
+    description: 'Scientific benefits, safe dosage, and real user experiences with Lion's Mane',
+    images: ['/images/herbs/lions-mane.jpg'],
     type: 'article'
   },
   alternates: {
-    canonical: 'https://herbscience.shop/herbs/pumpkin-seeds'
+    canonical: 'https://herbscience.shop/herbs/lions-mane'
   }
 }
 
@@ -30,18 +30,18 @@ export const metadata: Metadata = {
 const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'MedicalWebPage',
-  'name': 'Pumpkin Seeds Guide',
-  'description': 'Complete guide to Pumpkin Seeds benefits, dosage, and safety',
+  'name': 'Lion's Mane Guide',
+  'description': 'Complete guide to Lion's Mane benefits, dosage, and safety',
   'about': {
     '@type': 'Drug',
-    'name': 'Pumpkin Seeds',
+    'name': 'Lion's Mane',
     'description': 'Herbal supplement',
-    'proprietaryName': 'Pumpkin Seeds'
+    'proprietaryName': 'Lion's Mane'
   },
   'lastReviewed': new Date().toISOString().split('T')[0]
 }
 
-export default function pumpkinseedsPage() {
+export default function lionsmanePage() {
   return (
     <>
       <Header />
@@ -53,23 +53,23 @@ export default function pumpkinseedsPage() {
       />
       
       <HerbDetailTabUI
-        name="Pumpkin Seeds"
-        latinName="Cucurbita pepo"
-        slug="pumpkin-seeds"
-        category="Men's Health"
+        name="Lion's Mane"
+        latinName="Hericium erinaceus"
+        slug="lions-mane"
+        category="Cognitive Support"
         properties={['Warming', 'Traditional Use']}
         evidenceLevel="Moderate"
         overview={
           <>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">What is Pumpkin Seeds?</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">What is Lion's Mane?</h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              Pumpkin Seeds (Cucurbita pepo) is a traditional herbal medicine with a rich history of use in various healing systems. 
+              Lion's Mane (Hericium erinaceus) is a traditional herbal medicine with a rich history of use in various healing systems. 
               Modern research has begun to validate many of its traditional applications, revealing its potential for supporting overall health and wellness.
             </p>
             <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-6 rounded-xl">
               <h3 className="text-xl font-semibold text-gray-900 mb-4">🔬 Key Active Compounds</h3>
               <p className="text-gray-700">
-                Pumpkin Seeds contains various bioactive compounds that contribute to its therapeutic properties. 
+                Lion's Mane contains various bioactive compounds that contribute to its therapeutic properties. 
                 Research continues to explore these constituents and their mechanisms of action.
               </p>
             </div>
@@ -77,18 +77,18 @@ export default function pumpkinseedsPage() {
         }
         benefits={
           <>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Pumpkin Seeds Benefits & Uses</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Lion's Mane Benefits & Uses</h2>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-green-50 p-6 rounded-xl border-l-4 border-green-500">
                 <h4 className="font-semibold text-green-900 mb-3">Traditional Uses</h4>
                 <p className="text-gray-700">
-                  Pumpkin Seeds has been used traditionally for various health conditions. Modern research is exploring these traditional applications.
+                  Lion's Mane has been used traditionally for various health conditions. Modern research is exploring these traditional applications.
                 </p>
               </div>
               <div className="bg-blue-50 p-6 rounded-xl border-l-4 border-blue-500">
                 <h4 className="font-semibold text-blue-900 mb-3">Modern Applications</h4>
                 <p className="text-gray-700">
-                  Contemporary studies are investigating the potential benefits of Pumpkin Seeds for modern health concerns.
+                  Contemporary studies are investigating the potential benefits of Lion's Mane for modern health concerns.
                 </p>
               </div>
             </div>
@@ -120,10 +120,10 @@ export default function pumpkinseedsPage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
             <details className="bg-gray-50 p-6 rounded-xl">
               <summary className="font-semibold text-gray-900 cursor-pointer">
-                Q: What is Pumpkin Seeds used for?
+                Q: What is Lion's Mane used for?
               </summary>
               <p className="mt-4 text-gray-700">
-                Pumpkin Seeds has been traditionally used for various health purposes. Modern research continues to explore its potential applications.
+                Lion's Mane has been traditionally used for various health purposes. Modern research continues to explore its potential applications.
               </p>
             </details>
           </>
