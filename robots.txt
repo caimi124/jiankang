@@ -87,8 +87,4 @@ User-agent: MJ12bot
 Disallow: /
 
 # Sitemaps
-Sitemap: https://herbscience.shop/sitemap-index.xml
 Sitemap: https://herbscience.shop/sitemap.xml
-
-# Additional metadata
-Host: herbscience.shop
