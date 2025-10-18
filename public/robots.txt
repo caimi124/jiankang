@@ -1,13 +1,18 @@
-# *
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /test-enhanced
 Disallow: /_next/
-Disallow: /zh/test
+Disallow: /admin
+Disallow: /test*
+Disallow: /zh/test*
 
-# Host
-Host: https://herbscience.shop
+# Allow specific Googlebot access
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
 
-# Sitemaps
+User-agent: Googlebot-Image
+Allow: /
+
+# Sitemap
 Sitemap: https://herbscience.shop/sitemap.xml
