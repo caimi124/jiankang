@@ -324,7 +324,7 @@ export default function TurmericClient() {
                     Q: Is turmeric bad for your liver?
                   </summary>
                   <p className="mt-4 text-gray-700">
-                    <strong>In rare cases, yes</strong> — high-dose curcumin supplements have triggered liver enzyme rises. Monitor liver function if using >1,000mg curcumin daily for extended periods.
+                    <strong>In rare cases, yes</strong> — high-dose curcumin supplements have triggered liver enzyme rises. Monitor liver function if using &gt;1,000mg curcumin daily for extended periods.
                   </p>
                 </details>
               </div>
