@@ -40,7 +40,13 @@
     "migrate:dosages": "node scripts/migrate-dosages-to-sanity.js",
     "migrate:studies": "node scripts/migrate-studies-to-sanity.js",
     "migrate-herbs": "node scripts/migrate-herbs-to-sanity.js",
-    "migrate-all": "node scripts/migrate-to-sanity.js"
+    "migrate-all": "node scripts/migrate-to-sanity.js",
+    "seo:generate-pages": "node scripts/generate-herb-pages.js",
+    "seo:generate-sitemap": "node scripts/generate-seo-optimized-sitemap.js",
+    "seo:submit-priority": "node scripts/submit-to-google-search-console.js --priority",
+    "seo:submit-all": "node scripts/submit-to-google-search-console.js --all",
+    "seo:audit": "npm run build && npm run seo-check",
+    "seo:full-setup": "npm run seo:generate-pages && npm run seo:generate-sitemap && npm run seo:submit-priority"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
