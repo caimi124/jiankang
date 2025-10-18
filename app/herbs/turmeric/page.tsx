@@ -32,19 +32,53 @@ export const metadata: Metadata = {
   }
 }
 
-// 结构化数据
+// 结构化数据 - Article类型更适合健康指南内容
 const structuredData = {
   '@context': 'https://schema.org',
-  '@type': 'MedicalWebPage',
-  'name': 'Turmeric Guide',
-  'description': 'Complete guide to Turmeric benefits, dosage, and safety',
-  'about': {
-    '@type': 'Drug',
-    'name': 'Turmeric',
-    'description': 'Herbal supplement',
-    'proprietaryName': 'Turmeric'
+  '@type': 'Article',
+  '@id': 'https://herbscience.shop/herbs/turmeric#article',
+  'mainEntityOfPage': {
+    '@type': 'WebPage',
+    '@id': 'https://herbscience.shop/herbs/turmeric'
   },
-  'lastReviewed': new Date().toISOString().split('T')[0]
+  'headline': 'Turmeric Benefits & Side Effects: Complete Evidence-Based Guide',
+  'description': 'Complete guide to Turmeric (Curcuma longa) benefits, dosage, and safety. Learn about anti-inflammatory effects, proper usage, and 10 serious side effects.',
+  'image': {
+    '@type': 'ImageObject',
+    'url': 'https://herbscience.shop/images/herbs/turmeric.jpg',
+    'width': 1200,
+    'height': 630
+  },
+  'author': {
+    '@type': 'Organization',
+    '@id': 'https://herbscience.shop/#organization',
+    'name': 'HerbScience',
+    'url': 'https://herbscience.shop'
+  },
+  'publisher': {
+    '@type': 'Organization',
+    '@id': 'https://herbscience.shop/#organization',
+    'name': 'HerbScience',
+    'url': 'https://herbscience.shop',
+    'logo': {
+      '@type': 'ImageObject',
+      'url': 'https://herbscience.shop/logo.png',
+      'width': 256,
+      'height': 256
+    }
+  },
+  'datePublished': '2024-10-01T00:00:00Z',
+  'dateModified': new Date().toISOString(),
+  'inLanguage': 'en',
+  'about': {
+    '@type': 'Thing',
+    'name': 'Turmeric',
+    'alternateName': 'Curcuma longa',
+    'description': 'A golden-colored spice and herbal supplement known for anti-inflammatory properties'
+  },
+  'keywords': 'turmeric benefits, curcumin benefits, turmeric side effects, turmeric dosage, anti-inflammatory herbs',
+  'articleSection': 'Natural Health',
+  'wordCount': 2800
 }
 
 export default function TurmericPage() {
