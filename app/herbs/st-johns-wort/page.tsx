@@ -4,8 +4,8 @@ import HerbDetailTabUI from '@/components/HerbDetailTabUI'
 
 // SEO优化的元数据
 export const metadata: Metadata = {
-  title: 'St. John's Wort: Benefits, Dosage, Side Effects & Reviews | HerbScience',
-  description: 'Complete guide to St. John's Wort: scientific evidence, traditional use, dosage recommendations, safety information, and real user reviews. Evidence-based herbal medicine.',
+  title: "St. John's Wort: Benefits, Dosage, Side Effects & Reviews | HerbScience",
+  description: "Complete guide to St. John's Wort: scientific evidence, traditional use, dosage recommendations, safety information, and real user reviews. Evidence-based herbal medicine.",
   keywords: [
     'st-johns-wort',
     'st-johns-wort benefits',
@@ -16,8 +16,8 @@ export const metadata: Metadata = {
     'st-johns-wort supplements'
   ],
   openGraph: {
-    title: 'St. John's Wort: Complete Evidence-Based Guide',
-    description: 'Scientific benefits, safe dosage, and real user experiences with St. John's Wort',
+    title: "St. John's Wort: Complete Evidence-Based Guide",
+    description: "Scientific benefits, safe dosage, and real user experiences with St. John's Wort",
     images: ['/images/herbs/st-johns-wort.jpg'],
     type: 'article'
   },
@@ -30,13 +30,13 @@ export const metadata: Metadata = {
 const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'MedicalWebPage',
-  'name': 'St. John's Wort Guide',
-  'description': 'Complete guide to St. John's Wort benefits, dosage, and safety',
+  'name': "St. John's Wort Guide",
+  'description': "Complete guide to St. John's Wort benefits, dosage, and safety",
   'about': {
     '@type': 'Drug',
-    'name': 'St. John's Wort',
+    'name': "St. John's Wort",
     'description': 'Herbal supplement',
-    'proprietaryName': 'St. John's Wort'
+    'proprietaryName': "St. John's Wort"
   },
   'lastReviewed': new Date().toISOString().split('T')[0]
 }

@@ -4,8 +4,8 @@ import HerbDetailTabUI from '@/components/HerbDetailTabUI'
 
 // SEO优化的元数据
 export const metadata: Metadata = {
-  title: 'Lion's Mane: Benefits, Dosage, Side Effects & Reviews | HerbScience',
-  description: 'Complete guide to Lion's Mane: scientific evidence, traditional use, dosage recommendations, safety information, and real user reviews. Evidence-based herbal medicine.',
+  title: "Lion's Mane: Benefits, Dosage, Side Effects & Reviews | HerbScience",
+  description: "Complete guide to Lion's Mane: scientific evidence, traditional use, dosage recommendations, safety information, and real user reviews. Evidence-based herbal medicine.",
   keywords: [
     'lions-mane',
     'lions-mane benefits',
@@ -16,8 +16,8 @@ export const metadata: Metadata = {
     'lions-mane supplements'
   ],
   openGraph: {
-    title: 'Lion's Mane: Complete Evidence-Based Guide',
-    description: 'Scientific benefits, safe dosage, and real user experiences with Lion's Mane',
+    title: "Lion's Mane: Complete Evidence-Based Guide",
+    description: "Scientific benefits, safe dosage, and real user experiences with Lion's Mane",
     images: ['/images/herbs/lions-mane.jpg'],
     type: 'article'
   },
@@ -30,13 +30,13 @@ export const metadata: Metadata = {
 const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'MedicalWebPage',
-  'name': 'Lion's Mane Guide',
-  'description': 'Complete guide to Lion's Mane benefits, dosage, and safety',
+  'name': "Lion's Mane Guide",
+  'description': "Complete guide to Lion's Mane benefits, dosage, and safety",
   'about': {
     '@type': 'Drug',
-    'name': 'Lion's Mane',
+    'name': "Lion's Mane",
     'description': 'Herbal supplement',
-    'proprietaryName': 'Lion's Mane'
+    'proprietaryName': "Lion's Mane"
   },
   'lastReviewed': new Date().toISOString().split('T')[0]
 }
