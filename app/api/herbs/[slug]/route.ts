@@ -606,7 +606,7 @@ const HERB_DETAIL_DATA = {
 
     active_compounds: 'Zinc, magnesium, phytosterols, essential fatty acids, tryptophan',
 
-    traditional_uses: 'Used for prostate support, intestinal parasites, and women's hormonal balance.',
+    traditional_uses: "Used for prostate support, intestinal parasites, and women's hormonal balance.",
 
     suitable_for: [
       'Men with BPH symptoms',
