@@ -1,178 +1,194 @@
-# 🌿 HerbScience Sanity CMS 设置指南
+# Sanity CMS 配置指南
 
-## 📋 概述
+## 📋 项目信息
 
-您的混合架构已经搭建完成！现在需要完成Sanity CMS的配置，让您获得WordPress级别的内容管理体验。
-
-## 🚀 快速设置步骤
-
-### 步骤 1: 创建Sanity项目
-
-1. **访问 [Sanity.io](https://www.sanity.io/) 并注册账户**
-
-2. **创建新项目**
-   ```bash
-   # 在项目根目录运行
-   npx sanity@latest init --coupon=herbscience2025
-   ```
-   
-   选择选项：
-   - ✅ Create new project
-   - ✅ Use the default dataset configuration? **Y**
-   - ✅ Project name: **HerbScience CMS**
-   - ✅ Use TypeScript? **Y**
-   - ✅ Package manager: **npm**
-
-3. **获取项目配置信息**
-   设置完成后，您会看到：
-   ```
-   Project ID: abc123def456  ← 复制这个
-   Dataset: production       ← 使用默认值
-   ```
-
-### 步骤 2: 配置环境变量
-
-创建 `.env.local` 文件：
-```bash
-# Sanity CMS Configuration
-NEXT_PUBLIC_SANITY_PROJECT_ID=abc123def456  ← 替换为您的项目ID
-NEXT_PUBLIC_SANITY_DATASET=production
-NEXT_PUBLIC_SANITY_API_VERSION=2024-01-01
-SANITY_API_TOKEN=your-sanity-api-token      ← 稍后获取
-```
-
-### 步骤 3: 生成API Token
-
-1. 访问 [Sanity Management Console](https://www.sanity.io/manage)
-2. 选择您的项目
-3. 进入 **API** → **Tokens**
-4. 点击 **Add API token**
-   - Name: `HerbScience Website`
-   - Permissions: `Editor`
-   - 复制生成的token到 `.env.local`
-
-### 步骤 4: 启动Sanity Studio
-
-```bash
-# 启动开发服务器
-npm run dev
-
-# 在另一个终端启动Sanity Studio
-npm run sanity
-```
-
-访问：
-- 🌐 **网站**: http://localhost:3000
-- ⚙️ **CMS管理**: http://localhost:3000/admin
-
-## 📝 内容管理工作流
-
-### 创建第一篇博客文章
-
-1. **访问管理界面**: http://localhost:3000/admin
-2. **点击 "Blog Posts"**
-3. **点击 "Create" 按钮**
-4. **填写文章信息**：
-   - Title: `姜黄的神奇功效：不仅仅是调料那么简单`
-   - Slug: 自动生成 `turmeric-benefits-guide`
-   - Excerpt: 150字左右的摘要
-   - Content: 使用富文本编辑器编写内容
-   - Author: 选择或创建作者
-   - Category: 选择分类
-   - Tags: 添加相关标签
-   - SEO信息: 填写SEO标题和描述
-
-5. **发布文章**: 将Status改为 "Published"
-
-### 创建作者和分类
-
-**创建作者**:
-1. 点击 "Authors" → "Create"
-2. 填写姓名、头衔、简介等信息
-
-**创建分类**:
-1. 点击 "Categories" → "Create"
-2. 填写分类名称、描述、选择颜色
-
-## 🔧 高级功能
-
-### 实时预览
-- 在Sanity Studio中编辑时，可以实时预览网站效果
-- 支持草稿模式，发布前可以预览
-
-### 图片管理
-- 拖拽上传图片
-- 自动优化和CDN分发
-- 支持热点裁剪
-
-### SEO优化
-- 每篇文章独立的SEO设置
-- 自动生成Open Graph标签
-- 结构化数据支持
-
-## 🌍 部署到生产环境
-
-### Vercel部署
-
-1. **更新环境变量**
-   在Vercel Dashboard中添加所有环境变量
-
-2. **配置Sanity CORS**
-   ```bash
-   # 允许您的域名访问Sanity
-   npx sanity cors add https://www.herbscience.shop --credentials
-   ```
-
-3. **部署Sanity Studio**
-   ```bash
-   # 部署到 yourdomain.sanity.studio
-   npm run sanity:deploy
-   ```
-
-## 📊 内容策略建议
-
-### 推荐的文章分类
-1. **🔬 科学研究** - 最新研究发现
-2. **⚠️ 安全指南** - 用药安全和相互作用
-3. **🌱 传统医学** - 中医药文化
-4. **💪 生活方式** - 日常养生
-5. **🌿 草药百科** - 具体草药介绍
-
-### SEO优化文章建议
-- `姜黄的功效与作用：科学证据全解析`
-- `怀孕期间能吃人参吗？完整安全指南`
-- `失眠最有效的5种草药：自然助眠方案`
-- `草药 vs 西药：效果对比和选择指南`
-
-## 🆘 常见问题
-
-**Q: 忘记Sanity项目ID怎么办？**
-A: 访问 [Sanity Management](https://www.sanity.io/manage) 查看所有项目
-
-**Q: API Token权限不够怎么办？**  
-A: 重新生成Token时选择 "Editor" 或 "Admin" 权限
-
-**Q: 文章不显示在网站上？**
-A: 检查文章Status是否为 "Published"
-
-**Q: 图片显示不出来？**
-A: 检查项目ID和数据集配置是否正确
-
-## 🎯 下一步
-
-✅ **已完成的功能**:
-- Sanity CMS完整配置
-- 博客数据结构设计
-- 富文本编辑器
-- SEO优化功能
-- 图片管理系统
-
-🔄 **即将实现**:
-- 多语言内容管理
-- 内容定时发布
-- 评论系统集成
-- 高级分析功能
+- **Project ID:** `13rzzwgz`
+- **Organization ID:** `ou4t3rSBT`
+- **Dataset:** `production`
+- **Dashboard:** https://www.sanity.io/organizations/ou4t3rSBT/project/13rzzwgz
 
 ---
 
-*设置完成后，您就拥有了一个既有Next.js技术优势，又有WordPress级别内容管理便利性的混合架构网站！* 
+## ⚙️ 环境变量配置
+
+### 步骤1：创建 `.env.local` 文件
+
+在项目根目录创建 `.env.local` 文件：
+
+```bash
+# Sanity CMS 配置
+NEXT_PUBLIC_SANITY_PROJECT_ID=13rzzwgz
+NEXT_PUBLIC_SANITY_DATASET=production
+
+# Sanity API Token (需要从Sanity Dashboard获取)
+SANITY_API_TOKEN=your-token-here
+
+# Next.js 配置
+NEXT_PUBLIC_SITE_URL=https://herbscience.shop
+```
+
+---
+
+### 步骤2：获取 Sanity API Token
+
+1. 访问：https://www.sanity.io/manage/personal/tokens
+2. 点击 "Add API token"
+3. 配置：
+   - **Label:** HerbScience Blog Deployment
+   - **Permissions:** Editor (需要写入权限)
+4. 复制生成的token
+5. 替换 `.env.local` 中的 `your-token-here`
+
+**重要：** Token只显示一次，请妥善保存！
+
+---
+
+## 🚀 部署博客内容
+
+### 方法1：使用自动脚本（推荐）
+
+```bash
+# 1. 部署第一篇博客（Turmeric剂量指南）
+node add-turmeric-blog-to-sanity.js
+
+# 2. 部署第二篇博客（Turmeric副作用）
+node add-turmeric-side-effects-blog-to-sanity.js
+```
+
+脚本会自动：
+- ✅ 创建或检查Author (HerbScience Team)
+- ✅ 创建Category (Herbal Guides, Herb Safety)
+- ✅ 创建Tags
+- ✅ 创建完整博客文章
+- ✅ 设置SEO字段
+
+---
+
+### 方法2：手动在Sanity Studio
+
+#### 启动Sanity Studio
+
+```bash
+cd sanity
+npm run dev
+```
+
+然后访问：http://localhost:3333
+
+#### 手动创建内容
+
+1. 点击 "Blog Posts"
+2. 点击 "Create" 按钮
+3. 填写内容（参考文档）：
+   - `TURMERIC_DOSAGE_BLOG_OPTIMIZED.md`
+   - `TURMERIC_SIDE_EFFECTS_BLOG_OPTIMIZED.md`
+
+---
+
+## 🌿 部署草药数据库
+
+### Ashwagandha已在代码中
+
+Ashwagandha的数据已经在 `app/api/herbs/[slug]/route.ts` 中，通过API路由提供。
+
+如果要同步到Sanity CMS：
+
+1. 在Sanity Studio中点击 "Herbs Database"
+2. 创建新Herb条目
+3. 填写Ashwagandha数据
+
+或者创建自动同步脚本（类似博客部署脚本）。
+
+---
+
+## 🔍 验证部署
+
+### 检查Sanity Studio
+
+1. 访问：http://localhost:3333（本地）
+2. 或访问：https://herbscience.sanity.studio（生产环境）
+3. 确认文章出现在 "Blog Posts" 列表
+
+### 检查前端网站
+
+1. 确保Next.js项目读取Sanity数据
+2. 访问：
+   - http://localhost:3000/blog/how-much-turmeric-per-day
+   - http://localhost:3000/blog/10-serious-side-effects-of-turmeric
+
+---
+
+## 📊 Sanity Studio 访问
+
+### 本地开发
+
+```bash
+cd sanity
+npm install
+npm run dev
+```
+
+访问：http://localhost:3333
+
+### 生产环境
+
+部署Sanity Studio到Vercel或Netlify：
+
+```bash
+cd sanity
+npm run build
+```
+
+---
+
+## ❓ 常见问题
+
+### Q1: "Authentication failed" 错误
+
+**A:** 检查 `.env.local` 中的 `SANITY_API_TOKEN` 是否正确，并确保token有 Editor 权限。
+
+---
+
+### Q2: 脚本找不到项目
+
+**A:** 确认 `.env.local` 文件在项目根目录，且包含正确的项目ID。
+
+---
+
+### Q3: 文章显示但没有内容
+
+**A:** 检查Sanity schema和前端组件是否匹配，确保Block Content正确渲染。
+
+---
+
+## 🔐 安全提示
+
+1. ❌ 不要提交 `.env.local` 到Git
+2. ❌ 不要在公开代码中暴露API Token
+3. ✅ 使用不同的token用于开发和生产环境
+4. ✅ 定期轮换API Token
+
+---
+
+## 📚 相关文档
+
+- Sanity官方文档：https://www.sanity.io/docs
+- Next.js + Sanity集成：https://www.sanity.io/guides/nextjs
+- Sanity CLI文档：https://www.sanity.io/docs/cli
+
+---
+
+## 🎯 快速开始清单
+
+- [ ] 创建 `.env.local` 文件
+- [ ] 获取Sanity API Token
+- [ ] 配置项目ID和Dataset
+- [ ] 安装依赖：`npm install @sanity/client`
+- [ ] 运行部署脚本
+- [ ] 验证Sanity Studio
+- [ ] 验证前端网站
+- [ ] 提交到Google Search Console
+
+---
+
+**配置完成后，就可以运行部署脚本了！** 🚀

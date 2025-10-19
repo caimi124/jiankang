@@ -9,12 +9,12 @@
 
 const { createClient } = require('@sanity/client');
 
-// Sanity配置 - 请根据你的项目配置修改
+// Sanity配置
 const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'your-project-id',
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '13rzzwgz',
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   useCdn: false,
-  token: process.env.SANITY_API_TOKEN, // 需要写权限的token
+  token: process.env.SANITY_API_TOKEN,
   apiVersion: '2024-01-01'
 });
 
