@@ -591,7 +591,7 @@ const HERB_DETAIL_DATA = {
     chinese_name: '南瓜子',
     latin_name: 'Cucurbita pepo',
     slug: 'pumpkin-seeds',
-    category: 'Men's Health & Hormone Balance',
+    category: "Men's Health & Hormone Balance",
     evidence_level: 'Moderate',
     safety_level: 'high',
 
