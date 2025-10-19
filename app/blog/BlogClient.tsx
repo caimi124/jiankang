@@ -59,20 +59,50 @@ const staticArticles = [
   }
 ]
 
-export default function BlogClient() {
+interface BlogClientProps {
+  initialPosts?: any[]
+  initialFeaturedPosts?: any[]
+  initialCategories?: any[]
+}
+
+export default function BlogClient({
+  initialPosts,
+  initialFeaturedPosts,
+  initialCategories
+}: BlogClientProps) {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
-  const [posts, setPosts] = useState<any[]>(staticArticles)
-  const [featuredPosts, setFeaturedPosts] = useState<any[]>(staticBlogData.featuredPosts)
-  const [categories, setCategories] = useState<any[]>([
-    { id: 'all', name: 'All Articles', count: staticArticles.length },
-    ...staticBlogData.categories.map(cat => ({
-      id: cat.title,
-      name: cat.title.charAt(0).toUpperCase() + cat.title.slice(1),
-      count: cat.postCount || 0,
-      description: cat.description
-    }))
-  ])
+  
+  // 使用传入的数据，如果没有则使用静态fallback
+  const [posts, setPosts] = useState<any[]>(
+    initialPosts && initialPosts.length > 0 ? initialPosts : staticArticles
+  )
+  const [featuredPosts, setFeaturedPosts] = useState<any[]>(
+    initialFeaturedPosts && initialFeaturedPosts.length > 0 ? initialFeaturedPosts : staticBlogData.featuredPosts
+  )
+  
+  // 处理categories数据
+  const processedCategories = initialCategories && initialCategories.length > 0
+    ? [
+        { id: 'all', name: 'All Articles', count: initialPosts?.length || 0 },
+        ...initialCategories.map(cat => ({
+          id: cat.title,
+          name: cat.title.charAt(0).toUpperCase() + cat.title.slice(1),
+          count: cat.postCount || 0,
+          description: cat.description
+        }))
+      ]
+    : [
+        { id: 'all', name: 'All Articles', count: staticArticles.length },
+        ...staticBlogData.categories.map(cat => ({
+          id: cat.title,
+          name: cat.title.charAt(0).toUpperCase() + cat.title.slice(1),
+          count: cat.postCount || 0,
+          description: cat.description
+        }))
+      ]
+  
+  const [categories, setCategories] = useState<any[]>(processedCategories)
   const [loading, setLoading] = useState(false)
 
   const filteredArticles = posts.filter(article => {
