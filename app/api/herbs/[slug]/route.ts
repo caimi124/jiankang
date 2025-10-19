@@ -640,7 +640,7 @@ const HERB_DETAIL_DATA = {
       { type: 'Balanced or Deficient', suitable: 'yes', description: 'Nutritive and supportive' }
     ],
 
-    pairs_well_with: ['Zinc-rich diet', 'Saw palmetto (for men's health)'],
+    pairs_well_with: ['Zinc-rich diet', "Saw palmetto (for men's health)"],
 
     user_stories: [
       { quote: 'Daily pumpkin seeds reduced nighttime urination and improved sleep.', author: 'Verified User', location: 'Case Note' }
