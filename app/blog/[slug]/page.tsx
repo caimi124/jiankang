@@ -97,6 +97,8 @@ export async function generateStaticParams() {
     { slug: 'ginseng-vs-coffee-energy' },
     { slug: 'why-some-herbs-work-for-you-and-others-dont' },
     { slug: 'herb-drug-interaction-safety' },
+    { slug: 'how-much-turmeric-per-day' }, // 🆕 新增
+    { slug: '10-serious-side-effects-of-turmeric' }, // 🆕 新增
 ]
 }
 

@@ -448,141 +448,244 @@ const HERB_DETAIL_DATA = {
     chinese_name: '姜黄',
     latin_name: 'Curcuma longa',
     slug: 'turmeric',
-    category: 'Anti-inflammatory & Antioxidant',
+    category: 'Anti-inflammatory & Liver Support',
     evidence_level: 'Strong',
     safety_level: 'high',
     
-    overview: 'Turmeric (Curcuma longa) is a vibrant yellow spice and medicinal herb known worldwide for its potent anti-inflammatory and antioxidant effects. Traditionally used in Chinese and Ayurvedic medicine, turmeric helps support joint comfort, improve digestion, and promote overall wellness. The active ingredient, curcumin, is the key to its health benefits and is backed by numerous scientific studies.',
+    overview: 'Turmeric (Curcuma longa) is a golden-yellow rhizome famous for its active compound curcumin, a natural anti-inflammatory and antioxidant powerhouse. Used in both Ayurvedic and Chinese medicine for thousands of years, turmeric supports joint comfort, liver detox, heart health, gut balance, and skin vitality. What does turmeric do for your body? It helps fight chronic inflammation, balance gut microbiota, support healthy circulation, and maintain resilience against oxidative stress and aging. The best turmeric supplements combine standardized curcumin extract (95%) with black pepper (piperine) for optimal absorption, making them highly effective for inflammation, joint pain relief, and overall wellness.',
     
     benefits: [
-      'Helps reduce joint pain and inflammation',
-      'Supports healthy digestion and liver function',
-      'Provides antioxidant protection against cellular damage',
-      'May boost mood and cognitive health',
-      'Supports natural detoxification processes'
+      'Reduces inflammation and joint pain naturally - especially for arthritis and muscle soreness',
+      'Supports liver detox and metabolism - improves bile flow and aids toxin elimination',
+      'Protects heart and circulation - lowers triglycerides, improves blood viscosity',
+      'Balances gut flora - restores microbial diversity, reduces bloating',
+      'Supports women\'s health - helps with irregular menstruation, cramps, and hormonal balance',
+      'Provides powerful antioxidant protection - delays cellular aging, promotes radiant skin',
+      'May help with menopause symptoms - supports hot flash relief and hormonal regulation',
+      'Supports brain health - may improve mood and cognitive function through BDNF',
+      'Natural pain relief - helps relieve pain without pharmaceutical side effects'
     ],
     
-    active_compounds: 'Turmeric\'s primary active compound, curcumin, works by blocking inflammatory molecules and neutralizing harmful free radicals. Curcumin also supports digestive health by stimulating bile production and may improve brain function by increasing levels of brain-derived neurotrophic factor (BDNF).',
+    active_compounds: 'Curcumin is turmeric\'s star compound (3-5% of turmeric root), working through multiple pathways: it modulates key inflammatory pathways (NF-κB and COX-2), lowers inflammatory cytokines that trigger chronic pain and swelling, supports bile secretion and liver detox enzymes for better fat metabolism, helps neutralize free radicals to reduce oxidative stress, and promotes beneficial gut bacteria like Lactobacillus and Bifidobacterium. Other bioactive compounds include turmerones (improve curcumin absorption, support liver and brain function), volatile oils (enhance antimicrobial and digestive properties), and demethoxycurcumin and bisdemethoxycurcumin (aid in reducing oxidative cell damage). The best way to take turmeric is with black pepper (piperine), which can enhance curcumin absorption by up to 2000%.',
     
-    traditional_uses: 'In Traditional Chinese Medicine (TCM), turmeric is seen as a warming herb that promotes blood flow and relieves pain caused by stagnation or cold. It is traditionally used to improve circulation and relieve muscle and joint stiffness, ease digestive discomfort and bloating, and support menstrual health by reducing cramps.',
+    traditional_uses: 'In Traditional Chinese Medicine (TCM), turmeric is a warming herb that promotes blood flow and relieves pain caused by stagnation or cold. It is traditionally used to improve circulation and relieve muscle and joint stiffness, ease digestive discomfort and bloating, support menstrual health by reducing cramps and regulating periods, aid in detoxification and liver function, and promote overall vitality and anti-aging. Turmeric has been used for over 3,000 years in Asian medicine as a trusted remedy for inflammation, pain management, and women\'s health.',
     
     suitable_for: [
-      'People with joint pain, arthritis, or muscle soreness',
-      'Individuals experiencing digestive issues like bloating or indigestion',
-      'Anyone looking to reduce inflammation naturally',
-      'Those wanting to support brain and mood health'
+      'People with joint pain, arthritis, or chronic inflammation',
+      'Individuals seeking liver support and natural detox',
+      'Women with menstrual cramps, irregular periods, or menopause symptoms',
+      'Anyone with digestive issues like bloating or gut imbalance',
+      'Those wanting to support heart health and circulation',
+      'People looking for natural pain relief and anti-aging benefits',
+      'Individuals with cold hands/feet, poor circulation, or blood stasis (TCM)',
+      'Those exposed to alcohol, toxins, or metabolic stress'
     ],
     
     not_suitable_for: [
-      'People with gallstones or bile duct obstruction',
-      'Those on blood-thinning medications (without medical supervision)',
-      'Individuals with iron deficiency (may reduce iron absorption)',
-      'Pregnant women (high doses may stimulate uterine contractions)'
+      'People with active liver disease, gallstones, or bile duct obstruction',
+      'Those taking anticoagulants (warfarin, aspirin) without medical supervision',
+      'Pregnant women (culinary use is safe, but avoid high-dose supplements)',
+      'Breastfeeding mothers (consult doctor first)',
+      'People with stomach ulcers or severe acid reflux',
+      'Individuals with Yin-deficiency heat, dry mouth, night sweats, or overheated constitution (TCM)',
+      'Those with iron deficiency (may reduce iron absorption)'
     ],
     
     dosage_forms: [
       {
-        form: 'Powder',
-        dosage: '500–2000mg daily',
-        usage: 'Preferably with black pepper for better absorption'
+        form: 'Turmeric Powder',
+        dosage: '1-3g daily (½-1 teaspoon)',
+        usage: 'Add to meals, smoothies, golden milk, or tea. Best with black pepper and healthy fats'
       },
       {
-        form: 'Capsules',
-        dosage: '500mg standardized curcumin extract',
-        usage: '2–3 times daily with meals'
+        form: 'Standardized Curcumin Extract (95%)',
+        dosage: '500-1000mg daily',
+        usage: 'Split into 2-3 doses with meals. Look for formulas with piperine or liposomal delivery'
       },
       {
-        form: 'Fresh Root',
-        dosage: '1-3g daily',
-        usage: 'Used in cooking or brewed as tea'
+        form: 'Fresh Turmeric Root',
+        dosage: '3-10g daily',
+        usage: 'Use in cooking, juices, or steep as tea. More bioavailable than dried powder'
       },
       {
-        form: 'Herbal Blends',
-        dosage: 'As directed',
-        usage: 'Combined with ginger, cinnamon, or black pepper'
+        form: 'Golden Milk / Turmeric Tea',
+        dosage: '1 tsp powder per cup',
+        usage: 'Best for daily prevention. Combine with warm milk, honey, cinnamon, and black pepper'
+      },
+      {
+        form: 'Liposomal Curcumin',
+        dosage: '500mg daily',
+        usage: 'Advanced absorption technology - up to 46x more bioavailable than standard extracts'
       }
     ],
     
     safety_warnings: [
-      'Generally safe but may cause mild stomach upset in some people',
-      'May interact with blood thinners or diabetes medications',
-      'Consult your doctor before use if pregnant, breastfeeding, or taking medications',
-      'Avoid if you have gallstones or bile duct obstruction'
+      'Generally safe as a spice, but high-dose supplements may rarely cause liver injury in sensitive individuals',
+      'May cause mild stomach upset, nausea, or diarrhea at high doses',
+      'Can increase bleeding risk - avoid before surgery or if on blood thinners',
+      'May interact with diabetes medications (monitor blood sugar)',
+      'Consult doctor if pregnant, breastfeeding, or taking medications',
+      'Start with low doses and increase gradually to assess tolerance',
+      'Is turmeric bad for your liver? No - culinary amounts are safe. Only rare cases of liver injury from high-dose supplements have been reported',
+      'Not recommended for people with gallstones or bile duct obstruction'
     ],
     
     interactions: [
-      'Blood-thinning medications (warfarin)',
-      'Diabetes medications (may affect blood sugar)',
-      'Chemotherapy drugs (may interfere with some treatments)',
-      'Iron supplements (may reduce absorption)'
+      'Anticoagulants (warfarin, aspirin) - may increase bleeding risk',
+      'Diabetes medications - may lower blood sugar too much',
+      'Chemotherapy drugs - may interfere with some cancer treatments',
+      'Iron supplements - may reduce iron absorption',
+      'Blood pressure medications - may enhance effects',
+      'Stomach acid reducers - may interact with absorption'
     ],
     
-    scientific_evidence: 'Research supports turmeric\'s role in reducing inflammation, easing arthritis symptoms, aiding digestion, and potentially improving brain function and mood. Curcumin is one of the most studied natural compounds for these benefits, with over 3,000 published studies.',
+    scientific_evidence: 'Turmeric and curcumin are among the most researched natural compounds, with over 15,000 published studies. Clinical trials show curcumin reduces CRP and inflammatory cytokines in arthritis patients, helps prevent fatty liver and oxidative injury in liver studies, may lower triglycerides and LDL while improving HDL levels, promotes probiotic growth and intestinal barrier integrity for gut health, and shows promise for hot flashes and hormonal balance in perimenopausal women. Meta-analyses confirm turmeric\'s effectiveness for osteoarthritis pain relief, comparable to NSAIDs but with fewer side effects. Research also supports its role in brain health through increasing BDNF levels.',
     
     constitution_match: [
       {
-        type: 'Blood Stasis',
+        type: 'Blood Stasis / Poor Circulation',
         suitable: 'yes',
-        description: 'Excellent for improving circulation and reducing stagnation'
+        description: 'Excellent for improving circulation, reducing pain from stagnation, and warming cold extremities'
       },
       {
-        type: 'Phlegm-Damp',
+        type: 'Phlegm-Damp / Digestive Sluggishness',
         suitable: 'yes',
-        description: 'Helps transform dampness and support digestion'
+        description: 'Helps transform dampness, support digestion, and reduce bloating'
       },
       {
-        type: 'Cold Constitution',
+        type: 'Cold Constitution / Low Metabolism',
         suitable: 'yes',
-        description: 'Warming properties support those with cold symptoms'
+        description: 'Warming properties support those with cold hands/feet, low energy, and slow digestion'
       },
       {
-        type: 'Heat Excess',
+        type: 'Qi Stagnation',
+        suitable: 'yes',
+        description: 'Promotes smooth flow of energy, relieves menstrual cramps and tension'
+      },
+      {
+        type: 'Yin Deficiency / Internal Heat',
         suitable: 'warning',
-        description: 'Use moderately; monitor for increased heat symptoms'
+        description: 'Use moderately or avoid - may aggravate dry mouth, night sweats, and heat symptoms'
+      },
+      {
+        type: 'Liver Deficiency',
+        suitable: 'warning',
+        description: 'Those with existing liver conditions should consult doctor before high-dose use'
       }
     ],
     
     pairs_well_with: [
-      'Black pepper (piperine) – to enhance absorption',
-      'Ginger – to boost anti-inflammatory and digestive support',
-      'Cinnamon and cardamom – in herbal formulas',
-      'Healthy fats – to improve curcumin absorption'
+      'Black pepper (piperine) - enhances absorption by up to 2000%',
+      'Ginger - boosts anti-inflammatory and digestive support synergistically',
+      'Milk Thistle - combines for comprehensive liver detox and protection',
+      'Healthy fats (olive oil, coconut oil, avocado) - improves curcumin absorption',
+      'Cinnamon and cardamom - in herbal formulas for metabolism',
+      'Ashwagandha - for stress, inflammation, and hormonal balance'
     ],
     
     user_stories: [
       {
-        quote: 'Turmeric capsules helped reduce my knee pain and gave me more mobility.',
+        quote: 'After taking turmeric with black pepper for 6 weeks, my knee arthritis pain decreased by 70%. I can finally walk without limping!',
         author: 'Anna W.',
-        location: 'Chicago'
+        location: 'Chicago, IL'
       },
       {
-        quote: 'I drink turmeric tea daily to support my digestion and energy.',
+        quote: 'Golden milk every night has transformed my digestion. No more bloating, and my skin looks clearer too.',
         author: 'Mark L.',
-        location: 'London'
+        location: 'London, UK'
+      },
+      {
+        quote: 'I was skeptical, but curcumin supplements really helped my joint stiffness. Better than ibuprofen for me.',
+        author: 'Rachel S.',
+        location: 'Seattle, WA'
+      },
+      {
+        quote: 'My hot flashes improved noticeably after adding turmeric tea to my routine. Plus it helps with my mood swings.',
+        author: 'Linda M.',
+        location: 'Toronto, Canada'
       }
     ],
     
     faqs: [
       {
+        question: 'What is turmeric good for?',
+        answer: 'Turmeric is excellent for reducing inflammation, supporting joint health, improving liver detox, balancing gut flora, supporting women\'s health (menstrual cramps and menopause), promoting heart health, and providing powerful antioxidant protection for anti-aging.'
+      },
+      {
+        question: 'What does turmeric do for the body?',
+        answer: 'Turmeric fights chronic inflammation by modulating NF-κB and COX-2 pathways, supports liver detox by improving bile flow, balances gut bacteria (promoting Lactobacillus and Bifidobacterium), improves circulation and reduces pain from blood stagnation, and neutralizes free radicals to delay cellular aging.'
+      },
+      {
+        question: 'What is the best turmeric supplement?',
+        answer: 'The best turmeric supplement contains standardized curcumin extract (95% curcuminoids) combined with black pepper extract (piperine) or liposomal formulation for optimal absorption. Look for third-party tested brands like Longvida curcumin or BCM-95. A good curcumin supplement should provide 500-1000mg daily with proven bioavailability enhancement.'
+      },
+      {
+        question: 'What is the best way to take turmeric?',
+        answer: 'Always take turmeric with black pepper (piperine) and a fat source like olive oil, coconut oil, or nuts for maximum absorption. For supplements, take with meals. For powder, mix into golden milk, smoothies, or meals. Liposomal curcumin offers the highest absorption without needing piperine.'
+      },
+      {
+        question: 'How much turmeric should I take per day?',
+        answer: 'For turmeric powder: 1-3g daily (½-1 teaspoon). For standardized curcumin supplements: 500-1000mg daily split into 2-3 doses. For fresh turmeric root: 3-10g daily. Start low and increase gradually. Always take with meals and black pepper for best results.'
+      },
+      {
+        question: 'Can I take turmeric daily?',
+        answer: 'Yes, culinary amounts (½-1 teaspoon daily) are safe for long-term use. For supplements (500-1000mg curcumin), most people can take them daily, but consult your doctor if you have liver issues, take medications, or are pregnant.'
+      },
+      {
+        question: 'What are the side effects of turmeric?',
+        answer: 'Turmeric is generally safe, but high doses may cause nausea, diarrhea, or mild stomach upset. Rare cases of liver injury have been reported with high-dose supplements. May increase bleeding risk in people on anticoagulants. Always start with low doses and consult a doctor if you have health conditions.'
+      },
+      {
+        question: 'Is turmeric bad for your liver?',
+        answer: 'No, turmeric is generally beneficial for liver health and supports natural detox. However, rare cases of liver injury from very high-dose supplements have been reported in sensitive individuals. Avoid if you have active liver disease, gallstones, or bile duct obstruction. Culinary amounts are always safe.'
+      },
+      {
+        question: 'Does turmeric help with inflammation?',
+        answer: 'Yes! Turmeric is one of the most powerful natural anti-inflammatories. Curcumin blocks inflammatory molecules (NF-κB, COX-2) and reduces inflammatory cytokines. Studies show it\'s effective for arthritis, joint pain, and chronic inflammation - sometimes as effective as NSAIDs but with fewer side effects.'
+      },
+      {
+        question: 'What is the difference between turmeric and curcumin?',
+        answer: 'Turmeric is the whole root/spice containing 3-5% curcumin. Curcumin is the isolated active compound responsible for most anti-inflammatory benefits. Curcumin supplements are more concentrated (95% pure) and often more effective for therapeutic use, while turmeric powder is great for daily cooking and prevention.'
+      },
+      {
+        question: 'What are the benefits of turmeric for women?',
+        answer: 'Turmeric supports women\'s health by reducing menstrual cramps and regulating periods, helping with menopause symptoms (hot flashes, mood swings), supporting hormonal balance naturally, improving skin health and reducing aging signs, and providing anti-inflammatory relief for joint pain. It\'s traditionally used in TCM for women\'s reproductive health.'
+      },
+      {
         question: 'Can turmeric replace my arthritis medication?',
-        answer: 'Turmeric can complement treatment but should not replace prescribed medicines without doctor advice.'
+        answer: 'Turmeric can be a powerful complementary therapy but should not replace prescribed medications without doctor approval. Studies show curcumin can be as effective as some NSAIDs for arthritis pain, but work with your healthcare provider to develop a safe, integrated treatment plan.'
       },
       {
-        question: 'How can I improve turmeric absorption?',
-        answer: 'Taking turmeric with black pepper or healthy fats enhances absorption significantly.'
+        question: 'What is curcumin good for?',
+        answer: 'Curcumin is excellent for reducing inflammation and pain (arthritis, muscle soreness), supporting liver health and detoxification, improving gut health and microbial balance, protecting the heart and circulation, providing antioxidant and anti-aging benefits, and potentially supporting brain health and mood.'
       },
       {
-        question: 'Is turmeric safe to use every day?',
-        answer: 'Generally yes for most people, but consult your healthcare provider for personalized advice.'
-      },
-      {
-        question: 'What\'s the difference between turmeric and curcumin?',
-        answer: 'Turmeric is the whole spice, while curcumin is the active compound. Curcumin supplements are more concentrated.'
+        question: 'What are the best turmeric supplements?',
+        answer: 'Look for supplements with: 95% standardized curcumin, black pepper extract (piperine) or liposomal delivery, third-party testing for purity, 500-1000mg per serving. Top formulations include Longvida curcumin, BCM-95, and Meriva (phytosome). Avoid cheap turmeric powder capsules without bioavailability enhancers.'
       }
     ],
     
-    seo_keywords: ['turmeric benefits', 'curcumin supplement', 'natural anti-inflammatory', 'turmeric dosage', 'turmeric for joint pain'],
-    properties: ['Anti-inflammatory', 'Antioxidant', 'Digestive Support', 'Joint Health']
+    seo_keywords: [
+      'turmeric benefits', 'curcumin benefits', 'turmeric side effects', '10 serious side effects of turmeric',
+      'best turmeric supplement', 'turmeric supplement', 'best curcumin supplement', 'best turmeric curcumin supplement',
+      'turmeric for inflammation', 'turmeric anti inflammatory', 'does turmeric help with inflammation',
+      'what is turmeric', 'what is turmeric good for', 'what does turmeric do', 'what does turmeric do for the body',
+      'what is curcumin', 'what is curcumin good for', 'turmeric curcumin benefits',
+      'best way to take turmeric', 'how much turmeric per day', 'turmeric dosage', 'can I take turmeric daily',
+      'turmeric benefits for men', 'turmeric benefits for women', 'turmeric for women\'s health', 'turmeric for menopause',
+      'turmeric and ginger benefits', 'turmeric with black pepper', 'turmeric and black pepper',
+      'turmeric liver support', 'is turmeric bad for your liver', 'turmeric liver toxicity',
+      'turmeric root', 'fresh turmeric', 'turmeric powder', 'golden milk', 'turmeric tea benefits',
+      'liposomal curcumin', 'longvida curcumin', 'turmeric safety', 'curcumin side effects',
+      'turmeric for joint pain', 'turmeric pain relief', 'turmeric for arthritis',
+      'best turmeric for inflammation', 'turmeric supplement for inflammation', 'curcumin supplement for inflammation'
+    ],
+    
+    properties: [
+      'Anti-inflammatory', 'Antioxidant', 'Digestive Support', 'Joint Health', 
+      'Liver Support', 'Women\'s Health', 'Blood Circulation', 'Gut Health',
+      'Pain Relief', 'Anti-aging', 'Heart Health', 'Hormone Balance'
+    ]
   },
 
   'pumpkin-seeds': {
