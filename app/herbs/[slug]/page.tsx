@@ -458,38 +458,9 @@ export default async function HerbDetailPage({ params }: { params: Promise<{ slu
 			'@type': 'Thing',
 			name: benefit
 		})),
-		aggregateRating: (herbData.user_stories && herbData.user_stories.length > 0) ? {
-			'@type': 'AggregateRating',
-			ratingValue: '4.5',
-			reviewCount: herbData.user_stories.length.toString(),
-			bestRating: '5',
-			worstRating: '1',
-			'@id': `https://herbscience.shop/herbs/${slug}#aggregateRating`
-		} : undefined,
-		review: (herbData.user_stories || []).map((story: any, index: number) => ({
-			'@type': 'Review',
-			'@id': `https://herbscience.shop/herbs/${slug}#review-${index}`,
-			reviewRating: { 
-				'@type': 'Rating', 
-				ratingValue: '5', 
-				bestRating: '5',
-				worstRating: '1'
-			},
-			author: { 
-				'@type': 'Person', 
-				name: story.author || `User ${index + 1}`,
-				'@id': `https://herbscience.shop/herbs/${slug}#author-${index}`
-			},
-			reviewBody: story.quote,
-			datePublished: new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1).toISOString().split('T')[0],
-			dateCreated: new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1).toISOString(),
-			headline: `${herbData.name} Review by ${story.author || `User ${index + 1}`}`,
-			reviewAspect: 'effectiveness',
-			itemReviewed: {
-				'@type': 'Thing',
-				name: herbData.name,
-				'@id': `https://herbscience.shop/herbs/${slug}#herb`
-			}
+		mentions: (herbData.properties || []).map((property: string) => ({
+			'@type': 'Thing',
+			name: property
 		}))
 	}
 
@@ -554,17 +525,120 @@ export default async function HerbDetailPage({ params }: { params: Promise<{ slu
 		]
 	}
 
+	// MedicalWebPage 结构化数据（更适合健康内容）
+	const medicalWebPageJsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'MedicalWebPage',
+		'@id': `https://herbscience.shop/herbs/${slug}#medical-webpage`,
+		url: `https://herbscience.shop/herbs/${slug}`,
+		name: `${herbData.name} (${herbData.latin_name}): Benefits, Dosage, Safety & Modern Uses`,
+		description: herbData.overview,
+		inLanguage: 'en',
+		isPartOf: {
+			'@type': 'WebSite',
+			'@id': 'https://herbscience.shop/#website',
+			name: 'HerbScience',
+			url: 'https://herbscience.shop'
+		},
+		breadcrumb: {
+			'@id': `https://herbscience.shop/herbs/${slug}#breadcrumb`
+		},
+		datePublished: '2024-10-01T00:00:00Z',
+		dateModified: new Date().toISOString(),
+		lastReviewed: new Date().toISOString().split('T')[0],
+		reviewedBy: {
+			'@type': 'Organization',
+			name: 'HerbScience Expert Team',
+			url: 'https://herbscience.shop/about'
+		},
+		mainEntity: {
+			'@type': 'Substance',
+			'@id': `https://herbscience.shop/herbs/${slug}#substance`,
+			name: herbData.name,
+			alternateName: [herbData.latin_name, ...(herbData.properties?.slice(0, 2) || [])],
+			description: herbData.overview,
+			url: `https://herbscience.shop/herbs/${slug}`,
+			sameAs: [
+				`https://en.wikipedia.org/wiki/${herbData.name.replace(/ /g, '_')}`,
+				`https://www.ncbi.nlm.nih.gov/search/all/?term=${herbData.name.replace(/ /g, '+')}`
+			]
+		},
+		audience: {
+			'@type': 'PeopleAudience',
+			audienceType: 'Health-conscious individuals seeking natural wellness solutions'
+		},
+		about: {
+			'@type': 'Thing',
+			name: 'Herbal Medicine',
+			description: 'Natural health and wellness through evidence-based herbal supplements'
+		}
+	}
+
+	// WebPage 结构化数据（通用网页信息）
+	const webPageJsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'WebPage',
+		'@id': `https://herbscience.shop/herbs/${slug}#webpage`,
+		url: `https://herbscience.shop/herbs/${slug}`,
+		name: `${herbData.name} (${herbData.latin_name})`,
+		description: herbData.overview,
+		inLanguage: 'en',
+		isPartOf: {
+			'@type': 'WebSite',
+			'@id': 'https://herbscience.shop/#website'
+		},
+		breadcrumb: {
+			'@id': `https://herbscience.shop/herbs/${slug}#breadcrumb`
+		},
+		datePublished: '2024-10-01T00:00:00Z',
+		dateModified: new Date().toISOString(),
+		primaryImageOfPage: {
+			'@type': 'ImageObject',
+			url: `https://herbscience.shop/herbs/${slug}/opengraph-image`,
+			width: 1200,
+			height: 630
+		}
+	}
+
 	return (
 		<>
 			{/* 使用路由级 OpenGraph 生成图像（/herbs/[slug]/opengraph-image） */}
 			<meta property="og:image" content={`https://herbscience.shop/herbs/${slug}/opengraph-image`} />
 			<meta name="twitter:image" content={`https://herbscience.shop/herbs/${slug}/opengraph-image`} />
+			
 			{/* JSON-LD 结构化数据 */}
-			<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+			{/* MedicalWebPage - 最适合健康内容的类型 */}
+			<script 
+				type="application/ld+json" 
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalWebPageJsonLd) }} 
+			/>
+			
+			{/* WebPage - 通用网页信息 */}
+			<script 
+				type="application/ld+json" 
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }} 
+			/>
+			
+			{/* Article - 文章类型（保留用于内容索引） */}
+			<script 
+				type="application/ld+json" 
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} 
+			/>
+			
+			{/* FAQ - 常见问题（如果存在） */}
 			{faqJsonLd && (
-				<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+				<script 
+					type="application/ld+json" 
+					dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} 
+				/>
 			)}
-			<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+			
+			{/* BreadcrumbList - 面包屑导航 */}
+			<script 
+				type="application/ld+json" 
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} 
+			/>
+			
 			{/* 客户端组件 */}
 			<HerbDetailClient herbData={herbData as any} slug={slug} />
 		</>
