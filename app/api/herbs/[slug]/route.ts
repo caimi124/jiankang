@@ -689,27 +689,27 @@ However, ashwagandha isn't for everyone. Your body type (constitution) matters. 
     
     active_compounds: `Ashwagandha's key bioactive constituents include withanolides, alkaloids, saponins, and withaferin A.
 
-**Withanolides** are the main adaptogenic compounds that help regulate stress responses by modulating the HPA (hypothalamic-pituitary-adrenal) axis. They reduce cortisol production under chronic stress and help the body maintain homeostasis.
+Withanolides are the main adaptogenic compounds that help regulate stress responses by modulating the HPA (hypothalamic-pituitary-adrenal) axis. They reduce cortisol production under chronic stress and help the body maintain homeostasis.
 
-**Withaferin A** shows strong antioxidant and anti-inflammatory effects, protecting cells from oxidative damage and reducing inflammatory markers like COX-2 and TNF-alpha.
+Withaferin A shows strong antioxidant and anti-inflammatory effects, protecting cells from oxidative damage and reducing inflammatory markers like COX-2 and TNF-alpha.
 
-**Saponins** contribute to energy metabolism, immune modulation, and the herb's adaptogenic properties by supporting mitochondrial function.
+Saponins contribute to energy metabolism, immune modulation, and the herb's adaptogenic properties by supporting mitochondrial function.
 
-**Alkaloids** support nervous system calming and enhance GABA (gamma-aminobutyric acid) activity in the brain, promoting relaxation without sedation.
+Alkaloids support nervous system calming and enhance GABA (gamma-aminobutyric acid) activity in the brain, promoting relaxation without sedation.
 
 Together, these compounds make ashwagandha a multi-functional herb that influences the endocrine, immune, and nervous systems simultaneously.`,
     
     traditional_uses: `In Ayurvedic medicine, ashwagandha is classified as a "Rasayana" — a rejuvenating tonic that nourishes both body and mind. It has been traditionally used for over 3,000 years to:
 
-• **Restore vitality after illness or exhaustion** - Known as a recovery tonic for people recovering from chronic illness, surgery, or prolonged stress
+Restore vitality after illness or exhaustion - Known as a recovery tonic for people recovering from chronic illness, surgery, or prolonged stress.
 
-• **Calm the mind and improve mental clarity** - Used by students and scholars to enhance memory, focus, and cognitive function
+Calm the mind and improve mental clarity - Used by students and scholars to enhance memory, focus, and cognitive function.
 
-• **Support reproductive health and fertility** - Traditionally given to both men and women to enhance sexual vitality, improve sperm quality, and support healthy conception
+Support reproductive health and fertility - Traditionally given to both men and women to enhance sexual vitality, improve sperm quality, and support healthy conception.
 
-• **Strengthen immunity and longevity** - Considered a longevity tonic that strengthens the body's resistance to disease and aging
+Strengthen immunity and longevity - Considered a longevity tonic that strengthens the body's resistance to disease and aging.
 
-• **Balance Vata dosha** - In Ayurvedic terms, it pacifies Vata (cold, anxious, depleted constitution) by providing warmth, stability, and grounding energy
+Balance Vata dosha - In Ayurvedic terms, it pacifies Vata (cold, anxious, depleted constitution) by providing warmth, stability, and grounding energy.
 
 In Traditional Chinese Medicine terms, ashwagandha would be categorized as a Qi and Yang tonic herb that warms and strengthens the body while calming the mind (Shen).`,
     
@@ -796,25 +796,19 @@ In Traditional Chinese Medicine terms, ashwagandha would be categorized as a Qi 
     
     scientific_evidence: `Ashwagandha is one of the most well-researched adaptogenic herbs, with over 3,000 published studies supporting its therapeutic benefits:
 
-**Stress & Cortisol Reduction:**
-• A 2019 study published in the *Journal of Alternative and Complementary Medicine* found that ashwagandha root extract (300mg twice daily) reduced cortisol levels by up to **27%** in chronically stressed adults over 8 weeks
-• The *Indian Journal of Psychological Medicine* (2012) reported an **88% reduction in anxiety scores** after 60 days of ashwagandha supplementation (300mg twice daily)
-• Multiple randomized controlled trials confirm significant improvements in perceived stress levels, anxiety symptoms, and overall quality of life
+Stress and Cortisol Reduction:
+A 2019 study published in the Journal of Alternative and Complementary Medicine found that ashwagandha root extract (300mg twice daily) reduced cortisol levels by up to 27% in chronically stressed adults over 8 weeks. The Indian Journal of Psychological Medicine (2012) reported an 88% reduction in anxiety scores after 60 days of ashwagandha supplementation (300mg twice daily). Multiple randomized controlled trials confirm significant improvements in perceived stress levels, anxiety symptoms, and overall quality of life.
 
-**Sleep Quality:**
-• A 2020 study in *Nutrients* showed ashwagandha significantly improved sleep quality, sleep latency (time to fall asleep), and total sleep time in adults with insomnia
-• *PLoS One* (2020) demonstrated that ashwagandha root extract improved sleep efficiency and reduced nighttime awakenings
+Sleep Quality:
+A 2020 study in Nutrients showed ashwagandha significantly improved sleep quality, sleep latency (time to fall asleep), and total sleep time in adults with insomnia. PLoS One (2020) demonstrated that ashwagandha root extract improved sleep efficiency and reduced nighttime awakenings.
 
-**Hormone & Reproductive Health:**
-• *Fertility and Sterility* (2010) found ashwagandha supplementation increased testosterone levels by **10-15%** in men with low T
-• *Evidence-Based Complementary Medicine* (2015) reported a **167% increase in sperm count** and 53% increase in semen volume in infertile men
-• *Journal of Evidence-Based Integrative Medicine* (2019) showed improved thyroid function in people with subclinical hypothyroidism
+Hormone and Reproductive Health:
+Fertility and Sterility (2010) found ashwagandha supplementation increased testosterone levels by 10-15% in men with low T. Evidence-Based Complementary Medicine (2015) reported a 167% increase in sperm count and 53% increase in semen volume in infertile men. Journal of Evidence-Based Integrative Medicine (2019) showed improved thyroid function in people with subclinical hypothyroidism.
 
-**Physical Performance & Muscle:**
-• *Journal of Sports Medicine and Physical Fitness* (2015) demonstrated a **30% increase in muscle strength** over 8 weeks in resistance-trained men
-• *Journal of Ayurveda and Integrative Medicine* (2015) found improved VO2 max and cardiorespiratory endurance in healthy athletic adults
+Physical Performance and Muscle:
+Journal of Sports Medicine and Physical Fitness (2015) demonstrated a 30% increase in muscle strength over 8 weeks in resistance-trained men. Journal of Ayurveda and Integrative Medicine (2015) found improved VO2 max and cardiorespiratory endurance in healthy athletic adults.
 
-**Mechanism of Action:**
+Mechanism of Action:
 Ashwagandha works primarily by regulating the HPA (hypothalamic-pituitary-adrenal) axis, which controls the body's stress response. It reduces excessive cortisol production, supports GABA and serotonin neurotransmitter activity, enhances mitochondrial energy production, and modulates inflammatory pathways.`,
     
     constitution_match: [
