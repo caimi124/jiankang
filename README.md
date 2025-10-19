@@ -517,3 +517,115 @@ node scripts/seed-cinnamon.js
 - `HERBSCIENCE_90DAY_LAUNCH_STRATEGY.md` - 90天冷启动策略
 
 ---
+
+## 📅 最近更新 (2025-01-19)
+
+### ✅ Ashwagandha页面显示问题修复
+
+**问题：**
+- 页面出现 `**`、`*`、`•` 等Markdown符号未渲染
+- 前端组件未正确处理Markdown格式
+
+**修复内容：**
+1. 清理所有Markdown格式符号
+2. 将 `**文本**` 转换为纯文本（前端使用CSS样式）
+3. 将 `•` 列表符号改为纯文本列表
+4. 保持内容结构和可读性
+
+**修改文件：**
+- `app/api/herbs/[slug]/route.ts` - ashwagandha数据清理
+
+**验证：**
+- ✅ 页面正常显示，无多余符号
+- ✅ 内容格式清晰易读
+- ✅ 移动端显示正常
+
+---
+
+### 🆕 Turmeric博客文章 - SEO优化完成
+
+**文章标题：** "How Much Turmeric Per Day? Safe Dosage Guide (2025 Update)"
+
+**核心优势：**
+1. **目标用户痛点：** 解决"到底该吃多少turmeric"的核心困惑
+2. **KGR超低关键词覆盖：** 12个KGR < 0.25的高价值关键词
+3. **FDA合规表达：** 使用"may help support"等合规语言
+4. **TCM体质匹配：** 根据体质推荐不同剂量
+5. **实用性强：** 包含配方、时间表、FAQ
+
+**SEO关键词布局：**
+```
+🔥 how much turmeric per day (KGR: 0.07) - 标题+H2
+🔥 what does turmeric do for the body (KGR: 0.007) - H2+内容
+🔥 recommended dosage of turmeric for inflammation (KGR: 0.001) - H3
+🔥 turmeric powder dosage (KGR: 0.072) - H3+表格
+🔥 how much turmeric daily (KGR: 0.08) - FAQ
+🔥 best way to take turmeric (KGR: 0.145) - H2
+```
+
+**文章特色：**
+- ✅ 2,800字深度内容
+- ✅ 4个实用表格（剂量对比、时间表、质量清单）
+- ✅ 3个食谱（Golden Milk、Ginger Shot、Scrambled Eggs）
+- ✅ 8个FAQ，覆盖高搜索量问题
+- ✅ TCM体质分析，个性化剂量建议
+- ✅ 科学引用和安全警告（FDA合规）
+
+**部署文件：**
+- `TURMERIC_DOSAGE_BLOG_OPTIMIZED.md` - 完整文章内容
+- `TURMERIC_BLOG_SEO_ANALYSIS.md` - SEO分析报告
+- `add-turmeric-blog-to-sanity.js` - Sanity CMS自动部署脚本
+- `TURMERIC_BLOG_DEPLOYMENT_GUIDE.md` - 详细部署指南
+
+**部署方式：**
+
+方法1 - 自动部署（推荐）：
+```bash
+node add-turmeric-blog-to-sanity.js
+```
+
+方法2 - 手动部署：
+1. 打开Sanity Studio
+2. 创建新Blog Post
+3. 按照 `TURMERIC_BLOG_DEPLOYMENT_GUIDE.md` 操作
+
+**预期效果：**
+- **第1-2周：** 开始被Google索引
+- **第2-4周：** 出现在长尾关键词前50位
+- **第4-8周：** 目标关键词进入前20位
+- **3个月后：** 核心关键词稳定前10位，每天50-200次自然访问
+
+**后续内容规划（基于KGR数据）：**
+1. "10 Serious Side Effects of Turmeric" (KGR: 0.0226) 🔥
+2. "Is Turmeric Bad for Your Liver?" (KGR: 0.006) 🔥
+3. "Turmeric vs Ginger: Which Is Better?" (KGR: 0.621) 🔥
+4. "Best Turmeric Supplements 2025" (KGR: 0.266)
+
+---
+
+### 🎯 下一步计划
+
+**内容创作：**
+- [ ] 创建 "10 Serious Side Effects of Turmeric" 博客
+- [ ] 创建 Turmeric 草药详情页
+- [ ] 创建 Ginger 草药详情页
+- [ ] 创建 Rhodiola 草药详情页
+
+**功能开发：**
+- [ ] 免费体质测试工具（Google Forms集成）
+- [ ] Newsletter订阅系统（Mailchimp）
+- [ ] 博客文章相关推荐模块
+- [ ] Google Analytics事件追踪
+
+**SEO优化：**
+- [ ] 提交新文章到Google Search Console
+- [ ] 创建内部链接网络
+- [ ] 添加结构化数据（JSON-LD）
+- [ ] 优化图片和alt标签
+
+**流量获取：**
+- [ ] Reddit/Quora相关话题参与
+- [ ] 健康论坛软文推广
+- [ ] 社交媒体内容分发
+
+---
