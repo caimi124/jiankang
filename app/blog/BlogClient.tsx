@@ -143,47 +143,50 @@ export default function BlogClient() {
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Featured Articles</h2>
             <div className="grid md:grid-cols-2 gap-8">
               {featuredPosts.map((article) => (
-                <div key={article._id || article.id} className="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                  <div className="p-8">
-                    <div className="text-4xl mb-4">🌿</div>
-                    <div className="flex items-center space-x-2 mb-3">
-                      <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm capitalize">
-                        {article.category}
-                      </span>
-                      <span className="text-sm text-gray-500">{article.readTime} min read</span>
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-3 leading-tight">
-                      {article.title}
-                    </h3>
-                    <p className="text-gray-600 mb-4 leading-relaxed">
-                      {article.excerpt}
-                    </p>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {(article.tags || []).slice(0, 3).map((tag: any, index: number) => (
-                        <span key={index} className="bg-gray-100 text-gray-600 px-2 py-1 rounded-lg text-xs">
-                          #{typeof tag === 'string' ? tag : tag.title || tag}
+                <Link 
+                  key={article._id || article.id} 
+                  href={`/blog/${article.slug?.current || article.slug}`}
+                  className="group block h-full"
+                >
+                  <article className="bg-gradient-to-br from-white to-green-50 rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.02] cursor-pointer h-full">
+                    <div className="p-8">
+                      <div className="text-4xl mb-4">🌿</div>
+                      <div className="flex items-center space-x-2 mb-3">
+                        <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm capitalize">
+                          {article.category}
                         </span>
-                      ))}
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <User className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm text-gray-600">{article.author}</span>
-                        <Calendar className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm text-gray-600">
-                          {new Date(article.publishedAt || article.date).toLocaleDateString()}
-                        </span>
+                        <span className="text-sm text-gray-500">{article.readTime} min read</span>
                       </div>
-                      <Link
-                        href={`/blog/${article.slug?.current || article.slug}`}
-                        className="text-green-600 hover:text-green-700 flex items-center space-x-1"
-                      >
-                        <span className="text-sm font-medium">Read More</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </Link>
+                      <h3 className="text-xl font-bold text-gray-900 mb-3 leading-tight group-hover:text-green-600 transition-colors">
+                        {article.title}
+                      </h3>
+                      <p className="text-gray-600 mb-4 leading-relaxed line-clamp-3">
+                        {article.excerpt}
+                      </p>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {(article.tags || []).slice(0, 3).map((tag: any, index: number) => (
+                          <span key={index} className="bg-gray-100 text-gray-600 px-2 py-1 rounded-lg text-xs">
+                            #{typeof tag === 'string' ? tag : tag.title || tag}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <User className="w-4 h-4 text-gray-400" />
+                          <span className="text-sm text-gray-600">{article.author}</span>
+                          <Calendar className="w-4 h-4 text-gray-400" />
+                          <span className="text-sm text-gray-600">
+                            {new Date(article.publishedAt || article.date).toLocaleDateString()}
+                          </span>
+                        </div>
+                        <div className="text-green-600 group-hover:text-green-700 flex items-center space-x-2 group-hover:translate-x-2 transition-all">
+                          <span className="text-sm font-semibold">阅读全文</span>
+                          <ArrowRight className="w-5 h-5 group-hover:animate-pulse" />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  </article>
+                </Link>
               ))}
             </div>
           </div>
@@ -193,45 +196,56 @@ export default function BlogClient() {
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
               Recent Articles {selectedCategory !== 'all' && `(${selectedCategory})`}
             </h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredArticles.map((article) => (
-                <div key={article._id || article.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                  <div className="p-6">
-                    <div className="text-3xl mb-3">🌿</div>
-                    <div className="flex items-center space-x-2 mb-3">
-                      <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs capitalize">
-                        {article.category}
-                      </span>
-                      <span className="text-xs text-gray-500">{article.readTime} min read</span>
-                    </div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-3 leading-tight">
-                      {article.title}
-                    </h3>
-                    <p className="text-gray-600 mb-4 text-sm leading-relaxed">
-                      {article.excerpt}
-                    </p>
-                    <div className="flex flex-wrap gap-1 mb-4">
-                      {(article.tags || []).slice(0, 3).map((tag: any, index: number) => (
-                        <span key={index} className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">
-                          #{typeof tag === 'string' ? tag : tag.title || tag}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="text-xs text-gray-500">
-                        {article.author} • {new Date(article.publishedAt || article.date).toLocaleDateString()}
+            {filteredArticles.length === 0 ? (
+              <div className="text-center py-12">
+                <div className="text-6xl mb-4">🔍</div>
+                <p className="text-gray-600 text-lg">No articles found. Try a different search or category.</p>
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filteredArticles.map((article) => (
+                  <Link
+                    key={article._id || article.id}
+                    href={`/blog/${article.slug?.current || article.slug}`}
+                    className="group block h-full"
+                  >
+                    <article className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] cursor-pointer h-full flex flex-col border-2 border-transparent hover:border-green-200">
+                      <div className="p-6 flex-1 flex flex-col">
+                        <div className="text-3xl mb-3 animate-pulse">🌿</div>
+                        <div className="flex items-center space-x-2 mb-3">
+                          <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs capitalize">
+                            {article.category}
+                          </span>
+                          <span className="text-xs text-gray-500">{article.readTime} min read</span>
+                        </div>
+                        <h3 className="text-lg font-bold text-gray-900 mb-3 leading-tight group-hover:text-green-600 transition-colors">
+                          {article.title}
+                        </h3>
+                        <p className="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3 flex-1">
+                          {article.excerpt}
+                        </p>
+                        <div className="flex flex-wrap gap-1 mb-4">
+                          {(article.tags || []).slice(0, 3).map((tag: any, index: number) => (
+                            <span key={index} className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">
+                              #{typeof tag === 'string' ? tag : tag.title || tag}
+                            </span>
+                          ))}
+                        </div>
+                        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                          <div className="text-xs text-gray-500">
+                            {article.author} • {new Date(article.publishedAt || article.date).toLocaleDateString()}
+                          </div>
+                          <div className="flex items-center space-x-1 text-green-600 group-hover:text-green-700 group-hover:translate-x-2 transition-all font-medium">
+                            <span className="text-sm">阅读更多</span>
+                            <ArrowRight className="w-4 h-4" />
+                          </div>
+                        </div>
                       </div>
-                      <Link
-                        href={`/blog/${article.slug?.current || article.slug}`}
-                        className="text-green-600 hover:text-green-700"
-                      >
-                        <ArrowRight className="w-4 h-4" />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+                    </article>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Newsletter Signup */}
