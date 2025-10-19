@@ -50,10 +50,20 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     }
   }
 
+  // 安全地提取keywords
+  const keywords = (post as any).seoKeywords?.join(', ') || 
+    post.tags?.map((tag: any) => {
+      if (typeof tag === 'string') return tag
+      if (typeof tag === 'object' && tag !== null) {
+        return tag.title?.title || tag.title || tag.name || ''
+      }
+      return String(tag)
+    }).filter(Boolean).join(', ')
+  
   return {
     title: (post as any).seoTitle || `${post.title} | HerbScience Blog`,
     description: (post as any).seoDescription || post.excerpt || (post as any).description || `Read about ${post.title} on HerbScience - evidence-based herbal medicine insights.`,
-    keywords: (post as any).seoKeywords?.join(', ') || post.tags?.map((tag: any) => typeof tag === 'string' ? tag : tag.title).join(', '),
+    keywords,
     authors: [{ name: (post.author as any)?.name || post.author || 'HerbScience Team' }],
     openGraph: {
       title: post.title,
@@ -110,6 +120,15 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound()
   }
 
+  // 安全地提取tags文本用于JSON-LD
+  const tagsText = post.tags?.map((tag: any) => {
+    if (typeof tag === 'string') return tag
+    if (typeof tag === 'object' && tag !== null) {
+      return tag.title?.title || tag.title || tag.name || ''
+    }
+    return String(tag)
+  }).filter(Boolean).join(', ') || ''
+  
   // JSON-LD结构化数据
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -130,7 +149,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     },
     datePublished: (post as any).publishedAt || (post as any).published_date || (post as any).date,
     dateModified: (post as any).publishedAt || (post as any).published_date || (post as any).date,
-    keywords: post.tags?.map((tag: any) => typeof tag === 'string' ? tag : tag.title).join(', ') || '',
+    keywords: tagsText,
     url: `https://herbscience.shop/blog/${resolvedParams.slug}`
   }
 
@@ -267,15 +286,24 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 {/* 标签 */}
                 {post.tags && post.tags.length > 0 && (
                   <div className="flex flex-wrap gap-2">
-                    {post.tags.map((tag: any, index: number) => (
-                       <span
-                         key={index}
-                         className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-700"
-                       >
-                         <Tag className="h-3 w-3 mr-1" />
-                         {typeof tag === 'string' ? tag : tag.title}
-                       </span>
-                     ))}
+                    {post.tags.map((tag: any, index: number) => {
+                      // 安全地提取tag文本
+                      const tagText = typeof tag === 'string' 
+                        ? tag 
+                        : typeof tag === 'object' && tag !== null
+                          ? (tag.title?.title || tag.title || tag.name || String(tag))
+                          : String(tag)
+                      
+                      return (
+                        <span
+                          key={index}
+                          className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-700"
+                        >
+                          <Tag className="h-3 w-3 mr-1" />
+                          {tagText}
+                        </span>
+                      )
+                    })}
                   </div>
                 )}
               </div>
@@ -416,7 +444,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <RelatedArticles 
               currentSlug={resolvedParams.slug}
               category={post.category}
-              tags={post.tags?.map((tag: any) => typeof tag === 'string' ? tag : tag.title) || []}
+              tags={post.tags?.map((tag: any) => {
+                if (typeof tag === 'string') return tag
+                if (typeof tag === 'object' && tag !== null) {
+                  return tag.title?.title || tag.title || tag.name || ''
+                }
+                return String(tag)
+              }).filter(Boolean) || []}
             />
           </div>
         </main>
