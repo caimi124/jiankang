@@ -60,14 +60,28 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       return String(tag)
     }).filter(Boolean).join(', ')
   
+  // 安全地提取description
+  const getDescription = () => {
+    const seoDesc = (post as any).seoDescription
+    if (seoDesc && typeof seoDesc === 'string') return seoDesc
+    
+    const excerpt = post.excerpt
+    if (excerpt && typeof excerpt === 'string') return excerpt
+    
+    const description = (post as any).description
+    if (description && typeof description === 'string') return description
+    
+    return `Read about ${post.title} on HerbScience - evidence-based herbal medicine insights.`
+  }
+  
   return {
     title: (post as any).seoTitle || `${post.title} | HerbScience Blog`,
-    description: (post as any).seoDescription || post.excerpt || (post as any).description || `Read about ${post.title} on HerbScience - evidence-based herbal medicine insights.`,
+    description: getDescription(),
     keywords,
     authors: [{ name: (post.author as any)?.name || post.author || 'HerbScience Team' }],
     openGraph: {
       title: post.title,
-      description: post.excerpt || (post as any).description,
+      description: getDescription(),
       type: 'article',
       url: `https://herbscience.shop/blog/${resolvedParams.slug}`,
       siteName: 'HerbScience',
@@ -83,7 +97,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     twitter: {
       card: 'summary_large_image',
       title: post.title,
-      description: post.excerpt || (post as any).description,
+      description: getDescription(),
       images: ['/hero-bg.svg']
     },
     alternates: {
@@ -129,12 +143,34 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     return String(tag)
   }).filter(Boolean).join(', ') || ''
   
+  // 安全地提取description（用于JSON-LD和页面渲染）
+  const safeDescription = (() => {
+    const excerpt = post.excerpt
+    if (excerpt && typeof excerpt === 'string') return excerpt
+    
+    const description = (post as any).description
+    if (description && typeof description === 'string') return description
+    
+    return ''
+  })()
+  
+  // 安全地提取category
+  const safeCategory = (() => {
+    const category = post.category
+    if (!category) return ''
+    if (typeof category === 'string') return category
+    if (typeof category === 'object' && category !== null) {
+      return (category as any).title?.title || (category as any).title || (category as any).name || ''
+    }
+    return String(category)
+  })()
+  
   // JSON-LD结构化数据
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: post.title,
-    description: post.excerpt || (post as any).description,
+    description: safeDescription,
     author: {
       '@type': 'Person',
       name: (post.author as any)?.name || post.author || 'HerbScience Team'
@@ -242,9 +278,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <div className="p-8 border-b border-gray-200 dark:border-gray-700">
                 <div className="mb-6">
                   <div className="flex items-center space-x-2 text-sm text-gray-500 mb-3">
-                    {post.category && (
+                    {safeCategory && (
                       <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
-                        {post.category}
+                        {safeCategory}
                       </span>
                     )}
                     <span className="flex items-center">
@@ -267,9 +303,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     {post.title}
                   </h1>
                   
-                  {post.excerpt && (
+                  {safeDescription && (
                     <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
-                      {post.excerpt}
+                      {safeDescription}
                     </p>
                   )}
                   
@@ -278,7 +314,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     <SocialShare 
                       title={post.title}
                       url={`https://herbscience.shop/blog/${resolvedParams.slug}`}
-                      description={post.excerpt || (post as any).description}
+                      description={safeDescription}
                     />
                   </div>
                 </div>
@@ -443,7 +479,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {/* 相关文章推荐 */}
             <RelatedArticles 
               currentSlug={resolvedParams.slug}
-              category={post.category}
+              category={safeCategory}
               tags={post.tags?.map((tag: any) => {
                 if (typeof tag === 'string') return tag
                 if (typeof tag === 'object' && tag !== null) {
