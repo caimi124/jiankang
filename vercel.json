@@ -63,6 +63,16 @@
       "source": "/user-experiences(.*)",
       "destination": "https://herbscience.shop/",
       "permanent": true
+    },
+    {
+      "source": "/zh/privacy/zh/privacy",
+      "destination": "https://herbscience.shop/zh/privacy",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)/\\1",
+      "destination": "https://herbscience.shop/$1",
+      "permanent": true
     }
   ],
   "functions": {
