@@ -6,6 +6,9 @@ import { useEffect } from 'react'
 import Navigation from '../../../components/Navigation'
 import Breadcrumb from '../../../components/Breadcrumb'
 import AccordionSection from '../../../components/AccordionSection'
+import MedicalReviewBanner from '../../../components/MedicalReviewBanner'
+import ScientificReferences from '../../../components/ScientificReferences'
+import RelatedHerbsSection from '../../../components/RelatedHerbsSection'
 import { 
   Heart, Shield, Brain, Zap, AlertTriangle, Clock, 
   Star, Users, BookOpen, FlaskConical, Pill, Leaf,
@@ -148,6 +151,17 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
             { label: herbData.name }
           ]} 
         />
+
+        {/* Medical Review Banner - E-A-T Signal for SEO */}
+        <div className="mb-6">
+          <MedicalReviewBanner 
+            reviewerName="曾楚平 (Zeng Chuping)"
+            reviewerTitle="Licensed Pharmacist & TCM Expert"
+            reviewerCredentials="Southern Medical University Graduate"
+            lastUpdated={new Date()}
+            reviewerLink="/about"
+          />
+        </div>
 
         {/* Hero Section */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
@@ -852,6 +866,16 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
               <span className="inline-block mt-3 text-green-600 text-sm">Open Safety Checker →</span>
             </Link>
           </div>
+        </div>
+
+        {/* Scientific References - E-A-T Enhancement for SEO */}
+        <div className="mb-8">
+          <ScientificReferences herbName={herbData.name} />
+        </div>
+
+        {/* Related Herbs Section - Internal Linking for SEO */}
+        <div className="mb-8">
+          <RelatedHerbsSection currentSlug={slug} count={3} />
         </div>
 
         {/* User Stories Section */}
