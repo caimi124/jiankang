@@ -1,64 +1,65 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { 
+  getHerbRecommendations, 
+  getQuickRecommendations,
+  type RecommendationCriteria,
+  type HealthConcern,
+  type ConstitutionType,
+  type SafetyLevel
+} from '@/lib/herbRecommendationEngine'
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { 
-      primaryConstitution, 
-      secondaryConstitutions = [], 
-      healthGoals = [],
-      safetyPreference = ['high', 'medium']
+      constitutionType,
+      secondaryConstitution,
+      healthConcerns = [],
+      safetyPreference = ['high', 'medium'],
+      budget,
+      experienceLevel = 'beginner'
     } = body
 
-    if (!primaryConstitution) {
+    if (!constitutionType) {
       return NextResponse.json(
-        { error: 'Primary constitution type is required' },
+        { error: 'Constitution type is required' },
         { status: 400 }
       )
     }
 
-    // 简化的推荐逻辑
-    const mockRecommendations = {
-      primary: [
-        {
-          id: 'ginseng',
-          name: 'Ginseng',
-          chineseName: '人参',
-          description: '补气养血，增强免疫力',
-          composition: ['人参皂苷', '多糖'],
-          dosage: '每日 200-400mg',
-          efficacy: ['免疫支持', '能量提升'],
-          usage: '早餐后服用',
-          safetyLevel: 'high' as const,
-          precautions: '孕妇慎用',
-          tcmConstitution: '平和质',
-          caseStudy: '临床研究显示有效'
-        }
-      ],
-      secondary: [],
-      goalBased: [],
-      all: [
-        {
-          id: 'ginseng',
-          name: 'Ginseng',
-          chineseName: '人参',
-          description: '补气养血，增强免疫力',
-          composition: ['人参皂苷', '多糖'],
-          dosage: '每日 200-400mg',
-          efficacy: ['免疫支持', '能量提升'],
-          usage: '早餐后服用',
-          safetyLevel: 'high' as const,
-          precautions: '孕妇慎用',
-          tcmConstitution: '平和质',
-          caseStudy: '临床研究显示有效'
-        }
-      ],
-      totalCount: 1
+    // 构建推荐条件
+    const criteria: RecommendationCriteria = {
+      constitutionType: constitutionType as ConstitutionType,
+      secondaryConstitution: secondaryConstitution as ConstitutionType | undefined,
+      healthConcerns: healthConcerns as HealthConcern[],
+      safetyPreference: safetyPreference as SafetyLevel[],
+      budget: budget as 'low' | 'medium' | 'high' | undefined,
+      experienceLevel: experienceLevel as 'beginner' | 'intermediate' | 'advanced'
     }
+
+    // 获取智能推荐
+    const recommendations = getHerbRecommendations(criteria)
+
+    // 分类推荐结果
+    const highPriority = recommendations.filter(r => r.priority === 'high')
+    const mediumPriority = recommendations.filter(r => r.priority === 'medium')
+    const lowPriority = recommendations.filter(r => r.priority === 'low')
 
     return NextResponse.json({
       success: true,
-      data: mockRecommendations,
+      data: {
+        primary: highPriority.slice(0, 3),
+        secondary: mediumPriority.slice(0, 3),
+        additional: lowPriority.slice(0, 2),
+        all: recommendations,
+        totalCount: recommendations.length
+      },
+      criteria: {
+        constitutionType,
+        secondaryConstitution,
+        healthConcerns,
+        safetyPreference
+      },
       timestamp: new Date().toISOString()
     })
 
@@ -77,34 +78,25 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
-    const constitution = searchParams.get('constitution')
     const concern = searchParams.get('concern')
     const limit = parseInt(searchParams.get('limit') || '6')
 
-    // 简化的mock数据
-    const mockHerbs = [
-      {
-        id: 'ginseng',
-        name: 'Ginseng',
-        chineseName: '人参',
-        description: '补气养血，增强免疫力',
-        composition: ['人参皂苷', '多糖'],
-        dosage: '每日 200-400mg',
-        efficacy: ['免疫支持', '能量提升'],
-        usage: '早餐后服用',
-        safetyLevel: 'high' as const,
-        precautions: '孕妇慎用',
-        tcmConstitution: '平和质',
-        caseStudy: '临床研究显示有效'
-      }
-    ]
+    if (!concern) {
+      return NextResponse.json(
+        { error: 'Health concern parameter is required' },
+        { status: 400 }
+      )
+    }
+
+    // 根据健康问题快速推荐
+    const recommendations = getQuickRecommendations(concern as HealthConcern, limit)
 
     return NextResponse.json({
       success: true,
-      data: mockHerbs.slice(0, limit),
-      type: concern ? 'concern-based' : 'constitution-based',
-      ...(concern && { concern }),
-      ...(constitution && { constitution })
+      data: recommendations,
+      type: 'concern-based',
+      concern,
+      count: recommendations.length
     })
 
   } catch (error) {
