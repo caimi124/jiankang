@@ -160,8 +160,18 @@ function mapStaticHerbData(herb: any, slug: string) {
 	// 尝试从fallback系统获取更完整的数据
 	const fallbackData = getFallbackHerb(slug)
 	
-	// For herbs with complete fallback data (like rhodiola), prioritize fallback
+	// For herbs with complete fallback data (like rhodiola), COMPLETELY use fallback
 	const isRhodiola = slug === 'rhodiola-crenulata' || slug === 'rhodiola'
+	
+	// If rhodiola has complete fallback data, use it entirely
+	if (isRhodiola && fallbackData) {
+		return {
+			...fallbackData,
+			id: herb.id || fallbackData.id,
+			name: fallbackData.name,
+			slug: slug
+		}
+	}
 	
 	return {
 		id: herb.id,
@@ -174,8 +184,8 @@ function mapStaticHerbData(herb: any, slug: string) {
 		traditional_uses: herb.traditional_use || fallbackData?.traditional_uses || '',
 		suitable_for: fallbackData?.suitable_for || [],
 		not_suitable_for: fallbackData?.not_suitable_for || [],
-		dosage_forms: (isRhodiola && fallbackData?.dosage_forms) ? fallbackData.dosage_forms : (herb.dosage ? [{ form: 'extract', dosage: herb.dosage, usage: 'Follow label or practitioner guidance' }] : (fallbackData?.dosage_forms || [])),
-		safety_warnings: (isRhodiola && fallbackData?.safety_warnings) ? fallbackData.safety_warnings : (herb.contraindications ? String(herb.contraindications).split(/，|,|；|;|\n/).map((s: string) => s.trim()).filter(Boolean) : (fallbackData?.safety_warnings || [])),
+		dosage_forms: herb.dosage ? [{ form: 'extract', dosage: herb.dosage, usage: 'Follow label or practitioner guidance' }] : (fallbackData?.dosage_forms || []),
+		safety_warnings: herb.contraindications ? String(herb.contraindications).split(/，|,|；|;|\n/).map((s: string) => s.trim()).filter(Boolean) : (fallbackData?.safety_warnings || []),
 		interactions: fallbackData?.interactions || [],
 		scientific_evidence: fallbackData?.scientific_evidence || '',
 		constitution_match: fallbackData?.constitution_match || (herb.constitution_type ? [{ type: herb.constitution_type, suitable: 'warning', description: 'Suitability varies by individual condition' }] : []),
