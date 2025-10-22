@@ -399,12 +399,16 @@ HERB_DETAIL_FALLBACK['rhodiola-crenulata'] = {
     { form: 'Rhodiola Tincture', dosage: '1-3ml daily', usage: 'Take in morning with water. Follow label instructions for best results' }
   ],
   safety_warnings: [
-    'Take only in morning to avoid sleep disruption (mild stimulating effect)',
-    'Start with low dose to assess tolerance',
-    'Always cycle usage (6-8 weeks on, 1 week off) to maintain effectiveness',
-    'May interact with antidepressants - consult doctor first',
-    'Not recommended with blood thinners or immunosuppressants',
-    'May cause mild restlessness in sensitive individuals'
+    'Avoid during pregnancy and breastfeeding - safety unknown in these populations',
+    'Do not take before bedtime - may cause sleep disruption or insomnia',
+    'Avoid if you have bleeding disorders, take blood thinners, or scheduled for surgery - high doses may have anticoagulant effects',
+    'Avoid if you have autoimmune diseases (lupus, rheumatoid arthritis, multiple sclerosis, inflammatory bowel disease) - may enhance immune system and worsen condition',
+    'Do not combine with antidepressants (SSRIs, benzodiazepines, MAOIs) - may alter medication effectiveness and increase adverse reactions',
+    'Avoid with cytochrome P450 metabolized drugs (lovastatin, ketoconazole, itraconazole, fexofenadine, triazolam) - may affect drug metabolism',
+    'Do not combine with diabetes medications (glimepiride, glyburide, insulin, pioglitazone, rosiglitazone) - may cause hypoglycemia',
+    'Avoid with blood pressure medications (captopril, enalapril, losartan, valsartan, diltiazem, amlodipine, hydrochlorothiazide, furosemide) - may cause excessive blood pressure lowering',
+    'Do not combine with P-glycoprotein transported drugs including chemotherapy (etoposide, paclitaxel, vinblastine, vincristine, vindesine), antifungals (ketoconazole, itraconazole), protease inhibitors (amprenavir, indinavir, nelfinavir, saquinavir), H2 antagonists (cimetidine, ranitidine), calcium channel blockers (diltiazem, verapamil), corticosteroids, erythromycin, cisapride, fexofenadine, cyclosporine, loperamide, quinidine - may affect drug effectiveness',
+    'Avoid with immunosuppressants (azathioprine, basiliximab, cyclosporine, daclizumab, muromonab, mycophenolate, tacrolimus, sirolimus, prednisone, corticosteroids) - may reduce medication effectiveness'
   ],
   interactions: [
     'Antidepressants (SSRIs, MAOIs) - may enhance effects',
