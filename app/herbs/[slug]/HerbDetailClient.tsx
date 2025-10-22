@@ -451,49 +451,7 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
                   </div>
                 </div>
 
-                {/* Constitution Compatibility Section */}
-                <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-200">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                    <Activity className="w-5 h-5 text-blue-600" />
-                    Is {herbData.name} Right for Your Body Type?
-                  </h3>
-                  <div className="space-y-4">
-                    {herbData.constitution_match && herbData.constitution_match.length > 0 ? (
-                      herbData.constitution_match.map((match, idx) => (
-                        <div key={idx} className={`flex items-start gap-3 p-4 rounded-lg ${
-                          match.suitable === 'yes' ? 'bg-green-50' :
-                          match.suitable === 'warning' ? 'bg-yellow-50' : 'bg-red-50'
-                        }`}>
-                          {getConstitutionIcon(match.suitable)}
-                          <div>
-                            <p className="font-medium text-gray-900">{match.type}</p>
-                            <p className="text-sm text-gray-600">{match.description}</p>
-                          </div>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
-                        <AlertCircle className="w-5 h-5 text-gray-600 mt-0.5" />
-                        <div>
-                          <p className="font-medium text-gray-900">Individual Assessment Recommended</p>
-                          <p className="text-sm text-gray-600">Constitutional suitability may vary by individual. Consult with a qualified practitioner.</p>
-                        </div>
-                      </div>
-                    )}
-                    <div className="bg-blue-100 rounded-lg p-4 mt-4">
-                      <p className="text-sm text-gray-700 mb-3">
-                        <span className="font-medium">Not sure about your constitution?</span> Take our free assessment to discover your body type and get personalized herb recommendations.
-                      </p>
-                      <Link
-                        href="/constitution-test"
-                        className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-                      >
-                        <Brain className="w-4 h-4" />
-                        Take Constitution Test
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+                {/* Constitution Compatibility Note - Moved to Traditional Use tab */}
               </div>
             )}
 
@@ -683,9 +641,56 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
                   </div>
                 </div>
 
+                {/* Is This Herb Right for Your Body Type? - 体质匹配引导 */}
+                {herbData.constitution_match && herbData.constitution_match.length > 0 && (
+                  <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-200">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                      <Activity className="w-6 h-6 text-blue-600" />
+                      Is {herbData.name} Right for Your Body Type?
+                    </h3>
+                    <div className="bg-white rounded-lg p-6 mb-6">
+                      <p className="text-gray-800 leading-relaxed mb-4">
+                        In Traditional Chinese Medicine, herbs work best when matched to your individual constitution. 
+                        {herbData.name} has specific patterns where it excels — and situations where caution is needed.
+                      </p>
+                      <p className="text-gray-700 text-sm">
+                        <span className="font-medium">💡 Why this matters:</span> Understanding your constitution helps maximize benefits, 
+                        prevent adverse effects, and ensure you're using the right herb for your body's unique needs.
+                      </p>
+                    </div>
+                    <div className="space-y-4">
+                      {herbData.constitution_match.map((match, idx) => (
+                        <div key={idx} className={`flex items-start gap-3 p-4 rounded-lg border-2 ${
+                          match.suitable === 'yes' ? 'border-green-300 bg-green-50' :
+                          match.suitable === 'warning' ? 'border-yellow-300 bg-yellow-50' : 'border-red-300 bg-red-50'
+                        }`}>
+                          {getConstitutionIcon(match.suitable)}
+                          <div>
+                            <p className="font-medium text-gray-900">{match.type}</p>
+                            <p className="text-sm text-gray-600">{match.description}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="bg-blue-100 rounded-lg p-4 mt-6">
+                      <p className="text-sm text-gray-700 mb-3">
+                        <span className="font-medium">🔍 Not sure about your constitution?</span> Our free 2-minute assessment will help you discover 
+                        your unique body type and get personalized herb recommendations tailored to your needs.
+                      </p>
+                      <Link
+                        href="/constitution-test"
+                        className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+                      >
+                        <Brain className="w-4 h-4" />
+                        Take Free Constitution Test
+                      </Link>
+                    </div>
+                  </div>
+                )}
+
                 {herbData.constitution_match && herbData.constitution_match.length > 0 && (
                   <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-4">TCM Constitution Matching</h3>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-4">Detailed Constitution Analysis</h3>
                     {(slug === 'rhodiola-crenulata' || slug === 'rhodiola') && (
                       <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-6 mb-6">
                         <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">

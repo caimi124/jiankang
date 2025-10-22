@@ -157,29 +157,33 @@ function mapSanityHerbData(herb: any) {
 
 // 映射静态数据结构
 function mapStaticHerbData(herb: any, slug: string) {
+	// 尝试从fallback系统获取更完整的数据
+	const fallbackData = getFallbackHerb(slug)
+	
 	return {
 		id: herb.id,
 		name: herb.english_name,
 		latin_name: herb.latin_name || '',
 		slug: slug,
-		overview: herb.description || herb.modern_applications || '',
-		benefits: Array.isArray(herb.primary_effects) ? herb.primary_effects : [],
-		active_compounds: Array.isArray(herb.ingredients) ? herb.ingredients.join(', ') : (herb.ingredients || ''),
-		traditional_uses: herb.traditional_use || '',
-		suitable_for: [],
-		not_suitable_for: [],
-		dosage_forms: herb.dosage ? [{ form: 'extract', dosage: herb.dosage, usage: 'Follow label or practitioner guidance' }] : [],
-		safety_warnings: herb.contraindications ? String(herb.contraindications).split(/，|,|；|;|\n/).map((s: string) => s.trim()).filter(Boolean) : [],
-		interactions: [],
-		scientific_evidence: '',
-		constitution_match: herb.constitution_type ? [{ type: herb.constitution_type, suitable: 'warning', description: 'Suitability varies by individual condition' }] : [],
-		pairs_well_with: [],
-		user_stories: [],
-		faqs: [],
-		seo_keywords: [herb.english_name, herb.chinese_name, herb.latin_name].filter(Boolean),
-		evidence_level: 'Moderate' as const,
-		category: herb.category || '',
-		properties: Array.isArray(herb.primary_effects) ? herb.primary_effects : []
+		overview: herb.description || herb.modern_applications || fallbackData?.overview || '',
+		benefits: Array.isArray(herb.primary_effects) ? herb.primary_effects : (fallbackData?.benefits || []),
+		active_compounds: Array.isArray(herb.ingredients) ? herb.ingredients.join(', ') : (herb.ingredients || fallbackData?.active_compounds || ''),
+		traditional_uses: herb.traditional_use || fallbackData?.traditional_uses || '',
+		suitable_for: fallbackData?.suitable_for || [],
+		not_suitable_for: fallbackData?.not_suitable_for || [],
+		dosage_forms: herb.dosage ? [{ form: 'extract', dosage: herb.dosage, usage: 'Follow label or practitioner guidance' }] : (fallbackData?.dosage_forms || []),
+		safety_warnings: herb.contraindications ? String(herb.contraindications).split(/，|,|；|;|\n/).map((s: string) => s.trim()).filter(Boolean) : (fallbackData?.safety_warnings || []),
+		interactions: fallbackData?.interactions || [],
+		scientific_evidence: fallbackData?.scientific_evidence || '',
+		constitution_match: fallbackData?.constitution_match || (herb.constitution_type ? [{ type: herb.constitution_type, suitable: 'warning', description: 'Suitability varies by individual condition' }] : []),
+		pairs_well_with: fallbackData?.pairs_well_with || [],
+		user_stories: fallbackData?.user_stories || [],
+		faqs: fallbackData?.faqs || [],
+		seo_keywords: fallbackData?.seo_keywords || [herb.english_name, herb.chinese_name, herb.latin_name].filter(Boolean),
+		evidence_level: (fallbackData?.evidence_level as 'Moderate' | 'Strong' | 'Preliminary') || 'Moderate' as const,
+		category: herb.category || fallbackData?.category || '',
+		properties: fallbackData?.properties || (Array.isArray(herb.primary_effects) ? herb.primary_effects : []),
+		safety_level: (fallbackData?.safety_level as 'low' | 'medium' | 'high') || 'medium'
 	}
 }
 
