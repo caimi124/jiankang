@@ -340,6 +340,30 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
                         </div>
                       </div>
                     </div>
+                  ) : slug === 'rhodiola-crenulata' || slug === 'rhodiola' ? (
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">1</div>
+                        <div>
+                          <p className="font-medium text-gray-900">Morning Energy Boost</p>
+                          <p className="text-gray-700 text-sm">Take 200-400mg rhodiola extract (3% salidroside) with breakfast. Best taken early in the day to avoid sleep disruption.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">2</div>
+                        <div>
+                          <p className="font-medium text-gray-900">Traditional Tea Method</p>
+                          <p className="text-gray-700 text-sm">Simmer 3-6g dried rhodiola root in 250ml water for 10-15 minutes. Drink once daily. Combine with <Link href="/herb-finder?search=goji" className="text-green-700 hover:text-green-800 underline">goji berries</Link> or dates for enhanced adaptogenic support.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">3</div>
+                        <div>
+                          <p className="font-medium text-gray-900">Cycling for Best Results</p>
+                          <p className="text-gray-700 text-sm">Use for 6-8 weeks, then take 1 week break to maintain effectiveness. Pair with healthy fats or herbal teas for better absorption.</p>
+                        </div>
+                      </div>
+                    </div>
                   ) : (
                     <div className="space-y-3">
                       <div className="flex items-start gap-3">

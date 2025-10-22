@@ -354,4 +354,149 @@ export function getFallbackHerb(slug: string): HerbDetail | null {
   return HERB_DETAIL_FALLBACK[key] || null
 }
 
+// Add Rhodiola Crenulata to fallback
+HERB_DETAIL_FALLBACK['rhodiola-crenulata'] = {
+  id: 'rhodiola-crenulata-herb-005',
+  name: 'Rhodiola Crenulata',
+  chinese_name: '红景天',
+  latin_name: 'Rhodiola crenulata',
+  slug: 'rhodiola-crenulata',
+  category: 'Adaptogen & Energy Support',
+  evidence_level: 'Moderate',
+  safety_level: 'high',
+  overview: 'Rhodiola Crenulata (also called Arctic Root or Golden Root) is a powerful adaptogen herb that provides natural sustained energy without caffeine crash, reduces stress and anxiety, enhances mental clarity and focus, and supports metabolism and weight management. This rhodiola supplement is particularly effective for chronic fatigue, work-related stress, athletic performance, and altitude sickness prevention.',
+  benefits: [
+    'Natural sustained energy boost - No caffeine jitters or crash',
+    'Stress and anxiety relief - Balances cortisol levels naturally',
+    'Mental clarity and focus - Improves cognitive performance under pressure',
+    'Weight management support - Helps with stress-related weight gain and fat loss',
+    'Physical stamina enhancement - Boosts endurance and reduces fatigue',
+    'Altitude sickness prevention - Traditional use for high-altitude adaptation',
+    'Mood stability - Supports emotional balance and resilience'
+  ],
+  active_compounds: 'Salidroside (3% standardized) - primary adaptogenic compound; Rosavin (1%) - enhances mental clarity; Tyrosol - antioxidant; Flavonoids - cardiovascular support; Organic acids - cellular energy metabolism',
+  traditional_uses: 'In Traditional Chinese Medicine and Tibetan medicine, Rhodiola (Hong Jing Tian) has been used for centuries by high-altitude dwellers to combat fatigue, improve stamina, and enhance mental clarity. Traditionally prescribed for Qi-deficient, Phlegm-Damp, and Qi-Stagnation constitutions to tonify Qi, invigorate blood circulation, and calm the mind.',
+  suitable_for: [
+    'People with chronic fatigue and low energy (Qi deficiency)',
+    'Those experiencing work-related stress and burnout',
+    'Athletes seeking enhanced endurance and performance',
+    'Individuals with stress-related weight gain or slow metabolism',
+    'People traveling to high altitudes (altitude sickness prevention)',
+    'Those with anxiety and mood instability',
+    'Individuals needing better focus and mental clarity'
+  ],
+  not_suitable_for: [
+    'Pregnant or breastfeeding women',
+    'People with Yang-excess or Heat-type constitution (easily irritated, red face, very hot body)',
+    'Those with bipolar disorder or severe anxiety disorders',
+    'People taking antidepressants (SSRIs, MAOIs) without doctor supervision',
+    'Individuals with autoimmune conditions (may stimulate immune system)'
+  ],
+  dosage_forms: [
+    { form: 'Rhodiola Extract (3% salidroside)', dosage: '200-400mg daily', usage: 'Take with breakfast. Start at 200mg for 1 week, increase gradually. Cycle usage: 6-8 weeks on, 1 week off' },
+    { form: 'Rhodiola Root Powder', dosage: '1/2-1 teaspoon daily', usage: 'Mix in smoothies or warm beverages. Best taken in morning' },
+    { form: 'Rhodiola Tea', dosage: '3-6g dried root', usage: 'Simmer in 250ml water for 10-15 minutes. Drink once daily, preferably morning' },
+    { form: 'Rhodiola Tincture', dosage: '1-3ml daily', usage: 'Take in morning with water. Follow label instructions for best results' }
+  ],
+  safety_warnings: [
+    'Take only in morning to avoid sleep disruption (mild stimulating effect)',
+    'Start with low dose to assess tolerance',
+    'Always cycle usage (6-8 weeks on, 1 week off) to maintain effectiveness',
+    'May interact with antidepressants - consult doctor first',
+    'Not recommended with blood thinners or immunosuppressants',
+    'May cause mild restlessness in sensitive individuals'
+  ],
+  interactions: [
+    'Antidepressants (SSRIs, MAOIs) - may enhance effects',
+    'Blood pressure medications - may have additive effects',
+    'Diabetes medications - may affect blood sugar levels',
+    'Stimulants (caffeine) - may increase overstimulation',
+    'Immunosuppressants - may counteract effects'
+  ],
+  scientific_evidence: 'Clinical studies demonstrate rhodiola extract benefits for mental performance under stress, fatigue reduction, and cortisol balance. Research shows significant improvements in focus (2012 study), stress resilience, physical endurance, and mood stability. Particularly effective for chronic fatigue, work-related stress, and athletic performance.',
+  constitution_match: [
+    { type: 'Qi-Deficient (Always tired, low energy, frequent colds)', suitable: 'yes', description: 'Perfect match - Rhodiola tonifies Qi and boosts energy naturally' },
+    { type: 'Phlegm-Damp (Slow metabolism, weight gain, fatigue)', suitable: 'yes', description: 'Excellent - Helps with metabolism and stress-related weight gain' },
+    { type: 'Qi-Stagnation (Stress, anxiety, mood swings)', suitable: 'yes', description: 'Helpful - Balances stress hormones and improves mood' },
+    { type: 'Yin-Deficient (Insomnia, night sweats, hot flashes)', suitable: 'warning', description: 'Use caution - Take only in morning with low dose' },
+    { type: 'Yang-Excess / Heat Type (Easily irritated, red face, very hot body)', suitable: 'no', description: 'Not suitable - May cause overstimulation' }
+  ],
+  pairs_well_with: [
+    'Ashwagandha (for enhanced adaptogenic and stress support)',
+    'Ginseng (for energy and vitality - rhodiola vs ginseng comparison)',
+    'Goji berries (for immune support and energy)',
+    'Cordyceps (for athletic performance)',
+    'Holy Basil (for stress and anxiety relief)'
+  ],
+  user_stories: [
+    { quote: 'Rhodiola helped me power through my work deadlines without the caffeine crash. My focus improved dramatically within 2 weeks.', author: 'Jennifer K.', location: 'Seattle, USA' },
+    { quote: 'I take rhodiola before my morning runs and notice better endurance and faster recovery. Game changer for my training.', author: 'Marcus T.', location: 'Denver, USA' },
+    { quote: 'As someone with chronic fatigue, rhodiola gave me my energy back. I cycle it 6 weeks on, 1 week off, and it works great.', author: 'Sarah L.', location: 'Toronto, Canada' }
+  ],
+  faqs: [
+    { 
+      question: 'How long does it take for rhodiola to work?', 
+      answer: 'Most people notice rhodiola benefits within 1-2 weeks of consistent use. For energy and focus, effects may be felt within a few days. For stress resilience and mood stability, allow 2-4 weeks for full benefits.' 
+    },
+    { 
+      question: 'Can I take rhodiola every day?', 
+      answer: 'Yes, but it\'s best to cycle rhodiola usage. Take it for 6-8 weeks, then take a 1-week break to maintain effectiveness and prevent tolerance. This cycling pattern is recommended for all adaptogen herbs.' 
+    },
+    { 
+      question: 'Does rhodiola help with weight loss?', 
+      answer: 'Rhodiola may support weight management by reducing stress-related eating, balancing cortisol levels, and supporting metabolism. It\'s particularly effective for stress-related weight gain when combined with healthy diet and exercise.' 
+    },
+    { 
+      question: 'What is the best time to take rhodiola?', 
+      answer: 'The best time to take rhodiola is in the morning with breakfast. Taking it later in the day may cause sleep disruption in sensitive individuals due to its mild stimulating effects.' 
+    },
+    { 
+      question: 'Rhodiola vs Ginseng: Which is better?', 
+      answer: 'Both are excellent adaptogens but work differently. Rhodiola is better for mental clarity, stress resilience, and avoiding overstimulation. Ginseng is stronger for physical energy and vitality. Many people combine both for enhanced benefits.' 
+    },
+    { 
+      question: 'Is rhodiola safe to take daily?', 
+      answer: 'Yes, rhodiola is generally safe for daily use when cycled properly (6-8 weeks on, 1 week off). It has high safety level with minimal side effects. However, avoid if pregnant, breastfeeding, or taking antidepressants without doctor consultation.' 
+    },
+    { 
+      question: 'What are rhodiola supplement benefits for energy?', 
+      answer: 'Rhodiola provides natural sustained energy by improving cellular ATP production and oxygen utilization. Unlike caffeine, it doesn\'t cause jitters or crashes. Perfect for chronic fatigue, athletic performance, and work productivity.' 
+    },
+    { 
+      question: 'Best rhodiola supplement: What to look for?', 
+      answer: 'Look for rhodiola extract standardized to 3% salidroside and 1% rosavins. Choose reputable brands with third-party testing. Rhodiola rosea and rhodiola crenulata are both effective species. Typical dosage: 200-600mg daily.' 
+    },
+    { 
+      question: 'What are rhodiola side effects?', 
+      answer: 'Rhodiola side effects are rare and mild. May include restlessness, dry mouth, or sleep disruption if taken late in day. Start with low dose (200mg) to assess tolerance. Generally very safe with high safety profile.' 
+    },
+    { 
+      question: 'How to take rhodiola for stress and anxiety?', 
+      answer: 'For stress and anxiety relief, take 200-400mg rhodiola extract in the morning. You can split the dose (200mg morning + 200mg midday). Combine with mindfulness practices for best results. Allow 2-3 weeks for full effects.' 
+    }
+  ],
+  seo_keywords: [
+    'rhodiola', 'rhodiola rosea', 'rhodiola crenulata', 'rhodiola supplement', 'rhodiola extract',
+    'rhodiola benefits', 'rhodiola rosea benefits', 'rhodiola extract benefits', 'rhodiola root benefits',
+    'rhodiola weight loss', 'rhodiola rosea weight loss', 'rhodiola and weight loss', 'rhodiola fat loss',
+    'rhodiola side effects', 'rhodiola rosea side effects', 'rhodiola extract side effects',
+    'rhodiola dosage', 'rhodiola rosea dosage', 'best time to take rhodiola',
+    'rhodiola vs ginseng', 'best rhodiola supplement', 'rhodiola tea', 'rhodiola powder',
+    'arctic root supplement', 'adaptogen herbs', 'rhodiola for fatigue', 'rhodiola for stress and anxiety',
+    'how long does it take for rhodiola to work', 'is rhodiola safe to take daily'
+  ],
+  properties: [
+    'Natural sustained energy boost',
+    'Stress resilience and cortisol balance',
+    'Mental clarity under pressure',
+    'Metabolism and weight management support',
+    'Physical stamina and endurance',
+    'Mood and emotional stability'
+  ]
+}
+
+// Add aliases
+HERB_DETAIL_FALLBACK['rhodiola'] = HERB_DETAIL_FALLBACK['rhodiola-crenulata']
+HERB_DETAIL_FALLBACK['rhodiola-rosea'] = HERB_DETAIL_FALLBACK['rhodiola-crenulata']
+
 

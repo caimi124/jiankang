@@ -2372,38 +2372,42 @@ export const HERBS_DATABASE: Herb[] = [
     "category": "Adaptogen & Energy Support",
     "constitution_type": "qi-deficiency",
     "primary_effects": [
-      "Natural sustained energy boost",
+      "Natural sustained energy boost without caffeine crash",
       "Stress resilience and cortisol balance",
-      "Mental clarity under pressure",
+      "Mental clarity and focus under pressure",
       "Metabolism and weight management support",
-      "Physical stamina and endurance",
-      "Mood and emotional stability"
+      "Physical stamina and endurance enhancement",
+      "Mood and emotional stability improvement"
     ],
     "secondary_effects": [
       "Immune system support",
-      "Cardiovascular health",
+      "Cardiovascular health enhancement",
       "Altitude sickness prevention",
-      "Cognitive performance enhancement"
+      "Cognitive performance optimization",
+      "Fatigue reduction",
+      "Anxiety relief"
     ],
     "efficacy": [
       "Natural energy boost without caffeine crash",
       "Stress and anxiety relief",
-      "Mental clarity and focus",
-      "Weight management support"
+      "Mental clarity and focus enhancement",
+      "Weight management and fat loss support",
+      "Altitude sickness prevention",
+      "Chronic fatigue relief"
     ],
-    "dosage": "Standard: 200-400mg daily (3% salidroside extract). Therapeutic: 400-600mg daily. Maximum: 600mg daily. Take in morning with breakfast. Cycle usage: 6-8 weeks on, 1 week off.",
+    "dosage": "Standard: 200-400mg daily (3% salidroside extract). Therapeutic: 400-600mg daily for enhanced benefits. Maximum: 600mg daily. Best time to take: Morning with breakfast to avoid sleep disruption. Cycle usage: 6-8 weeks on, 1 week off to maintain effectiveness. Traditional tea: Simmer 3-6g dried root in water for 10-15 minutes.",
     "safety_level": "high",
-    "contraindications": "Avoid during pregnancy and breastfeeding. Not suitable for Yang-excess or Heat-type constitution. Caution with bipolar disorder or when taking antidepressants (SSRIs). May cause mild restlessness in sensitive individuals. Take only in morning to avoid sleep disruption.",
-    "description": "Rhodiola Crenulata, also known as Arctic Root and Golden Root, is a powerful adaptogen traditionally used in Tibetan medicine for enhancing energy, mental clarity, and stress resilience. Unlike caffeine, it provides sustained energy by improving cellular ATP production and oxygen utilization, making it ideal for combating fatigue, improving focus under stress, and supporting metabolism.",
-    "traditional_use": "In Traditional Chinese Medicine and Tibetan medicine, Rhodiola (Hong Jing Tian) has been used for centuries by high-altitude dwellers to combat fatigue, improve stamina, and enhance mental clarity. It's traditionally prescribed for Qi-deficient, Phlegm-Damp, and Qi-Stagnation constitutions to tonify Qi, invigorate blood circulation, and calm the mind.",
-    "modern_applications": "Modern research confirms Rhodiola's effectiveness as an adaptogen that improves mental performance under stress, reduces fatigue, balances cortisol levels, and supports metabolism. Clinical studies show significant improvements in focus, stress resilience, physical endurance, and mood stability. It's particularly effective for chronic fatigue, work-related stress, athletic performance, and stress-related weight gain.",
+    "contraindications": "Avoid during pregnancy and breastfeeding. Not suitable for Yang-excess or Heat-type constitution. Caution with bipolar disorder or when taking antidepressants (SSRIs, MAOIs). May cause mild restlessness in sensitive individuals. Take only in morning to avoid sleep disruption. Not recommended with blood thinners or immunosuppressants.",
+    "description": "Rhodiola Crenulata (also called Rhodiola Rosea, Arctic Root, or Golden Root) is a powerful adaptogen herb traditionally used in Tibetan medicine for enhancing energy, mental clarity, and stress resilience. Unlike caffeine, rhodiola extract provides sustained energy by improving cellular ATP production and oxygen utilization, making it ideal for combating fatigue, improving focus under stress, and supporting metabolism and weight loss. This adaptogen herb is particularly effective for chronic fatigue, work-related stress, athletic performance, and stress-related weight gain.",
+    "traditional_use": "In Traditional Chinese Medicine and Tibetan medicine, Rhodiola (Hong Jing Tian) has been used for centuries by high-altitude dwellers to combat fatigue, improve stamina, and enhance mental clarity. It's traditionally prescribed for Qi-deficient, Phlegm-Damp, and Qi-Stagnation constitutions to tonify Qi, invigorate blood circulation, and calm the mind. Ancient texts describe rhodiola benefits for altitude sickness, respiratory health, and longevity.",
+    "modern_applications": "Modern research confirms rhodiola supplement benefits as an adaptogen that improves mental performance under stress, reduces fatigue, balances cortisol levels, and supports metabolism. Clinical studies show significant improvements in focus, stress resilience, physical endurance, and mood stability. Rhodiola extract benefits include enhanced cognitive function, reduced anxiety, improved exercise performance, and potential weight loss support. It's particularly effective for chronic fatigue, work-related stress, athletic performance, and stress-related weight gain. Best rhodiola supplement should contain 3% salidroside and 1% rosavins.",
     "taste": "Slightly bitter, astringent",
     "meridians": [
       "Lung",
       "Heart",
       "Spleen"
     ],
-    "part_used": "Root",
+    "part_used": "Root and rhizome",
     "source": "Tibet, Himalayas, Arctic regions",
     "growing_regions": [
       "Tibet",
@@ -2416,13 +2420,13 @@ export const HERBS_DATABASE: Herb[] = [
     "availability": "common",
     "quality_score": 92,
     "popularity_score": 89,
-    "usage_suggestions": "For energy: Take 200-400mg with breakfast. Pre-workout: 400mg 30-60 minutes before exercise. For stress: Split dose (200mg morning + 200mg midday). Weight management: Take before meals with adequate water. Always cycle usage to maintain effectiveness.",
+    "usage_suggestions": "For energy: Take 200-400mg rhodiola extract with breakfast. Pre-workout: 400mg 30-60 minutes before exercise for stamina. For stress and anxiety: Split dose (200mg morning + 200mg midday). Weight management: Take before meals with adequate water. Best time to take rhodiola: Morning to avoid sleep issues. Always cycle usage (6-8 weeks on, 1 week off) to maintain effectiveness. Combine with Ashwagandha or Ginseng for enhanced adaptogenic support.",
     "ingredients": [
-      "Salidroside (3% standardized) - Primary bioactive compound for stress resilience",
-      "Rosavin - Enhances mental clarity and mood",
-      "Tyrosol - Antioxidant and neuroprotective",
-      "Flavonoids - Support cardiovascular health",
-      "Organic acids - Improve cellular energy metabolism"
+      "Salidroside (3% standardized) - Primary bioactive compound for stress resilience and energy",
+      "Rosavin (1% standardized) - Enhances mental clarity, mood, and cognitive function",
+      "Tyrosol - Antioxidant and neuroprotective effects",
+      "Flavonoids - Support cardiovascular health and reduce inflammation",
+      "Organic acids - Improve cellular energy metabolism and oxygen utilization"
     ]
   },
   {
