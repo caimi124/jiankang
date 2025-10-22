@@ -4,10 +4,11 @@
 
 HerbScience.shop 是一个专业的中草药补充剂英文网站，旨在为海外用户提供：
 
-- 🌿 **按症状找草药** - 智能推荐系统
+- 🌿 **按症状找草药** - 智能推荐系统（Herb Finder）
 - 🛡️ **成分安全性检查** - 副作用分析工具  
-- 📚 **中草药知识库** - 科学研究支持
-- 🧠 **AI体质问卷** - 个性化推荐
+- 📚 **中草药知识库** - 科学研究支持（Herb Database）
+- 🧠 **中医体质测试** - 个性化推荐（Constitution Test）
+- 📝 **博客系统** - Lifestyle & Science 内容营销
 
 ## 技术栈
 
@@ -125,9 +126,31 @@ MIT License - 详见 [LICENSE](LICENSE) 文件
 
 ---
 
-## 🎉 **最新功能更新 (2025-01-21)**
+## 🎉 **最新功能更新 (2025-01-22)**
 
-### ✅ **完成的核心功能优化**
+### 📝 **新增博客文章**
+
+#### **Rhodiola Lifestyle Guide - 红景天日常使用指南**
+**位置：** `/blog/rhodiola-smart-way-daily-rituals`
+
+**特点：**
+- ✅ Lifestyle风格，生活化实用内容
+- ✅ 包含详细的使用时间、剂量、食谱
+- ✅ 草药搭配表格（根据体质）
+- ✅ 完整的SEO关键词优化（50+关键词）
+- ✅ FAQ格式优化（适合featured snippets）
+- ✅ 内部链接网络（连接herb detail, test, finder）
+
+**目标关键词：**
+- `how to take rhodiola` (KGR: 0.56)
+- `best time to take rhodiola` (KGR: 0.1)
+- `rhodiola dosage for energy` (KGR: 7.6)
+- `rhodiola recipes` / `rhodiola tea benefits`
+- `rhodiola vs ginseng` / `rhodiola with ginseng`
+
+---
+
+### ✅ **完成的核心功能优化 (2025-01-21)**
 
 #### 1. **快速版体质测试（10题）**
 **位置：** `/constitution-test/quick`
