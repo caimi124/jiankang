@@ -25,7 +25,9 @@ async function getHerbData(slug: string) {
 		'liquorice-root': 'licorice-root',
 		'ginko': 'ginkgo',
 		'turmeric-root': 'turmeric',
-		'ginger-root': 'ginger'
+		'ginger-root': 'ginger',
+		'rhodiola': 'rhodiola-crenulata',
+		'rhodiola-rosea': 'rhodiola-crenulata'
 	}
 	
 	if (aliases[normalizedSlug]) {

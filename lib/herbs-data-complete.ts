@@ -2365,6 +2365,67 @@ export const HERBS_DATABASE: Herb[] = [
     ]
   },
   {
+    "id": "rhodiola-crenulata-herb-005",
+    "chinese_name": "红景天",
+    "english_name": "Rhodiola Crenulata",
+    "latin_name": "Rhodiola crenulata",
+    "category": "Adaptogen & Energy Support",
+    "constitution_type": "qi-deficiency",
+    "primary_effects": [
+      "Natural sustained energy boost",
+      "Stress resilience and cortisol balance",
+      "Mental clarity under pressure",
+      "Metabolism and weight management support",
+      "Physical stamina and endurance",
+      "Mood and emotional stability"
+    ],
+    "secondary_effects": [
+      "Immune system support",
+      "Cardiovascular health",
+      "Altitude sickness prevention",
+      "Cognitive performance enhancement"
+    ],
+    "efficacy": [
+      "Natural energy boost without caffeine crash",
+      "Stress and anxiety relief",
+      "Mental clarity and focus",
+      "Weight management support"
+    ],
+    "dosage": "Standard: 200-400mg daily (3% salidroside extract). Therapeutic: 400-600mg daily. Maximum: 600mg daily. Take in morning with breakfast. Cycle usage: 6-8 weeks on, 1 week off.",
+    "safety_level": "high",
+    "contraindications": "Avoid during pregnancy and breastfeeding. Not suitable for Yang-excess or Heat-type constitution. Caution with bipolar disorder or when taking antidepressants (SSRIs). May cause mild restlessness in sensitive individuals. Take only in morning to avoid sleep disruption.",
+    "description": "Rhodiola Crenulata, also known as Arctic Root and Golden Root, is a powerful adaptogen traditionally used in Tibetan medicine for enhancing energy, mental clarity, and stress resilience. Unlike caffeine, it provides sustained energy by improving cellular ATP production and oxygen utilization, making it ideal for combating fatigue, improving focus under stress, and supporting metabolism.",
+    "traditional_use": "In Traditional Chinese Medicine and Tibetan medicine, Rhodiola (Hong Jing Tian) has been used for centuries by high-altitude dwellers to combat fatigue, improve stamina, and enhance mental clarity. It's traditionally prescribed for Qi-deficient, Phlegm-Damp, and Qi-Stagnation constitutions to tonify Qi, invigorate blood circulation, and calm the mind.",
+    "modern_applications": "Modern research confirms Rhodiola's effectiveness as an adaptogen that improves mental performance under stress, reduces fatigue, balances cortisol levels, and supports metabolism. Clinical studies show significant improvements in focus, stress resilience, physical endurance, and mood stability. It's particularly effective for chronic fatigue, work-related stress, athletic performance, and stress-related weight gain.",
+    "taste": "Slightly bitter, astringent",
+    "meridians": [
+      "Lung",
+      "Heart",
+      "Spleen"
+    ],
+    "part_used": "Root",
+    "source": "Tibet, Himalayas, Arctic regions",
+    "growing_regions": [
+      "Tibet",
+      "Himalayas",
+      "Siberia",
+      "Arctic regions",
+      "Mongolia"
+    ],
+    "price_range": "moderate",
+    "availability": "common",
+    "quality_score": 92,
+    "popularity_score": 89,
+    "usage_suggestions": "For energy: Take 200-400mg with breakfast. Pre-workout: 400mg 30-60 minutes before exercise. For stress: Split dose (200mg morning + 200mg midday). Weight management: Take before meals with adequate water. Always cycle usage to maintain effectiveness.",
+    "ingredients": [
+      "Salidroside (3% standardized) - Primary bioactive compound for stress resilience",
+      "Rosavin - Enhances mental clarity and mood",
+      "Tyrosol - Antioxidant and neuroprotective",
+      "Flavonoids - Support cardiovascular health",
+      "Organic acids - Improve cellular energy metabolism"
+    ]
+  },
+  {
     "id": "rhubarb-herb-004",
     "chinese_name": "大黄",
     "english_name": "Rhubarb",
