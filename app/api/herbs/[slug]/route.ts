@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchHerbFromNotionBySlug } from '../../../../lib/notion-herbs'
+import { getFallbackHerb } from '../../../../lib/herb-detail-fallback'
 
 // 完整的草药详情数据
 const HERB_DETAIL_DATA = {
@@ -1098,7 +1099,9 @@ export async function GET(
       'pumpkin seeds': 'pumpkin-seeds',
       'pumpkin_seed': 'pumpkin-seeds',
       'cinnamomum': 'cinnamon',
-      'cloves': 'clove'
+      'cloves': 'clove',
+      'rhodiola': 'rhodiola-crenulata',
+      'rhodiola-rosea': 'rhodiola-crenulata'
     }
     const canonicalSlug = aliasMap[normalizedSlug] || normalizedSlug
     
@@ -1108,7 +1111,16 @@ export async function GET(
     let herbData = await fetchHerbFromNotionBySlug(canonicalSlug)
       .catch(() => null) as any
     
-    // 兼容旧数据：未命中 Notion 时回退到内置常量
+    // 第二优先级：使用 fallback 系统（包含完整的详细数据）
+    if (!herbData) {
+      const fallbackData = getFallbackHerb(canonicalSlug)
+      if (fallbackData) {
+        console.log(`[API] 使用 fallback 数据: ${canonicalSlug}`)
+        herbData = fallbackData
+      }
+    }
+    
+    // 第三优先级：未命中 Notion 和 fallback 时回退到内置常量
     if (!herbData) {
       herbData = HERB_DETAIL_DATA[canonicalSlug as keyof typeof HERB_DETAIL_DATA]
     }
@@ -1159,31 +1171,31 @@ export async function GET(
           
           dosage_forms: [
             {
-              form: 'Capsule',
-              dosage: matchedHerb.dosage || '根据产品标签服用',
-              usage: matchedHerb.usage_suggestions || '随餐服用'
+              form: 'Capsule or Extract',
+              dosage: matchedHerb.dosage || 'Follow product label instructions',
+              usage: matchedHerb.usage_suggestions || 'Take with meals for better absorption'
             }
           ],
           
           safety_warnings: [
-            matchedHerb.contraindications || '请遵循推荐剂量',
-            '如有疑问请咨询医疗专业人士',
-            '可能与某些药物相互作用'
+            matchedHerb.contraindications || 'Follow recommended dosage',
+            'Consult healthcare professional if you have concerns',
+            'May interact with certain medications'
           ],
           
-          interactions: ['请咨询医生关于可能的药物相互作用'],
+          interactions: ['Consult your doctor about potential drug interactions'],
           
           scientific_evidence: matchedHerb.modern_applications || 'Research is ongoing to better understand the therapeutic benefits of this herb.',
           
           constitution_match: [
             {
-              type: matchedHerb.constitution_type,
+              type: matchedHerb.constitution_type || 'Various constitutions',
               suitable: 'yes' as const,
-              description: `适合${matchedHerb.constitution_type}体质`
+              description: `Suitable for ${matchedHerb.constitution_type || 'various'} constitution types`
             }
           ],
           
-          pairs_well_with: ['其他相应草药', '均衡饮食', '健康生活方式'],
+          pairs_well_with: ['Other complementary herbs', 'Balanced diet', 'Healthy lifestyle'],
           
           user_stories: [
             {
