@@ -450,6 +450,63 @@ const herbDatabase: HerbInfo[] = [
     },
     price: { low: 12, high: 30 },
     availability: 'moderate'
+  },
+  {
+    id: 'rhodiola-crenulata',
+    name: 'Rhodiola Crenulata',
+    chineseName: '红景天',
+    latinName: 'Rhodiola crenulata',
+    description: 'Powerful adaptogen for energy, stress relief, and mental clarity. Also known as Arctic Root and Golden Root.',
+    constitutionMatch: ['气虚', '痰湿', '气郁'],
+    healthConcerns: ['fatigue', 'stress', 'anxiety', 'weight_gain', 'immune_support'],
+    benefits: [
+      'Calm focus without caffeine jitters',
+      'Natural sustained energy boost',
+      'Reduces stress and balances cortisol',
+      'Supports metabolism and weight management',
+      'Improves mental clarity under pressure'
+    ],
+    dosage: {
+      standard: '200-400mg daily (3% salidroside)',
+      therapeutic: '400-600mg daily',
+      maximum: '600mg daily'
+    },
+    safetyLevel: 'high',
+    safetyScore: 8,
+    precautions: [
+      'Take in morning to avoid sleep disruption',
+      'Start with low dose',
+      'Cycle usage: 6-8 weeks on, 1 week off',
+      'May cause mild restlessness in sensitive individuals'
+    ],
+    contraindications: [
+      'Pregnancy and breastfeeding',
+      'Yang-excess or Heat-type constitution',
+      'Bipolar disorder',
+      'Taking antidepressants (consult doctor)'
+    ],
+    interactions: [
+      'Antidepressants (SSRIs)',
+      'Stimulants',
+      'Blood pressure medications'
+    ],
+    researchEvidence: [
+      {
+        title: 'Rhodiola improves mental performance under stress (2012)',
+        summary: 'Clinical study showing significant improvements in focus and stress resilience',
+        link: 'https://pubmed.ncbi.nlm.nih.gov/22228617/'
+      },
+      {
+        title: 'Rhodiola reduces fatigue and supports metabolism (2018)',
+        summary: 'Research demonstrating effects on oxygen metabolism and energy production'
+      }
+    ],
+    userReviews: {
+      averageRating: 4.6,
+      totalReviews: 8950
+    },
+    price: { low: 18, high: 45 },
+    availability: 'common'
   }
 ]
 
