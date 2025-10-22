@@ -10,6 +10,18 @@ import Link from 'next/link'
 // Static fallback articles (defined outside component)
 const staticArticles = [
   {
+    id: 1758713619587,
+    title: "How to Take Rhodiola the Smart Way — Daily Rituals, Recipes & Body-Type Tips",
+    excerpt: "Learn the best time to take rhodiola, optimal dosage for energy, simple recipes, and how to pair it with other herbs. Complete guide for using rhodiola supplement effectively for stress relief and mental clarity.",
+    category: "lifestyle",
+    author: "HerbScience Team",
+    publishedAt: "2025-01-22",
+    readTime: 7,
+    featured_image: null,
+    slug: { current: "rhodiola-smart-way-daily-rituals" },
+    tags: ["rhodiola", "adaptogen herbs", "how to take rhodiola", "rhodiola dosage", "rhodiola recipes", "rhodiola tea", "natural energy", "stress relief", "rhodiola with ginseng", "best time to take rhodiola"]
+  },
+  {
     id: 1758713619586,
     title: "Why Personalized Herbal Supplements Work Better Than One-Size-Fits-All Herbal Remedies",
     excerpt: "Walk into any supplement store and you'll see shelves stacked with herbal capsules and teas. But why do some herbs work for you while others don't? Discover how constitution tests and body type assessments help you find safe herbal supplements that actually work.",
