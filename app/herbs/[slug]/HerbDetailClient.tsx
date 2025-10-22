@@ -686,9 +686,47 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
                 {herbData.constitution_match && herbData.constitution_match.length > 0 && (
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-4">TCM Constitution Matching</h3>
+                    {(slug === 'rhodiola-crenulata' || slug === 'rhodiola') && (
+                      <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-6 mb-6">
+                        <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                          <Target className="w-5 h-5 text-blue-600" />
+                          Understanding Constitution-Based Use
+                        </h4>
+                        <p className="text-gray-800 text-sm leading-relaxed mb-3">
+                          Rhodiola works differently for different body types. Traditional Chinese Medicine identifies specific patterns where this herb excels — 
+                          and situations where caution is needed. Understanding your constitution helps maximize benefits and avoid adverse effects.
+                        </p>
+                        <div className="grid md:grid-cols-2 gap-4 text-sm">
+                          <div className="bg-green-50 p-3 rounded-lg">
+                            <p className="font-medium text-green-900 mb-1">✅ Recommended For:</p>
+                            <ul className="text-gray-700 space-y-1 ml-4 list-disc">
+                              <li>"Cold-limb / low-circulation" types with pale complexion</li>
+                              <li>"High-performance / fatigue-prone" individuals</li>
+                              <li>Those with slow recovery after illness or exertion</li>
+                            </ul>
+                          </div>
+                          <div className="bg-red-50 p-3 rounded-lg">
+                            <p className="font-medium text-red-900 mb-1">❌ Not Recommended For:</p>
+                            <ul className="text-gray-700 space-y-1 ml-4 list-disc">
+                              <li>"Heat-excess / insomnia" types who feel hot and restless</li>
+                              <li>Strong palpitations or existing overstimulation</li>
+                              <li>Pregnant/breastfeeding without supervision</li>
+                            </ul>
+                          </div>
+                        </div>
+                        <p className="text-sm text-gray-600 mt-3 italic">
+                          💡 Simple guideline: If you often feel drained, cold, or slow to recover — Rhodiola may help. 
+                          If you're already wired, warm, and restless — use with caution or choose a different adaptogen.
+                        </p>
+                      </div>
+                    )}
                     <div className="grid gap-4">
                       {herbData.constitution_match.map((constitution, idx) => (
-                        <div key={idx} className="flex items-center gap-4 p-4 border border-gray-200 rounded-lg">
+                        <div key={idx} className={`flex items-center gap-4 p-4 border-2 rounded-lg ${
+                          constitution.suitable === 'yes' ? 'border-green-300 bg-green-50' :
+                          constitution.suitable === 'warning' ? 'border-yellow-300 bg-yellow-50' :
+                          'border-red-300 bg-red-50'
+                        }`}>
                           {getConstitutionIcon(constitution.suitable)}
                           <div className="flex-1">
                             <h4 className="font-medium text-gray-900">{constitution.type}</h4>
@@ -697,6 +735,17 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
                         </div>
                       ))}
                     </div>
+                    {(slug === 'rhodiola-crenulata' || slug === 'rhodiola') && (
+                      <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <p className="text-sm text-gray-700">
+                          <span className="font-medium">🔍 Not sure about your constitution?</span> Take our free{' '}
+                          <Link href="/constitution-test" className="text-blue-700 hover:text-blue-800 underline font-medium">
+                            2-minute Constitution Test
+                          </Link>
+                          {' '}to discover your body type and get personalized herb recommendations.
+                        </p>
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -704,59 +753,151 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
                 <div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
                     <Leaf className="w-5 h-5 text-green-600" />
-                    Common Herbal Combinations
+                    {(slug === 'rhodiola-crenulata' || slug === 'rhodiola') ? 'Herbal Synergy & Traditional Combinations' : 'Common Herbal Combinations'}
                   </h3>
-                  <div className="grid gap-4">
-                    <div className="border border-green-200 rounded-lg p-6 bg-green-50">
-                      <div className="flex items-start gap-3">
-                        <div className="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">1</div>
-                        <div>
-                          <h4 className="font-semibold text-gray-900 mb-2">Ginger + Peppermint</h4>
-                          <p className="text-gray-700 text-sm mb-2">Powerful combination for nausea relief and digestive support</p>
-                          <p className="text-xs text-gray-600">
-                            <span className="font-medium">Best for:</span> Motion sickness, morning sickness, upset stomach
-                          </p>
+                  {(slug === 'rhodiola-crenulata' || slug === 'rhodiola') ? (
+                    <>
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
+                        <p className="text-gray-800 leading-relaxed">
+                          Rhodiola crenulata works best when paired with other herbs that support energy, circulation, or lung health. 
+                          In Traditional Chinese Medicine and Tibetan medicine, certain pairings enhance its adaptogenic and restorative effects — 
+                          helping your body recover from fatigue, oxygen deficiency, and chronic stress more effectively.
+                        </p>
+                      </div>
+                      <div className="grid gap-4">
+                        <div className="border border-green-200 rounded-lg p-6 bg-green-50">
+                          <div className="flex items-start gap-3">
+                            <div className="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">1</div>
+                            <div>
+                              <h4 className="font-semibold text-gray-900 mb-2">Rhodiola + Astragalus (Huang Qi)</h4>
+                              <p className="text-gray-700 text-sm mb-2">Boost vitality, support circulation, and strengthen the heart</p>
+                              <p className="text-xs text-gray-600 mb-2">
+                                This classic combination enhances "Qi and Blood" — improving oxygen transport and endurance. Astragalus boosts immune resilience and stamina, while Rhodiola improves oxygen use and circulation.
+                              </p>
+                              <p className="text-xs text-gray-600">
+                                <span className="font-medium">Best for:</span> Chronic fatigue, post-illness weakness, poor circulation, shortness of breath, recovery from stress or overwork
+                              </p>
+                              <p className="text-xs text-blue-700 mt-2 italic">
+                                💡 Ideal for people who often feel weak, tired, or have low blood pressure
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="border border-purple-200 rounded-lg p-6 bg-purple-50">
+                          <div className="flex items-start gap-3">
+                            <div className="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">2</div>
+                            <div>
+                              <h4 className="font-semibold text-gray-900 mb-2">Rhodiola + Glehnia Root (Bei Sha Shen)</h4>
+                              <p className="text-gray-700 text-sm mb-2">Nourish the lungs and restore energy balance</p>
+                              <p className="text-xs text-gray-600 mb-2">
+                                When stress or overexertion leads to dryness — such as dry cough, sore throat, or fatigue — this pairing helps calm the lungs and restore moisture. 
+                                Glehnia root nourishes yin (cooling, restorative energy), while Rhodiola strengthens Qi (active energy).
+                              </p>
+                              <p className="text-xs text-gray-600">
+                                <span className="font-medium">Best for:</span> Dry cough, sore throat, fatigue after respiratory illness, easily thirsty
+                              </p>
+                              <p className="text-xs text-purple-700 mt-2 italic">
+                                💡 Best for people who feel dry and develop fatigue after respiratory issues
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="border border-orange-200 rounded-lg p-6 bg-orange-50">
+                          <div className="flex items-start gap-3">
+                            <div className="bg-orange-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">3</div>
+                            <div>
+                              <h4 className="font-semibold text-gray-900 mb-2">Rhodiola + Cordyceps</h4>
+                              <p className="text-gray-700 text-sm mb-2">Strengthen endurance and support oxygen utilization</p>
+                              <p className="text-xs text-gray-600 mb-2">
+                                Both are powerful adaptogens that enhance physical performance, improve oxygen metabolism, and support recovery. 
+                                This combination is especially popular among athletes and high-altitude travelers.
+                              </p>
+                              <p className="text-xs text-gray-600">
+                                <span className="font-medium">Best for:</span> Athletic performance, high-altitude adaptation, stamina enhancement, workout recovery
+                              </p>
+                              <p className="text-xs text-orange-700 mt-2 italic">
+                                💡 Perfect for athletes and those needing enhanced physical endurance
+                              </p>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="border border-orange-200 rounded-lg p-6 bg-orange-50">
-                      <div className="flex items-start gap-3">
-                        <div className="bg-orange-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">2</div>
-                        <div>
-                          <h4 className="font-semibold text-gray-900 mb-2">Ginger + Cinnamon</h4>
-                          <p className="text-gray-700 text-sm mb-2">Warming blend for circulation and metabolic support</p>
-                          <p className="text-xs text-gray-600">
-                            <span className="font-medium">Best for:</span> Cold hands and feet, poor circulation, winter wellness
-                          </p>
-                          {slug === 'onion' && (
-                            <p className="text-xs text-gray-600 mt-2">
-                              <span className="font-medium">Pairs well with onion:</span> add sautéed <Link href="/herbs/turmeric" className="text-green-700 hover:text-green-800 underline">turmeric</Link> or
-                              <Link href="/herbs/cinnamon" className="text-green-700 hover:text-green-800 underline ml-1">cinnamon</Link> to enhance antioxidant synergy.
+                      <div className="mt-6 bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg p-6">
+                        <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                          <Award className="w-5 h-5 text-green-600" />
+                          Traditional Formulas Examples
+                        </h4>
+                        <div className="space-y-3 text-sm">
+                          <div>
+                            <p className="font-medium text-gray-900">• Nuo Di Kang Capsules (China Pharmacopoeia, 2015)</p>
+                            <p className="text-gray-600 ml-4">Key herb: Rhodiola crenulata. Action: Enhances energy and blood flow, relieves chest tightness and fatigue.</p>
+                          </div>
+                          <div>
+                            <p className="font-medium text-gray-900">• Luo Bu Sang Capsules</p>
+                            <p className="text-gray-600 ml-4">Herbs: Rhodiola, Cordyceps, Bletilla striata. Action: Restores Qi and Yin, promotes circulation, nourishes heart and lungs.</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <p className="text-sm text-gray-700">
+                          <span className="font-medium">⚠️ Important:</span> Always consult a qualified healthcare practitioner before combining herbal supplements, 
+                          especially if you are on prescription medications or have chronic conditions.
+                        </p>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="grid gap-4">
+                      <div className="border border-green-200 rounded-lg p-6 bg-green-50">
+                        <div className="flex items-start gap-3">
+                          <div className="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">1</div>
+                          <div>
+                            <h4 className="font-semibold text-gray-900 mb-2">Ginger + Peppermint</h4>
+                            <p className="text-gray-700 text-sm mb-2">Powerful combination for nausea relief and digestive support</p>
+                            <p className="text-xs text-gray-600">
+                              <span className="font-medium">Best for:</span> Motion sickness, morning sickness, upset stomach
                             </p>
-                          )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="border border-blue-200 rounded-lg p-6 bg-blue-50">
-                      <div className="flex items-start gap-3">
-                        <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">3</div>
-                        <div>
-                          <h4 className="font-semibold text-gray-900 mb-2">Ginger + Turmeric</h4>
-                          <p className="text-gray-700 text-sm mb-2">Anti-inflammatory powerhouse for joint and muscle support</p>
-                          <p className="text-xs text-gray-600">
-                            <span className="font-medium">Best for:</span> Exercise recovery, joint discomfort, overall inflammation
-                          </p>
-                          {slug === 'onion' && (
-                            <p className="text-xs text-gray-600 mt-2">
-                              <span className="font-medium">Onion pairing tip:</span> roasted onions with
-                              <Link href="/herbs/garlic" className="text-green-700 hover:text-green-800 underline ml-1">garlic</Link> and
-                              <Link href="/herbs/turmeric" className="text-green-700 hover:text-green-800 underline ml-1">turmeric</Link> for cardiometabolic support.
+                      <div className="border border-orange-200 rounded-lg p-6 bg-orange-50">
+                        <div className="flex items-start gap-3">
+                          <div className="bg-orange-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">2</div>
+                          <div>
+                            <h4 className="font-semibold text-gray-900 mb-2">Ginger + Cinnamon</h4>
+                            <p className="text-gray-700 text-sm mb-2">Warming blend for circulation and metabolic support</p>
+                            <p className="text-xs text-gray-600">
+                              <span className="font-medium">Best for:</span> Cold hands and feet, poor circulation, winter wellness
                             </p>
-                          )}
+                            {slug === 'onion' && (
+                              <p className="text-xs text-gray-600 mt-2">
+                                <span className="font-medium">Pairs well with onion:</span> add sautéed <Link href="/herbs/turmeric" className="text-green-700 hover:text-green-800 underline">turmeric</Link> or
+                                <Link href="/herbs/cinnamon" className="text-green-700 hover:text-green-800 underline ml-1">cinnamon</Link> to enhance antioxidant synergy.
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="border border-blue-200 rounded-lg p-6 bg-blue-50">
+                        <div className="flex items-start gap-3">
+                          <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">3</div>
+                          <div>
+                            <h4 className="font-semibold text-gray-900 mb-2">Ginger + Turmeric</h4>
+                            <p className="text-gray-700 text-sm mb-2">Anti-inflammatory powerhouse for joint and muscle support</p>
+                            <p className="text-xs text-gray-600">
+                              <span className="font-medium">Best for:</span> Exercise recovery, joint discomfort, overall inflammation
+                            </p>
+                            {slug === 'onion' && (
+                              <p className="text-xs text-gray-600 mt-2">
+                                <span className="font-medium">Onion pairing tip:</span> roasted onions with
+                                <Link href="/herbs/garlic" className="text-green-700 hover:text-green-800 underline ml-1">garlic</Link> and
+                                <Link href="/herbs/turmeric" className="text-green-700 hover:text-green-800 underline ml-1">turmeric</Link> for cardiometabolic support.
+                              </p>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  )}
                 </div>
 
                 {herbData.pairs_well_with && herbData.pairs_well_with.length > 0 && (
