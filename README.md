@@ -126,11 +126,40 @@ MIT License - 详见 [LICENSE](LICENSE) 文件
 
 ---
 
-## 🎉 **最新功能更新 (2025-01-22)**
+## 🎉 **最新功能更新 (2025-01-23)**
 
-### 📝 **新增博客文章（Rhodiola系列）**
+### 📝 **新增博客文章（Rhodiola系列 - 3篇完整）**
 
-#### **1. Rhodiola Tea Recipes for Energy and Focus** ⭐ 最新
+#### **1. Why Rhodiola Works for Some But Not Others** 🏆 最新 - 科学深度文
+**位置：** `/blog/why-rhodiola-works-body-type`
+
+**特点：**
+- ✅ 3,800字深度内容，10分钟阅读
+- ✅ TCM体质理论 + 现代科学双重视角
+- ✅ 4种体质类型详细对比卡片（彩色设计）
+- ✅ 完整剂量指南表格（4种形式 × 3个剂量级别）
+- ✅ 草药组合策略表格（5种目标 × 推荐配方）
+- ✅ 6个Featured Snippet优化点
+- ✅ 安全警告红色卡片（6点禁忌症）
+
+**核心目标关键词（重点攻击低KGR）：**
+- `rhodiola crenulata benefits` (KGR: 0.0003) 🏅 **绝对顶级**
+- `rhodiola supplement benefits` (KGR: 0.0071) ⭐⭐⭐
+- `rhodiola herb benefits` (KGR: 0.0082) ⭐⭐⭐
+- `rhodiola fat loss` (KGR: 0.01) ⭐⭐⭐
+- `best time to take rhodiola` (KGR: 0.1) ⭐⭐⭐
+- `how to take rhodiola` (KGR: 0.56) ⭐⭐
+- `rhodiola for stress and anxiety` (KGR: 0.6) ⭐⭐
+- `rhodiola benefits` (KGR: 0.239) ⭐⭐
+
+**预期SEO表现：**
+- 🎯 `rhodiola crenulata benefits` → 前3-5名（3-6个月）
+- 🎯 `best time to take rhodiola` → Featured Snippet + 前3
+- 🎯 4-6个Featured Snippets覆盖
+
+---
+
+#### **2. Rhodiola Tea Recipes for Energy and Focus** ⭐ 茶谱实用版
 **位置：** `/blog/rhodiola-tea-recipes-energy-focus`
 
 **特点：**
@@ -150,7 +179,7 @@ MIT License - 详见 [LICENSE](LICENSE) 文件
 
 ---
 
-#### **2. Rhodiola Lifestyle Guide - 红景天日常使用指南**
+#### **3. Rhodiola Lifestyle Guide - 红景天日常使用指南**
 **位置：** `/blog/rhodiola-smart-way-daily-rituals`
 
 **特点：**
