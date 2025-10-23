@@ -4,24 +4,58 @@ import { getAllBlogPosts, getFeaturedBlogPosts, getBlogCategories } from '../../
 
 export const revalidate = 60 // 重新验证时间（秒）
 
+// Static articles (local blog posts not in Sanity)
+const staticLocalArticles = [
+  {
+    id: 1758713619588,
+    _id: '1758713619588',
+    title: "Rhodiola Tea Recipes for Energy and Focus — Find the Best Blend for Your Body Type",
+    excerpt: "Discover easy rhodiola tea recipes to boost energy, improve focus, and reduce fatigue. Learn how to make rhodiola rosea tea and customize blends using TCM-inspired herbal pairings tailored to your constitution.",
+    category: "lifestyle",
+    author: "HerbScience Team",
+    publishedAt: "2025-01-22",
+    readTime: 8,
+    featured_image: null,
+    slug: { current: "rhodiola-tea-recipes-energy-focus" },
+    tags: ["rhodiola tea", "rhodiola rosea tea", "rhodiola tea benefits", "adaptogenic tea", "rhodiola for energy", "rhodiola for focus", "herbal tea recipes", "TCM", "rhodiola with ginseng", "rhodiola for fatigue"]
+  },
+  {
+    id: 1758713619587,
+    _id: '1758713619587',
+    title: "How to Take Rhodiola the Smart Way — Daily Rituals, Recipes & Body-Type Tips",
+    excerpt: "Learn the best time to take rhodiola, optimal dosage for energy, simple recipes, and how to pair it with other herbs. Complete guide for using rhodiola supplement effectively for stress relief and mental clarity.",
+    category: "lifestyle",
+    author: "HerbScience Team",
+    publishedAt: "2025-01-22",
+    readTime: 7,
+    featured_image: null,
+    slug: { current: "rhodiola-smart-way-daily-rituals" },
+    tags: ["rhodiola", "adaptogen herbs", "how to take rhodiola", "rhodiola dosage", "rhodiola recipes", "rhodiola tea", "natural energy", "stress relief", "rhodiola with ginseng", "best time to take rhodiola"]
+  }
+]
+
 export default async function BlogPage() {
   // 从Sanity获取数据
-  const [allPosts, featuredPosts, categories] = await Promise.all([
+  const [sanityPosts, sanityFeaturedPosts, sanityCategories] = await Promise.all([
     getAllBlogPosts(),
     getFeaturedBlogPosts(),
     getBlogCategories()
   ])
 
-  // 如果Sanity返回空数据，使用静态fallback
-  const postsToUse = allPosts.length > 0 ? allPosts : []
-  const featuredToUse = featuredPosts.length > 0 ? featuredPosts : []
-  const categoriesToUse = categories.length > 0 ? categories : []
+  // 合并Sanity数据和本地静态文章
+  // 静态文章排在前面（最新的）
+  const mergedPosts = [...staticLocalArticles, ...sanityPosts]
+  
+  // Featured posts: 如果Sanity有featured，使用Sanity的；否则使用静态文章的前2篇
+  const mergedFeaturedPosts = sanityFeaturedPosts.length > 0 
+    ? [...staticLocalArticles.slice(0, 2), ...sanityFeaturedPosts]
+    : staticLocalArticles.slice(0, 2)
 
   return (
     <BlogClient
-      initialPosts={postsToUse}
-      initialFeaturedPosts={featuredToUse}
-      initialCategories={categoriesToUse}
+      initialPosts={mergedPosts}
+      initialFeaturedPosts={mergedFeaturedPosts}
+      initialCategories={sanityCategories}
     />
   )
 } 
