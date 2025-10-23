@@ -36,9 +36,181 @@ export const metadata: Metadata = {
 }
 
 export default function WhyRhodiolaWorksPage() {
+  // Structured Data for Google Rich Results
+  const articleStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Why Rhodiola Works for Some People but Not Others — How to Take It Right for Your Body Type",
+    "description": "Discover why rhodiola crenulata benefits vary by person. Learn how to take rhodiola the right way based on your TCM body constitution.",
+    "image": "https://herbscience.shop/hero-bg.svg",
+    "author": {
+      "@type": "Person",
+      "name": "Dr. Sarah Chen",
+      "jobTitle": "Herbalist & TCM Practitioner"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "HerbScience",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://herbscience.shop/logo.svg"
+      }
+    },
+    "datePublished": "2025-01-23",
+    "dateModified": "2025-01-23",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://herbscience.shop/blog/why-rhodiola-works-body-type"
+    },
+    "articleSection": "Health & Wellness",
+    "keywords": ["rhodiola crenulata benefits", "rhodiola dosage", "how to take rhodiola", "best time to take rhodiola", "TCM body type", "adaptogen herbs"],
+    "wordCount": 3800,
+    "timeRequired": "PT10M"
+  }
+
+  const faqStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Why does rhodiola work for some people but not others?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Rhodiola's effectiveness varies based on your TCM body constitution. Qi-deficient types benefit most, while Yin-deficient types may experience overstimulation. Your body's energy pattern, stress response, and metabolic type all influence how rhodiola affects you."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the best time to take rhodiola?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The best time to take rhodiola is in the morning (6-9 AM) on an empty stomach or with a light breakfast containing healthy fats. Avoid taking it after 4 PM as it may interfere with sleep. You can also take it 30-60 minutes before exercise for enhanced endurance."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the proper rhodiola dosage?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Start with 150-200mg of standardized extract (3% rosavins, 1% salidroside) daily. Standard dose is 200-400mg/day, with a maximum of 600mg/day. For dried root tea, use 3-5g steeped for 10-15 minutes. Always start with the lowest dose and increase gradually."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can rhodiola help with fat loss and weight management?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Rhodiola can support weight management, especially for Phlegm-Damp body types. It works best when combined with Ginger and Green Tea to activate metabolism and thermogenesis. Take it 30 minutes before meals or before exercise for fat metabolism support."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Who should avoid taking rhodiola?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Avoid rhodiola if you have high blood pressure, severe anxiety, insomnia, bipolar disorder, or are pregnant/breastfeeding. Yin-deficient types (heat in hands/feet, night sweats, dry throat) should use caution and take only low doses in the morning with cooling herbs."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are rhodiola crenulata benefits?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Rhodiola crenulata benefits include: natural sustained energy boost, improved stress resilience, enhanced mental clarity and focus, better physical endurance, mood balance, and cortisol regulation. It works by supporting mitochondrial function, balancing neurotransmitters, and improving oxygen metabolism."
+        }
+      }
+    ]
+  }
+
+  const howToStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Take Rhodiola the Right Way for Your Body Type",
+    "description": "Complete guide on how to take rhodiola supplement based on your TCM body constitution for optimal benefits",
+    "totalTime": "PT2M",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Identify Your Body Type",
+        "text": "Take a TCM body constitution test to determine if you're Qi-deficient, Yin-deficient, Phlegm-damp, or Qi-stagnation type.",
+        "url": "https://herbscience.shop/constitution-test"
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Choose the Right Dosage",
+        "text": "Start with 150-200mg of standardized rhodiola extract (3% rosavins, 1% salidroside) if you're sensitive. Standard dose is 200-400mg daily for most people."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Time It Correctly",
+        "text": "Take rhodiola in the morning (6-9 AM) on an empty stomach or with breakfast. Avoid afternoon or evening doses to prevent sleep disruption."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Combine with Compatible Herbs",
+        "text": "Qi-deficient: combine with Astragalus. Phlegm-damp: add Ginger. Yin-deficient: pair with cooling herbs like Schisandra or American Ginseng."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Cycle Your Usage",
+        "text": "Use rhodiola for 6-8 weeks, then take a 1-2 week break to prevent tolerance and maintain effectiveness."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Monitor Your Response",
+        "text": "Watch for positive signs (stable energy, better focus, improved mood) or warning signs (restlessness, heat, insomnia). Adjust dosage or timing as needed."
+      }
+    ]
+  }
+
+  const breadcrumbStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://herbscience.shop"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://herbscience.shop/blog"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Why Rhodiola Works Differently",
+        "item": "https://herbscience.shop/blog/why-rhodiola-works-body-type"
+      }
+    ]
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
-      <Navigation />
+    <>
+      {/* Structured Data for Google Rich Results */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleStructuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToStructuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
+      />
+      
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
+        <Navigation />
       
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Breadcrumb */}
