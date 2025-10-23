@@ -128,9 +128,29 @@ MIT License - 详见 [LICENSE](LICENSE) 文件
 
 ## 🎉 **最新功能更新 (2025-01-22)**
 
-### 📝 **新增博客文章**
+### 📝 **新增博客文章（Rhodiola系列）**
 
-#### **Rhodiola Lifestyle Guide - 红景天日常使用指南**
+#### **1. Rhodiola Tea Recipes for Energy and Focus** ⭐ 最新
+**位置：** `/blog/rhodiola-tea-recipes-energy-focus`
+
+**特点：**
+- ✅ 茶谱lifestyle内容，实用性极强
+- ✅ 完整的冲泡方法 + 配方卡片
+- ✅ TCM体质匹配表格（4种体质 × 专属配方）
+- ✅ 最佳饮用时间指导（早/午/晚）
+- ✅ 4个专业草药配对方案
+- ✅ 6个FAQ优化（featured snippet ready）
+
+**核心目标关键词：**
+- `rhodiola rosea tea` (KGR: 0.341) ⭐ 最优先
+- `rhodiola tea benefits` / `how to make rhodiola tea`
+- `best time to drink rhodiola tea`
+- `rhodiola for energy` / `rhodiola for focus`
+- `adaptogenic tea` / `rhodiola with ginseng`
+
+---
+
+#### **2. Rhodiola Lifestyle Guide - 红景天日常使用指南**
 **位置：** `/blog/rhodiola-smart-way-daily-rituals`
 
 **特点：**
