@@ -7,6 +7,20 @@ export const revalidate = 60 // 重新验证时间（秒）
 // Static articles (local blog posts not in Sanity)
 const staticLocalArticles = [
   {
+    id: 1758713619589,
+    _id: '1758713619589',
+    title: "Why Rhodiola Works for Some People but Not Others — How to Take It Right for Your Body Type",
+    excerpt: "Discover why rhodiola crenulata benefits vary by person. Learn how to take rhodiola the right way based on your TCM body constitution. Complete guide on rhodiola dosage, timing, and herb combinations for optimal results.",
+    category: "science",
+    author: "Dr. Sarah Chen, HerbScience Team",
+    publishedAt: "2025-01-23",
+    readTime: 10,
+    featured: true,
+    featured_image: null,
+    slug: { current: "why-rhodiola-works-body-type" },
+    tags: ["rhodiola crenulata benefits", "rhodiola benefits", "how to take rhodiola", "best time to take rhodiola", "rhodiola dosage", "rhodiola supplement benefits", "TCM body type", "adaptogen herbs", "personalized supplements"]
+  },
+  {
     id: 1758713619588,
     _id: '1758713619588',
     title: "Rhodiola Tea Recipes for Energy and Focus — Find the Best Blend for Your Body Type",
