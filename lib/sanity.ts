@@ -247,6 +247,20 @@ export async function searchBlogPosts(searchTerm: string): Promise<BlogPost[]> {
 export const staticBlogData = {
   featuredPosts: [
     {
+      _id: '4',
+      title: "Ashwagandha Benefits for Female: Hormonal Imbalance, Stress & What It's Good For",
+      slug: { current: "ashwagandha-for-women-hormone-balance" },
+      excerpt: "Discover ashwagandha benefits for female health: balance hormones, reduce stress, improve sleep. Learn safe dosage, side effects, and what ashwagandha is good for. Evidence-based guide by licensed pharmacist.",
+      publishedAt: "2025-01-26",
+      readTime: 8,
+      author: "曾楚平 (Zeng Chuping)",
+      category: "science",
+      tags: ["ashwagandha benefits for female", "ashwagandha for hormonal imbalance", "side effects of ashwagandha on females", "what is ashwagandha good for", "best herbs for stress and anxiety", "ashwagandha for women", "adaptogen herb", "hormonal balance", "women's health"],
+      featured_image: null,
+      seoTitle: "Ashwagandha Benefits for Female: Hormonal Imbalance, Stress & Sleep Solutions | HerbScience",
+      seoDescription: "Discover ashwagandha benefits for female health: balance hormones, reduce stress, improve sleep. Learn safe dosage, side effects, and what ashwagandha is good for. Evidence-based guide by licensed pharmacist."
+    },
+    {
       _id: '1',
       title: "Why Personalized Herbal Supplements Work Better Than One-Size-Fits-All Remedies",
       slug: { current: "why-some-herbs-work-for-you-and-others-dont" },

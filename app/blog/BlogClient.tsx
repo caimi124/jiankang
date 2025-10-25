@@ -10,6 +10,18 @@ import Link from 'next/link'
 // Static fallback articles (defined outside component)
 const staticArticles = [
   {
+    id: 1758713619589,
+    title: "Ashwagandha Benefits for Female: Hormonal Imbalance, Stress & What It's Good For",
+    excerpt: "Discover ashwagandha benefits for female health: balance hormones, reduce stress, improve sleep. Learn safe dosage, side effects, and what ashwagandha is good for. Evidence-based guide by licensed pharmacist.",
+    category: "science",
+    author: "曾楚平 (Zeng Chuping)",
+    publishedAt: "2025-01-26",
+    readTime: 8,
+    featured_image: null,
+    slug: { current: "ashwagandha-for-women-hormone-balance" },
+    tags: ["ashwagandha benefits for female", "ashwagandha for hormonal imbalance", "side effects of ashwagandha on females", "what is ashwagandha good for", "best herbs for stress and anxiety", "ashwagandha for women", "adaptogen herb", "hormonal balance", "women's health"]
+  },
+  {
     id: 1758713619588,
     title: "Rhodiola Tea Recipes to Boost Energy & Focus — Find the Best Blend for Your Body Type",
     excerpt: "Discover easy rhodiola tea recipes to increase energy, improve focus, and reduce fatigue. Learn how to tailor rhodiola rosea tea to your body type using TCM-inspired herbal blends for natural energy without caffeine crash.",
