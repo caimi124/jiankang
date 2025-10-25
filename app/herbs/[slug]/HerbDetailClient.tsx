@@ -152,16 +152,14 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
           ]} 
         />
 
-        {/* Medical Review Banner - E-A-T Signal for SEO */}
-        <div className="mb-6">
-          <MedicalReviewBanner 
-            reviewerName="曾楚平 (Zeng Chuping)"
-            reviewerTitle="Licensed Pharmacist & TCM Expert"
-            reviewerCredentials="Southern Medical University Graduate"
-            lastUpdated={new Date()}
-            reviewerLink="/about"
-          />
-        </div>
+        {/* Medical Review Banner - 增强E-A-T信号 */}
+        <MedicalReviewBanner 
+          reviewerName="曾楚平 (Zeng Chuping)"
+          reviewerTitle="Licensed Pharmacist & TCM Expert"
+          reviewerCredentials="Southern Medical University Graduate"
+          lastUpdated={new Date()}
+          reviewerLink="/about"
+        />
 
         {/* Hero Section */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
@@ -999,6 +997,86 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
               ))}
             </div>
           </div>
+        )}
+
+        {/* Scientific References - rhodiola特定权威来源 */}
+        {(slug === 'rhodiola-crenulata' || slug === 'rhodiola') ? (
+          <ScientificReferences 
+            herbName="Rhodiola Crenulata"
+            references={[
+              {
+                title: 'Panossian A, Wikman G. (2010). "Effects of Adaptogens on the Central Nervous System and the Molecular Mechanisms Associated with Their Stress-Protective Activity" - Pharmaceuticals. 3(1): 188-224.',
+                url: 'https://pubmed.ncbi.nlm.nih.gov/27713876/',
+                source: 'U.S. National Library of Medicine (PubMed)',
+                isExternal: true
+              },
+              {
+                title: 'Spasov AA, et al. (2000). "A double-blind, placebo-controlled pilot study of Rhodiola rosea extract on fatigue of students during examination period" - Phytomedicine. 7(2): 85-9.',
+                url: 'https://pubmed.ncbi.nlm.nih.gov/10839209/',
+                source: 'U.S. National Library of Medicine (PubMed)',
+                isExternal: true
+              },
+              {
+                title: 'Darbinyan V, et al. (2007). "Clinical trial of Rhodiola rosea extract SHR-5 in the treatment of mild to moderate depression" - Nordic Journal of Psychiatry. 61(5): 343-8.',
+                url: 'https://pubmed.ncbi.nlm.nih.gov/17990195/',
+                source: 'U.S. National Library of Medicine (PubMed)',
+                isExternal: true
+              },
+              {
+                title: 'National Center for Complementary and Integrative Health (NCCIH) - Rhodiola',
+                url: 'https://www.nccih.nih.gov/health/rhodiola',
+                source: 'U.S. National Institutes of Health',
+                isExternal: true
+              },
+              {
+                title: 'Memorial Sloan Kettering Cancer Center - Rhodiola Integrative Medicine Monograph',
+                url: 'https://www.mskcc.org/cancer-care/integrative-medicine/herbs/rhodiola',
+                source: 'Memorial Sloan Kettering Cancer Center',
+                isExternal: true
+              },
+              {
+                title: 'Examine.com - Rhodiola Rosea: Research Analysis & Scientific Evidence',
+                url: 'https://examine.com/supplements/rhodiola-rosea/',
+                source: 'Examine.com (Independent Nutrition Research Database)',
+                isExternal: true
+              }
+            ]}
+          />
+        ) : (
+          <ScientificReferences herbName={herbData.name} />
+        )}
+
+        {/* Related Herbs Section - rhodiola特定配伍推荐 */}
+        {(slug === 'rhodiola-crenulata' || slug === 'rhodiola') ? (
+          <RelatedHerbsSection 
+            currentSlug={slug}
+            relatedHerbs={[
+              {
+                name: 'Ashwagandha',
+                slug: 'ashwagandha',
+                shortDescription: 'Combines with Rhodiola for comprehensive stress management. Ashwagandha provides calming effects while Rhodiola offers energizing support - perfect for balanced stress relief.',
+                primaryBenefit: 'Stress + Sleep',
+                icon: '🧘'
+              },
+              {
+                name: 'Ginseng',
+                slug: 'ginseng',
+                shortDescription: 'Synergizes with Rhodiola for sustained energy and mental stamina. Together they provide smooth, long-lasting vitality without caffeine jitters.',
+                primaryBenefit: 'Energy Boost',
+                icon: '⚡'
+              },
+              {
+                name: 'Cordyceps',
+                slug: 'cordyceps',
+                shortDescription: 'Pairs with Rhodiola to maximize athletic performance, improve oxygen utilization, and enhance physical endurance for active lifestyles.',
+                primaryBenefit: 'Athletic Performance',
+                icon: '🏃'
+              }
+            ]}
+            count={3}
+          />
+        ) : (
+          <RelatedHerbsSection currentSlug={slug} />
         )}
 
         {/* Enhanced Professional CTA Section */}

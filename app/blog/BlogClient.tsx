@@ -10,6 +10,18 @@ import Link from 'next/link'
 // Static fallback articles (defined outside component)
 const staticArticles = [
   {
+    id: 1758713619588,
+    title: "Rhodiola Tea Recipes to Boost Energy & Focus — Find the Best Blend for Your Body Type",
+    excerpt: "Discover easy rhodiola tea recipes to increase energy, improve focus, and reduce fatigue. Learn how to tailor rhodiola rosea tea to your body type using TCM-inspired herbal blends for natural energy without caffeine crash.",
+    category: "lifestyle",
+    author: "HerbScience Team",
+    publishedAt: "2025-01-22",
+    readTime: 8,
+    featured_image: null,
+    slug: { current: "rhodiola-tea-recipes-energy-focus" },
+    tags: ["rhodiola tea", "rhodiola rosea tea", "rhodiola tea benefits", "adaptogenic tea", "rhodiola for energy", "rhodiola for focus", "herbal tea recipes", "TCM", "rhodiola with ginseng", "rhodiola for fatigue"]
+  },
+  {
     id: 1758713619587,
     title: "How to Take Rhodiola the Smart Way — Daily Rituals, Recipes & Body-Type Tips",
     excerpt: "Learn the best time to take rhodiola, optimal dosage for energy, simple recipes, and how to pair it with other herbs. Complete guide for using rhodiola supplement effectively for stress relief and mental clarity.",
