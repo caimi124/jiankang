@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Navigation from '../../../components/Navigation'
 import Breadcrumb from '../../../components/Breadcrumb'
 import MedicalReviewBanner from '../../../components/MedicalReviewBanner'
-import { Calendar, User, Tag, Share2, Bookmark, ArrowLeft, Heart, Coffee, Moon, Sparkles, AlertTriangle, CheckCircle, Clock, Target, Zap } from 'lucide-react'
+import { Calendar, User, Tag, Share2, Bookmark, ArrowLeft, Heart, Coffee, Moon, Sparkles, AlertTriangle, CheckCircle, Clock, Target, Zap, Leaf } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Ashwagandha Benefits for Female: Hormonal Imbalance, Stress & Sleep Solutions | HerbScience',
