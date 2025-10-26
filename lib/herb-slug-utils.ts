@@ -36,7 +36,29 @@ export function generateHerbSlug(chineseName: string, englishName: string, herbI
 }
 
 export function normalizeSlug(slug: string): string {
-  return slug.toLowerCase().trim()
+  // 首先尝试解码URL编码（处理 %E7%94%9F%E5%A7%9C 这种情况）
+  let decoded = slug
+  try {
+    // 只有当slug包含%时才尝试解码，避免重复解码
+    if (slug.includes('%')) {
+      decoded = decodeURIComponent(slug)
+    }
+  } catch (e) {
+    // 如果解码失败，使用原始slug
+    decoded = slug
+  }
+  
+  // 转换为小写并trim
+  decoded = decoded.toLowerCase().trim()
+  
+  // 如果包含中文字符，直接返回（不做进一步normalize）
+  // 这样可以在aliases中匹配中文名称如 '生姜'
+  if (/[\u4e00-\u9fff]/.test(decoded)) {
+    return decoded
+  }
+  
+  // 对于英文slug，进行标准化处理
+  return decoded
     .replace(/[^a-z0-9\-]+/g, '-')
     .replace(/--+/g, '-')
     .replace(/^-|-$/g, '')
