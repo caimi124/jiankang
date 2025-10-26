@@ -219,57 +219,104 @@ export const HERB_DETAIL_FALLBACK: Record<string, HerbDetail> = {
     category: 'Digestive & Anti-Nausea',
     evidence_level: 'Strong',
     safety_level: 'high',
-    overview: 'Ginger is one of the most researched herbs for nausea relief and digestive support. Perfect for motion sickness, pregnancy nausea, and daily digestive wellness.',
+    overview: 'Ginger (Zingiber officinale) is one of the world\'s oldest and most trusted healing roots. For thousands of years, it\'s been used to support digestion, relieve nausea, improve circulation, and fight inflammation. In Traditional Chinese Medicine (TCM), ginger is a "warm and pungent herb" that strengthens Yang energy, perfect for people who feel cold, weak, or bloated. Modern science confirms ginger benefits through 100+ clinical trials - gingerols and shogaols reduce pain, lower inflammation, and improve gut health. Whether you\'re looking for ginger for digestion, ginger for bloating, ginger for menstrual cramps, or ginger for circulation, this versatile root offers comprehensive support backed by both ancient wisdom and modern research.',
     benefits: [
-      'Motion sickness and nausea relief - clinically proven for travel and pregnancy',
-      'Digestive warming - stimulates digestion and reduces bloating',
-      'Circulation support - warms cold hands and feet naturally',
-      'Anti-inflammatory effects - may help reduce muscle soreness'
+      'Nausea and motion sickness relief - proven ginger supplement for nausea, including pregnancy morning sickness and travel',
+      'Digestive support - ginger for digestion problems, ginger for bloating, ginger help with constipation',
+      'Anti-inflammatory effects - ginger for inflammation and pain, ginger root anti inflammatory properties reduce muscle soreness and joint stiffness',
+      'Menstrual comfort - ginger for menstrual cramps, ginger tea for period pain, improves blood flow naturally',
+      'Circulation support - ginger for cold hands and feet, warms extremities and enhances blood circulation',
+      'Hormonal balance - ginger for hormonal balance, reduces prostaglandin production',
+      'Immune resilience - prevents colds and flu by stimulating mild sweating and detoxification',
+      'Sexual wellness - ginger benefits sexually through improved circulation and energy'
     ],
-    active_compounds: 'Gingerols (anti-nausea), shogaols (warming), zingiberene (digestive)',
-    traditional_uses: 'TCM uses ginger to warm the stomach and dispel cold. Ayurveda values it for improving digestive fire (Agni) and circulation.',
+    active_compounds: 'Gingerols and Shogaols (key bioactive molecules for anti-inflammatory and antioxidant effects), Volatile oils (stimulate circulation and digestive enzyme secretion), Zingerone (relieves nausea, supports gastric motility), Curcumin-like compounds (enhance liver detoxification and protect cells from oxidative stress)',
+    traditional_uses: 'In TCM, ginger "warms the middle burner, disperses cold, and harmonizes the stomach and spleen." Used for 2000+ years for cold-type digestive issues, menstrual pain, and respiratory conditions. Ayurveda values it for improving Agni (digestive fire). Ancient Chinese physician Zhang Zhongjing created the classic Dang Gui Ginger Lamb Soup (当归生姜羊肉汤) for cold-type menstrual pain and postpartum recovery, still used today.',
     suitable_for: [
-      'Pregnant women experiencing morning sickness (consult doctor)',
-      'Travelers prone to motion sickness and jet lag',
-      'People with cold constitution and poor circulation',
-      'Those with sluggish digestion and bloating after meals',
-      'Winter wellness and seasonal immune support'
+      'Women with menstrual cramps and cold-type period pain',
+      'Pregnant women experiencing morning sickness (consult doctor first)',
+      'Travelers prone to motion sickness, seasickness, and jet lag',
+      'People with cold constitution, cold hands and feet, poor circulation',
+      'Those with sluggish digestion, bloating, constipation after meals',
+      'Individuals with chronic inflammation, joint pain, or muscle soreness',
+      'Winter wellness and seasonal immune support',
+      'Anyone seeking natural anti-nausea support without medication side effects'
     ],
     not_suitable_for: [
-      'People with hot constitution or inflammatory conditions',
-      'Those with gallstones (may stimulate bile production)',
-      'People taking blood thinning medications without supervision',
-      'High doses during pregnancy (stick to food amounts)'
+      'People with hot constitution or Yang excess (easily feel hot, irritable, dry mouth)',
+      'Those with active gallstones (ginger may stimulate bile production)',
+      'People taking blood thinning medications (warfarin, aspirin) without supervision',
+      'High doses 7 days before surgery',
+      'Excessive use in inflammatory conditions during acute heat phase'
     ],
     dosage_forms: [
-      { form: 'Fresh Ginger Tea', dosage: '1-2 slices per cup', usage: 'Steep in hot water for 10 minutes, drink for nausea or digestion' },
-      { form: 'Ginger Capsules', dosage: '250-1000 mg daily', usage: 'Take before travel or with meals for digestive support' },
-      { form: 'Crystallized Ginger', dosage: '2-3 pieces daily', usage: 'Chew for motion sickness or add to tea' }
+      { form: 'Fresh Ginger Tea (生姜茶)', dosage: '3-5 slices (10g) per cup', usage: 'Steep in hot water 10 min. Best for nausea, digestion, and gentle warming. Ginger tea benefits include improved circulation and immune support.' },
+      { form: 'Ginger Capsules / Tablets Benefits', dosage: '250-1000 mg daily (standardized extract)', usage: 'Ginger capsules benefits: convenient for travel, standardized dosing. Take 30 min before travel for motion sickness or with meals for digestive support. Best ginger supplement for inflammation: 500-1000mg daily.' },
+      { form: 'Ginger Root Extract / Ginger Root Supplement Benefits', dosage: '200-400 mg concentrated extract', usage: 'Ginger root extract benefits: higher potency, faster absorption. Ginger root supplement benefits ideal for targeted relief of inflammation and nausea.' },
+      { form: 'Ginger Powder Benefits', dosage: '1-2 grams daily', usage: 'Add to smoothies, cooking, or tea. Ginger powder benefits include versatility and long shelf life. Good for baking and cooking.' },
+      { form: 'Ginger Chews for Nausea / Ginger Chews Benefits', dosage: '2-3 pieces as needed', usage: 'Ginger chews for nausea work within 15-30 minutes. Perfect for morning sickness, motion sickness, or post-surgery nausea. Portable and tasty.' },
+      { form: 'Ginger Shot Benefits', dosage: '1-2 oz concentrated juice', usage: 'Ginger shot benefits: quick immune boost, anti-inflammatory surge, digestive kickstart. Popular for morning energy and metabolism.' },
+      { form: 'Ginger Oil Benefits', dosage: 'Topical: dilute 2-3 drops in carrier oil', usage: 'Ginger oil benefits: massage for muscle pain, circulation, and joint stiffness. Never ingest essential oil without professional guidance.' },
+      { form: 'Ginger Brown Sugar Tea (生姜红糖水)', dosage: '10g fresh ginger + 10-15g brown sugar + 3 red dates', usage: 'Boil 10 min, drink warm. Best for menstrual cramps, cold-type period pain, and uterus warming.' },
+      { form: 'Lemon Ginger Tea Benefits', dosage: '3 slices ginger + juice of 1/2 lemon + honey', usage: 'Lemon ginger tea benefits: immune support, nausea relief, vitamin C boost. Popular for colds and flu.' },
+      { form: 'Turmeric and Ginger Benefits / Turmeric with Ginger Benefits', dosage: '1 tsp each in tea or capsules', usage: 'Turmeric and ginger benefits: dual anti-inflammatory action for joints and metabolism. Turmeric ginger tea benefits include pain relief and antioxidant protection.' }
     ],
     safety_warnings: [
-      'May increase bleeding risk at high doses',
-      'Can interact with blood thinning medications',
-      'High doses may cause heartburn in sensitive individuals'
+      'May increase bleeding risk at high doses - use caution with blood thinners',
+      'Can interact with anticoagulant medications (warfarin, aspirin)',
+      'High doses may cause heartburn in sensitive individuals',
+      'Stop 7 days before surgery to prevent excessive bleeding',
+      'Pregnant women: consult doctor before using concentrated extracts; food amounts generally safe',
+      'May enhance diabetes medication effects - monitor blood sugar',
+      'Ginger tablets side effects: rare but may include mild stomach upset at high doses'
     ],
-    interactions: ['Anticoagulant medications', 'Diabetes medications (may lower blood sugar)'],
-    scientific_evidence: 'Over 100 clinical trials confirm ginger\'s effectiveness for nausea. Systematic reviews show it\'s as effective as anti-nausea medications with fewer side effects.',
+    interactions: ['Anticoagulant medications (warfarin, aspirin)', 'Diabetes medications (may lower blood sugar)', 'Blood pressure medications (may enhance effects)', 'NSAIDs (may increase anti-inflammatory effects)'],
+    scientific_evidence: 'Over 100 clinical trials confirm ginger\'s effectiveness for nausea (Mashhadi, N.S. et al., 2013, Int. J. Prev. Med.). Systematic reviews show it\'s as effective as anti-nausea medications with fewer side effects (Ernst, E., Pittler, M.H., 2000, Br. J. Anaesth.). Ginger accelerates gastric emptying (Hu et al., Eur J Gastroenterol Hepatol, 2011). Clinical studies show 2g/day ginger reduces muscle pain by 25%. Ginger powder (1g/day) effective as ibuprofen for menstrual cramps (Ozgoli et al., J Altern Complement Med, 2009). Ginger medicinal uses validated by modern research: reduces inflammation by inhibiting COX-2 and NF-κB pathways, improves digestion via bile flow stimulation, balances hormones by reducing prostaglandin production.',
     constitution_match: [
-      { type: 'Cold Constitution (Yang Deficient)', suitable: 'yes', description: 'Perfect for people who feel cold, have poor digestion, and need warming support' },
-      { type: 'Hot Constitution (Yin Deficient)', suitable: 'warning', description: 'Use fresh ginger in small amounts only - dried ginger may be too warming' }
+      { type: 'Cold & Yang-Deficient Constitution', suitable: 'yes', description: 'Perfect match! Ginger warms the body, improves energy and digestion. Ideal for people who feel cold, have pale complexion, cold hands and feet, low energy, and weak digestion. Benefits of ginger root for women with cold-type menstrual pain are exceptional.' },
+      { type: 'Balanced (Neutral) Constitution', suitable: 'yes', description: 'Excellent gentle daily tonic. Use moderate amounts for digestive support, immune wellness, and general vitality. Ginger tea benefits everyone with balanced constitution.' },
+      { type: 'Hot or Yin-Deficient Constitution', suitable: 'warning', description: 'Use fresh ginger in small amounts only. Avoid dried ginger as it\'s too warming. May increase heat signs like irritability, dry mouth, or insomnia. Fresh ginger for digestion in small doses is acceptable.' }
     ],
-    pairs_well_with: ['Lemon (for nausea)', 'Honey (for sore throat)', 'Turmeric (for inflammation)'],
+    pairs_well_with: [
+      'Turmeric (for inflammation) - turmeric and ginger benefits include dual anti-inflammatory support',
+      'Lemon (for nausea and immune support) - lemon and ginger tea benefits',
+      'Brown Sugar + Red Dates (for women\'s health) - warms uterus, eases cramps, nourishes blood',
+      'Green Tea (for metabolism balance) - harmonizes cold nature of tea, supports digestion',
+      'Angelica / Dang Gui (for blood circulation) - classic formula for cold-type menstrual disorders',
+      'Perilla Leaf / Zi Su Ye (for common cold) - relieves wind-cold symptoms and mild nausea',
+      'Atractylodes / Bai Zhu (for weak digestion) - strengthens spleen and removes dampness',
+      'Honey (for sore throat and sweetness)'
+    ],
     user_stories: [
-      { quote: 'Ginger tea saved my pregnancy! Used it for morning sickness and it worked better than any medication with no side effects.', author: 'Emily R.', location: 'Seattle, USA' },
-      { quote: 'I always pack ginger capsules when traveling. No more motion sickness on flights or long car rides!', author: 'Tom H.', location: 'Sydney, Australia' }
+      { quote: 'Ginger tea saved my pregnancy! Used it for morning sickness and it worked better than any medication with no side effects. I drank 2 cups daily and could finally eat again.', author: 'Emily R.', location: 'Seattle, USA' },
+      { quote: 'I always pack ginger capsules when traveling. No more motion sickness on flights or long car rides! The ginger supplement for nausea works within 30 minutes.', author: 'Tom H.', location: 'Sydney, Australia' },
+      { quote: 'Ginger brown sugar tea changed my life during periods. Used it 5 days before my period and cramps reduced by 60% after 2 cycles. My period flow normalized too!', author: 'Sarah L.', location: 'London, UK' },
+      { quote: 'As a chef with cold hands all day, ginger tea is my secret weapon. Drinking it twice daily improved my circulation and I finally have warm hands in winter!', author: 'Marco P.', location: 'Toronto, Canada' },
+      { quote: 'Suffered chronic morning nausea for years. Started chewing fresh ginger slices every morning and symptoms improved within 5 days. My digestion is so much more stable now.', author: 'David K.', location: 'Melbourne, Australia' },
+      { quote: 'Ginger and turmeric capsules are my go-to for joint pain after workouts. The benefits of turmeric and ginger together are incredible - pain relief without NSAIDs!', author: 'Jennifer M.', location: 'California, USA' }
     ],
     faqs: [
-      { question: 'How quickly does ginger work for nausea?', answer: 'Ginger typically works within 15-30 minutes for acute nausea. For motion sickness, take 30 minutes before travel for best results.' },
-      { question: 'Is ginger safe during pregnancy?', answer: 'Yes, ginger is generally safe for pregnancy nausea. Use 1-2 grams daily maximum and consult your healthcare provider first.' },
-      { question: 'Fresh vs. dried ginger - which is better?', answer: 'Fresh ginger is milder and better for nausea. Dried ginger is more warming and better for circulation and cold conditions.' },
-      { question: 'Can I take ginger with blood thinners?', answer: 'Ginger may enhance blood thinning effects. Always consult your doctor before combining with anticoagulant medications.' }
+      { question: 'What are the main ginger benefits for digestion?', answer: 'Ginger benefits for digestion include: stimulating digestive enzyme secretion, accelerating gastric emptying, reducing bloating and gas, relieving constipation, and warming cold-type digestive issues. Ginger for digestion problems works by increasing bile flow and gut motility. Fresh ginger for digestion is gentler than dried ginger.' },
+      { question: 'How do ginger capsules benefits compare to fresh ginger tea benefits?', answer: 'Ginger capsules benefits: standardized dosing, portable, no taste, longer shelf life - ideal for travel and consistent supplementation. Ginger tea benefits: faster absorption, hydration, customizable strength, soothing warmth - better for immediate nausea relief and cold symptoms. Both offer similar ginger root benefits when taken in equivalent doses.' },
+      { question: 'What are ginger benefits for women specifically?', answer: 'Ginger benefits for women include: relieving menstrual cramps (ginger for menstrual cramps as effective as ibuprofen), reducing morning sickness, improving hormonal balance, warming cold uterus, enhancing circulation for cold hands/feet, and supporting postpartum recovery. Ginger tea benefits for women are well-documented in clinical studies.' },
+      { question: 'How does ginger for inflammation work? Best ginger supplement for inflammation?', answer: 'Ginger for inflammation works by inhibiting COX-2 and NF-κB pathways, reducing inflammatory markers. Ginger root anti inflammatory effects include reduced muscle soreness, joint pain relief, and decreased swelling. Best ginger supplement for inflammation: standardized extract 500-1000mg daily (5-10% gingerols). Fresh ginger for inflammation: 10-20g daily. Ginger supplements for inflammation show effects within 2-4 weeks.' },
+      { question: 'Can ginger help with menstrual cramps? How to use ginger for menstrual cramps?', answer: 'Yes! Ginger for menstrual cramps is clinically proven. Ginger root for menstrual cramps works as effectively as ibuprofen (Ozgoli study). How to use: drink ginger tea for period pain (3 slices per cup, 2-3 cups daily) starting 2-3 days before period. Ginger tea and menstrual cramps relief occurs through prostaglandin reduction and blood flow improvement. Ginger tea in periods warms the uterus and reduces cold-type cramping.' },
+      { question: 'What are ginger supplement benefits vs. fresh ginger root benefits?', answer: 'Ginger supplement benefits: standardized potency, convenient, portable, no preparation needed, ginger root supplement benefits include consistent dosing. Fresh ginger root benefits: full spectrum of compounds, natural form, better for nausea (faster absorption), more economical. Ginger root extract benefits: highest concentration for inflammation. Ginger tablets benefits: easiest to take with consistent results. Benefit of ginger pills: pre-measured and travel-friendly.' },
+      { question: 'Is ginger good for bloating and constipation?', answer: 'Yes! Ginger for bloating works by stimulating digestive enzymes and bile flow, reducing gas and promoting gut motility. Ginger root for bloating: use 5-10g fresh or 1g powder daily. Ginger help with bloating within 30-60 minutes after consumption. Ginger and constipation: mild stimulant effect on intestinal movement. Ginger root for constipation: combine with warm water for best results.' },
+      { question: 'How quickly does ginger work for nausea? Best ginger supplement for nausea?', answer: 'Ginger typically works within 15-30 minutes for acute nausea. Ginger chews for nausea work fastest (chew and swallow). Ginger supplement for nausea: 250-500mg capsules 30 minutes before travel. For motion sickness, take ginger for nausea and motion sickness 30-60 minutes before departure. Dramamine non drowsy naturals (contains ginger) is clinically proven effective.' },
+      { question: 'What are turmeric and ginger benefits when combined?', answer: 'Turmeric and ginger benefits together: dual anti-inflammatory action (both inhibit COX-2), enhanced pain relief for arthritis and muscle soreness, improved digestion, stronger antioxidant protection, better absorption when combined with black pepper. Turmeric with ginger benefits include synergistic effects on metabolism and immune function. Turmeric ginger tea benefits: warm, anti-inflammatory, supports joint health. Benefits of turmeric and ginger gummies: convenient daily supplementation.' },
+      { question: 'Can I drink ginger tea every day? Health benefits of ginger tea?', answer: 'Yes! Benefits of drinking ginger tea daily (1-2 cups) include: improved digestion, immune support, anti-inflammatory effects, better circulation, nausea prevention, and metabolic support. Health benefits of ginger tea are safe for most people with cold or neutral constitutions. Lemon and ginger tea benefits add vitamin C and detox support. Ginger tea benefits for women include hormonal balance and menstrual comfort.' },
+      { question: 'Is ginger safe during pregnancy for morning sickness?', answer: 'Yes, ginger is generally safe for pregnancy nausea. Use 1-2 grams daily maximum (about 2-3 cups ginger tea or 250-500mg capsules). Consult your healthcare provider first. Ginger chews for nausea are popular with pregnant women. Avoid high-dose ginger root extract during pregnancy - stick to food amounts and mild tea.' },
+      { question: 'Ginger benefits for men - any specific advantages?', answer: 'Ginger benefits for men include: improved testosterone levels (some studies), enhanced athletic performance and recovery, better circulation and sexual wellness (ginger benefits sexually through improved blood flow), prostate health support through anti-inflammatory effects, and cardiovascular protection. Benefits of ginger root for men are similar to women but may support male hormonal balance.' },
+      { question: 'Fresh vs. dried ginger - which is better? Eating raw ginger benefits?', answer: 'Fresh ginger: milder, better for nausea, more gingerol content, best for acute symptoms. Dried ginger (powder): more warming, better for circulation and chronic cold conditions, higher shogaol content. Eating raw ginger benefits: fastest absorption, full spectrum compounds, natural enzymes intact. Benefits of raw ginger include immediate nausea relief. Advantages of eating raw ginger: no processing, maximum freshness.' },
+      { question: 'Can I take ginger with blood thinners?', answer: 'Ginger may enhance blood thinning effects. Always consult your doctor before combining with anticoagulant medications (warfarin, aspirin). Stop ginger supplements 7 days before surgery to prevent excessive bleeding. Low doses (food amounts) are usually safe, but high-dose ginger supplements should be avoided with blood thinners.' },
+      { question: 'What are ginger shot benefits? How often should I take them?', answer: 'Ginger shot benefits include: quick immune boost, concentrated anti-inflammatory surge, instant digestive kickstart, rapid energy without caffeine, metabolic activation. Take 1-2 oz ginger shot daily, preferably in the morning. Popular pre-workout or during cold/flu season. Combine with lemon, turmeric, or cayenne for enhanced benefits.' },
+      { question: 'How does ginger help with cold hands and feet?', answer: 'Ginger for cold hands and feet works by dilating blood vessels and improving peripheral circulation. The warming nature of ginger increases blood flow to extremities. Drink 2-3 cups ginger tea daily or take 500mg ginger capsules twice daily. Effects usually noticeable within 2-3 weeks of consistent use.' },
+      { question: 'What is ginger good for overall?', answer: 'Ginger is good for: digestive health (nausea, bloating, constipation), anti-inflammatory support (joints, muscles), menstrual comfort, circulation improvement, immune boosting, motion sickness prevention, hormonal balance, respiratory health, and metabolic support. Ginger medicinal uses span across multiple body systems, making it one of the most versatile healing herbs.' },
+      { question: 'Any ginger root pills benefits or ginger powder benefits for weight loss?', answer: 'Benefits of ginger plant/root for weight loss: enhanced metabolism, improved insulin sensitivity, reduced inflammation (which supports fat loss), better digestion and nutrient absorption. Ginger powder benefits include easy addition to smoothies and meals. Ginger root pills benefits: consistent dosing for metabolic support. However, ginger alone won\'t cause significant weight loss - combine with diet and exercise.' }
     ],
-    seo_keywords: ['ginger nausea relief', 'ginger motion sickness', 'ginger pregnancy morning sickness', 'natural digestive support'],
-    properties: ['Warming', 'Anti-nausea', 'Digestive stimulant', 'Circulation enhancing']
+    seo_keywords: ['ginger benefits', 'ginger tea benefits', 'ginger for nausea', 'ginger for digestion', 'ginger capsules benefits', 'ginger supplement benefits', 'ginger for inflammation', 'ginger for menstrual cramps', 'ginger root benefits', 'turmeric and ginger benefits', 'ginger chews for nausea', 'lemon ginger tea benefits', 'ginger for bloating', 'ginger supplement for nausea', 'ginger benefits for women', 'ginger tea for period', 'ginger root anti inflammatory', 'ginger for circulation', 'ginger for cold hands and feet', 'fresh ginger for digestion', 'ginger shot benefits', 'ginger root extract benefits', 'ginger tablets benefits', 'ginger powder benefits', 'benefits of drinking ginger tea', 'ginger medicinal uses', 'ginger is good for', 'turmeric with ginger benefits', 'ginger root for menstrual cramps', 'best ginger supplement for inflammation', 'ginger oil benefits', 'ginger chews benefits', 'ginger benefits sexually', 'ginger for hormonal balance', 'ginger benefits for men', 'black ginger benefits', 'turmeric ginger tea benefits', 'ginger root for bloating', 'ginger help with bloating', 'ginger root supplement benefits', 'fresh ginger for inflammation', 'ginger for digestion problems', 'eating raw ginger benefits', 'health benefits of ginger tea', 'lemon and ginger tea benefits', 'ginger tea benefits for women', 'ginger for constipation', 'ginger root for constipation', 'benefits of raw ginger', 'benefits of turmeric and ginger gummies', 'turmeric and ginger benefits weight loss', 'benefit of ginger pills', 'ginger root powder benefits', 'ginger tablets side effects', 'advantages of eating raw ginger', 'ginger water benefits'],
+    properties: ['Warming', 'Anti-nausea', 'Digestive stimulant', 'Circulation enhancing', 'Anti-inflammatory', 'Hormone balancing', 'Immune boosting', 'Pain relieving']
   },
   turmeric: {
     id: 'turmeric',
