@@ -2,15 +2,37 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  const response = NextResponse.next()
-
   // Environment detection
   const isProduction = process.env.NODE_ENV === 'production'
   const url = new URL(request.url)
   const isLocalhost = url.hostname === 'localhost' || url.hostname === '127.0.0.1'
+  const { pathname } = url
   
-  // 重定向交给vercel.json处理，middleware只负责安全头
-  // 这样避免重复重定向和冲突
+  // ============================================
+  // 🔴 SEO优化：重定向规则（301 Permanent）
+  // ============================================
+  
+  // 1. 重定向 /articles → /blog（消除重复内容）
+  if (pathname === '/articles') {
+    return NextResponse.redirect(new URL('/blog', request.url), { status: 301 })
+  }
+  
+  // 2. 统一体质测试入口
+  if (pathname === '/quiz') {
+    return NextResponse.redirect(new URL('/constitution-test', request.url), { status: 301 })
+  }
+  if (pathname === '/simple-test') {
+    return NextResponse.redirect(new URL('/constitution-test/quick', request.url), { status: 301 })
+  }
+  
+  // 3. 隐藏测试页面（生产环境阻止访问）
+  const testPaths = ['/test', '/test-cms', '/test-enhanced']
+  if (isProduction && !isLocalhost && testPaths.some(path => pathname.startsWith(path))) {
+    return NextResponse.redirect(new URL('/404', request.url), { status: 302 })
+  }
+  
+  // 继续正常处理
+  const response = NextResponse.next()
 
   // 只在生产环境添加CSP头
   if (isProduction && !isLocalhost) {

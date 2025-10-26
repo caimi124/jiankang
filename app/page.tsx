@@ -52,15 +52,15 @@ export const metadata: Metadata = {
   }
 }
 
-// 结构化数据 - 首页
-const structuredData = {
+// 结构化数据 - 首页（SEO优化完整版）
+const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   '@id': 'https://herbscience.shop/#website',
   'name': 'HerbScience',
   'url': 'https://herbscience.shop',
-  'description': 'Evidence-based herbal medicine platform with personalized recommendations',
-  'inLanguage': 'en',
+  'description': 'Evidence-based herbal medicine platform with personalized recommendations based on Traditional Chinese Medicine constitution theory',
+  'inLanguage': ['en', 'zh'],
   'potentialAction': {
     '@type': 'SearchAction',
     'target': {
@@ -70,30 +70,93 @@ const structuredData = {
     'query-input': 'required name=search_term_string'
   },
   'publisher': {
-    '@type': 'Organization',
-    '@id': 'https://herbscience.shop/#organization',
-    'name': 'HerbScience',
-    'url': 'https://herbscience.shop',
-    'logo': {
-      '@type': 'ImageObject',
-      'url': 'https://herbscience.shop/logo.png',
-      'width': 256,
-      'height': 256
-    },
-    'sameAs': [
-      'https://twitter.com/herbscience',
-      'https://facebook.com/herbscience'
-    ]
+    '@id': 'https://herbscience.shop/#organization'
   }
+}
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': 'https://herbscience.shop/#organization',
+  'name': 'HerbScience',
+  'alternateName': '草药科学',
+  'url': 'https://herbscience.shop',
+  'logo': {
+    '@type': 'ImageObject',
+    'url': 'https://herbscience.shop/logo.png',
+    'width': 256,
+    'height': 256
+  },
+  'description': 'Evidence-based herbal medicine platform combining Traditional Chinese Medicine with modern science. Led by licensed pharmacist Zeng Chuping, offering personalized herb recommendations through TCM constitution testing.',
+  'foundingDate': '2024',
+  'founder': {
+    '@type': 'Person',
+    'name': 'Zeng Chuping',
+    'jobTitle': 'Licensed Pharmacist & TCM Expert',
+    'url': 'https://herbscience.shop/about'
+  },
+  'contactPoint': {
+    '@type': 'ContactPoint',
+    'contactType': 'Customer Service',
+    'email': 'expert@herbscience.shop',
+    'availableLanguage': ['English', 'Chinese']
+  },
+  'areaServed': 'Worldwide',
+  'sameAs': [
+    'https://twitter.com/herbscience',
+    'https://facebook.com/herbscience',
+    'https://linkedin.com/company/herbscience'
+  ],
+  'knowsAbout': [
+    'Herbal Medicine',
+    'Traditional Chinese Medicine',
+    'Pharmacology',
+    'Herb-Drug Interactions',
+    'Natural Health Products',
+    'Evidence-Based Medicine'
+  ]
+}
+
+const medicalWebPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  '@id': 'https://herbscience.shop/#webpage',
+  'url': 'https://herbscience.shop',
+  'name': 'HerbScience - Evidence-Based Herbal Medicine & Personalized Herb Recommendations',
+  'description': 'Discover safe, science-backed herbal remedies tailored to your body type. Take our free TCM constitution test for personalized herb recommendations.',
+  'mainContentOfPage': {
+    '@type': 'WebPageElement',
+    'cssSelector': 'main'
+  },
+  'specialty': 'Herbal Medicine',
+  'audience': {
+    '@type': 'PeopleAudience',
+    'audienceType': 'Health-conscious individuals seeking natural remedies'
+  },
+  'reviewedBy': {
+    '@type': 'Person',
+    'name': 'Zeng Chuping',
+    'jobTitle': 'Licensed Pharmacist & TCM Expert'
+  },
+  'datePublished': '2024-01-01',
+  'dateModified': new Date().toISOString()
 }
 
 export default function Home() {
   return (
     <>
-      {/* 结构化数据 */}
+      {/* 结构化数据 - SEO优化完整版 */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalWebPageSchema) }}
       />
       
       <HomeClient />

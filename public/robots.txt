@@ -1,18 +1,51 @@
 User-agent: *
 Allow: /
+
+# 🚫 阻止API和内部路径
 Disallow: /api/
 Disallow: /_next/
-Disallow: /admin
-Disallow: /test*
-Disallow: /zh/test*
+Disallow: /admin/
 
-# Allow specific Googlebot access
+# 🚫 阻止测试和开发页面（SEO优化）
+Disallow: /test
+Disallow: /test/
+Disallow: /test-cms
+Disallow: /test-cms/
+Disallow: /test-enhanced
+Disallow: /test-enhanced/
+Disallow: /simple-test
+Disallow: /simple-test/
+Disallow: /constitution-test/debug
+Disallow: /constitution-test/debug/
+Disallow: /zh/test
+
+# 🚫 阻止重复内容（已重定向的旧URL）
+Disallow: /articles
+Disallow: /articles/
+Disallow: /quiz
+Disallow: /quiz/
+
+# ✅ 允许Googlebot完全访问（除了上述路径）
 User-agent: Googlebot
 Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /test
+Disallow: /test-cms
+Disallow: /test-enhanced
+Disallow: /simple-test
+Disallow: /articles
+Disallow: /quiz
 Crawl-delay: 0
 
+# ✅ 允许Googlebot抓取图片
 User-agent: Googlebot-Image
 Allow: /
+Disallow: /test
+Disallow: /admin/
 
-# Sitemap
+# 🗺️ Sitemap位置
 Sitemap: https://herbscience.shop/sitemap.xml
+
+# 📝 最后更新：2025-01-26
+# 📊 目的：SEO优化 - 阻止测试页面索引，消除重复内容
