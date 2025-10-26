@@ -14,8 +14,9 @@ export const revalidate = 0
 async function getHerbData(slug: string) {
 	let normalizedSlug = normalizeSlug(slug)
 
-	// 🚀 扩展的URL别名和安全映射
+	// 🚀 扩展的URL别名和安全映射（包含中文名称）
 	const aliases: Record<string, string> = {
+		// 英文别名
 		'pumpkin-seed': 'pumpkin-seeds',
 		'pumpkinseeds': 'pumpkin-seeds',
 		'pumpkin_seed': 'pumpkin-seeds',
@@ -27,7 +28,20 @@ async function getHerbData(slug: string) {
 		'turmeric-root': 'turmeric',
 		'ginger-root': 'ginger',
 		'rhodiola': 'rhodiola-crenulata',
-		'rhodiola-rosea': 'rhodiola-crenulata'
+		'rhodiola-rosea': 'rhodiola-crenulata',
+		// 中文名称别名（URL编码和直接中文都支持）
+		'甘草': 'licorice-root',
+		'人参': 'ginseng',
+		'姜黄': 'turmeric',
+		'生姜': 'ginger',
+		'薄荷': 'peppermint',
+		'洋甘菊': 'chamomile',
+		'南瓜子': 'pumpkin-seeds',
+		'丁香': 'clove',
+		'肉桂': 'cinnamon',
+		'洋葱': 'onion',
+		'红景天': 'rhodiola-crenulata',
+		'南非醉茄': 'ashwagandha'
 	}
 	
 	if (aliases[normalizedSlug]) {
