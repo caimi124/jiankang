@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Navigation from '../../../components/Navigation'
 import Breadcrumb from '../../../components/Breadcrumb'
 import MedicalReviewBanner from '../../../components/MedicalReviewBanner'
-import { Calendar, User, Tag, ArrowLeft, Heart, Coffee, AlertTriangle, CheckCircle, Clock, Droplet, Sparkles, Coffee as Tea } from 'lucide-react'
+import { Calendar, User, Tag, ArrowLeft, Heart, Coffee, AlertTriangle, CheckCircle, Clock, Droplet, Sparkles, Coffee as Tea, Share2, Bookmark } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Ginger Tea for Menstrual Cramps: Natural Period Pain Relief That Actually Works | HerbScience',
