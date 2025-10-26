@@ -10,6 +10,18 @@ import Link from 'next/link'
 // Static fallback articles (defined outside component)
 const staticArticles = [
   {
+    id: 1758713619591,
+    title: "Ginger Tea for Menstrual Cramps: Natural Period Pain Relief That Actually Works",
+    excerpt: "Tired of period cramps controlling your life? Learn how ginger tea for menstrual cramps provides natural relief. Discover when to drink ginger tea in periods, how to use ginger for menstrual cramps, and why it works as well as ibuprofen.",
+    category: "lifestyle",
+    author: "曾楚平 (Zeng Chuping)",
+    publishedAt: "2025-01-26",
+    readTime: 7,
+    featured_image: null,
+    slug: { current: "ginger-tea-menstrual-cramps-natural-relief" },
+    tags: ["ginger tea for menstrual cramps", "ginger tea in periods", "ginger for period pain", "natural period pain relief", "how to use ginger for menstrual cramps", "ginger root for menstrual cramps", "period cramp remedies", "women's health", "natural remedies"]
+  },
+  {
     id: 1758713619589,
     title: "Ashwagandha Benefits for Female: Hormonal Imbalance, Stress & What It's Good For",
     excerpt: "Discover ashwagandha benefits for female health: balance hormones, reduce stress, improve sleep. Learn safe dosage, side effects, and what ashwagandha is good for. Evidence-based guide by licensed pharmacist.",
