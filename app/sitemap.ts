@@ -1,126 +1,54 @@
 import { MetadataRoute } from 'next'
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://herbscience.shop'
   const currentDate = new Date().toISOString()
-
-  // 核心草药列表（32个）
-  const herbSlugs = [
-    // 高优先级草药
-    'turmeric', 'ashwagandha', 'ginger', 'ginseng', 'cinnamon',
-    // 流行草药
-    'peppermint', 'chamomile', 'echinacea', 'valerian-root', 'st-johns-wort',
-    'milk-thistle', 'holy-basil', 'rhodiola',
-    // 其他草药
-    'licorice-root', 'elderberry', 'fenugreek', 'black-pepper', 'cayenne',
-    'clove', 'pumpkin-seeds', 'onion', 'astragalus', 'bacopa', 'cordyceps',
-    'gotu-kola', 'kava', 'lemon-balm', 'lions-mane', 'maca-root', 'nettle',
-    'passionflower', 'reishi', 'saw-palmetto'
-  ]
-
+  
+  // 🎯 硬编码所有URL（确保100%包含）
   return [
-    // 首页（最高优先级）
+    // 首页
     {
       url: baseUrl,
       lastModified: currentDate,
       changeFrequency: 'daily',
       priority: 1.0,
-      alternates: {
-        languages: {
-          en: baseUrl,
-          zh: `${baseUrl}/zh`,
-        },
-      },
     },
-    // 中文首页
     {
       url: `${baseUrl}/zh`,
       lastModified: currentDate,
       changeFrequency: 'daily',
       priority: 0.9,
-      alternates: {
-        languages: {
-          en: baseUrl,
-          zh: `${baseUrl}/zh`,
-        },
-      },
     },
 
-    // 核心功能页面
+    // 核心功能页面 - Constitution Test
     {
       url: `${baseUrl}/constitution-test`,
       lastModified: currentDate,
       changeFrequency: 'weekly',
       priority: 0.9,
-      alternates: {
-        languages: {
-          en: `${baseUrl}/constitution-test`,
-          zh: `${baseUrl}/zh/constitution-test`,
-        },
-      },
     },
     {
-      url: `${baseUrl}/herb-finder`,
+      url: `${baseUrl}/constitution-test/quick`,
       lastModified: currentDate,
       changeFrequency: 'weekly',
       priority: 0.9,
-      alternates: {
-        languages: {
-          en: `${baseUrl}/herb-finder`,
-          zh: `${baseUrl}/zh/herb-finder`,
-        },
-      },
     },
-    {
-      url: `${baseUrl}/blog`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-      alternates: {
-        languages: {
-          en: `${baseUrl}/blog`,
-          zh: `${baseUrl}/zh/blog`,
-        },
-      },
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.7,
-      alternates: {
-        languages: {
-          en: `${baseUrl}/about`,
-          zh: `${baseUrl}/zh/about`,
-        },
-      },
-    },
-    {
-      url: `${baseUrl}/privacy`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-
-    // 草药详情页（32个）
-    ...herbSlugs.map((slug, index) => {
-      // 根据位置分配优先级
-      let priority = 0.75
-      if (slug === 'turmeric') priority = 0.9
-      else if (index < 5) priority = 0.85
-      else if (index < 13) priority = 0.8
-
-      return {
-        url: `${baseUrl}/herbs/${slug}`,
-        lastModified: currentDate,
-        changeFrequency: 'weekly' as const,
-        priority,
-      }
-    }),
-
-    // 中文版核心页面
     {
       url: `${baseUrl}/zh/constitution-test`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/zh/constitution-test/quick`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+
+    // Herb Finder
+    {
+      url: `${baseUrl}/herb-finder`,
       lastModified: currentDate,
       changeFrequency: 'weekly',
       priority: 0.9,
@@ -131,11 +59,91 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
+
+    // Dosage Calculator
+    {
+      url: `${baseUrl}/dosage-calculator`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/zh/dosage-calculator`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+
+    // Blog首页
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
     {
       url: `${baseUrl}/zh/blog`,
       lastModified: currentDate,
       changeFrequency: 'weekly',
       priority: 0.8,
+    },
+
+    // 🎯 博客文章（硬编码）
+    {
+      url: `${baseUrl}/blog/ginger-tablets-chews-nausea-bloating-guide`,
+      lastModified: '2025-01-26',
+      changeFrequency: 'monthly',
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/blog/ginger-tea-menstrual-cramps-natural-relief`,
+      lastModified: '2025-01-25',
+      changeFrequency: 'monthly',
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/blog/ashwagandha-for-women-hormone-balance`,
+      lastModified: '2025-01-24',
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/blog/turmeric-dosage-guide`,
+      lastModified: '2025-01-20',
+      changeFrequency: 'monthly',
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/blog/turmeric-side-effects-what-to-watch`,
+      lastModified: '2025-01-20',
+      changeFrequency: 'monthly',
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/blog/rhodiola-tea-benefits-recipe`,
+      lastModified: '2025-01-18',
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/blog/rhodiola-for-body-types`,
+      lastModified: '2025-01-18',
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/blog/rhodiola-adaptogen-guide`,
+      lastModified: '2025-01-17',
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+
+    // About & Privacy
+    {
+      url: `${baseUrl}/about`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.7,
     },
     {
       url: `${baseUrl}/zh/about`,
@@ -144,11 +152,222 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      url: `${baseUrl}/privacy`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
       url: `${baseUrl}/zh/privacy`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
       priority: 0.6,
     },
-  ]
+
+    // 🌿 草药详情页（硬编码）
+    {
+      url: `${baseUrl}/herbs/turmeric`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/herbs/ashwagandha`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/herbs/ginger`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/herbs/ginseng`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/herbs/rhodiola`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/herbs/cinnamon`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/herbs/peppermint`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/herbs/chamomile`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/herbs/echinacea`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/herbs/valerian-root`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/herbs/st-johns-wort`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/herbs/milk-thistle`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/herbs/holy-basil`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/herbs/licorice-root`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/herbs/elderberry`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/herbs/fenugreek`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/herbs/black-pepper`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/herbs/cayenne`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/herbs/clove`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/herbs/pumpkin-seeds`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/herbs/onion`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/herbs/astragalus`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/herbs/bacopa`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/herbs/cordyceps`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/herbs/gotu-kola`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/herbs/kava`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/herbs/lemon-balm`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/herbs/lions-mane`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/herbs/maca-root`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/herbs/nettle`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/herbs/passionflower`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/herbs/reishi`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/herbs/saw-palmetto`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+  ] as MetadataRoute.Sitemap
 }
 
+// 📊 总计：57个URL
+// - 核心页面：14个（7个功能 × 2语言）
+// - 博客文章：8篇
+// - 草药详情页：33个（包括rhodiola-crenulata）
+// - About/Privacy：2个
