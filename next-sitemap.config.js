@@ -8,15 +8,38 @@ module.exports = {
   
   // 排除不需要在sitemap中的页面
   exclude: [
+    // ❌ 测试和开发页面
     '/test',
+    '/test/*',
+    '/test-cms',
+    '/test-cms/*',
     '/test-enhanced',
+    '/test-enhanced/*',
+    '/simple-test',
+    '/simple-test/*',
+    '/constitution-test/debug',
+    '/constitution-test/debug/*',
+    '/zh/test',
+    '/zh/test/*',
+    
+    // ❌ 技术路径
     '/api/*',
     '/_*',
-    '/zh/test',
     '/loading',
     '/error',
     '/not-found',
-    // 排除重定向源页面，避免404和重复内容
+    
+    // ❌ 旧的/重复的URL（已被301重定向）
+    '/articles',
+    '/articles/*',
+    '/quiz',
+    '/quiz/*',
+    '/zh/articles',
+    '/zh/articles/*',
+    '/zh/quiz',
+    '/zh/quiz/*',
+    
+    // ❌ 已废弃的功能页面
     '/home',
     '/index.html',
     '/ingredient-checker',
@@ -58,21 +81,33 @@ module.exports = {
       }
     }
 
+    // 从静态数据库获取博客文章slugs作为备选
+    async function fetchStaticBlogSlugs() {
+      try {
+        const { getStaticBlogSlugs } = require('./lib/blog-data-sitemap')
+        return getStaticBlogSlugs()
+      } catch (e) {
+        console.warn('[sitemap] Static blog fetch failed:', e?.message)
+        return []
+      }
+    }
+
     const { herbs, posts } = await fetchSanitySlugs()
     const staticHerbs = await fetchStaticHerbSlugs() // Always fetch static herbs
+    const staticBlogs = await fetchStaticBlogSlugs() // Always fetch static blogs
 
     const extraPaths = [
       // 核心功能页面
       await config.transform(config, '/constitution-test'),
+      await config.transform(config, '/constitution-test/quick'),
       await config.transform(config, '/zh/constitution-test'),
+      await config.transform(config, '/zh/constitution-test/quick'),
       await config.transform(config, '/herb-finder'),
       await config.transform(config, '/zh/herb-finder'),
       await config.transform(config, '/dosage-calculator'),
       await config.transform(config, '/zh/dosage-calculator'),
       await config.transform(config, '/about'),
       await config.transform(config, '/zh/about'),
-      await config.transform(config, '/articles'),
-      await config.transform(config, '/zh/articles'),
       await config.transform(config, '/blog'),
       await config.transform(config, '/zh/blog'),
       await config.transform(config, '/privacy'),
@@ -88,9 +123,14 @@ module.exports = {
         .map(h => config.transform(config, `/herbs/${h.slug}`))
       ),
       
-      // 博客文章页面（来自 Sanity）
+      // 博客文章页面（合并 Sanity 和静态数据库，去重）
       ...await Promise.all(
-        posts.map(p => config.transform(config, `/blog/${p.slug}`))
+        Array.from(new Map(
+          [...posts, ...staticBlogs]
+            .filter(p => p.slug && p.slug !== '-' && p.slug.length > 1)
+            .map(p => [p.slug, p]) // 用slug作为key去重
+        ).values())
+        .map(p => config.transform(config, `/blog/${p.slug}`))
       ),
     ];
 
