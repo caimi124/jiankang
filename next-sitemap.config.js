@@ -96,8 +96,28 @@ module.exports = {
     const staticHerbs = await fetchStaticHerbSlugs() // Always fetch static herbs
     const staticBlogs = await fetchStaticBlogSlugs() // Always fetch static blogs
 
+    // 🔴 硬编码所有静态博客文章路径（确保100%包含）
+    // 📊 每次新增博客文章时，需要手动添加到这里
+    const hardcodedBlogPosts = [
+      '/blog/ginger-tablets-chews-nausea-bloating-guide',      // 2025-01-26
+      '/blog/ginger-tea-menstrual-cramps-natural-relief',      // 2025-01-25
+      '/blog/ashwagandha-for-women-hormone-balance',           // 2025-01-24
+      '/blog/turmeric-dosage-guide',                           // 2025-01-20
+      '/blog/turmeric-side-effects-what-to-watch',             // 2025-01-20
+      '/blog/rhodiola-tea-benefits-recipe',                    // 2025-01-18
+      '/blog/rhodiola-for-body-types',                         // 2025-01-18
+      '/blog/rhodiola-adaptogen-guide',                        // 2025-01-17
+    ]
+    
+    // 📊 预期sitemap总页面数：
+    // - 核心页面：14个（7个页面 × 英文+中文）
+    // - 硬编码博客：8篇
+    // - 草药详情页：35+个
+    // - 额外动态页面：视Sanity数据而定
+    // 总计：约 57-65 个页面
+
     const extraPaths = [
-      // 核心功能页面
+      // 核心功能页面（英文+中文）
       await config.transform(config, '/constitution-test'),
       await config.transform(config, '/constitution-test/quick'),
       await config.transform(config, '/zh/constitution-test'),
@@ -113,6 +133,11 @@ module.exports = {
       await config.transform(config, '/privacy'),
       await config.transform(config, '/zh/privacy'),
       
+      // 🎯 硬编码的博客文章（确保一定被包含）
+      ...await Promise.all(
+        hardcodedBlogPosts.map(path => config.transform(config, path))
+      ),
+      
       // 动态草药详情（合并 Sanity 和静态数据库，去重）
       ...await Promise.all(
         Array.from(new Map(
@@ -123,11 +148,12 @@ module.exports = {
         .map(h => config.transform(config, `/herbs/${h.slug}`))
       ),
       
-      // 博客文章页面（合并 Sanity 和静态数据库，去重）
+      // 📋 额外的博客文章（来自Sanity/静态数据库，排除已硬编码的）
       ...await Promise.all(
         Array.from(new Map(
           [...posts, ...staticBlogs]
             .filter(p => p.slug && p.slug !== '-' && p.slug.length > 1)
+            .filter(p => !hardcodedBlogPosts.includes(`/blog/${p.slug}`)) // 排除已硬编码的
             .map(p => [p.slug, p]) // 用slug作为key去重
         ).values())
         .map(p => config.transform(config, `/blog/${p.slug}`))
