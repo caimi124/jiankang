@@ -247,6 +247,20 @@ export async function searchBlogPosts(searchTerm: string): Promise<BlogPost[]> {
 export const staticBlogData = {
   featuredPosts: [
     {
+      _id: '6',
+      title: "Ginger Tablets vs Chews: Which Works Better for Nausea & Bloating?",
+      slug: { current: "ginger-tablets-chews-nausea-bloating-guide" },
+      excerpt: "Feeling bloated or nauseous? Discover ginger tablets benefits, ginger chews for nausea, and why this ancient root is your stomach's best friend. Complete guide with DIY recipes and real results.",
+      publishedAt: "2025-01-26",
+      readTime: 8,
+      author: "曾楚平 (Zeng Chuping)",
+      category: "lifestyle",
+      tags: ["ginger tablets benefits", "ginger chews for nausea", "ginger capsules benefits", "ginger supplement for nausea", "benefits of drinking ginger tea", "natural remedies", "digestive health", "motion sickness", "bloating relief"],
+      featured_image: null,
+      seoTitle: "Ginger Tablets vs Chews: Which Works Better for Nausea & Bloating? | HerbScience",
+      seoDescription: "Feeling bloated or nauseous? Discover ginger tablets benefits, ginger chews for nausea, and why this ancient root is your stomach's best friend. Complete guide with DIY recipes and real results."
+    },
+    {
       _id: '5',
       title: "Ginger Tea for Menstrual Cramps: Natural Period Pain Relief That Actually Works",
       slug: { current: "ginger-tea-menstrual-cramps-natural-relief" },
