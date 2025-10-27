@@ -544,9 +544,9 @@ HERB_DETAIL_FALLBACK['rhodiola-crenulata'] = {
     'Physical stamina and endurance',
     'Mood and emotional stability'
   ]
-},
+}
 
-onion: {
+HERB_DETAIL_FALLBACK['onion'] = {
     id: 'onion',
     name: 'Onion',
     chinese_name: '洋葱',
@@ -852,7 +852,7 @@ onion: {
       'Antimicrobial',
       'Bone Health Support'
     ]
-  },
+}
 
 // Add aliases
 HERB_DETAIL_FALLBACK['rhodiola'] = HERB_DETAIL_FALLBACK['rhodiola-crenulata']
