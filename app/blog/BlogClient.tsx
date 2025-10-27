@@ -10,6 +10,18 @@ import Link from 'next/link'
 // Static fallback articles (defined outside component)
 const staticArticles = [
   {
+    id: 1758713619593,
+    title: "Red Onion vs White Onion: Which Is Healthier? (Science-Backed Comparison)",
+    excerpt: "Red onion vs white onion — which is healthier? Discover the key differences in antioxidants, quercetin, anthocyanins, digestion benefits, and how to use each for maximum health impact. Evidence-based guide for Western readers.",
+    category: "science",
+    author: "曾楚平 (Zeng Chuping)",
+    publishedAt: "2025-01-27",
+    readTime: 8,
+    featured_image: null,
+    slug: { current: "red-onion-vs-white-onion-health-benefits" },
+    tags: ["red onion vs white onion", "onion health benefits", "pickled onion benefits", "who should not eat onion", "onion for cholesterol", "onion antioxidants", "quercetin", "anthocyanins", "onion for digestion", "natural remedies"]
+  },
+  {
     id: 1758713619592,
     title: "Ginger Tablets vs Chews: Which Works Better for Nausea & Bloating?",
     excerpt: "Feeling bloated or nauseous? Discover ginger tablets benefits, ginger chews for nausea, and why this ancient root is your stomach's best friend. Complete guide with DIY recipes and real results.",

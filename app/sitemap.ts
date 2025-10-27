@@ -90,6 +90,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     // 🎯 博客文章（硬编码 - 使用实际文件夹名称）
     {
+      url: `${baseUrl}/blog/red-onion-vs-white-onion-health-benefits`,
+      lastModified: '2025-01-27',
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    {
       url: `${baseUrl}/blog/ginger-tablets-chews-nausea-bloating-guide`,
       lastModified: '2025-01-26',
       changeFrequency: 'monthly',
@@ -360,8 +366,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ] as MetadataRoute.Sitemap
 }
 
-// 📊 总计：56个URL
+// 📊 总计：57个URL
 // - 核心页面：14个（7个功能 × 2语言）
-// - 博客文章：7篇（实际存在的文件）
+// - 博客文章：8篇（实际存在的文件）
 // - 草药详情页：33个
 // - 首页：2个（英文+中文）

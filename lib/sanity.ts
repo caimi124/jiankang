@@ -247,6 +247,20 @@ export async function searchBlogPosts(searchTerm: string): Promise<BlogPost[]> {
 export const staticBlogData = {
   featuredPosts: [
     {
+      _id: '7',
+      title: "Red Onion vs White Onion: Which Is Healthier? (Science-Backed Comparison)",
+      slug: { current: "red-onion-vs-white-onion-health-benefits" },
+      excerpt: "Red onion vs white onion — which is healthier? Discover the key differences in antioxidants, quercetin, anthocyanins, digestion benefits, and how to use each for maximum health impact. Evidence-based guide for Western readers.",
+      publishedAt: "2025-01-27",
+      readTime: 8,
+      author: "曾楚平 (Zeng Chuping)",
+      category: "science",
+      tags: ["red onion vs white onion", "onion health benefits", "pickled onion benefits", "who should not eat onion", "onion for cholesterol", "onion antioxidants", "quercetin", "anthocyanins", "onion for digestion", "natural remedies"],
+      featured_image: null,
+      seoTitle: "Red Onion vs White Onion: Which Is Healthier? (Science-Backed Comparison) | HerbScience",
+      seoDescription: "Red onion vs white onion — which is healthier? Discover the key differences in antioxidants, quercetin, anthocyanins, digestion benefits, and how to use each for maximum health impact. Evidence-based guide for Western readers."
+    },
+    {
       _id: '6',
       title: "Ginger Tablets vs Chews: Which Works Better for Nausea & Bloating?",
       slug: { current: "ginger-tablets-chews-nausea-bloating-guide" },
