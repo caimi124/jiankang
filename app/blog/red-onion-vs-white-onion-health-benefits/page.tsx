@@ -188,7 +188,13 @@ export default function RedOnionVsWhiteOnionPage() {
 
       <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
         <Navigation />
-        <Breadcrumb />
+        <Breadcrumb 
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Blog', href: '/blog' },
+            { label: 'Red Onion vs White Onion', href: '/blog/red-onion-vs-white-onion-health-benefits' }
+          ]}
+        />
         <MedicalReviewBanner />
 
         <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
