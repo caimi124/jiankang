@@ -88,7 +88,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
 
-    // 🎯 博客文章（硬编码）
+    // 🎯 博客文章（硬编码 - 使用实际文件夹名称）
     {
       url: `${baseUrl}/blog/ginger-tablets-chews-nausea-bloating-guide`,
       lastModified: '2025-01-26',
@@ -108,31 +108,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/blog/turmeric-dosage-guide`,
+      url: `${baseUrl}/blog/turmeric-gut-relief-guide`,
       lastModified: '2025-01-20',
       changeFrequency: 'monthly',
       priority: 0.85,
     },
     {
-      url: `${baseUrl}/blog/turmeric-side-effects-what-to-watch`,
-      lastModified: '2025-01-20',
-      changeFrequency: 'monthly',
-      priority: 0.85,
-    },
-    {
-      url: `${baseUrl}/blog/rhodiola-tea-benefits-recipe`,
+      url: `${baseUrl}/blog/rhodiola-tea-recipes-energy-focus`,
       lastModified: '2025-01-18',
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/blog/rhodiola-for-body-types`,
+      url: `${baseUrl}/blog/why-rhodiola-works-body-type`,
       lastModified: '2025-01-18',
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/blog/rhodiola-adaptogen-guide`,
+      url: `${baseUrl}/blog/rhodiola-smart-way-daily-rituals`,
       lastModified: '2025-01-17',
       changeFrequency: 'monthly',
       priority: 0.8,
@@ -366,8 +360,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ] as MetadataRoute.Sitemap
 }
 
-// 📊 总计：57个URL
+// 📊 总计：56个URL
 // - 核心页面：14个（7个功能 × 2语言）
-// - 博客文章：8篇
-// - 草药详情页：33个（包括rhodiola-crenulata）
-// - About/Privacy：2个
+// - 博客文章：7篇（实际存在的文件）
+// - 草药详情页：33个
+// - 首页：2个（英文+中文）
