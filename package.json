@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postbuild": "next-sitemap",
+    "postbuild": "echo 'Using app/sitemap.ts instead of next-sitemap'",
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
