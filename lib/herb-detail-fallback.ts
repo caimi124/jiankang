@@ -544,7 +544,7 @@ HERB_DETAIL_FALLBACK['rhodiola-crenulata'] = {
     'Physical stamina and endurance',
     'Mood and emotional stability'
   ]
-}
+},
 
 onion: {
     id: 'onion',
