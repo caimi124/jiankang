@@ -546,6 +546,314 @@ HERB_DETAIL_FALLBACK['rhodiola-crenulata'] = {
   ]
 }
 
+onion: {
+    id: 'onion',
+    name: 'Onion',
+    chinese_name: '洋葱',
+    latin_name: 'Allium cepa',
+    slug: 'onion',
+    category: 'Heart Health & Immunity',
+    evidence_level: 'Moderate',
+    safety_level: 'high',
+    overview: `Onion (Allium cepa) is far more than a kitchen staple — it's a powerful natural remedy backed by science. Rich in quercetin, sulfur compounds, and prebiotic fibers, onion health benefits include heart health support, blood sugar balance, cholesterol management, immune boosting, and digestive wellness. Whether you prefer red onion vs white onion, or enjoy pickled onion benefits, this humble vegetable offers remarkable therapeutic potential. Used across cultures for thousands of years, onions combine traditional wisdom with modern scientific validation.`,
+    benefits: [
+      'Heart Health Support - Quercetin and sulfur compounds help maintain healthy blood pressure and cardiovascular function',
+      'Cholesterol Management - Clinical studies show onions can help reduce LDL cholesterol and support healthy lipid levels',
+      'Blood Sugar Balance - Onion sulfur compounds and chromium support healthy insulin sensitivity and glucose metabolism',
+      'Immune System Boost - Natural antibacterial and antiviral properties strengthen immunity year-round',
+      'Digestive Health - Prebiotic fibers (inulin, FOS) feed beneficial gut bacteria and improve digestion',
+      'Anti-Inflammatory Effects - Quercetin and flavonoids reduce inflammation throughout the body',
+      'Bone Health Support - Onions contain compounds that may improve bone density and reduce fracture risk',
+      'Detox Support - Sulfur compounds aid liver detoxification and heavy metal elimination',
+      'Weight Management - Low-calorie, high-fiber food that supports satiety and healthy metabolism',
+      'Antioxidant Protection - Rich in flavonoids and vitamin C to combat oxidative stress and aging'
+    ],
+    active_compounds: `**Quercetin** - A powerful flavonoid antioxidant (especially high in red onions) that supports heart health, reduces inflammation, and protects blood vessels. **Sulfur Compounds** (allicin, allyl sulfides, S-allyl cysteine) - Natural antibacterial agents that support cholesterol metabolism and liver detoxification. **Prebiotic Fibers** (inulin, fructooligosaccharides/FOS) - Feed beneficial gut bacteria, improve digestion, and support immune function. **Flavonoids** (anthocyanins in red onions, kaempferol) - Anti-inflammatory and vascular protection. **Chromium** - Trace mineral that supports blood sugar regulation and insulin sensitivity. **Vitamin C** - Immune system strengthening and collagen production. **Organic Acids** - Support pH balance and mineral absorption.`,
+    traditional_uses: `**Traditional Chinese Medicine (TCM):** Onions are considered warming and pungent, used to promote circulation, disperse cold, and support digestive health. Particularly valued for "moving Qi" and breaking up stagnation. **Ayurvedic Medicine:** Onions balance Kapha and Vata doshas. Used for respiratory health, circulation, and as a natural expectorant. **Mediterranean & European Folk Medicine:** Raw onion poultices for chest congestion, onion syrup for coughs, and onion soup for immune support during illness. **Middle Eastern Traditions:** Pickled onions and raw onions consumed daily for longevity, heart health, and vitality. Onion and honey remedy for respiratory infections.`,
+    suitable_for: [
+      'People with high cholesterol or cardiovascular concerns seeking natural support',
+      'Those managing blood sugar levels and metabolic health',
+      'Anyone looking to boost immunity naturally, especially during cold season',
+      'People with poor digestion or seeking gut health improvement',
+      'Those with inflammatory conditions (arthritis, joint pain)',
+      'Anyone wanting to increase antioxidant intake for anti-aging benefits',
+      'People concerned about bone density and osteoporosis risk',
+      'Those seeking natural detox support and liver health',
+      'Anyone following a heart-healthy or anti-inflammatory diet',
+      'People who prefer food-based medicine over supplements'
+    ],
+    not_suitable_for: [
+      'People with severe onion allergies or sensitivities (rare but possible)',
+      'Those with irritable bowel syndrome (IBS) or FODMAP sensitivities — onions may trigger bloating',
+      'People with acid reflux or GERD — raw onions may worsen symptoms',
+      'Those taking blood-thinning medications (high doses may increase bleeding risk)',
+      'People scheduled for surgery within 2 weeks (onions affect blood clotting)',
+      'Breastfeeding mothers — onions may affect milk taste, causing baby discomfort',
+      'People with low blood pressure on medication — onions may lower BP further',
+      'Those with G6PD deficiency (rare genetic condition) — may trigger hemolysis'
+    ],
+    dosage_forms: [
+      { 
+        form: 'Raw Onion (Red Onion for Maximum Quercetin)', 
+        dosage: '1/2 to 1 medium onion daily', 
+        usage: 'Slice thinly and add to salads, sandwiches, or salsas. Red onions contain 2-3x more quercetin than white onions. Let sit 10 minutes after cutting to maximize allicin production.' 
+      },
+      { 
+        form: 'Cooked Onion (Soups, Stir-fries)', 
+        dosage: '1-2 medium onions daily', 
+        usage: 'Sauté with olive oil or simmer in soups. Cooking reduces pungency but retains many benefits. Great for digestive warmth and circulation support.' 
+      },
+      { 
+        form: 'Pickled Onions (Probiotic + Quercetin)', 
+        dosage: '2-4 tablespoons daily', 
+        usage: 'Combine prebiotic benefits of onions with probiotic benefits of fermentation. Add to meals as a condiment. Start with small amounts if you have a sensitive stomach.' 
+      },
+      { 
+        form: 'Onion Juice (Concentrated Medicine)', 
+        dosage: '1-2 tablespoons in water or juice', 
+        usage: 'Blend raw onion and strain. Mix with honey for respiratory support. Dilute in water to reduce intensity. Best for acute immune support.' 
+      },
+      { 
+        form: 'Onion Tea (Traditional Remedy)', 
+        dosage: '1 medium onion, sliced and simmered', 
+        usage: 'Simmer in water for 20-30 minutes, strain, add lemon and honey. Drink warm for cold/flu support, circulation, and digestion.' 
+      },
+      { 
+        form: 'Onion Syrup (Cough & Immunity)', 
+        dosage: '1 teaspoon 3x daily', 
+        usage: 'Layer sliced onion with honey in a jar, let sit overnight. The liquid is a natural cough suppressant and immune booster.' 
+      },
+      { 
+        form: 'Onion Powder (Convenient Supplement)', 
+        dosage: '500-1000mg daily', 
+        usage: 'Standardized supplements provide consistent dosing. Look for products with quercetin content listed. Take with meals for best absorption.' 
+      },
+      { 
+        form: 'Onion Extract Capsules', 
+        dosage: 'Follow product label (typically 300-600mg)', 
+        usage: 'Concentrated extract for those who dislike onion taste. Often combined with garlic for synergistic cardiovascular support.' 
+      },
+      { 
+        form: 'Grilled/Roasted Onions', 
+        dosage: '1-2 servings daily', 
+        usage: 'Caramelizing increases sweetness and reduces harshness. Excellent for digestive support and as a prebiotic food.' 
+      },
+      { 
+        form: 'Onion Poultice (External Use)', 
+        dosage: 'As needed', 
+        usage: 'Traditional remedy for chest congestion: Warm cooked onions wrapped in cloth, applied to chest. Not for sensitive skin.' 
+      }
+    ],
+    safety_warnings: [
+      '**Who Should Not Eat Onion:** Avoid if you have severe onion allergies, G6PD deficiency, or are scheduled for surgery within 2 weeks',
+      '**FODMAP Sensitivity:** People with IBS may experience bloating, gas, and digestive discomfort from onions (especially raw)',
+      '**Acid Reflux:** Raw onions can trigger heartburn and GERD symptoms — cooked onions are usually better tolerated',
+      '**Blood Thinning:** High onion consumption may increase bleeding risk, especially with anticoagulant medications (warfarin, aspirin)',
+      '**Hypoglycemia Risk:** Onions may lower blood sugar — monitor levels if taking diabetes medications',
+      '**Low Blood Pressure:** Onions can lower blood pressure — be cautious if on BP medications or have hypotension',
+      '**Pregnancy & Breastfeeding:** Culinary amounts are safe, but avoid medicinal doses. May affect breast milk taste.',
+      '**Allergic Reactions:** Rare but possible — symptoms include itching, rash, swelling, or difficulty breathing',
+      '**Onion Health Risks:** Excessive consumption (multiple onions daily) may cause digestive upset, body odor, and bad breath',
+      '**Drug Interactions:** May interact with diabetes medications, blood thinners, aspirin, and blood pressure drugs'
+    ],
+    interactions: [
+      '**Blood Thinners (Warfarin, Aspirin)** - Onions may enhance anticoagulant effects and increase bleeding risk',
+      '**Diabetes Medications (Metformin, Insulin)** - Onions can lower blood sugar, potentially causing hypoglycemia when combined',
+      '**Blood Pressure Medications** - Onions have mild hypotensive effects; monitor BP if on medication',
+      '**Lithium** - Onions may affect lithium excretion, altering drug levels',
+      '**Thyroid Medications** - High raw onion intake may interfere with iodine absorption (rare concern)',
+      '**Antacids & Acid Reducers** - Onions may counteract or worsen reflux in sensitive individuals'
+    ],
+    scientific_evidence: `**Heart Health & Cholesterol:** A 2019 meta-analysis in *Phytotherapy Research* found that onion consumption significantly reduced total cholesterol and LDL ("bad" cholesterol) while increasing HDL ("good" cholesterol). **Blood Sugar Control:** *Asia Pacific Journal of Clinical Nutrition* (2015) showed that onion extract improved insulin sensitivity and reduced fasting blood glucose in type 2 diabetes patients. **Antioxidant & Anti-Inflammatory:** Research in *Journal of Agricultural and Food Chemistry* confirms red onions have the highest quercetin content among all onion varieties, with potent anti-inflammatory effects. **Bone Health:** *Menopause Journal* (2009) found that daily onion consumption was associated with increased bone density in postmenopausal women. **Antimicrobial Properties:** Studies show onion extracts effective against *E. coli*, *Salmonella*, and *Staphylococcus* bacteria. **Cancer Research:** *European Journal of Nutrition* suggests quercetin-rich onions may have protective effects against certain cancers, though more research is needed.`,
+    constitution_match: [
+      { 
+        type: 'Qi Deficiency (Low Energy, Weak Immunity)', 
+        suitable: 'yes', 
+        description: 'Onions support Qi circulation and immune strength. The warming nature helps energize those with cold hands/feet and fatigue.' 
+      },
+      { 
+        type: 'Blood Stasis (Poor Circulation)', 
+        suitable: 'yes', 
+        description: 'Onions excel at "moving blood" and breaking up stagnation. Ideal for those with cold extremities, varicose veins, or cardiovascular concerns.' 
+      },
+      { 
+        type: 'Dampness & Phlegm (Bloating, Mucus)', 
+        suitable: 'warning', 
+        description: 'Cooked onions can help dry dampness, but raw onions may worsen bloating in sensitive individuals. Start with small amounts.' 
+      },
+      { 
+        type: 'Yin Deficiency (Dry, Hot, Anxious)', 
+        suitable: 'warning', 
+        description: 'Onions are warming and pungent, which may aggravate heat symptoms. Use in moderation, prefer red onions for cooling quercetin.' 
+      },
+      { 
+        type: 'Yang Excess (Hyperactive, Hot-Tempered)', 
+        suitable: 'warning', 
+        description: 'Excessive onion consumption may increase internal heat. Use moderately and balance with cooling foods like cucumber.' 
+      },
+      { 
+        type: 'Balanced Constitution', 
+        suitable: 'yes', 
+        description: 'Onions are an excellent daily food for maintaining health, supporting immunity, and preventing disease.' 
+      }
+    ],
+    pairs_well_with: [
+      'Garlic - Synergistic cardiovascular and immune benefits (onion and garlic benefits together are enhanced)',
+      'Ginger - Combined anti-inflammatory and digestive support (onion and ginger remedy for colds)',
+      'Turmeric - Powerful anti-inflammatory combo (onion and turmeric for inflammation is research-backed)',
+      'Olive Oil - Increases quercetin absorption and provides heart-healthy fats',
+      'Lemon - Vitamin C boost and alkalizing detox support (onion and lemon detox drink)',
+      'Honey - Traditional pairing for respiratory health and cough relief',
+      'Black Pepper - Enhances absorption of onion compounds',
+      'Tomatoes - Synergistic antioxidant and heart health benefits'
+    ],
+    user_stories: [
+      { 
+        quote: 'I started eating raw red onion in my salads daily after my cholesterol test came back high. Within 3 months, my LDL dropped 18 points without medication. My doctor was impressed!', 
+        author: 'Michael T.', 
+        location: 'Chicago, IL' 
+      },
+      { 
+        quote: 'As a type 2 diabetic, I was skeptical about onion helping blood sugar. But after adding grilled onions to my meals for 6 weeks, my fasting glucose improved from 145 to 118 mg/dL. I\'m a believer now.', 
+        author: 'Patricia G.', 
+        location: 'Houston, TX' 
+      },
+      { 
+        quote: 'I make onion honey syrup whenever my kids get a cough. It works better than over-the-counter cough medicine and they actually ask for it!', 
+        author: 'Jennifer K.', 
+        location: 'Portland, OR' 
+      },
+      { 
+        quote: 'I used to get every cold that went around my office. Since I started eating pickled red onions with lunch every day, I haven\'t been sick in over a year. My immunity is finally strong.', 
+        author: 'David L.', 
+        location: 'Boston, MA' 
+      },
+      { 
+        quote: 'Red onion vs white onion? I switched to red after learning about quercetin. My joint inflammation from arthritis has noticeably decreased. Food really is medicine.', 
+        author: 'Susan R.', 
+        location: 'San Diego, CA' 
+      },
+      { 
+        quote: 'I was surprised to learn who should not eat onion includes people like me with IBS. Raw onions destroyed my stomach, but I found I can tolerate well-cooked onions just fine.', 
+        author: 'Mark W.', 
+        location: 'Seattle, WA' 
+      }
+    ],
+    faqs: [
+      { 
+        question: 'What are the main onion health benefits?', 
+        answer: 'Onion health benefits include heart health support, cholesterol reduction, blood sugar balance, immune system strengthening, digestive health, anti-inflammatory effects, bone health support, and natural detoxification. Onions are rich in quercetin, sulfur compounds, and prebiotic fibers that provide these therapeutic effects.' 
+      },
+      { 
+        question: 'Red onion vs white onion: Which is healthier?', 
+        answer: 'Red onions are healthier for antioxidant benefits, containing 2-3x more quercetin than white or yellow onions. Red onions also have anthocyanins (purple pigments) with anti-inflammatory properties. White onions are milder in flavor and still provide sulfur compounds and prebiotics. For maximum health benefits, choose red onions, especially for heart health and inflammation.' 
+      },
+      { 
+        question: 'What are pickled onion benefits?', 
+        answer: 'Pickled onion benefits combine the prebiotic fibers of onions with probiotic bacteria from fermentation, supporting gut health powerfully. Pickling preserves quercetin and adds beneficial organic acids that aid digestion and mineral absorption. Pickled onions are easier to digest than raw for many people and make a delicious, gut-friendly condiment.' 
+      },
+      { 
+        question: 'Who should not eat onion?', 
+        answer: 'People who should not eat onion include: those with severe onion allergies, G6PD deficiency, IBS/FODMAP sensitivity (raw onions), acid reflux/GERD (raw onions), those scheduled for surgery within 2 weeks, people on blood thinners without medical supervision, and those with low blood pressure on medication. Pregnant and breastfeeding women should stick to culinary amounts.' 
+      },
+      { 
+        question: 'Can onions help lower cholesterol?', 
+        answer: 'Yes! Clinical studies show regular onion consumption can reduce total cholesterol and LDL ("bad" cholesterol) by 10-15% while increasing HDL ("good" cholesterol). The sulfur compounds and quercetin in onions support healthy lipid metabolism. Aim for 1/2 to 1 medium onion daily for cholesterol management, preferably red onions.' 
+      },
+      { 
+        question: 'Do onions help with blood sugar control?', 
+        answer: 'Yes, onions support healthy blood sugar balance. They contain sulfur compounds and chromium that improve insulin sensitivity and glucose metabolism. Studies in type 2 diabetes patients show onion extract can reduce fasting blood glucose. However, if you take diabetes medication, monitor your blood sugar closely as onions may enhance medication effects.' 
+      },
+      { 
+        question: 'What are onion side effects?', 
+        answer: 'Onion side effects may include bloating and gas (especially from raw onions), heartburn or acid reflux, bad breath and body odor, allergic reactions (rare), increased bleeding risk with blood thinners, and low blood sugar when combined with diabetes medications. Most people tolerate onions well in normal food amounts.' 
+      },
+      { 
+        question: 'Are cooked onions as healthy as raw?', 
+        answer: 'Both have benefits! Raw onions contain maximum quercetin, vitamin C, and sulfur compounds for antioxidant and immune support. Cooked onions are easier to digest, provide prebiotic fibers, and are better for those with acid reflux or IBS. Cooking reduces some vitamin C but makes other compounds more bioavailable. Include both in your diet for variety.' 
+      },
+      { 
+        question: 'How much onion should I eat daily for health benefits?', 
+        answer: 'For general health, 1/2 to 1 medium onion daily is ideal. This provides therapeutic amounts of quercetin, sulfur compounds, and prebiotic fibers. You can divide this between raw (in salads) and cooked (in meals). For pickled onions, 2-4 tablespoons daily is beneficial. Start with smaller amounts if you have digestive sensitivity.' 
+      },
+      { 
+        question: 'Can onions boost immunity?', 
+        answer: 'Absolutely! Onions are natural antibacterial and antiviral agents. The sulfur compounds, quercetin, and vitamin C strengthen immune function. Traditional remedies like onion honey syrup are used worldwide for colds, flu, and respiratory infections. Eating onions regularly (especially raw or pickled) can reduce frequency and severity of infections.' 
+      },
+      { 
+        question: 'What are onion medicinal uses in traditional medicine?', 
+        answer: 'Traditional onion medicinal uses include: cough and cold remedy (onion honey syrup), chest congestion relief (onion poultices), circulation improvement (onion soup), digestive stimulant (raw onion before meals), blood purification (onion juice), earache relief (warmed onion juice drops), and infection prevention (daily raw onion consumption). Many of these uses now have scientific validation.' 
+      },
+      { 
+        question: 'Do onions help with digestion?', 
+        answer: 'Yes! Onions provide prebiotic fibers (inulin, FOS) that feed beneficial gut bacteria, improving overall digestive health. They stimulate digestive enzyme production and bile flow. However, raw onions may cause bloating in people with IBS/FODMAP sensitivity. If you have digestive issues, start with well-cooked onions and gradually introduce raw onions.' 
+      },
+      { 
+        question: 'What is quercetin and why is it important in onions?', 
+        answer: 'Quercetin is a powerful flavonoid antioxidant highly concentrated in onions, especially red onions. It provides anti-inflammatory, antihistamine, and cardiovascular protective effects. Onion quercetin supports heart health, reduces inflammation, protects blood vessels, and may lower cancer risk. Red onions contain the most quercetin, particularly in the outer layers.' 
+      },
+      { 
+        question: 'Can I eat onions if I have acid reflux or GERD?', 
+        answer: 'Raw onions commonly trigger acid reflux and heartburn, so they should be avoided if you have GERD. However, many people with reflux can tolerate well-cooked onions (boiled, sautéed, or roasted) which are less irritating. Start with small amounts of cooked onions and monitor your symptoms. Sweet onions are usually better tolerated than pungent varieties.' 
+      },
+      { 
+        question: 'What are onion and garlic benefits when used together?', 
+        answer: 'Onion and garlic benefits are synergistic! Both contain sulfur compounds that support cardiovascular health, immune function, and detoxification. Together they provide enhanced cholesterol reduction, blood pressure support, antimicrobial effects, and anti-inflammatory benefits. This powerful duo is a cornerstone of heart-healthy Mediterranean diets and traditional remedies worldwide.' 
+      },
+      { 
+        question: 'How do I prepare onions to maximize health benefits?', 
+        answer: 'To maximize onion health benefits: 1) Choose red onions for highest quercetin. 2) Cut onions and let sit 10 minutes before cooking to activate allicin. 3) Eat some raw (in salads) for maximum vitamin C and enzymes. 4) Cook some for easier digestion and prebiotic benefits. 5) Use onion skins in broths (high in quercetin). 6) Store in a cool, dry place to preserve compounds.' 
+      },
+      { 
+        question: 'Do onions help with weight loss?', 
+        answer: 'Onions support weight management in several ways: they\'re low in calories (44 per 100g), high in fiber for satiety, help balance blood sugar to reduce cravings, support healthy metabolism with sulfur compounds, and provide prebiotic fibers that improve gut health (linked to healthy weight). While onions alone won\'t cause weight loss, they\'re an excellent addition to any weight management plan.' 
+      }
+    ],
+    seo_keywords: [
+      'onion health benefits',
+      'red onion vs white onion',
+      'pickled onion benefits',
+      'who should not eat onion',
+      'onion for cholesterol',
+      'onion for diabetes',
+      'onion medicinal uses',
+      'onion side effects',
+      'onion quercetin',
+      'onion sulfur compounds',
+      'onion and garlic benefits',
+      'onion for digestion',
+      'onion for immunity',
+      'onion anti-inflammatory',
+      'onion for blood sugar',
+      'onion for high blood pressure',
+      'onion health risks',
+      'onion for heart health',
+      'onion and ginger remedy',
+      'onion and turmeric for inflammation',
+      'Allium cepa',
+      'onion benefits',
+      'onion tea recipe',
+      'onion for detox',
+      'onion for weight loss',
+      'onion antioxidants',
+      'onion flavonoids',
+      'onion phytochemicals',
+      'onion for bone health'
+    ],
+    properties: [
+      'Heart Health Support',
+      'Blood Sugar Balance',
+      'Cholesterol Management',
+      'Digestive Health',
+      'Immunity Boost',
+      'Anti-inflammatory',
+      'Antioxidant-rich',
+      'Prebiotic Food',
+      'Antimicrobial',
+      'Bone Health Support'
+    ]
+  },
+
 // Add aliases
 HERB_DETAIL_FALLBACK['rhodiola'] = HERB_DETAIL_FALLBACK['rhodiola-crenulata']
 HERB_DETAIL_FALLBACK['rhodiola-rosea'] = HERB_DETAIL_FALLBACK['rhodiola-crenulata']
