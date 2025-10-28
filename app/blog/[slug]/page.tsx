@@ -2,14 +2,16 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Navigation from '../../../components/Navigation'
 import Breadcrumb from '../../../components/Breadcrumb'
-import TableOfContents from '../../../components/TableOfContents'
-import ReadingProgress from '../../../components/ReadingProgress'
 import SocialShare from '../../../components/SocialShare'
 import EnhancedCTA from '../../../components/EnhancedCTA'
 import ReadingExperience from '../../../components/ReadingExperience'
 import RelatedArticles from '../../../components/RelatedArticles'
 import PerformanceMonitor from '../../../components/PerformanceMonitor'
 import EnhancedBlogContent from '../../../components/EnhancedBlogContent'
+// 🎨 使用新的 Blog UX 优化组件
+import { ReadingProgress } from '../../../components/blog/ReadingProgress'
+import { SmartCTA } from '../../../components/blog/SmartCTA'
+import { TableOfContents } from '../../../components/blog/TableOfContents'
 import { Calendar, User, Tag, ArrowLeft, Clock, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import { getBlogPostBySlug } from '../../../lib/sanity'
@@ -237,17 +239,20 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         />
       )}
       
-      {/* 阅读进度条 */}
+      {/* 🎨 新增：阅读进度条（带百分比圆环） */}
       <ReadingProgress />
       
-      {/* 目录导航 */}
-      {articleContent && <TableOfContents content={articleContent} />}
+      {/* 🎨 新增：浮动目录导航 */}
+      <TableOfContents />
       
       {/* 阅读体验控制 */}
       <ReadingExperience />
       
       {/* 性能监控 */}
       <PerformanceMonitor pageType="blog" pageSlug={resolvedParams.slug} />
+      
+      {/* 🎨 新增：智能CTA（根据滚动位置变化） */}
+      <SmartCTA />
       
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
         <Navigation />

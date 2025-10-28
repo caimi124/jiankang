@@ -5,6 +5,9 @@
 /* Enhanced Blog Styles */
 @import '../styles/enhanced-blog.css';
 
+/* Blog UX Animations */
+@import '../styles/blog-animations.css';
+
 /* Font Variables */
 :root {
   --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
