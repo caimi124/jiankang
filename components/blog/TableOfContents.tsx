@@ -98,7 +98,7 @@ export function TableOfContents({ headings: propHeadings }: Props) {
   return (
     <>
       {/* 桌面端 - 侧边栏 */}
-      <nav className="hidden lg:block sticky top-24 w-64 flex-shrink-0">
+      <nav className="hidden lg:block">
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-lg text-gray-900 flex items-center gap-2">

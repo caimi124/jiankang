@@ -257,28 +257,31 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
         <Navigation />
         
-        <main className="py-8">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-            <Breadcrumb 
-              items={[
-                { label: 'Home', href: '/' },
-                { label: 'Blog', href: '/blog' },
-                { label: post.title, href: `/blog/${resolvedParams.slug}` }
-              ]} 
-            />
+        <main className="py-4">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex gap-8">
+              {/* 主内容区域 */}
+              <div className="flex-1 max-w-4xl">
+                <Breadcrumb 
+                  items={[
+                    { label: 'Home', href: '/' },
+                    { label: 'Blog', href: '/blog' },
+                    { label: post.title, href: `/blog/${resolvedParams.slug}` }
+                  ]} 
+                />
 
-            {/* 返回按钮 */}
-            <div className="mb-6">
-              <Link href="/blog">
-                <button className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-colors">
-                  <ArrowLeft className="h-4 w-4" />
-                  <span>Back to Blog</span>
-                </button>
-              </Link>
-            </div>
+                {/* 返回按钮 */}
+                <div className="mb-6">
+                  <Link href="/blog">
+                    <button className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-colors">
+                      <ArrowLeft className="h-4 w-4" />
+                      <span>Back to Blog</span>
+                    </button>
+                  </Link>
+                </div>
 
-            {/* 文章内容 */}
-            <article className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-colors">
+                {/* 文章内容 */}
+                <article className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-colors">
               {/* 文章头部 */}
               <div className="p-8 border-b border-gray-200 dark:border-gray-700">
                 <div className="mb-6">
@@ -358,18 +361,18 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     title={post.title}
                   />
                 ) : (
-                  <div className="prose prose-lg max-w-none dark:prose-invert dark:prose-headings:text-white dark:prose-p:text-gray-300 dark:prose-li:text-gray-300 dark:prose-strong:text-white">
+                  <div className="prose prose-lg max-w-none dark:prose-invert dark:prose-headings:text-white dark:prose-p:text-gray-300 dark:prose-li:text-gray-300 dark:prose-strong:text-white prose-headings:font-bold prose-headings:tracking-tight prose-h1:text-4xl prose-h1:mb-8 prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4 prose-p:leading-relaxed prose-p:mb-6 prose-li:mb-2 prose-blockquote:border-l-4 prose-blockquote:border-green-500 prose-blockquote:bg-green-50 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-lg">
                     {Array.isArray((post as any).content) ? (
                       // Sanity PortableText content
                       <PortableText
                         value={(post as any).content}
                         components={{
                           block: {
-                            h1: ({children}) => <h1 className="text-3xl font-bold text-gray-900 mt-8 mb-4">{children}</h1>,
-                            h2: ({children}) => <h2 className="text-2xl font-bold text-gray-900 mt-6 mb-3">{children}</h2>,
-                            h3: ({children}) => <h3 className="text-xl font-semibold text-gray-900 mt-4 mb-2">{children}</h3>,
-                            normal: ({children}) => <p className="text-gray-700 leading-relaxed mb-4">{children}</p>,
-                            blockquote: ({children}) => <blockquote className="border-l-4 border-green-500 pl-4 italic text-gray-600 my-4">{children}</blockquote>,
+                            h1: ({children}) => <h1 className="text-4xl font-bold text-gray-900 mt-8 mb-8 tracking-tight">{children}</h1>,
+                            h2: ({children}) => <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6 tracking-tight">{children}</h2>,
+                            h3: ({children}) => <h3 className="text-2xl font-semibold text-gray-900 mt-8 mb-4 tracking-tight">{children}</h3>,
+                            normal: ({children}) => <p className="text-gray-700 leading-relaxed mb-6 text-lg">{children}</p>,
+                            blockquote: ({children}) => <blockquote className="border-l-4 border-green-500 bg-green-50 py-4 px-6 rounded-r-lg italic text-gray-600 my-6">{children}</blockquote>,
                           },
                           marks: {
                             strong: ({children}) => <strong className="font-bold text-gray-900">{children}</strong>,
@@ -377,12 +380,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                             code: ({children}) => <code className="bg-gray-100 px-2 py-1 rounded text-sm font-mono">{children}</code>,
                           },
                           list: {
-                            bullet: ({children}) => <ul className="list-disc list-inside space-y-2 my-4">{children}</ul>,
-                            number: ({children}) => <ol className="list-decimal list-inside space-y-2 my-4">{children}</ol>,
+                            bullet: ({children}) => <ul className="list-disc list-inside space-y-3 my-6 text-lg">{children}</ul>,
+                            number: ({children}) => <ol className="list-decimal list-inside space-y-3 my-6 text-lg">{children}</ol>,
                           },
                           listItem: {
-                            bullet: ({children}) => <li className="text-gray-700">{children}</li>,
-                            number: ({children}) => <li className="text-gray-700">{children}</li>,
+                            bullet: ({children}) => <li className="text-gray-700 leading-relaxed">{children}</li>,
+                            number: ({children}) => <li className="text-gray-700 leading-relaxed">{children}</li>,
                           }
                         }}
                       />
@@ -479,20 +482,29 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   </Link>
                 </div>
               </div>
-            </article>
+                </article>
 
-            {/* 相关文章推荐 */}
-            <RelatedArticles 
-              currentSlug={resolvedParams.slug}
-              category={safeCategory}
-              tags={post.tags?.map((tag: any) => {
-                if (typeof tag === 'string') return tag
-                if (typeof tag === 'object' && tag !== null) {
-                  return tag.title?.title || tag.title || tag.name || ''
-                }
-                return String(tag)
-              }).filter(Boolean) || []}
-            />
+                {/* 相关文章推荐 */}
+                <RelatedArticles 
+                  currentSlug={resolvedParams.slug}
+                  category={safeCategory}
+                  tags={post.tags?.map((tag: any) => {
+                    if (typeof tag === 'string') return tag
+                    if (typeof tag === 'object' && tag !== null) {
+                      return tag.title?.title || tag.title || tag.name || ''
+                    }
+                    return String(tag)
+                  }).filter(Boolean) || []}
+                />
+              </div>
+
+              {/* 侧边栏 - 桌面端显示 */}
+              <div className="hidden lg:block w-80 flex-shrink-0">
+                <div className="sticky top-24">
+                  <TableOfContents />
+                </div>
+              </div>
+            </div>
           </div>
         </main>
       </div>
