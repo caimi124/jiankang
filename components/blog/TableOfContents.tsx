@@ -10,19 +10,47 @@ interface Heading {
 }
 
 interface Props {
-  headings: Heading[];
+  headings?: Heading[];
 }
 
 /**
  * 浮动目录组件
  * 帮助用户快速导航长文章
  * 提升用户体验和停留时间
+ * 
+ * 如果不传递headings，会自动从页面中提取H2和H3标题
  */
-export function TableOfContents({ headings }: Props) {
+export function TableOfContents({ headings: propHeadings }: Props) {
+  const [headings, setHeadings] = useState<Heading[]>(propHeadings || []);
   const [activeId, setActiveId] = useState<string>('');
   const [isCollapsed, setIsCollapsed] = useState(false);
   
+  // 自动提取页面标题
   useEffect(() => {
+    if (!propHeadings) {
+      const elements = document.querySelectorAll('article h2, article h3');
+      const extractedHeadings: Heading[] = [];
+      
+      elements.forEach((element, index) => {
+        const id = element.id || `heading-${index}`;
+        if (!element.id) {
+          element.id = id;
+        }
+        
+        extractedHeadings.push({
+          id,
+          title: element.textContent || '',
+          level: element.tagName === 'H2' ? 2 : 3
+        });
+      });
+      
+      setHeadings(extractedHeadings);
+    }
+  }, [propHeadings]);
+  
+  useEffect(() => {
+    if (headings.length === 0) return;
+    
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -61,6 +89,11 @@ export function TableOfContents({ headings }: Props) {
       });
     }
   };
+  
+  // 如果没有标题，不显示目录
+  if (headings.length === 0) {
+    return null;
+  }
   
   return (
     <>
