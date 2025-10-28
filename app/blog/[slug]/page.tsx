@@ -125,7 +125,10 @@ export async function generateStaticParams() {
     { slug: 'herb-drug-interaction-safety' },
     { slug: 'how-much-turmeric-per-day' }, // 🆕 新增
     { slug: '10-serious-side-effects-of-turmeric' }, // 🆕 新增
-]
+    { slug: 'pickled-onion-benefits' }, // 🆕 新增
+    { slug: 'onion-for-cholesterol-heart-health' }, // 🆕 新增
+    { slug: 'onion-for-digestion-bloating' }, // 🆕 新增
+  ]
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
@@ -213,11 +216,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     }))
   } : null
 
-  // 获取文章内容用于目录生成
-  const articleContent = Array.isArray((post as any).content) 
-    ? '' // Sanity PortableText 暂时不支持目录解析
-    : (post as any).content || ''
-
   return (
     <>
       {/* 使用路由级 OpenGraph 生成图像（/blog/[slug]/opengraph-image） */}
@@ -242,8 +240,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       {/* 🎨 新增：阅读进度条（带百分比圆环） */}
       <ReadingProgress />
       
-      {/* 🎨 新增：浮动目录导航 */}
-      <TableOfContents />
+      {/* 🎨 新增：智能CTA（根据滚动位置变化） */}
+      <SmartCTA />
       
       {/* 阅读体验控制 */}
       <ReadingExperience />
@@ -251,74 +249,69 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       {/* 性能监控 */}
       <PerformanceMonitor pageType="blog" pageSlug={resolvedParams.slug} />
       
-      {/* 🎨 新增：智能CTA（根据滚动位置变化） */}
-      <SmartCTA />
-      
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
         <Navigation />
         
-        <main className="py-4">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex gap-8">
-              {/* 主内容区域 */}
-              <div className="flex-1 max-w-4xl">
-                <Breadcrumb 
-                  items={[
-                    { label: 'Home', href: '/' },
-                    { label: 'Blog', href: '/blog' },
-                    { label: post.title, href: `/blog/${resolvedParams.slug}` }
-                  ]} 
-                />
+        <main className="py-8">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <Breadcrumb 
+              items={[
+                { label: 'Home', href: '/' },
+                { label: 'Blog', href: '/blog' },
+                { label: post.title, href: `/blog/${resolvedParams.slug}` }
+              ]} 
+            />
 
-                {/* 返回按钮 */}
-                <div className="mb-6">
-                  <Link href="/blog">
-                    <button className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-colors">
-                      <ArrowLeft className="h-4 w-4" />
-                      <span>Back to Blog</span>
-                    </button>
-                  </Link>
-                </div>
+            {/* 返回按钮 */}
+            <div className="mb-6">
+              <Link href="/blog">
+                <button className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-colors">
+                  <ArrowLeft className="h-4 w-4" />
+                  <span>Back to Blog</span>
+                </button>
+              </Link>
+            </div>
 
-                {/* 文章内容 */}
-                <article className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-colors">
+            {/* 文章内容 */}
+            <article className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden transition-colors">
               {/* 文章头部 */}
-              <div className="p-8 border-b border-gray-200 dark:border-gray-700">
+              <div className="px-8 py-12">
                 <div className="mb-6">
-                  <div className="flex items-center space-x-2 text-sm text-gray-500 mb-3">
+                  <div className="flex items-center gap-4 text-sm text-gray-600 mb-4 flex-wrap">
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-4 h-4" />
+                      <span>{new Date((post as any).publishedAt || (post as any).published_date || (post as any).date).toLocaleDateString()}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <User className="w-4 h-4" />
+                      <span>{(post.author as any)?.name || post.author || 'HerbScience Team'}</span>
+                    </div>
                     {safeCategory && (
-                      <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
-                        {safeCategory}
-                      </span>
+                      <div className="flex items-center gap-1">
+                        <Tag className="w-4 h-4" />
+                        <span>{safeCategory}</span>
+                      </div>
                     )}
-                    <span className="flex items-center">
-                      <Calendar className="h-4 w-4 mr-1" />
-                      {new Date((post as any).publishedAt || (post as any).published_date || (post as any).date).toLocaleDateString()}
-                    </span>
-                    <span className="flex items-center">
-                      <User className="h-4 w-4 mr-1" />
-                      {(post.author as any)?.name || post.author || 'HerbScience Team'}
-                    </span>
                     {((post as any).readTime || (post as any).read_time) && (
-                      <span className="flex items-center">
-                        <Clock className="h-4 w-4 mr-1" />
-                        {(post as any).readTime || (post as any).read_time} min read
-                      </span>
+                      <div className="flex items-center gap-1">
+                        <Clock className="w-4 h-4" />
+                        <span>{(post as any).readTime || (post as any).read_time} min read</span>
+                      </div>
                     )}
                   </div>
                   
-                  <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white leading-tight mb-4">
+                  <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
                     {post.title}
                   </h1>
                   
                   {safeDescription && (
-                    <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+                    <p className="text-xl text-gray-600 leading-relaxed">
                       {safeDescription}
                     </p>
                   )}
                   
                   {/* 分享按钮 */}
-                  <div className="flex justify-end">
+                  <div className="flex justify-end mt-6">
                     <SocialShare 
                       title={post.title}
                       url={`https://herbscience.shop/blog/${resolvedParams.slug}`}
@@ -353,7 +346,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </div>
 
               {/* 文章正文 */}
-              <div className="p-8">
+              <div className="px-8 pb-8">
                 {/* 特殊优化的文章 - 使用增强版组件 */}
                 {resolvedParams.slug === 'why-some-herbs-work-for-you-and-others-dont' ? (
                   <EnhancedBlogContent 
@@ -371,7 +364,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                             h1: ({children}) => <h1 className="text-4xl font-bold text-gray-900 mt-8 mb-8 tracking-tight">{children}</h1>,
                             h2: ({children}) => <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6 tracking-tight">{children}</h2>,
                             h3: ({children}) => <h3 className="text-2xl font-semibold text-gray-900 mt-8 mb-4 tracking-tight">{children}</h3>,
-                            normal: ({children}) => <p className="text-gray-700 leading-relaxed mb-6 text-lg">{children}</p>,
+                            normal: ({children}) => <p className="text-lg text-gray-700 leading-relaxed mb-6">{children}</p>,
                             blockquote: ({children}) => <blockquote className="border-l-4 border-green-500 bg-green-50 py-4 px-6 rounded-r-lg italic text-gray-600 my-6">{children}</blockquote>,
                           },
                           marks: {
@@ -441,12 +434,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </div>
 
               {/* 增强CTA区域 */}
-              <div className="p-8 border-t border-gray-200 dark:border-gray-700">
+              <div className="px-8 py-8 border-t border-gray-200 dark:border-gray-700">
                 <EnhancedCTA type="constitution-test" />
               </div>
 
               {/* 相关链接 */}
-              <div className="p-8 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600">
+              <div className="px-8 py-8 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Related Resources</h3>
                 <div className="grid md:grid-cols-2 gap-6">
                   <Link 
@@ -482,29 +475,20 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   </Link>
                 </div>
               </div>
-                </article>
+            </article>
 
-                {/* 相关文章推荐 */}
-                <RelatedArticles 
-                  currentSlug={resolvedParams.slug}
-                  category={safeCategory}
-                  tags={post.tags?.map((tag: any) => {
-                    if (typeof tag === 'string') return tag
-                    if (typeof tag === 'object' && tag !== null) {
-                      return tag.title?.title || tag.title || tag.name || ''
-                    }
-                    return String(tag)
-                  }).filter(Boolean) || []}
-                />
-              </div>
-
-              {/* 侧边栏 - 桌面端显示 */}
-              <div className="hidden lg:block w-80 flex-shrink-0">
-                <div className="sticky top-24">
-                  <TableOfContents />
-                </div>
-              </div>
-            </div>
+            {/* 相关文章推荐 */}
+            <RelatedArticles 
+              currentSlug={resolvedParams.slug}
+              category={safeCategory}
+              tags={post.tags?.map((tag: any) => {
+                if (typeof tag === 'string') return tag
+                if (typeof tag === 'object' && tag !== null) {
+                  return tag.title?.title || tag.title || tag.name || ''
+                }
+                return String(tag)
+              }).filter(Boolean) || []}
+            />
           </div>
         </main>
       </div>
@@ -537,7 +521,7 @@ function getLocalBlogPost(slug: string) {
 
 <h2>Common Interaction Examples (Illustrative)</h2>
 <ul>
-  <li><strong>St. John’s Wort</strong> (CYP3A4 induction): May lower levels of many drugs (e.g., some antidepressants, oral contraceptives).</li>
+  <li><strong>St. John's Wort</strong> (CYP3A4 induction): May lower levels of many drugs (e.g., some antidepressants, oral contraceptives).</li>
   <li><strong>Ginkgo</strong>: May increase bleeding risk when combined with anticoagulants/antiplatelets.</li>
   <li><strong>Valerian</strong>: Sedation may be additive with CNS depressants.</li>
   <li><strong>Licorice (glycyrrhizin)</strong>: May elevate blood pressure and potassium loss—caution with diuretics.</li>
@@ -711,4 +695,4 @@ function getLocalBlogPost(slug: string) {
   }
 
   return localPosts[slug as keyof typeof localPosts] || null
-} 
+}
