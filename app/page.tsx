@@ -4,8 +4,8 @@ import HomeClient from './HomeClient'
 
 // SEO优化的元数据 - 首页
 export const metadata: Metadata = {
-  title: 'HerbScience - Evidence-Based Herbal Medicine & Personalized Herb Recommendations',
-  description: 'Discover safe, science-backed herbal remedies tailored to your body type. Take our free TCM constitution test for personalized herb recommendations. Expert guidance on immune boosting herbs, stress relief herbs, and sleep support herbs.',
+  title: 'HerbScience - Personalized Herbal Medicine & TCM Constitution Test',
+  description: 'Find herbs that work for your body type. Take our free 2-minute TCM test for personalized herbal recommendations based on 3,000 years of wisdom.',
   keywords: [
     'herbal medicine',
     'personalized herbal recommendations',

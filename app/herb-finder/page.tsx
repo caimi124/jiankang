@@ -1,5 +1,20 @@
 import React from 'react'
+import { Metadata } from 'next'
 import HerbFinderClient from './HerbFinderClient'
+
+export const metadata: Metadata = {
+  title: 'Herb Finder - Search 63+ Evidence-Based Herbs | HerbScience',
+  description: 'Search our comprehensive database of 63 herbs by symptom, health goal, or constitution type. Find safe, science-backed herbal remedies.',
+  openGraph: {
+    title: 'Herb Finder - Comprehensive Herbal Medicine Database',
+    description: 'Search 63+ evidence-based herbs by symptom, health goal, or constitution type.',
+    url: 'https://herbscience.shop/herb-finder',
+    type: 'website',
+  },
+  alternates: {
+    canonical: 'https://herbscience.shop/herb-finder',
+  },
+}
 
 export default function HerbFinderPage() {
   // CollectionPage + Breadcrumb 结构化数据

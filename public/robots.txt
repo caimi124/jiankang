@@ -44,8 +44,25 @@ Allow: /
 Disallow: /test
 Disallow: /admin/
 
+# ✅ Bing/Yandex 等搜索引擎优化
+User-agent: bingbot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Crawl-delay: 0
+
+User-agent: Slurp
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
 # 🗺️ Sitemap位置
 Sitemap: https://herbscience.shop/sitemap.xml
+Sitemap: https://herbscience.shop/sitemap-blogs.xml
+Sitemap: https://herbscience.shop/sitemap-herbs.xml
 
-# 📝 最后更新：2025-01-26
-# 📊 目的：SEO优化 - 阻止测试页面索引，消除重复内容
+# 🔔 IndexNow API Key Location (自动通知搜索引擎)
+# Key file: https://herbscience.shop/{api-key}.txt
+
+# 📝 最后更新：2025-10-28
+# 📊 目的：SEO优化 - 阻止测试页面索引，消除重复内容，支持IndexNow
