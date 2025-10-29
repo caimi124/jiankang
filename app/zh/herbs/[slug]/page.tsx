@@ -255,6 +255,6 @@ export default async function HerbPage({ params }: HerbPageProps) {
   }
 
   // 使用英文版的HerbDetailClient，但数据会正确显示
-  return <HerbDetailClient initialHerb={herb} locale="zh" />
+  return <HerbDetailClient herbData={herb} slug={resolvedParams.slug} />
 }
 
