@@ -11,7 +11,7 @@ import { ReadingProgress } from '../../../../components/blog/ReadingProgress'
 import { SmartCTA } from '../../../../components/blog/SmartCTA'
 import { Calendar, User, Tag, ArrowLeft, Clock, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
-import { getBlogPostBySlug } from '../../../../lib/sanity'
+import { getBlogPostBySlugZh } from '../../../../lib/sanity'
 import { PortableText } from '@portabletext/react'
 
 interface BlogPostPageProps {
@@ -20,16 +20,16 @@ interface BlogPostPageProps {
   }>
 }
 
-// 从Sanity获取博客文章数据
+// 从Sanity获取中文博客文章数据
 async function getBlogPost(slug: string) {
   try {
-    const sanityPost = await getBlogPostBySlug(slug)
+    const sanityPost = await getBlogPostBySlugZh(slug)
     if (sanityPost) {
       return sanityPost
     }
     return null
   } catch (error) {
-    console.error('获取博客文章失败:', error)
+    console.error('获取中文博客文章失败:', error)
     return null
   }
 }

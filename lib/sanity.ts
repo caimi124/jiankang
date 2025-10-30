@@ -81,8 +81,8 @@ export async function sanityFetch<T = any>(
 
 // Blog post queries
 export const blogPostQueries = {
-  // Get all published blog posts with basic info
-  getAllPosts: `*[_type == "blogPost" && status == "published"] | order(publishedAt desc) {
+  // Get all published blog posts with basic info (English only)
+  getAllPosts: `*[_type == "blogPost" && status == "published" && (!defined(language) || language == "en")] | order(publishedAt desc) {
     _id,
     title,
     slug,
@@ -90,6 +90,7 @@ export const blogPostQueries = {
     publishedAt,
     readTime,
     featured,
+    language,
     "author": author->name,
     "category": category->title,
     "tags": tags[]->title,
@@ -98,14 +99,15 @@ export const blogPostQueries = {
     seoDescription
   }`,
 
-  // Get featured blog posts
-  getFeaturedPosts: `*[_type == "blogPost" && status == "published" && featured == true] | order(publishedAt desc) [0...4] {
+  // Get featured blog posts (English only)
+  getFeaturedPosts: `*[_type == "blogPost" && status == "published" && featured == true && (!defined(language) || language == "en")] | order(publishedAt desc) [0...4] {
     _id,
     title,
     slug,
     excerpt,
     publishedAt,
     readTime,
+    language,
     "author": author->name,
     "category": category->title,
     "tags": tags[]->title,
@@ -114,7 +116,7 @@ export const blogPostQueries = {
     seoDescription
   }`,
 
-  // Get blog post by slug
+  // Get blog post by slug (language-aware)
   getPostBySlug: `*[_type == "blogPost" && slug.current == $slug && status == "published"][0] {
     _id,
     title,
@@ -124,6 +126,7 @@ export const blogPostQueries = {
     publishedAt,
     readTime,
     featured,
+    language,
     "author": author->{name, bio, expertise},
     "category": category->{title, description},
     "tags": tags[]->{title, slug},
@@ -133,14 +136,15 @@ export const blogPostQueries = {
     seoKeywords
   }`,
 
-  // Get posts by category
-  getPostsByCategory: `*[_type == "blogPost" && status == "published" && category->title == $category] | order(publishedAt desc) {
+  // Get posts by category (English only)
+  getPostsByCategory: `*[_type == "blogPost" && status == "published" && category->title == $category && (!defined(language) || language == "en")] | order(publishedAt desc) {
     _id,
     title,
     slug,
     excerpt,
     publishedAt,
     readTime,
+    language,
     "author": author->name,
     "category": category->title,
     "tags": tags[]->title,
@@ -149,25 +153,44 @@ export const blogPostQueries = {
     seoDescription
   }`,
 
-  // Get all categories with post counts
-  getCategories: `*[_type == "category"] {
+  // Get all categories with post counts (English only)
+  getCategories: `*[_type == "category" && (!defined(language) || language == "en")] {
     _id,
     title,
     slug,
     description,
-    "postCount": count(*[_type == "blogPost" && status == "published" && references(^._id)])
+    language,
+    "postCount": count(*[_type == "blogPost" && status == "published" && (!defined(language) || language == "en") && references(^._id)])
+  } | order(title asc)`,
+  
+  // Get all Chinese categories with post counts
+  getCategoriesZh: `*[_type == "category" && language == "zh"] {
+    _id,
+    title,
+    slug,
+    description,
+    language,
+    "postCount": count(*[_type == "blogPost" && status == "published" && language == "zh" && references(^._id)])
   } | order(title asc)`,
 
-  // Get all tags with post counts
+  // Get all tags with post counts (English only)
   getTags: `*[_type == "tag"] {
     _id,
     title,
     slug,
-    "postCount": count(*[_type == "blogPost" && status == "published" && references(^._id)])
+    "postCount": count(*[_type == "blogPost" && status == "published" && (!defined(language) || language == "en") && references(^._id)])
+  } | order(title asc)`,
+  
+  // Get all Chinese tags with post counts
+  getTagsZh: `*[_type == "tag"] {
+    _id,
+    title,
+    slug,
+    "postCount": count(*[_type == "blogPost" && status == "published" && language == "zh" && references(^._id)])
   } | order(title asc)`,
 
-  // Search posts
-  searchPosts: `*[_type == "blogPost" && status == "published" && (
+  // Search posts (English only)
+  searchPosts: `*[_type == "blogPost" && status == "published" && (!defined(language) || language == "en") && (
     title match $searchTerm + "*" ||
     excerpt match $searchTerm + "*" ||
     author->name match $searchTerm + "*" ||
@@ -179,16 +202,73 @@ export const blogPostQueries = {
     excerpt,
     publishedAt,
     readTime,
+    language,
     "author": author->name,
     "category": category->title,
     "tags": tags[]->title,
     featured_image,
     seoTitle,
     seoDescription
+  }`,
+
+  // === Chinese (ZH) Blog Post Queries ===
+  // Get all published Chinese blog posts
+  getAllPostsZh: `*[_type == "blogPost" && status == "published" && language == "zh"] | order(publishedAt desc) {
+    _id,
+    title,
+    slug,
+    excerpt,
+    publishedAt,
+    readTime,
+    featured,
+    language,
+    "author": author->name,
+    "category": category->title,
+    "tags": tags[]->title,
+    featured_image,
+    seoTitle,
+    seoDescription
+  }`,
+
+  // Get featured Chinese blog posts
+  getFeaturedPostsZh: `*[_type == "blogPost" && status == "published" && featured == true && language == "zh"] | order(publishedAt desc) [0...4] {
+    _id,
+    title,
+    slug,
+    excerpt,
+    publishedAt,
+    readTime,
+    language,
+    "author": author->name,
+    "category": category->title,
+    "tags": tags[]->title,
+    featured_image,
+    seoTitle,
+    seoDescription
+  }`,
+
+  // Get Chinese blog post by slug
+  getPostBySlugZh: `*[_type == "blogPost" && slug.current == $slug && status == "published" && language == "zh"][0] {
+    _id,
+    title,
+    slug,
+    excerpt,
+    content,
+    publishedAt,
+    readTime,
+    featured,
+    language,
+    "author": author->{name, bio, expertise},
+    "category": category->{title, description},
+    "tags": tags[]->{title, slug},
+    featured_image,
+    seoTitle,
+    seoDescription,
+    seoKeywords
   }`
 }
 
-// Helper functions for fetching data
+// Helper functions for fetching data (English)
 export async function getAllBlogPosts(): Promise<BlogPost[]> {
   try {
     return await client.fetch(blogPostQueries.getAllPosts)
@@ -207,6 +287,7 @@ export async function getFeaturedBlogPosts(): Promise<BlogPost[]> {
   }
 }
 
+// Helper functions for fetching blog posts
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
   try {
     return await client.fetch(blogPostQueries.getPostBySlug, { slug })
@@ -234,12 +315,49 @@ export async function getBlogCategories(): Promise<Category[]> {
   }
 }
 
+export async function getBlogCategoriesZh(): Promise<Category[]> {
+  try {
+    return await client.fetch(blogPostQueries.getCategoriesZh)
+  } catch (error) {
+    console.error('Error fetching Chinese categories:', error)
+    return []
+  }
+}
+
 export async function searchBlogPosts(searchTerm: string): Promise<BlogPost[]> {
   try {
     return await client.fetch(blogPostQueries.searchPosts, { searchTerm })
   } catch (error) {
     console.error('Error searching posts:', error)
     return []
+  }
+}
+
+// === Chinese (ZH) Blog Helper Functions ===
+export async function getAllBlogPostsZh(): Promise<BlogPost[]> {
+  try {
+    return await client.fetch(blogPostQueries.getAllPostsZh)
+  } catch (error) {
+    console.error('Error fetching Chinese blog posts:', error)
+    return []
+  }
+}
+
+export async function getFeaturedBlogPostsZh(): Promise<BlogPost[]> {
+  try {
+    return await client.fetch(blogPostQueries.getFeaturedPostsZh)
+  } catch (error) {
+    console.error('Error fetching featured Chinese posts:', error)
+    return []
+  }
+}
+
+export async function getBlogPostBySlugZh(slug: string): Promise<BlogPost | null> {
+  try {
+    return await client.fetch(blogPostQueries.getPostBySlugZh, { slug })
+  } catch (error) {
+    console.error('Error fetching Chinese blog post:', error)
+    return null
   }
 }
 

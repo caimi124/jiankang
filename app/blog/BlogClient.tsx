@@ -282,7 +282,7 @@ export default function BlogClient({
                           </span>
                         </div>
                         <div className="text-green-600 group-hover:text-green-700 flex items-center space-x-2 group-hover:translate-x-2 transition-all">
-                          <span className="text-sm font-semibold">阅读全文</span>
+                          <span className="text-sm font-semibold">Read More</span>
                           <ArrowRight className="w-5 h-5 group-hover:animate-pulse" />
                         </div>
                       </div>
@@ -338,7 +338,7 @@ export default function BlogClient({
                             {article.author} • {new Date(article.publishedAt || article.date).toLocaleDateString()}
                           </div>
                           <div className="flex items-center space-x-1 text-green-600 group-hover:text-green-700 group-hover:translate-x-2 transition-all font-medium">
-                            <span className="text-sm">阅读更多</span>
+                            <span className="text-sm">Read More</span>
                             <ArrowRight className="w-4 h-4" />
                           </div>
                         </div>

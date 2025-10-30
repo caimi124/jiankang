@@ -1,7 +1,7 @@
 import React from 'react'
 import { Metadata } from 'next'
 import ZhBlogClient from './ZhBlogClient'
-import { getAllBlogPosts, getFeaturedBlogPosts, getBlogCategories } from '@/lib/sanity'
+import { getAllBlogPostsZh, getFeaturedBlogPostsZh, getBlogCategoriesZh } from '@/lib/sanity'
 
 export const metadata: Metadata = {
   title: '草药知识博客 - 循证草药医学 | HerbScience',
@@ -26,29 +26,18 @@ export const metadata: Metadata = {
 export const revalidate = 60 // 重新验证时间（秒）
 
 export default async function ZhBlogPage() {
-  // 从Sanity获取中文博客数据
-  const [allPosts, featuredPosts, categories] = await Promise.all([
-    getAllBlogPosts(),
-    getFeaturedBlogPosts(),
-    getBlogCategories()
+  // 从Sanity获取中文博客数据（直接使用中文查询函数）
+  const [zhPosts, zhFeaturedPosts, zhCategories] = await Promise.all([
+    getAllBlogPostsZh(),
+    getFeaturedBlogPostsZh(),
+    getBlogCategoriesZh()
   ])
-
-  // 筛选中文博客文章（通过slug包含-zh判断）
-  const zhPosts = allPosts.filter(post => 
-    post.slug?.current?.includes('-zh') || 
-    post.title?.match(/[\u4e00-\u9fa5]/) // 或标题包含中文字符
-  )
-
-  const zhFeaturedPosts = featuredPosts.filter(post => 
-    post.slug?.current?.includes('-zh') ||
-    post.title?.match(/[\u4e00-\u9fa5]/)
-  )
 
   return (
     <ZhBlogClient
       initialPosts={zhPosts}
       initialFeaturedPosts={zhFeaturedPosts}
-      initialCategories={categories}
+      initialCategories={zhCategories}
     />
   )
 }
