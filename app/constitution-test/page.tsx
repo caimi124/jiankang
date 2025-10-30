@@ -4,8 +4,8 @@ import ConstitutionTestClientOptimized from './ConstitutionTestClientOptimized'
 import ErrorBoundary from '../../components/ErrorBoundary'
 
 export const metadata: Metadata = {
-  title: 'TCM Body Constitution Test | 5-Minute Body Type Quiz for Personalized Herbal Guidance',
-  description: 'Take this quick TCM Body Constitution Test to discover your body type. Get personalized herbal recommendations, evidence-based diet tips, and holistic wellness guidance for better sleep, energy, and immunity.',
+  title: 'TCM Body Constitution Test | 5-Minute Quiz',
+  description: 'Take our quick TCM constitution test. Discover your body type and get personalized herb recommendations. Evidence-based diet tips for better health.',
   keywords: 'TCM body constitution test, TCM body type quiz, Chinese medicine constitution test, personalized herbal recommendations, 9 TCM constitutions, immune boosting herbs, stress relief herbs, sleep support herbs, natural supplements, evidence-based assessment, holistic wellness guidance',
   openGraph: {
     title: 'TCM Constitution Test - Discover Your Body Type',

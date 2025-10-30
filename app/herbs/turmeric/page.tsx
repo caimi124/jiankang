@@ -4,8 +4,8 @@ import TurmericClient from './TurmericClient'
 
 // SEO优化的元数据 - 基于KGR关键词研究优化
 export const metadata: Metadata = {
-  title: 'Turmeric Benefits & Side Effects | Safe Dose & Anti-Inflammatory Guide',
-  description: 'Explore turmeric and curcumin benefits for inflammation, liver support, pain relief. Learn safe dosage (≤3g/day), top supplements, and 10 serious side effects to avoid.',
+  title: 'Turmeric Benefits, Dosage & Side Effects Guide',
+  description: 'Turmeric and curcumin for inflammation, liver support, pain relief. Safe dosage (≤3g/day), top supplements, and side effects to avoid.',
   keywords: [
     'turmeric benefits',
     'curcumin benefits',

@@ -3,8 +3,8 @@ import DosageCalculatorClient from './DosageCalculatorClient'
 
 // 🎯 完整的SEO元数据
 export const metadata: Metadata = {
-  title: 'Herbal Dosage Calculator - Personalized & Safe Recommendations | HerbScience',
-  description: 'Calculate safe herbal supplement dosages based on your age, weight, health conditions, and experience level. Free tool by licensed pharmacist with evidence-based recommendations for Ashwagandha, Turmeric, Ginseng, Rhodiola and more.',
+  title: 'Herbal Dosage Calculator - Safe & Personalized',
+  description: 'Calculate safe herb dosages by age, weight, and health conditions. Free tool by licensed pharmacist. Evidence-based recommendations for 60+ herbs.',
   keywords: [
     'herbal dosage calculator',
     'herb dosage guide',

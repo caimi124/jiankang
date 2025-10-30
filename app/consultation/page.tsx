@@ -4,7 +4,7 @@ import Navigation from '../../components/Navigation'
 import Breadcrumb from '../../components/Breadcrumb'
 
 export const metadata: Metadata = {
-  title: 'Expert Consultation - Traditional Chinese Medicine | HerbScience',
+  title: 'Expert TCM Consultation | HerbScience',
   description: 'Book a consultation with our qualified Traditional Chinese Medicine practitioners. Get personalized guidance based on your constitution test results.',
   keywords: 'TCM consultation, Chinese medicine practitioner, constitution consultation, herbal medicine expert, personalized health guidance',
 }

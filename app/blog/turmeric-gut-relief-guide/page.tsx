@@ -5,8 +5,8 @@ import Breadcrumb from '../../../components/Breadcrumb'
 import { Calendar, User, Tag, Share2, Bookmark, ArrowLeft } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Turmeric Made Simple: How to Use It Today for Real Gut Relief and Pain Reduction | HerbScience',
-  description: 'Discover how turmeric can help calm your gut, reduce inflammation, and boost your energy. Complete guide with dosage, benefits, and real user stories.',
+  title: 'Turmeric for Gut Relief & Pain: Complete Guide',
+  description: 'How turmeric calms your gut, reduces inflammation, and boosts energy. Complete guide with dosage, benefits, and real user stories.',
   keywords: 'turmeric benefits, turmeric for gut health, turmeric dosage, turmeric for inflammation, curcumin supplement, natural anti-inflammatory',
   authors: [{ name: 'HerbScience Team' }],
   openGraph: {

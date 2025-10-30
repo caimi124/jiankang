@@ -4,7 +4,7 @@ import HomeClient from './HomeClient'
 
 // SEO优化的元数据 - 首页
 export const metadata: Metadata = {
-  title: 'HerbScience - Personalized Herbal Medicine & TCM Constitution Test',
+  title: 'HerbScience - Personalized Herbal Medicine & TCM Test',
   description: 'Find herbs that work for your body type. Take our free 2-minute TCM test for personalized herbal recommendations based on 3,000 years of wisdom.',
   keywords: [
     'herbal medicine',

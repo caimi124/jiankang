@@ -1,6 +1,22 @@
 import React from 'react'
+import { Metadata } from 'next'
 import BlogClient from './BlogClient'
 import { getAllBlogPosts, getFeaturedBlogPosts, getBlogCategories } from '../../lib/sanity'
+
+export const metadata: Metadata = {
+  title: 'Blog - Evidence-Based Herbal Medicine | HerbScience',
+  description: 'Expert articles on herbal medicine, TCM wisdom, natural remedies, and wellness. Evidence-based guides by licensed pharmacist for safe herbal use.',
+  keywords: 'herbal medicine blog, natural remedies, TCM articles, herb guides, wellness tips',
+  openGraph: {
+    title: 'HerbScience Blog - Evidence-Based Herbal Medicine',
+    description: 'Expert articles on herbs, TCM, and natural wellness.',
+    type: 'website',
+    url: 'https://herbscience.shop/blog',
+  },
+  alternates: {
+    canonical: 'https://herbscience.shop/blog',
+  }
+}
 
 export const revalidate = 60 // 重新验证时间（秒）
 

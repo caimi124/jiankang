@@ -52,6 +52,12 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     }
   }
 
+  // 🎯 SEO优化：截断过长的文本
+  const truncateText = (text: string, maxLength: number): string => {
+    if (text.length <= maxLength) return text
+    return text.slice(0, maxLength - 3).trim() + '...'
+  }
+
   // 安全地提取keywords
   const keywords = (post as any).seoKeywords?.join(', ') || 
     post.tags?.map((tag: any) => {
@@ -75,15 +81,23 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     
     return `Read about ${post.title} on HerbScience - evidence-based herbal medicine insights.`
   }
+
+  // 🎯 生成优化的 title 和 description
+  const rawTitle = (post as any).seoTitle || post.title
+  const rawDescription = getDescription()
+  
+  // SEO最佳实践：Title 50-60字符，Description 150-160字符
+  const optimizedTitle = truncateText(rawTitle, 60)
+  const optimizedDescription = truncateText(rawDescription, 160)
   
   return {
-    title: (post as any).seoTitle || `${post.title} | HerbScience Blog`,
-    description: getDescription(),
+    title: optimizedTitle,
+    description: optimizedDescription,
     keywords,
     authors: [{ name: (post.author as any)?.name || post.author || 'HerbScience Team' }],
     openGraph: {
-      title: post.title,
-      description: getDescription(),
+      title: truncateText(post.title, 60),
+      description: optimizedDescription,
       type: 'article',
       url: `https://herbscience.shop/blog/${resolvedParams.slug}`,
       siteName: 'HerbScience',
@@ -92,14 +106,14 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
           url: '/hero-bg.svg',
           width: 1200,
           height: 630,
-          alt: post.title
+          alt: truncateText(post.title, 100)
         }
       ]
     },
     twitter: {
       card: 'summary_large_image',
-      title: post.title,
-      description: getDescription(),
+      title: truncateText(post.title, 60),
+      description: optimizedDescription,
       images: ['/hero-bg.svg']
     },
     alternates: {

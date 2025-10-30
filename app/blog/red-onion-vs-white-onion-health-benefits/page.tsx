@@ -6,8 +6,8 @@ import MedicalReviewBanner from '../../../components/MedicalReviewBanner'
 import { Calendar, User, Tag, ArrowLeft, Heart, Sparkles, ShieldCheck, Leaf, CheckCircle, XCircle, Info, TrendingUp, Apple } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Red Onion vs White Onion: Which Is Healthier? (Science-Backed Comparison) | HerbScience',
-  description: 'Red onion vs white onion — which is healthier? Discover the key differences in antioxidants, quercetin, anthocyanins, digestion benefits, and how to use each for maximum health impact. Evidence-based guide for Western readers.',
+  title: 'Red Onion vs White Onion: Which Is Healthier?',
+  description: 'Red vs white onion comparison: antioxidants, quercetin, digestion benefits. Learn which onion is better for your health with science-backed evidence.',
   keywords: [
     'red onion vs white onion',
     'onion health benefits',

@@ -7,8 +7,8 @@ import ScientificReferences from '../../../components/ScientificReferences'
 import { Calendar, User, Tag, ArrowLeft, Heart, Sparkles, AlertTriangle, CheckCircle, Clock, Coffee as Tea, Utensils, Plane, Baby, Ship, Car } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Ginger Tablets vs Chews: Which Works Better for Nausea & Bloating? | HerbScience',
-  description: 'Feeling bloated or nauseous? Discover ginger tablets benefits, ginger chews for nausea, and why this ancient root is your stomach\'s best friend. Complete guide with DIY recipes and real results.',
+  title: 'Ginger Tablets vs Chews for Nausea & Bloating Guide',
+  description: 'Discover ginger tablets benefits, ginger chews for nausea, and DIY recipes. Complete guide with real results for stomach relief and travel sickness.',
   keywords: [
     'ginger tablets benefits',
     'ginger chews for nausea',

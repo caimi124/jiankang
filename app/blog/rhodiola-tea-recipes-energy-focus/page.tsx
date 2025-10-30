@@ -5,8 +5,8 @@ import Breadcrumb from '../../../components/Breadcrumb'
 import { Calendar, User, Tag, Share2, Bookmark, ArrowLeft, Coffee, Clock, Leaf, Heart, FlaskConical, AlertCircle } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Rhodiola Tea Recipes to Boost Energy & Focus — Find the Best Blend for Your Body Type | HerbScience',
-  description: 'Discover easy rhodiola tea recipes to increase energy, improve focus, and reduce fatigue. Learn how to make rhodiola rosea tea and tailor your tea to your body type using TCM-inspired herbal blends.',
+  title: 'Rhodiola Tea Recipes for Energy & Focus',
+  description: 'Easy rhodiola tea recipes to boost energy and focus. Learn how to make rhodiola rosea tea with TCM-inspired herbal blends for your body type.',
   keywords: 'rhodiola tea, rhodiola rosea tea, how to make rhodiola tea, rhodiola tea benefits, best time to drink rhodiola tea, rhodiola for energy, rhodiola for focus, rhodiola with ginseng, adaptogenic tea, herbal tea for focus',
   authors: [{ name: 'HerbScience Team' }],
   openGraph: {

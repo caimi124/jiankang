@@ -6,8 +6,8 @@ import MedicalReviewBanner from '../../../components/MedicalReviewBanner'
 import { Calendar, User, Tag, Share2, Bookmark, ArrowLeft, Heart, Coffee, Moon, Sparkles, AlertTriangle, CheckCircle, Clock, Target, Zap, Leaf } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Ashwagandha Benefits for Female: Hormonal Imbalance, Stress & Sleep Solutions | HerbScience',
-  description: 'Discover ashwagandha benefits for female health: balance hormones, reduce stress, improve sleep. Learn safe dosage, side effects, and what ashwagandha is good for. Evidence-based guide by licensed pharmacist.',
+  title: 'Ashwagandha for Women: Hormones, Stress & Sleep',
+  description: 'Ashwagandha benefits for women: balance hormones, reduce stress, improve sleep. Safe dosage and side effects guide by licensed pharmacist.',
   keywords: [
     'ashwagandha benefits for female',
     'ashwagandha for hormonal imbalance',

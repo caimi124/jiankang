@@ -5,8 +5,8 @@ import Breadcrumb from '../../../components/Breadcrumb'
 import { Calendar, User, Tag, Share2, Bookmark, ArrowLeft, Activity, Users, Brain, Heart, Zap, AlertCircle, CheckCircle, Clock, Leaf, FlaskConical } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Why Rhodiola Works for Some People but Not Others — How to Take It Right for Your Body Type | HerbScience',
-  description: 'Discover why rhodiola crenulata benefits vary by person. Learn how to take rhodiola the right way based on your TCM body constitution. Complete guide on rhodiola dosage, best time to take, and herb combinations for optimal results.',
+  title: 'Why Rhodiola Works for Some But Not Others',
+  description: 'Why rhodiola benefits vary by person. How to take rhodiola based on your TCM body type. Guide on dosage, timing, and herb combinations.',
   keywords: 'rhodiola crenulata benefits, rhodiola benefits, how to take rhodiola, best time to take rhodiola, rhodiola dosage, rhodiola supplement benefits, rhodiola for stress and anxiety, rhodiola herb benefits, adaptogen herbs, TCM body type',
   authors: [{ name: 'Dr. Sarah Chen, HerbScience Team' }],
   openGraph: {

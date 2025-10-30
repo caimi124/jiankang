@@ -5,8 +5,8 @@ import Breadcrumb from '../../../components/Breadcrumb'
 import { Calendar, User, Tag, Share2, Bookmark, ArrowLeft, Coffee, Clock, Leaf, Heart, AlertTriangle } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'How to Take Rhodiola the Smart Way — Daily Rituals, Recipes & Body-Type Tips | HerbScience',
-  description: 'Learn the best time to take rhodiola, optimal dosage for energy, simple recipes, and how to pair it with other herbs. Complete guide for using rhodiola supplement effectively.',
+  title: 'How to Take Rhodiola: Daily Rituals & Recipes',
+  description: 'Best time to take rhodiola, optimal dosage, recipes, and herb pairings. Complete guide for using rhodiola supplement effectively.',
   keywords: 'how to take rhodiola, best time to take rhodiola rosea, rhodiola dosage for energy, rhodiola recipes, rhodiola tea benefits, rhodiola with ginseng, rhodiola supplement, how long to take rhodiola, rhodiola for stress and anxiety',
   authors: [{ name: 'HerbScience Team' }],
   openGraph: {

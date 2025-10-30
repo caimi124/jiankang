@@ -2,8 +2,8 @@ import { Metadata } from 'next'
 import QuickTestClient from './QuickTestClient'
 
 export const metadata: Metadata = {
-  title: 'Quick Constitution Test (2 min) | Find Your TCM Body Type | HerbScience',
-  description: 'Take our 2-minute TCM constitution test to discover your body type and get personalized herb recommendations. Perfect for busy professionals seeking natural health solutions.',
+  title: 'Quick TCM Constitution Test - 2 Minutes',
+  description: 'Take our 2-minute TCM test to discover your body type. Get personalized herb recommendations. Perfect for busy professionals.',
   keywords: 'quick constitution test, TCM body type, Chinese medicine quiz, personalized herbs, 2 minute health test',
   openGraph: {
     title: 'Quick Constitution Test - Discover Your TCM Body Type in 2 Minutes',

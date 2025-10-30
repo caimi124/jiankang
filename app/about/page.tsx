@@ -3,8 +3,8 @@ import React from 'react'
 import AboutClient from './AboutClient'
 
 export const metadata: Metadata = {
-  title: 'About HerbScience – Licensed Pharmacist & TCM Expert | Evidence-Based Herbal Medicine',
-  description: 'HerbScience provides professional, evidence-based herbal guidance from licensed pharmacist Zeng Chuping. Get safe herbal supplement advice, herb-drug interaction safety, and proven herbal recommendations. 50,000+ people helped with 98% safety success rate.',
+  title: 'About HerbScience - Licensed Pharmacist & TCM Expert',
+  description: 'Meet licensed pharmacist Zeng Chuping. Professional herbal guidance with 98% safety success rate. Safe supplement advice and herb-drug interaction checks.',
   keywords: [
     'evidence-based herbal medicine',
     'licensed pharmacist herbal advice', 

@@ -6,8 +6,8 @@ import MedicalReviewBanner from '../../../components/MedicalReviewBanner'
 import { Calendar, User, Tag, ArrowLeft, Heart, Coffee, AlertTriangle, CheckCircle, Clock, Droplet, Sparkles, Coffee as Tea, Share2, Bookmark } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Ginger Tea for Menstrual Cramps: Natural Period Pain Relief That Actually Works | HerbScience',
-  description: 'Tired of period cramps controlling your life? Learn how ginger tea for menstrual cramps provides natural relief. Discover when to drink ginger tea in periods, how to use ginger for menstrual cramps, and why it works as well as ibuprofen. Complete guide by licensed pharmacist.',
+  title: 'Ginger Tea for Period Cramps: Natural Pain Relief',
+  description: 'How ginger tea relieves menstrual cramps naturally. Learn when to drink it, why it works as well as ibuprofen. Licensed pharmacist guide.',
   keywords: [
     'ginger tea for menstrual cramps',
     'ginger tea in periods',
