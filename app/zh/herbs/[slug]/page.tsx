@@ -5,6 +5,7 @@ import { sanityFetch } from '@/lib/sanity'
 import { getFallbackHerb } from '@/lib/herb-detail-fallback'
 import { headers } from 'next/headers'
 import { generateHerbSlug, normalizeSlug } from '@/lib/herb-slug-utils'
+import { translateHerbData } from '@/lib/herb-translations-zh'
 
 export const dynamic = 'force-dynamic'
 export const dynamicParams = true
@@ -254,7 +255,11 @@ export default async function HerbPage({ params }: HerbPageProps) {
     notFound()
   }
 
-  // 使用英文版的HerbDetailClient，但数据会正确显示
-  return <HerbDetailClient herbData={herb} slug={resolvedParams.slug} />
+  // 应用中文翻译
+  const translatedHerb = translateHerbData(herb)
+
+  // 使用中文版的ZhHerbDetailClient
+  const ZhHerbDetailClient = (await import('./ZhHerbDetailClient')).default
+  return <ZhHerbDetailClient herbData={translatedHerb} slug={resolvedParams.slug} />
 }
 
