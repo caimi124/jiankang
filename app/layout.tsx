@@ -49,12 +49,14 @@ export const metadata: Metadata = {
     }
   },
   metadataBase: new URL('https://herbscience.shop'),
-  // Google Search Console verification
-  // 1. Go to https://search.google.com/search-console/
-  // 2. Add property: https://herbscience.shop
-  // 3. Use HTML tag method and paste the content value below
+  // Search Engine Verification
+  // Google Search Console: https://search.google.com/search-console/
+  // Bing Webmaster Tools: https://www.bing.com/webmasters/
   verification: {
-    google: process.env.GOOGLE_VERIFICATION_CODE || undefined
+    google: process.env.GOOGLE_VERIFICATION_CODE,
+    other: process.env.BING_VERIFICATION_CODE ? {
+      'msvalidate.01': process.env.BING_VERIFICATION_CODE
+    } : undefined
   },
   // Favicon configuration
   icons: {

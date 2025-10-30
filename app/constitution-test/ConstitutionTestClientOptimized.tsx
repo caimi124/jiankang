@@ -320,11 +320,11 @@ export default function ConstitutionTestClientOptimized() {
                 <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-green-500 to-blue-500 rounded-full mb-6">
                   <span className="text-3xl text-white">🎉</span>
                 </div>
-                <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
                   Your TCM Constitution
-                </h1>
+                </h2>
                 <div className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
-                  <h2 className="text-3xl md:text-4xl font-bold mb-2">{primaryInfo.name}</h2>
+                  <p className="text-3xl md:text-4xl font-bold mb-2">{primaryInfo.name}</p>
                   <p className="text-xl font-medium">{primaryInfo.englishName}</p>
                 </div>
               </div>

@@ -110,9 +110,9 @@ export default function AboutClient() {
                 Licensed Pharmacist & TCM Expert
               </div>
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">
+            <p className="text-2xl font-bold text-gray-900 mb-4">
               🌿 HerbScience – Evidence-Based Herbal Guidance
-            </h1>
+            </p>
             <p className="text-gray-600 leading-relaxed mb-6">
               Confused by conflicting <strong>herbal advice</strong> online? <strong>HerbScience</strong> provides 
               <strong>safe, professional guidance</strong> from licensed experts trained in both pharmacy and Traditional Chinese Medicine. 

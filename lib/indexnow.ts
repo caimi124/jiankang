@@ -27,8 +27,8 @@ const INDEXNOW_ENDPOINTS = [
 export async function submitUrlToIndexNow(url: string): Promise<boolean> {
   const config: IndexNowConfig = {
     host: 'herbscience.shop',
-    key: process.env.INDEXNOW_API_KEY || 'your-api-key-here',
-    keyLocation: `https://herbscience.shop/${process.env.INDEXNOW_API_KEY || 'your-api-key-here'}.txt`,
+    key: process.env.INDEXNOW_API_KEY || 'd9cef75a7df241d5aeffb8c21006c151',
+    keyLocation: `https://herbscience.shop/d9cef75a7df241d5aeffb8c21006c151.txt`,
   }
 
   const payload = {
@@ -67,8 +67,8 @@ export async function submitUrlToIndexNow(url: string): Promise<boolean> {
 export async function submitBatchToIndexNow(urls: string[]): Promise<number> {
   const config: IndexNowConfig = {
     host: 'herbscience.shop',
-    key: process.env.INDEXNOW_API_KEY || 'your-api-key-here',
-    keyLocation: `https://herbscience.shop/${process.env.INDEXNOW_API_KEY || 'your-api-key-here'}.txt`,
+    key: process.env.INDEXNOW_API_KEY || 'd9cef75a7df241d5aeffb8c21006c151',
+    keyLocation: `https://herbscience.shop/d9cef75a7df241d5aeffb8c21006c151.txt`,
   }
 
   // IndexNow API 支持每次最多 10,000 个 URL，但建议每次提交 100 个以内

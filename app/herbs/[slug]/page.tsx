@@ -226,12 +226,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 		}
 	}
 
-	// 优化SEO标题 - 更具描述性和关键词丰富
-	const title = `${herbData.name} (${herbData.latin_name}): Benefits, Dosage, Safety & Modern Uses | HerbScience`
+	// 优化SEO标题 - 简洁且关键词聚焦（控制在60字符以内）
+	const title = `${herbData.name} Benefits, Dosage & Safety | HerbScience`
 	
-	// 优化SEO描述 - 更吸引人且场景化
-	const benefitsPreview = herbData.benefits?.slice(0, 2).join(', ') || 'multiple health benefits'
-	const description = `Discover the science-backed benefits of ${herbData.name} — from ${benefitsPreview.toLowerCase()} — and learn how to use it safely in daily wellness. Evidence-based herbal medicine guide with dosage recommendations.`
+	// 优化SEO描述 - 简洁有力（控制在160字符以内）
+	const benefitsPreview = herbData.benefits?.[0] || 'natural health support'
+	const description = `${herbData.name} guide: ${benefitsPreview.toLowerCase()}, safe dosage, side effects & how to use. Evidence-based herbal medicine from licensed experts.`
 	
 	return {
 		title,
