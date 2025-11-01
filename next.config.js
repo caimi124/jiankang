@@ -28,6 +28,17 @@ const nextConfig = {
   // 基本重定向（保留核心功能）
   async redirects() {
     return [
+      // 🔧 修复重复URL问题 - 移除 index.html
+      {
+        source: '/index.html',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/zh/index.html',
+        destination: '/zh',
+        permanent: true,
+      },
       {
         source: '/test',
         destination: '/constitution-test',
@@ -43,6 +54,33 @@ const nextConfig = {
         destination: '/herbs/clove',
         permanent: true,
       },
+    ]
+  },
+
+  // 🔧 强制HTTPS和安全headers
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload'
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff'
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY'
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block'
+          }
+        ]
+      }
     ]
   },
 

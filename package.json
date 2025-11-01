@@ -46,7 +46,12 @@
     "seo:submit-priority": "node scripts/submit-to-google-search-console.js --priority",
     "seo:submit-all": "node scripts/submit-to-google-search-console.js --all",
     "seo:audit": "npm run build && npm run seo-check",
-    "seo:full-setup": "npm run seo:generate-pages && npm run seo:generate-sitemap && npm run seo:submit-priority"
+    "seo:full-setup": "npm run seo:generate-pages && npm run seo:generate-sitemap && npm run seo:submit-priority",
+    "indexnow": "node scripts/indexnow-submit.js",
+    "indexnow:check": "node scripts/check-indexing-status.js",
+    "gsc:submit": "node scripts/submit-to-google-manual.js",
+    "social:generate": "node scripts/social-media-post-generator.js",
+    "deploy:full": "git push && npm run indexnow"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
