@@ -1,0 +1,40 @@
+# HerbScience.shop - URLs需要提交到Google Search Console
+
+总计: 20个URL
+建议: 每天提交10个URL
+
+
+## 核心功能页面
+
+https://herbscience.shop
+https://herbscience.shop/zh
+https://herbscience.shop/constitution-test
+https://herbscience.shop/constitution-test/quick
+https://herbscience.shop/herb-finder
+https://herbscience.shop/dosage-calculator
+https://herbscience.shop/blog
+
+## 热门草药页面
+
+https://herbscience.shop/herbs/turmeric
+https://herbscience.shop/herbs/ashwagandha
+https://herbscience.shop/herbs/ginger
+
+### --- 第2天 ---
+
+https://herbscience.shop/herbs/ginseng
+https://herbscience.shop/herbs/rhodiola
+https://herbscience.shop/herbs/cinnamon
+
+## 热门博客文章
+
+https://herbscience.shop/blog/red-onion-vs-white-onion-health-benefits
+https://herbscience.shop/blog/ginger-tablets-chews-nausea-bloating-guide
+https://herbscience.shop/blog/ashwagandha-for-women-hormone-balance
+https://herbscience.shop/blog/turmeric-gut-relief-guide
+
+## 其他重要页面
+
+https://herbscience.shop/about
+https://herbscience.shop/privacy
+https://herbscience.shop/zh/about
