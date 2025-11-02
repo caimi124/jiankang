@@ -14,16 +14,11 @@ const https = require('https');
 const INDEXNOW_KEY = 'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6';
 const HOST = 'herbscience.shop';
 
-// 🎯 重点提交未被索引的页面
+// 🎯 重点提交最重要的页面（移除了无效URL）
 const priorityUrls = [
   // 首页
   'https://herbscience.shop/',
   'https://herbscience.shop/zh',
-  
-  // ⚠️ 未被索引的页面（优先！）
-  'https://herbscience.shop/herbs/elderberry',
-  'https://herbscience.shop/herbs/rosae-caninae-fructus',
-  'https://herbscience.shop/herbs/foeniculi-vulgaris-fructus',
   
   // 核心功能页面
   'https://herbscience.shop/constitution-test',
@@ -31,6 +26,9 @@ const priorityUrls = [
   'https://herbscience.shop/herb-finder',
   'https://herbscience.shop/dosage-calculator',
   'https://herbscience.shop/blog',
+  'https://herbscience.shop/zh/blog',
+  'https://herbscience.shop/about',
+  'https://herbscience.shop/zh/about',
   
   // 热门草药
   'https://herbscience.shop/herbs/turmeric',
@@ -38,15 +36,17 @@ const priorityUrls = [
   'https://herbscience.shop/herbs/ginger',
   'https://herbscience.shop/herbs/ginseng',
   'https://herbscience.shop/herbs/rhodiola',
+  'https://herbscience.shop/herbs/chamomile',
+  'https://herbscience.shop/herbs/peppermint',
+  'https://herbscience.shop/herbs/cinnamon',
   
-  // 热门博客
+  // 热门博客文章
   'https://herbscience.shop/blog/red-onion-vs-white-onion-health-benefits',
   'https://herbscience.shop/blog/ginger-tablets-chews-nausea-bloating-guide',
   'https://herbscience.shop/blog/ashwagandha-for-women-hormone-balance',
   'https://herbscience.shop/blog/turmeric-gut-relief-guide',
-  
-  // 其他重要页面
-  'https://herbscience.shop/about',
+  'https://herbscience.shop/blog/ginger-tea-menstrual-cramps-natural-relief',
+  'https://herbscience.shop/blog/rhodiola-smart-way-daily-rituals',
 ];
 
 function submitToIndexNow(urlList) {

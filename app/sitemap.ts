@@ -250,12 +250,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.75,
     },
     {
-      url: `${baseUrl}/herbs/elderberry`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.75,
-    },
-    {
       url: `${baseUrl}/herbs/fenugreek`,
       lastModified: currentDate,
       changeFrequency: 'weekly',
@@ -366,8 +360,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ] as MetadataRoute.Sitemap
 }
 
-// 📊 总计：57个URL
+// 📊 总计：56个URL（已移除elderberry）
 // - 核心页面：14个（7个功能 × 2语言）
 // - 博客文章：8篇（实际存在的文件）
-// - 草药详情页：33个
+// - 草药详情页：32个（移除了elderberry）
 // - 首页：2个（英文+中文）

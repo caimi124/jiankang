@@ -56,10 +56,8 @@ Allow: /
 Disallow: /api/
 Disallow: /admin/
 
-# 🗺️ Sitemap位置
+# 🗺️ Sitemap位置（Next.js自动生成）
 Sitemap: https://herbscience.shop/sitemap.xml
-Sitemap: https://herbscience.shop/sitemap-blogs.xml
-Sitemap: https://herbscience.shop/sitemap-herbs.xml
 
 # 🔔 IndexNow API Key Location (自动通知搜索引擎)
 # Key file: https://herbscience.shop/{api-key}.txt

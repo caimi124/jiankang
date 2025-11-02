@@ -73,6 +73,31 @@
       "source": "/(.*)/\\1",
       "destination": "https://herbscience.shop/$1",
       "permanent": true
+    },
+    {
+      "source": "/herbs/rosae-caninae-fructus",
+      "destination": "https://herbscience.shop/herb-finder",
+      "permanent": true
+    },
+    {
+      "source": "/herbs/foeniculi-vulgaris-fructus",
+      "destination": "https://herbscience.shop/herb-finder",
+      "permanent": true
+    },
+    {
+      "source": "/herbs/matricariae-flos",
+      "destination": "https://herbscience.shop/herbs/chamomile",
+      "permanent": true
+    },
+    {
+      "source": "/herb-finder/matricariae-flos",
+      "destination": "https://herbscience.shop/herbs/chamomile",
+      "permanent": true
+    },
+    {
+      "source": "/herbs/elderberry",
+      "destination": "https://herbscience.shop/herb-finder",
+      "permanent": true
     }
   ],
   "functions": {
