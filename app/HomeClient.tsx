@@ -9,6 +9,10 @@ const Header = dynamic(() => import('../components/Header'), { ssr: false })
 const NewsletterForm = dynamic(() => import('../components/NewsletterForm'), { ssr: false })
 const Testimonials = dynamic(() => import('../components/Testimonials'), { ssr: false })
 
+// SEO优化组件 - 帮助Google索引所有页面
+const FeaturedHerbsSection = dynamic(() => import('../components/FeaturedHerbsSection'), { ssr: true })
+const LatestBlogsSection = dynamic(() => import('../components/LatestBlogsSection'), { ssr: true })
+
 export default function HomeClient() {
   return (
     <>
@@ -79,6 +83,10 @@ export default function HomeClient() {
           </div>
         </div>
       </section>
+
+      {/* SEO优化：精选草药和最新博客 */}
+      <FeaturedHerbsSection />
+      <LatestBlogsSection />
 
       {/* 问题痛点 - 与中老年用户共鸣 */}
       <section className="py-16 bg-white">
