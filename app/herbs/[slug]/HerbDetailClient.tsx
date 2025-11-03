@@ -552,7 +552,16 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
                     Scientific Evidence & Research
                   </h2>
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 space-y-4">
-                    <p className="text-gray-800 leading-relaxed">{herbData.scientific_evidence}</p>
+                    <div className="text-gray-800 leading-relaxed">
+                      {herbData.scientific_evidence.split(/\*\*/).map((part, idx) => {
+                        // Split by ** to handle markdown bold
+                        // Odd indices are the text between ** markers (should be bold)
+                        if (idx % 2 === 1) {
+                          return <strong key={idx} className="font-semibold text-gray-900">{part}</strong>
+                        }
+                        return <span key={idx}>{part}</span>
+                      })}
+                    </div>
                     {slug === 'onion' && (
                       <ul className="list-disc pl-5 text-sm text-blue-900 space-y-2">
                         <li>
