@@ -291,7 +291,16 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
                       <Beaker className="w-5 h-5 text-blue-600" />
                       Key Active Compounds
                     </h3>
-                    <p className="text-gray-700">{herbData.active_compounds}</p>
+                    <div className="text-gray-700 space-y-2">
+                      {herbData.active_compounds.split(/\*\*/).map((part, idx) => {
+                        // Split by ** to handle markdown bold
+                        // Odd indices are the text between ** markers (should be bold)
+                        if (idx % 2 === 1) {
+                          return <strong key={idx} className="font-semibold text-gray-900">{part}</strong>
+                        }
+                        return <span key={idx}>{part}</span>
+                      })}
+                    </div>
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
@@ -359,6 +368,30 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
                         <div>
                           <p className="font-medium text-gray-900">Cycling for Best Results</p>
                           <p className="text-gray-700 text-sm">Use for 6-8 weeks, then take 1 week break to maintain effectiveness. Pair with healthy fats or herbal teas for better absorption.</p>
+                        </div>
+                      </div>
+                    </div>
+                  ) : slug === 'holy-basil' || slug === 'tulsi' ? (
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">1</div>
+                        <div>
+                          <p className="font-medium text-gray-900">Holy Basil Tea (Daily Stress Relief)</p>
+                          <p className="text-gray-700 text-sm">Steep 2-3 teaspoons dried tulsi leaves in hot water for 5-10 minutes. Drink 1-2 cups daily, preferably in morning and evening, for consistent adaptogenic support.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">2</div>
+                        <div>
+                          <p className="font-medium text-gray-900">Holy Basil Extract Capsules</p>
+                          <p className="text-gray-700 text-sm">Take 300-600mg standardized extract (2.5% ursolic acid) twice daily with meals. Best for targeted support for stress, anxiety, blood sugar, or hormone balance.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">3</div>
+                        <div>
+                          <p className="font-medium text-gray-900">Fresh Tulsi Leaves (Traditional Method)</p>
+                          <p className="text-gray-700 text-sm">Chew 5-10 fresh leaves on empty stomach in the morning for maximum enzyme and compound retention. Or add to smoothies, soups, and salads.</p>
                         </div>
                       </div>
                     </div>
@@ -540,67 +573,128 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
                 </div>
 
                 {/* Research Highlights Section */}
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                    <Award className="w-5 h-5 text-yellow-600" />
-                    Research Highlights
-                  </h3>
-                  <div className="grid gap-4">
-                    <div className="border border-gray-200 rounded-lg p-6 bg-white">
-                      <div className="flex items-start gap-3">
-                        <div className="bg-green-100 rounded-full p-2">
-                          <FlaskConical className="w-4 h-4 text-green-600" />
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-gray-900 mb-2">Clinical Trial Evidence</h4>
-                          <p className="text-gray-700 text-sm mb-2">
-                            A 2020 randomized controlled trial found that ginger extract reduced nausea symptoms by 40% compared to placebo in patients undergoing chemotherapy.
-                          </p>
-                          <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Peer-reviewed</span>
+                {slug === 'holy-basil' || slug === 'tulsi' ? (
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                      <Award className="w-5 h-5 text-yellow-600" />
+                      Research Highlights
+                    </h3>
+                    <div className="grid gap-4">
+                      <div className="border border-gray-200 rounded-lg p-6 bg-white">
+                        <div className="flex items-start gap-3">
+                          <div className="bg-green-100 rounded-full p-2">
+                            <FlaskConical className="w-4 h-4 text-green-600" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold text-gray-900 mb-2">Stress & Cortisol Reduction</h4>
+                            <p className="text-gray-700 text-sm mb-2">
+                              A systematic review by Jamshidi & Cohen (2017) in Evidence-based Complementary and Alternative Medicine found that Holy Basil extract significantly reduced stress markers and improved overall well-being across multiple human trials.
+                            </p>
+                            <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Peer-reviewed</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="border border-gray-200 rounded-lg p-6 bg-white">
-                      <div className="flex items-start gap-3">
-                        <div className="bg-blue-100 rounded-full p-2">
-                          <Users className="w-4 h-4 text-blue-600" />
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-gray-900 mb-2">Meta-Analysis Results</h4>
-                          <p className="text-gray-700 text-sm mb-2">
-                            Analysis of 12 studies involving 1,278 participants confirmed ginger's effectiveness for reducing digestive discomfort and inflammation markers.
-                          </p>
-                          <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">High-quality evidence</span>
+                      <div className="border border-gray-200 rounded-lg p-6 bg-white">
+                        <div className="flex items-start gap-3">
+                          <div className="bg-blue-100 rounded-full p-2">
+                            <Users className="w-4 h-4 text-blue-600" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold text-gray-900 mb-2">Blood Sugar & Metabolic Support</h4>
+                            <p className="text-gray-700 text-sm mb-2">
+                              A randomized controlled trial published in Journal of Ethnopharmacology (2012) showed that diabetic patients receiving Holy Basil extract had significantly lowered fasting and postprandial blood glucose and improved lipid profiles.
+                            </p>
+                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">High-quality evidence</span>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                      <Award className="w-5 h-5 text-yellow-600" />
+                      Research Highlights
+                    </h3>
+                    <div className="grid gap-4">
+                      <div className="border border-gray-200 rounded-lg p-6 bg-white">
+                        <div className="flex items-start gap-3">
+                          <div className="bg-green-100 rounded-full p-2">
+                            <FlaskConical className="w-4 h-4 text-green-600" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold text-gray-900 mb-2">Clinical Trial Evidence</h4>
+                            <p className="text-gray-700 text-sm mb-2">
+                              Clinical studies demonstrate {herbData.name.toLowerCase()}'s effectiveness for its primary health benefits. Research shows consistent positive outcomes across multiple trials.
+                            </p>
+                            <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Peer-reviewed</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="border border-gray-200 rounded-lg p-6 bg-white">
+                        <div className="flex items-start gap-3">
+                          <div className="bg-blue-100 rounded-full p-2">
+                            <Users className="w-4 h-4 text-blue-600" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold text-gray-900 mb-2">Meta-Analysis Results</h4>
+                            <p className="text-gray-700 text-sm mb-2">
+                              Systematic reviews and meta-analyses confirm {herbData.name.toLowerCase()}'s therapeutic benefits with high quality evidence supporting traditional uses.
+                            </p>
+                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">High-quality evidence</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* Case Example Section */}
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                    <Eye className="w-5 h-5 text-purple-600" />
-                    Case Example
-                  </h3>
-                  <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-6">
-                    <div className="flex items-start gap-3">
-                      <div className="bg-purple-100 rounded-full p-2 flex-shrink-0">
-                        <Users className="w-4 h-4 text-purple-600" />
-                      </div>
-                      <div>
-                        <p className="text-gray-800 italic mb-3">
-                          "Lisa, a 36-year-old teacher, started drinking ginger tea daily to reduce bloating after meals. 
-                          Within one week, she noticed significant improvement in her digestive comfort and began incorporating 
-                          fresh ginger into her cooking for additional benefits."
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          <span className="font-medium">Outcome:</span> 85% reduction in post-meal discomfort, improved energy levels
-                        </p>
+                {slug === 'holy-basil' || slug === 'tulsi' ? (
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                      <Eye className="w-5 h-5 text-purple-600" />
+                      Case Example
+                    </h3>
+                    <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-6">
+                      <div className="flex items-start gap-3">
+                        <div className="bg-purple-100 rounded-full p-2 flex-shrink-0">
+                          <Users className="w-4 h-4 text-purple-600" />
+                        </div>
+                        <div>
+                          <p className="text-gray-800 italic mb-3">
+                            "Jane, a 38-year-old corporate manager with chronic anxiety and mild insulin resistance, began taking 500mg Holy Basil extract daily plus one cup of Tulsi tea in the evening. After 6 weeks, her fasting glucose improved by ~8% and she felt much calmer. Her skin cleared up too!"
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            <span className="font-medium">Outcome:</span> Reduced anxiety attacks, improved blood sugar levels, better sleep quality, clearer skin
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                      <Eye className="w-5 h-5 text-purple-600" />
+                      Case Example
+                    </h3>
+                    <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-6">
+                      <div className="flex items-start gap-3">
+                        <div className="bg-purple-100 rounded-full p-2 flex-shrink-0">
+                          <Users className="w-4 h-4 text-purple-600" />
+                        </div>
+                        <div>
+                          <p className="text-gray-800 italic mb-3">
+                            Users report positive outcomes when incorporating {herbData.name.toLowerCase()} into their wellness routine. Individual results may vary based on constitution, dosage, and consistency of use.
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            <span className="font-medium">Note:</span> Always consult with a healthcare provider for personalized guidance
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 <div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-4">Evidence Quality Rating</h3>
@@ -782,16 +876,16 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
                         </p>
                       </div>
                     </>
-                  ) : (
+                  ) : slug === 'holy-basil' || slug === 'tulsi' ? (
                     <div className="grid gap-4">
                       <div className="border border-green-200 rounded-lg p-6 bg-green-50">
                         <div className="flex items-start gap-3">
                           <div className="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">1</div>
                           <div>
-                            <h4 className="font-semibold text-gray-900 mb-2">Ginger + Peppermint</h4>
-                            <p className="text-gray-700 text-sm mb-2">Powerful combination for nausea relief and digestive support</p>
+                            <h4 className="font-semibold text-gray-900 mb-2">Holy Basil + Ashwagandha</h4>
+                            <p className="text-gray-700 text-sm mb-2">Synergistic adaptogen duo for comprehensive stress and adrenal balance</p>
                             <p className="text-xs text-gray-600">
-                              <span className="font-medium">Best for:</span> Motion sickness, morning sickness, upset stomach
+                              <span className="font-medium">Best for:</span> Chronic stress, burnout, hormone balance, anxiety relief
                             </p>
                           </div>
                         </div>
@@ -800,17 +894,11 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
                         <div className="flex items-start gap-3">
                           <div className="bg-orange-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">2</div>
                           <div>
-                            <h4 className="font-semibold text-gray-900 mb-2">Ginger + Cinnamon</h4>
-                            <p className="text-gray-700 text-sm mb-2">Warming blend for circulation and metabolic support</p>
+                            <h4 className="font-semibold text-gray-900 mb-2">Holy Basil + Rhodiola</h4>
+                            <p className="text-gray-700 text-sm mb-2">Calming and energizing adaptogen combination for balanced mental clarity</p>
                             <p className="text-xs text-gray-600">
-                              <span className="font-medium">Best for:</span> Cold hands and feet, poor circulation, winter wellness
+                              <span className="font-medium">Best for:</span> Anxiety with fatigue, mental fog, focus, stress-induced exhaustion
                             </p>
-                            {slug === 'onion' && (
-                              <p className="text-xs text-gray-600 mt-2">
-                                <span className="font-medium">Pairs well with onion:</span> add sautéed <Link href="/herbs/turmeric" className="text-green-700 hover:text-green-800 underline">turmeric</Link> or
-                                <Link href="/herbs/cinnamon" className="text-green-700 hover:text-green-800 underline ml-1">cinnamon</Link> to enhance antioxidant synergy.
-                              </p>
-                            )}
                           </div>
                         </div>
                       </div>
@@ -818,18 +906,24 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
                         <div className="flex items-start gap-3">
                           <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">3</div>
                           <div>
-                            <h4 className="font-semibold text-gray-900 mb-2">Ginger + Turmeric</h4>
-                            <p className="text-gray-700 text-sm mb-2">Anti-inflammatory powerhouse for joint and muscle support</p>
+                            <h4 className="font-semibold text-gray-900 mb-2">Holy Basil + Cinnamon</h4>
+                            <p className="text-gray-700 text-sm mb-2">Blood sugar regulation and metabolic support combination</p>
                             <p className="text-xs text-gray-600">
-                              <span className="font-medium">Best for:</span> Exercise recovery, joint discomfort, overall inflammation
+                              <span className="font-medium">Best for:</span> Blood sugar balance, insulin resistance, metabolic syndrome
                             </p>
-                            {slug === 'onion' && (
-                              <p className="text-xs text-gray-600 mt-2">
-                                <span className="font-medium">Onion pairing tip:</span> roasted onions with
-                                <Link href="/herbs/garlic" className="text-green-700 hover:text-green-800 underline ml-1">garlic</Link> and
-                                <Link href="/herbs/turmeric" className="text-green-700 hover:text-green-800 underline ml-1">turmeric</Link> for cardiometabolic support.
-                              </p>
-                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="grid gap-4">
+                      <div className="border border-gray-200 rounded-lg p-6 bg-gray-50">
+                        <div className="flex items-start gap-3">
+                          <div className="bg-gray-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">i</div>
+                          <div>
+                            <p className="text-gray-700 text-sm">
+                              Common herbal combinations and pairings can enhance therapeutic effects. Consult with a healthcare practitioner for personalized recommendations.
+                            </p>
                           </div>
                         </div>
                       </div>
