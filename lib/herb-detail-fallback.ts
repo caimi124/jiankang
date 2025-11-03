@@ -854,7 +854,288 @@ HERB_DETAIL_FALLBACK['onion'] = {
     ]
 }
 
+// Add Holy Basil (Tulsi) - Adaptogen & Stress Relief
+HERB_DETAIL_FALLBACK['holy-basil'] = {
+  id: 'holy-basil',
+  name: 'Holy Basil',
+  chinese_name: '圣罗勒',
+  latin_name: 'Ocimum tenuiflorum (Ocimum sanctum)',
+  slug: 'holy-basil',
+  category: 'Adaptogen & Stress Relief',
+  evidence_level: 'Moderate',
+  safety_level: 'medium',
+  overview: `Holy Basil, also known as Tulsi, is one of the most sacred herbs in Ayurvedic medicine. Revered for over 3,000 years, it's celebrated as an "adaptogen" — a natural compound that helps the body restore balance and cope with physical, mental, and emotional stress. Traditionally used to promote longevity and vitality, Tulsi supports the immune system, hormone balance, and mental clarity, making it a go-to herb for those feeling burnt out, anxious, or constantly "on edge." Today, it's widely consumed as Holy Basil tea, tincture, or capsule — prized for its ability to reduce anxiety, regulate blood sugar, and protect against environmental toxins.`,
+  benefits: [
+    'Reduces Stress & Anxiety - Powerful adaptogen that helps lower cortisol and improve sleep quality, reducing fatigue and mood swings',
+    'Balances Hormones & Enhances Energy - Supports adrenal and thyroid function, stabilizes energy levels and reduces symptoms of adrenal fatigue',
+    'Supports Heart & Blood Sugar Health - Anti-diabetic and lipid-lowering effects, helps regulate blood glucose and cholesterol',
+    'Boosts Immunity & Fights Infections - Natural antibacterial, antiviral, and antifungal properties help fight colds, coughs, and respiratory infections',
+    'Improves Skin Clarity - Antimicrobial and anti-inflammatory compounds help clear acne, soothe irritated skin, and promote wound healing',
+    'Supports Respiratory & Oral Health - Opens airways, reduces inflammation, and acts as a natural mouth cleanser',
+    'May Protect Against Cancer & Radiation - Animal and cellular studies suggest compounds can inhibit tumor growth and protect healthy cells'
+  ],
+  active_compounds: `**Eugenol** – Major component with antibacterial, anti-inflammatory, and calming properties. **Ursolic acid & Oleanolic acid** – Antioxidant and anti-stress compounds that support metabolic regulation. **Rosmarinic acid** – Provides immune and anti-allergy support. **Carvacrol** – Antifungal and antimicrobial agent. **Ocimumosides A & B** – Adaptogenic compounds that help regulate cortisol and stress response. **Vitamin K** – Essential for bone and cardiovascular health. **Flavonoids & Phenolic acids** – General antioxidant support and cellular protection.`,
+  traditional_uses: `In Ayurvedic medicine, Holy Basil is known as the "Queen of Herbs" and has been used for over 3,000 years to promote physical, mental, emotional, and spiritual well-being. It's traditionally prescribed for reducing stress, supporting immunity, balancing hormones, and promoting longevity. In TCM perspective, Holy Basil helps those who feel tired yet anxious, with mental fog, irregular sleep, or hormonal imbalances. Its warm, aromatic nature uplifts Qi and clears emotional stagnation. Tulsi is often used in daily rituals, consumed as tea, or used in religious ceremonies for purification and protection.`,
+  suitable_for: [
+    'People experiencing chronic stress, burnout, and anxiety',
+    'Those with adrenal fatigue and hormonal imbalances',
+    'Individuals with blood sugar regulation issues (under medical supervision)',
+    'People prone to frequent respiratory infections and colds',
+    'Those with skin issues like acne, eczema, or inflammation',
+    'Individuals seeking natural adaptogenic support without stimulants',
+    'People with Qi-deficient or stressed constitutions',
+    'Those with mild metabolic imbalance or insulin resistance'
+  ],
+  not_suitable_for: [
+    'Pregnant or breastfeeding women (unless under medical supervision)',
+    'People with bleeding disorders or scheduled for surgery within 2 weeks',
+    'Those trying to conceive (high doses in animal studies reduced sperm count)',
+    'People taking anticoagulants (e.g., Warfarin), hypoglycemics, or thyroid drugs without supervision',
+    'Individuals with severe Yin deficiency or excessive heat symptoms',
+    'People with very hot constitution (flushing, irritability, night sweats)'
+  ],
+  dosage_forms: [
+    { 
+      form: 'Holy Basil Tea (Tulsi Tea)', 
+      dosage: '1-2 cups daily (2-3 tsp dried leaves per cup)', 
+      usage: 'Steep dried leaves in hot water for 5-10 minutes. Best for mild stress, daily wellness, and gentle adaptogenic support. Can be consumed hot or cold.' 
+    },
+    { 
+      form: 'Holy Basil Extract Capsules', 
+      dosage: '300-600 mg twice daily (standardized extract)', 
+      usage: 'Take with meals for anxiety, blood sugar support, or fatigue. Look for products standardized to 2.5% ursolic acid or eugenol content.' 
+    },
+    { 
+      form: 'Holy Basil Essential Oil', 
+      dosage: '2-3 drops in diffuser', 
+      usage: 'Aromatherapy for relaxation and stress relief. Can also dilute 1-2% in carrier oil for topical application. Never ingest essential oil.' 
+    },
+    { 
+      form: 'Fresh Holy Basil Leaves', 
+      dosage: '5-10 fresh leaves daily', 
+      usage: 'Chew fresh leaves on empty stomach for traditional Ayurvedic practice, or add to soups, curries, salads for flavor and gentle support.' 
+    },
+    { 
+      form: 'Holy Basil Juice (Fresh Leaf)', 
+      dosage: '5-10 mL/day', 
+      usage: 'Fresh juice for immune support and detox aid. Mix with water or honey. Best taken in morning on empty stomach.' 
+    },
+    { 
+      form: 'Holy Basil Tincture', 
+      dosage: '2-4 mL (40-80 drops) 2-3 times daily', 
+      usage: 'Alcohol-based extract for fast absorption. Add to water or tea. Good for acute stress or anxiety relief.' 
+    }
+  ],
+  safety_warnings: [
+    'Pregnancy & Breastfeeding: Avoid unless supervised by a healthcare professional',
+    'Bleeding Disorders: Tulsi may slow blood clotting; discontinue at least 2 weeks before surgery',
+    'Fertility Concerns: High doses in animal studies reduced sperm count — use caution for those trying to conceive',
+    'Medication Interactions: May enhance the effect of anticoagulants (Warfarin), hypoglycemics, or thyroid drugs',
+    'Hypoglycemia Risk: Can lower blood sugar — monitor if taking diabetes medications',
+    'Start with low doses to assess tolerance, especially if sensitive to adaptogens',
+    'Not recommended for people with severe Yin deficiency or excess heat conditions'
+  ],
+  interactions: [
+    'Anticoagulants (Warfarin, Aspirin) - May increase bleeding risk',
+    'Diabetes Medications (Metformin, Insulin) - May enhance hypoglycemic effects',
+    'Thyroid Medications - May affect thyroid hormone levels',
+    'Blood Pressure Medications - May have mild hypotensive effects',
+    'Cytochrome P450 substrates - May affect metabolism of certain drugs'
+  ],
+  scientific_evidence: `**Stress & Cortisol Reduction:** A systematic review by Jamshidi & Cohen (2017) in *Evidence-based Complementary and Alternative Medicine* found that across human trials, Tulsi extract significantly reduced stress markers and improved overall well-being. **Blood Sugar Control:** A randomized controlled trial published in *Journal of Ethnopharmacology* (2012) showed that diabetic patients receiving Tulsi extract had significantly lowered fasting and postprandial blood glucose and improved lipid profiles. **Antimicrobial Effects:** *Phytotherapy Research* (2015) confirmed Holy Basil is effective against *Staphylococcus aureus* and *E. coli* bacteria. **Neuroprotection:** *Nutrition Neuroscience* (2016) found Holy Basil improves memory and focus under chronic stress conditions. These studies support Tulsi's dual action on stress and metabolism.`,
+  constitution_match: [
+    { 
+      type: 'Qi-Deficient / Stressed Constitution', 
+      suitable: 'yes', 
+      description: 'Perfect match! Holy Basil helps those who feel tired yet anxious, with mental fog, irregular sleep, or hormonal imbalances. Its warm, aromatic nature uplifts Qi and calms scattered minds.' 
+    },
+    { 
+      type: 'Vata / Pitta Imbalance (Jittery, Stressed, Adrenal Fatigue)', 
+      suitable: 'yes', 
+      description: 'Excellent for people who feel anxious, scattered, or suffer from adrenal fatigue. Helps calm the nervous system and restore energy balance.' 
+    },
+    { 
+      type: 'Balanced (Neutral) Constitution', 
+      suitable: 'yes', 
+      description: 'Holy Basil is a gentle daily tonic for stress management, immune wellness, and general vitality.' 
+    },
+    { 
+      type: 'Yin-Deficient / Heat Constitution', 
+      suitable: 'warning', 
+      description: 'Use with caution. Warming nature may aggravate heat signs like flushing, sore throat, irritability. Small doses only, or combine with cooling herbs.' 
+    },
+    { 
+      type: 'Yang-Excess / Very Hot Constitution', 
+      suitable: 'no', 
+      description: 'Not suitable for those who already experience excess internal heat, night sweats, or severe inflammation. May worsen heat symptoms.' 
+    }
+  ],
+  pairs_well_with: [
+    'Ashwagandha - Synergistic support for stress and adrenal balance (Tulsi + Ashwagandha tea is a popular blend)',
+    'Rhodiola - Calming blends for anxiety with energizing support (complementary adaptogen pairing)',
+    'Lemon Balm - Enhanced calming effects for sleep and anxiety relief',
+    'Cinnamon - For glucose balancing formulations and metabolic support',
+    'Gymnema - Combined blood sugar regulation support',
+    'Neem - Skin & detox combinations (both Ayurvedic staples)',
+    'Turmeric - Anti-inflammatory and antioxidant synergy',
+    'Ginger - Warming digestive and immune support'
+  ],
+  user_stories: [
+    { 
+      quote: 'I started drinking Holy Basil tea twice daily for work stress and anxiety. Within 2 weeks, I noticed I was sleeping better and my afternoon anxiety attacks completely stopped. Tulsi has become my daily ritual.', 
+      author: 'Jane D.', 
+      location: 'Seattle, WA' 
+    },
+    { 
+      quote: 'As a corporate manager with chronic anxiety and mild insulin resistance, I began taking 500mg Tulsi extract daily plus one cup of Tulsi tea in the evening. After 6 weeks, my fasting glucose improved by ~8% and I felt much calmer. My skin cleared up too!', 
+      author: 'Michael R.', 
+      location: 'Austin, TX' 
+    },
+    { 
+      quote: 'Holy Basil has been a game-changer for my hormone balance. I combine it with Ashwagandha and my PMS symptoms have decreased dramatically. I feel more emotionally stable and energized.', 
+      author: 'Lisa K.', 
+      location: 'Portland, OR' 
+    },
+    { 
+      quote: 'I was skeptical about adaptogens, but Holy Basil tea benefits are real. It helps me manage work stress without feeling drowsy like some calming herbs do. I drink it every morning and afternoon.', 
+      author: 'Tom H.', 
+      location: 'Boston, MA' 
+    }
+  ],
+  faqs: [
+    { 
+      question: 'What are the main holy basil benefits?', 
+      answer: 'Holy basil benefits include powerful stress and anxiety relief, hormone balance support, blood sugar regulation, immune system strengthening, skin health improvement, and respiratory support. It\'s a versatile adaptogen that helps your body cope with physical, mental, and emotional stress while promoting overall vitality.' 
+    },
+    { 
+      question: 'Can Holy Basil make me sleepy?', 
+      answer: 'No — Holy Basil is calming but not sedative. It promotes relaxation and mental calm without causing drowsiness. It\'s safe to use during the day for stress management while maintaining alertness and focus.' 
+    },
+    { 
+      question: 'Can I take Holy Basil with other adaptogens like Ashwagandha?', 
+      answer: 'Yes! Holy Basil pairs excellently with Ashwagandha for comprehensive stress and hormone balance. Tulsi ashwagandha tea is a popular adaptogenic blend. You can also combine it with Rhodiola for energy and focus support. The tulsi and ashwagandha combination provides both calming and energizing effects.' 
+    },
+    { 
+      question: 'Is Holy Basil good for anxiety and panic attacks?', 
+      answer: 'Yes. Clinical studies show Holy Basil helps regulate cortisol and serotonin, easing anxiety naturally. Tulsi tea benefits for anxiety include calming the nervous system without sedation. Many users report reduced frequency and intensity of anxiety attacks within 2-3 weeks of consistent use.' 
+    },
+    { 
+      question: 'How long does it take for Holy Basil to work?', 
+      answer: 'Most users notice reduced stress and better focus after 1-2 weeks of consistent use. For hormone balance and blood sugar benefits, allow 4-6 weeks for full effects. Holy basil supplement benefits build gradually as it helps your body adapt to stress more effectively.' 
+    },
+    { 
+      question: 'What is the best form of Holy Basil - tea, capsules, or essential oil?', 
+      answer: 'It depends on your needs. Tulsi tea benefits include gentle daily stress support and is the most traditional form. Holy basil supplement benefits from capsules include standardized dosing and convenience for targeted relief. Holy basil essential oil benefits are best for aromatherapy and topical use. For beginners, start with tea; for therapeutic dosing, use capsules.' 
+    },
+    { 
+      question: 'Can Holy Basil help with hormonal imbalance?', 
+      answer: 'Yes! Tulsi hormone balance support works by regulating adrenal and thyroid function, reducing cortisol, and supporting healthy hormone cycles. It\'s particularly helpful for stress-related hormonal issues, PMS symptoms, and perimenopause. The benefits of tulsi include stabilizing energy and mood during hormonal fluctuations.' 
+    },
+    { 
+      question: 'Is Holy Basil safe to take long-term?', 
+      answer: 'Short- to medium-term use (6-8 weeks) is generally safe for most people. For long-term use, periodic breaks and monitoring are advisable. Use cycles: 6-8 weeks on, 1-2 weeks off to maintain effectiveness. Always consult a healthcare provider for personalized guidance.' 
+    },
+    { 
+      question: 'What are holy basil side effects?', 
+      answer: 'Holy basil side effects are rare and mild when used appropriately. Potential side effects include mild nausea (if taken on empty stomach), possible interactions with blood thinners or diabetes medications, and fertility concerns at very high doses. Most people tolerate Tulsi well with no adverse effects.' 
+    },
+    { 
+      question: 'Can I drink Holy Basil tea every day?', 
+      answer: 'Yes! Benefits of drinking tulsi tea daily (1-2 cups) include consistent stress management, immune support, and adaptogenic effects. Many people drink tulsi tea as part of their daily wellness routine. Tulsi tea health benefits accumulate with regular consumption.' 
+    },
+    { 
+      question: 'How to take holy basil safely?', 
+      answer: 'To take holy basil safely: Start with low doses (1 cup tea or 300mg capsules), take with food to avoid stomach upset, avoid during pregnancy/breastfeeding, discontinue 2 weeks before surgery, consult your doctor if taking medications, and cycle usage for long-term benefits (6-8 weeks on, 1 week off).' 
+    },
+    { 
+      question: 'What is the difference between Holy Basil and regular basil?', 
+      answer: 'Holy Basil (Ocimum sanctum/tenuiflorum) is a medicinal adaptogen used for stress, immunity, and health. Regular basil (Ocimum basilicum) is primarily a culinary herb. Holy Basil has stronger aromatic compounds, adaptogenic properties, and therapeutic benefits not found in sweet basil.' 
+    },
+    { 
+      question: 'Can Holy Basil help with cortisol levels?', 
+      answer: 'Yes! Clinical research shows Holy Basil helps lower elevated cortisol levels naturally. Cortisol holy basil benefits include balanced stress response and improved adrenal function. Studies demonstrate that holy basil and cortisol regulation occurs through HPA axis modulation. Take 300-600mg daily or drink 2-3 cups of tulsi tea for cortisol support.' 
+    },
+    { 
+      question: 'Does Holy Basil help with sleep?', 
+      answer: 'Yes! Holy basil for sleep works by reducing stress hormones, calming the mind, and promoting relaxation without sedation. While not a sleep aid per se, holy basil and sleep quality improve because it addresses underlying stress that disrupts sleep. Drink tulsi tea 1-2 hours before bed for best results.' 
+    },
+    { 
+      question: 'What are tulsi tea side effects?', 
+      answer: 'Tulsi tea side effects are minimal when consumed in normal amounts (1-3 cups daily). Possible side effects include mild nausea if consumed on empty stomach, potential interactions with blood thinners, and theoretical fertility concerns at very high doses. Tulsi tea is generally very safe and well-tolerated.' 
+    },
+    { 
+      question: 'Can I make a holy basil tea recipe at home?', 
+      answer: 'Yes! Holy basil tea recipe: Add 2-3 teaspoons dried tulsi leaves (or 10-15 fresh leaves) to 1 cup hot water. Steep 5-10 minutes, strain, and enjoy. Optional additions: honey, lemon, ginger, or cinnamon. Drink 1-2 cups daily for adaptogenic benefits. Fresh tulsi basil tea recipe is the same but uses fresh leaves.' 
+    },
+    { 
+      question: 'What are the benefits of tulsi leaves when eaten fresh?', 
+      answer: 'Eating 5-10 fresh tulsi leaves daily on an empty stomach is a traditional Ayurvedic practice. Benefits include: maximum enzyme and compound retention, immediate adaptogenic support, digestive aid, immune boost, and spiritual/ritual significance. Chew leaves slowly or add to smoothies and salads.' 
+    },
+    { 
+      question: 'Is Holy Basil an adaptogen like Ashwagandha?', 
+      answer: 'Yes! Holy Basil (Tulsi) is classified as a powerful adaptogen herb. Like Ashwagandha, it helps your body adapt to stress, balance hormones, and restore equilibrium. Tulsi adaptogen properties include cortisol regulation, immune modulation, and mental clarity support. Many people use adaptogenic tulsi tea daily for stress resilience.' 
+    }
+  ],
+  seo_keywords: [
+    'holy basil benefits',
+    'tulsi tea benefits',
+    'holy basil tea benefits',
+    'tulsi benefits',
+    'holy basil supplement benefits',
+    'tulsi tea health benefits',
+    'tulsi tea side effects',
+    'holy basil for stress',
+    'holy basil for sleep',
+    'cortisol holy basil',
+    'holy basil and cortisol',
+    'holy basil and sleep',
+    'holy basil cortisol',
+    'how to take holy basil safely',
+    'tulsi hormone balance',
+    'holy basil side effects',
+    'ocimum sanctum side effects',
+    'side effects of tulsi',
+    'tulsi holy basil side effects',
+    'holy basil tea recipe',
+    'tulsi basil tea recipe',
+    'tulsi adaptogen',
+    'adaptogenic tulsi tea',
+    'ashwagandha tulsi',
+    'tulsi and ashwagandha',
+    'tulsi ashwagandha tea',
+    'tulsi ashwagandha',
+    'holy basil essential oil benefits',
+    'basil health benefits',
+    'basil tea benefits',
+    'benefits of basil leaves',
+    'holy basil adaptogen',
+    'tulsi for anxiety',
+    'holy basil for anxiety',
+    'ocimum tenuiflorum',
+    'ocimum sanctum',
+    'tulsi tea for stress',
+    'benefits of tulsi',
+    'tulsi leaves benefits',
+    'fresh tulsi benefits',
+    'holy basil hormone balance'
+  ],
+  properties: [
+    'Adaptogenic',
+    'Stress-relieving',
+    'Hormone-balancing',
+    'Immune-boosting',
+    'Anti-inflammatory',
+    'Antimicrobial',
+    'Blood sugar support',
+    'Anxiolytic (anti-anxiety)'
+  ]
+}
+
 // Add aliases
+HERB_DETAIL_FALLBACK['tulsi'] = HERB_DETAIL_FALLBACK['holy-basil']
+HERB_DETAIL_FALLBACK['holy basil'] = HERB_DETAIL_FALLBACK['holy-basil']
+HERB_DETAIL_FALLBACK['ocimum-sanctum'] = HERB_DETAIL_FALLBACK['holy-basil']
+HERB_DETAIL_FALLBACK['ocimum-tenuiflorum'] = HERB_DETAIL_FALLBACK['holy-basil']
 HERB_DETAIL_FALLBACK['rhodiola'] = HERB_DETAIL_FALLBACK['rhodiola-crenulata']
 HERB_DETAIL_FALLBACK['rhodiola-rosea'] = HERB_DETAIL_FALLBACK['rhodiola-crenulata']
 

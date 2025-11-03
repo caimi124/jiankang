@@ -29,6 +29,11 @@ async function getHerbData(slug: string) {
 		'ginger-root': 'ginger',
 		'rhodiola': 'rhodiola-crenulata',
 		'rhodiola-rosea': 'rhodiola-crenulata',
+		// Holy Basil 别名
+		'tulsi': 'holy-basil',
+		'holy basil': 'holy-basil',
+		'ocimum-sanctum': 'holy-basil',
+		'ocimum-tenuiflorum': 'holy-basil',
 		// 中文名称别名（URL编码和直接中文都支持）
 		'甘草': 'licorice-root',
 		'人参': 'ginseng',
@@ -41,7 +46,8 @@ async function getHerbData(slug: string) {
 		'肉桂': 'cinnamon',
 		'洋葱': 'onion',
 		'红景天': 'rhodiola-crenulata',
-		'南非醉茄': 'ashwagandha'
+		'南非醉茄': 'ashwagandha',
+		'圣罗勒': 'holy-basil'
 	}
 	
 	if (aliases[normalizedSlug]) {
@@ -366,7 +372,9 @@ export async function generateStaticParams() {
 			{ slug: 'chamomile' },
 			{ slug: 'onion' },
 			{ slug: 'ashwagandha' },
-			{ slug: 'echinacea' }
+			{ slug: 'echinacea' },
+			{ slug: 'holy-basil' },
+			{ slug: 'rhodiola-crenulata' }
 		]
 	}
 }
