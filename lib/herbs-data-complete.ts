@@ -2551,6 +2551,69 @@ export const HERBS_DATABASE: Herb[] = [
       "Chromium - blood sugar regulation support",
       "Vitamin C - immune system strengthening"
     ]
+  },
+  {
+    "id": "holy-basil-2025",
+    "chinese_name": "圣罗勒",
+    "english_name": "Holy Basil",
+    "latin_name": "Ocimum tenuiflorum (Ocimum sanctum)",
+    "category": "adaptogen",
+    "constitution_type": "balanced",
+    "primary_effects": [
+      "压力与焦虑",
+      "情绪管理",
+      "能量提升",
+      "免疫支持"
+    ],
+    "secondary_effects": [
+      "睡眠支持",
+      "抗炎作用"
+    ],
+    "efficacy": [
+      "压力与焦虑",
+      "情绪管理",
+      "激素平衡",
+      "血糖调节",
+      "免疫支持",
+      "能量提升",
+      "抗炎作用",
+      "睡眠支持"
+    ],
+    "dosage": "圣罗勒茶：每日1-2杯（每杯2-3茶匙干叶） | 提取物胶囊：每日300-600mg（分两次服用）| 新鲜叶片：每日5-10片",
+    "safety_level": "medium",
+    "contraindications": "孕妇、哺乳期妇女、计划怀孕者、出血性疾病患者、手术前2周慎用。可能与抗凝血药物、降糖药物、甲状腺药物产生相互作用。",
+    "description": "圣罗勒（Tulsi）是阿育吠陀医学中最神圣的草药之一，被誉为草药之后。作为一种强效适应原，它帮助身体应对身体、精神和情绪压力，支持免疫系统、激素平衡和精神清晰度。广泛用于减轻压力、焦虑、调节血糖和保护环境毒素。",
+    "traditional_use": "在阿育吠陀医学中使用超过3000年，用于促进长寿、活力、减压、支持免疫、平衡激素和促进精神健康。在中医视角中，圣罗勒帮助那些感到疲倦但焦虑、精神混乱、睡眠不规律或激素失衡的人。其温暖、芳香的性质提升气、清除情绪停滞。",
+    "modern_applications": "现代研究证实圣罗勒在减轻压力和焦虑、降低皮质醇水平、调节血糖和胆固醇、增强免疫功能、改善记忆和专注力、支持呼吸健康等方面的功效。临床试验显示，圣罗勒提取物显著降低压力标志物并改善整体幸福感。",
+    "taste": "温暖、芳香、微辛",
+    "meridians": [
+      "心经",
+      "肝经",
+      "肺经"
+    ],
+    "part_used": "叶片",
+    "source": "印度、东南亚",
+    "growing_regions": [
+      "印度",
+      "泰国",
+      "越南",
+      "尼泊尔"
+    ],
+    "price_range": "moderate",
+    "availability": "common",
+    "quality_score": 85,
+    "popularity_score": 88,
+    "usage_suggestions": "圣罗勒茶：早晚各1杯，用于日常压力管理 | 胶囊：随餐服用300-600mg提取物 | 新鲜叶片：空腹咀嚼5-10片叶子作为传统阿育吠陀实践 | 可与南非醉茄、红景天配合使用以增强适应原效果",
+    "ingredients": [
+      "丁香酚（Eugenol）",
+      "熊果酸（Ursolic acid）",
+      "齐墩果酸（Oleanolic acid）",
+      "迷迭香酸（Rosmarinic acid）",
+      "香芹酚（Carvacrol）",
+      "Ocimumosides A & B",
+      "黄酮类",
+      "酚酸类"
+    ]
   }
 ];
 
@@ -4687,69 +4750,6 @@ export const CONSTITUTION_HERB_MAPPING = {
     "ingredients": [
       "姜辣素",
       "挥发油"
-    ]
-  },
-  {
-    "id": "holy-basil-2025",
-    "chinese_name": "圣罗勒",
-    "english_name": "Holy Basil",
-    "latin_name": "Ocimum tenuiflorum (Ocimum sanctum)",
-    "category": "adaptogen",
-    "constitution_type": "balanced",
-    "primary_effects": [
-      "压力与焦虑",
-      "情绪管理",
-      "能量提升",
-      "免疫支持"
-    ],
-    "secondary_effects": [
-      "睡眠支持",
-      "抗炎作用"
-    ],
-    "efficacy": [
-      "压力与焦虑",
-      "情绪管理",
-      "激素平衡",
-      "血糖调节",
-      "免疫支持",
-      "能量提升",
-      "抗炎作用",
-      "睡眠支持"
-    ],
-    "dosage": "圣罗勒茶：每日1-2杯（每杯2-3茶匙干叶） | 提取物胶囊：每日300-600mg（分两次服用）| 新鲜叶片：每日5-10片",
-    "safety_level": "medium",
-    "contraindications": "孕妇、哺乳期妇女、计划怀孕者、出血性疾病患者、手术前2周慎用。可能与抗凝血药物、降糖药物、甲状腺药物产生相互作用。",
-    "description": "圣罗勒（Tulsi）是阿育吠陀医学中最神圣的草药之一，被誉为草药之后。作为一种强效适应原，它帮助身体应对身体、精神和情绪压力，支持免疫系统、激素平衡和精神清晰度。广泛用于减轻压力、焦虑、调节血糖和保护环境毒素。",
-    "traditional_use": "在阿育吠陀医学中使用超过3000年，用于促进长寿、活力、减压、支持免疫、平衡激素和促进精神健康。在中医视角中，圣罗勒帮助那些感到疲倦但焦虑、精神混乱、睡眠不规律或激素失衡的人。其温暖、芳香的性质提升气、清除情绪停滞。",
-    "modern_applications": "现代研究证实圣罗勒在减轻压力和焦虑、降低皮质醇水平、调节血糖和胆固醇、增强免疫功能、改善记忆和专注力、支持呼吸健康等方面的功效。临床试验显示，圣罗勒提取物显著降低压力标志物并改善整体幸福感。",
-    "taste": "温暖、芳香、微辛",
-    "meridians": [
-      "心经",
-      "肝经",
-      "肺经"
-    ],
-    "part_used": "叶片",
-    "source": "印度、东南亚",
-    "growing_regions": [
-      "印度",
-      "泰国",
-      "越南",
-      "尼泊尔"
-    ],
-    "price_range": "moderate",
-    "availability": "common",
-    "quality_score": 85,
-    "popularity_score": 88,
-    "usage_suggestions": "圣罗勒茶：早晚各1杯，用于日常压力管理 | 胶囊：随餐服用300-600mg提取物 | 新鲜叶片：空腹咀嚼5-10片叶子作为传统阿育吠陀实践 | 可与南非醉茄、红景天配合使用以增强适应原效果",
-    "ingredients": [
-      "丁香酚（Eugenol）",
-      "熊果酸（Ursolic acid）",
-      "齐墩果酸（Oleanolic acid）",
-      "迷迭香酸（Rosmarinic acid）",
-      "香芹酚（Carvacrol）",
-      "Ocimumosides A & B",
-      "黄酮类",
-      "酚酸类"
     ]
   }
   ]
