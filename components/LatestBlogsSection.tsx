@@ -9,48 +9,48 @@
 export default function LatestBlogsSection() {
   const blogs = [
     {
-      title: '红景天适应原指南：科学原理与实用建议',
-      slug: 'rhodiola-adaptogen-guide',
-      excerpt: '深入了解红景天如何帮助身体应对压力，提高适应能力。基于最新科学研究的完整指南。',
+      title: 'Rhodiola Adaptogen Guide: Science & Practical Tips',
+      slug: 'rhodiola-smart-way-daily-rituals',
+      excerpt: 'Deep dive into how rhodiola helps the body cope with stress and improve adaptability. A complete guide based on latest scientific research.',
       date: '2025-01-17',
-      category: '草药指南',
-      readTime: '8分钟',
+      category: 'Herb Guide',
+      readTime: '8 min',
       image: '🔴'
     },
     {
-      title: '红景天与不同体质：哪种体质最适合？',
-      slug: 'rhodiola-for-body-types',
-      excerpt: '根据中医体质理论，了解红景天是否适合您的体质类型，以及如何正确使用。',
+      title: 'Rhodiola for Different Body Types: Which is Best for You?',
+      slug: 'why-rhodiola-works-body-type',
+      excerpt: 'Based on TCM constitution theory, understand if rhodiola suits your body type and how to use it correctly.',
       date: '2025-01-18',
-      category: '体质养生',
-      readTime: '7分钟',
+      category: 'Constitution Guide',
+      readTime: '7 min',
       image: '🧬'
     },
     {
-      title: '红景天茶的好处与制作方法',
-      slug: 'rhodiola-tea-benefits-recipe',
-      excerpt: '学习如何制作美味的红景天茶，以及它对能量和情绪的积极影响。',
+      title: 'Rhodiola Tea Benefits & Recipe',
+      slug: 'rhodiola-tea-recipes-energy-focus',
+      excerpt: 'Learn how to make delicious rhodiola tea and its positive effects on energy and mood.',
       date: '2025-01-18',
-      category: '实用指南',
-      readTime: '5分钟',
+      category: 'Practical Guide',
+      readTime: '5 min',
       image: '🍵'
     },
     {
-      title: '姜黄用量完整指南：如何安全有效地使用',
-      slug: 'turmeric-dosage-guide',
-      excerpt: '详细的姜黄用量建议，包括不同形式的姜黄补充剂的推荐剂量和注意事项。',
+      title: 'Complete Turmeric Dosage Guide: Safe & Effective Use',
+      slug: 'turmeric-gut-relief-guide',
+      excerpt: 'Detailed turmeric dosage recommendations, including recommended amounts for different supplement forms and precautions.',
       date: '2025-01-20',
-      category: '用量指南',
-      readTime: '10分钟',
+      category: 'Dosage Guide',
+      readTime: '10 min',
       image: '🟡'
     },
     {
-      title: '姜黄副作用：需要注意什么',
-      slug: 'turmeric-side-effects-what-to-watch',
-      excerpt: '了解姜黄可能的副作用、药物相互作用，以及谁应该避免使用姜黄。',
+      title: 'Turmeric Side Effects: What to Watch For',
+      slug: 'turmeric-side-effects',
+      excerpt: 'Understand potential turmeric side effects, drug interactions, and who should avoid using turmeric.',
       date: '2025-01-20',
-      category: '安全信息',
-      readTime: '6分钟',
+      category: 'Safety Info',
+      readTime: '6 min',
       image: '⚠️'
     },
   ]
@@ -61,10 +61,10 @@ export default function LatestBlogsSection() {
         {/* 标题 */}
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
-            📚 最新博客文章
+            📚 Latest Blog Articles
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            循证医学视角下的草药知识分享 · 由持证药剂师审核
+            Evidence-based herbal knowledge · Reviewed by licensed pharmacist
           </p>
         </div>
 
@@ -105,7 +105,7 @@ export default function LatestBlogsSection() {
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-500">{blog.date}</span>
                   <span className="text-green-600 font-semibold text-sm group-hover:translate-x-1 transition-transform inline-flex items-center">
-                    阅读全文
+                    Read More
                     <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
@@ -122,13 +122,13 @@ export default function LatestBlogsSection() {
             href="/blog"
             className="inline-flex items-center gap-2 text-green-600 font-semibold text-lg hover:text-green-700 hover:gap-3 transition-all"
           >
-            <span>查看所有文章</span>
+            <span>View All Articles</span>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </a>
           <p className="mt-4 text-sm text-gray-500">
-            💡 更多循证医学文章持续更新中
+            💡 More evidence-based articles continuously updated
           </p>
         </div>
       </div>

@@ -335,7 +335,7 @@ export default function HerbFinderClient() {
               <Leaf className="w-10 h-10 text-white" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Smart Herb Finder
+              Find Herbs That Match Your Body & Health Goals
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Discover the perfect natural remedies from our comprehensive database of <span className="font-semibold text-green-600">{total || herbs.length} traditional herbs</span>. 

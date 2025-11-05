@@ -30,7 +30,7 @@ export default function HomeClient() {
             </div>
 
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              Stop Guessing Which Herbs Work for{' '}
+              Find Herbs That Actually Work for{' '}
               <span className="text-green-600">Your Body</span>
             </h1>
             

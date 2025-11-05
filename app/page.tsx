@@ -4,7 +4,7 @@ import HomeClient from './HomeClient'
 
 // SEO优化的元数据 - 首页
 export const metadata: Metadata = {
-  title: 'HerbScience - Personalized Herbal Medicine & TCM Test',
+  title: 'HerbScience | Find Herbs That Work for Your Body - Free TCM Test',
   description: 'Find herbs that work for your body type. Take our free 2-minute TCM test for personalized herbal recommendations based on 3,000 years of wisdom.',
   keywords: [
     'herbal medicine',
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     }
   },
   verification: {
-    google: 'your-google-verification-code' // 替换为实际的Google验证码
+    google: process.env.GOOGLE_VERIFICATION_CODE // 使用环境变量配置Google验证码
   }
 }
 

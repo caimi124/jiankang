@@ -86,7 +86,7 @@ export default function ConstitutionTestClientOptimized() {
                 <span className="text-3xl text-white">🌿</span>
               </div>
               <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-                <span className="text-green-600">TCM Body Constitution Test</span> | 5-Minute Body Type Quiz
+                Discover Your <span className="text-green-600">TCM Body Type</span> in 5 Minutes
               </h1>
               <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
                 Discover your unique body type with our quick and evidence-based Traditional Chinese Medicine constitution test.

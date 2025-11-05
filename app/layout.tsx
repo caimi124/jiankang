@@ -111,6 +111,9 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="theme-color" content="#059669" />
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="HerbScience Team" />
+        <meta name="publisher" content="HerbScience" />
         <link rel="dns-prefetch" href="//herbscience.shop" />
         <link rel="preconnect" href="https://herbscience.shop" />
         <link rel="dns-prefetch" href="//cdn.sanity.io" />
