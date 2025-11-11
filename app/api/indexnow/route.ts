@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { submitUrlToIndexNow, submitBatchToIndexNow } from '@/lib/indexnow'
+import { submitToIndexNow, submitHerbPagesToIndexNow } from '@/lib/utils'
 
 /**
  * POST /api/indexnow
@@ -31,22 +31,34 @@ export async function POST(request: NextRequest) {
 
     // 单个 URL 提交
     if (body.url) {
-      const success = await submitUrlToIndexNow(body.url)
+      const success = await submitToIndexNow([body.url])
       return NextResponse.json({
         success,
-        message: success ? 'URL submitted successfully' : 'Failed to submit URL',
+        message: success ? 'URL submitted to IndexNow successfully' : 'Failed to submit URL to IndexNow',
         url: body.url,
+        timestamp: new Date().toISOString()
       })
     }
 
     // 批量 URL 提交
     if (body.urls && Array.isArray(body.urls)) {
-      const successCount = await submitBatchToIndexNow(body.urls)
+      const success = await submitToIndexNow(body.urls)
       return NextResponse.json({
-        success: successCount > 0,
-        message: `Successfully submitted ${successCount} of ${body.urls.length} URLs`,
-        successCount,
-        totalCount: body.urls.length,
+        success,
+        message: success ? `Successfully submitted ${body.urls.length} URLs to IndexNow` : 'Failed to submit URLs to IndexNow',
+        urlCount: body.urls.length,
+        timestamp: new Date().toISOString()
+      })
+    }
+    
+    // 🌿 特定草药页面批量提交
+    if (body.herbSlugs && Array.isArray(body.herbSlugs)) {
+      const success = await submitHerbPagesToIndexNow(body.herbSlugs)
+      return NextResponse.json({
+        success,
+        message: success ? `Successfully submitted ${body.herbSlugs.length} herb pages to IndexNow` : 'Failed to submit herb pages to IndexNow',
+        herbCount: body.herbSlugs.length,
+        timestamp: new Date().toISOString()
       })
     }
 
@@ -77,6 +89,7 @@ export async function GET() {
         body: {
           single: { url: 'https://herbscience.shop/blog/new-post' },
           batch: { urls: ['url1', 'url2', '...'] },
+          herbs: { herbSlugs: ['ginseng', 'turmeric', 'chamomile'] },
         },
         headers: {
           'Content-Type': 'application/json',

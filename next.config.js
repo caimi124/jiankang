@@ -48,16 +48,64 @@ const nextConfig = {
     ppr: false, // 稳定版本暂时关闭
   },
   
-  // 🎨 性能监控
+  // 性能监控
   onDemandEntries: {
     maxInactiveAge: 25 * 1000,
     pagesBufferLength: 2,
   },
 
+  // 安全性头部配置
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff'
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN'
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block'
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin'
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'geolocation=(), microphone=(), camera=()'
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "font-src 'self' https://fonts.gstatic.com",
+              "img-src 'self' data: blob: https: http:",
+              "media-src 'self' https:",
+              "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://cdn.sanity.io https://api.sanity.io",
+              "frame-src 'self' https://www.googletagmanager.com",
+              "object-src 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+              "frame-ancestors 'self'"
+            ].join('; ')
+          }
+        ]
+      }
+    ]
+  },
+
   // 基本重定向（保留核心功能）
   async redirects() {
     return [
-      // 🔧 修复重复URL问题 - 移除 index.html
+      // 修复重复URL问题 - 移除 index.html
       {
         source: '/index.html',
         destination: '/',

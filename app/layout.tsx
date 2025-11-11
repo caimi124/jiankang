@@ -147,6 +147,23 @@ export default function RootLayout({
         
         {/* Preload critical resources */}
         <link rel="preload" href="/logo.svg" as="image" type="image/svg+xml" fetchPriority="high" />
+        
+        {/* 🚀 性能优化 - DNS 预取 */}
+        <link rel="dns-prefetch" href="//www.google-analytics.com" />
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+        
+        {/* 📱 PWA 支持 */}
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="HerbScience" />
+        
+        {/* 🌍 地理定位和市场 */}
+        <meta name="geo.region" content="US" />
+        <meta name="geo.placename" content="United States" />
+        <meta name="geo.position" content="39.8283;-98.5795" />
+        <meta name="ICBM" content="39.8283, -98.5795" />
         {/* Structured data - non-blocking */}
         <script 
           type="application/ld+json" 

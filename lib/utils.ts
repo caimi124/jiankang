@@ -252,3 +252,165 @@ export function generateMedicalCitationSchema(
     evidenceLevel: ref.evidenceLevel
   }))
 }
+
+// 🗺️ 生成BreadcrumbList Schema
+export function generateBreadcrumbSchema(
+  breadcrumbs: Array<{ name: string; url: string }>
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbs.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: item.url
+    }))
+  }
+}
+
+// 🔍 IndexNow 快速索引提交 - 生产就绪
+export async function submitToIndexNow(
+  urls: string[],
+  host: string = 'herbscience.shop',
+  keyLocation?: string
+) {
+  // 使用现有的IndexNow密钥
+  const indexNowKey = process.env.INDEXNOW_KEY || 'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6'
+  const keyFile = `${indexNowKey}.txt`
+  const endpoint = 'https://api.indexnow.org/indexnow'
+  
+  // 验证参数
+  if (!urls.length || urls.length > 10000) {
+    console.warn('IndexNow: Invalid URL count (max 10,000)')
+    return false
+  }
+  
+  try {
+    const payload = {
+      host,
+      key: indexNowKey,
+      keyLocation: keyLocation || `https://${host}/${keyFile}`,
+      urlList: urls.slice(0, 10000) // 限制数量
+    }
+    
+    console.log(`🔄 Submitting ${urls.length} URLs to IndexNow...`)
+    
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'HerbScience SEO Bot 1.0'
+      },
+      body: JSON.stringify(payload)
+    })
+    
+    if (response.ok) {
+      console.log('✅ IndexNow submission successful')
+      return true
+    } else {
+      console.error('❌ IndexNow submission failed:', response.status, response.statusText)
+      return false
+    }
+  } catch (error) {
+    console.error('❌ IndexNow network error:', error)
+    return false
+  }
+}
+
+// 📊 批量提交草药页面到IndexNow
+export async function submitHerbPagesToIndexNow(herbSlugs: string[]) {
+  const urls = herbSlugs.map(slug => `https://herbscience.shop/herbs/${slug}`)
+  return await submitToIndexNow(urls)
+}
+
+// 🎨 生成丰富片段和微数据
+export function generateVideoObjectSchema(
+  herbName: string,
+  videoData: {
+    url: string
+    thumbnailUrl: string
+    description: string
+    duration?: string
+    uploadDate?: string
+  }
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name: `How to Use ${herbName} Safely - Expert Guide`,
+    description: videoData.description,
+    thumbnailUrl: videoData.thumbnailUrl,
+    contentUrl: videoData.url,
+    embedUrl: videoData.url,
+    ...(videoData.duration && { duration: videoData.duration }),
+    ...(videoData.uploadDate && { uploadDate: videoData.uploadDate }),
+    publisher: {
+      '@type': 'Organization',
+      name: 'HerbScience',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://herbscience.shop/logo.png'
+      }
+    }
+  }
+}
+
+// 📋 生成HowTo Schema
+export function generateHowToSchema(
+  herbName: string,
+  steps: Array<{ name: string; text: string; image?: string }>,
+  url: string
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: `How to Use ${herbName} Safely and Effectively`,
+    description: `Step-by-step guide for using ${herbName} with proper dosage and safety precautions`,
+    image: `https://herbscience.shop/herbs/${herbName.toLowerCase().replace(/ /g, '-')}/how-to-image.jpg`,
+    totalTime: 'PT10M',
+    estimatedCost: {
+      '@type': 'MonetaryAmount',
+      currency: 'USD',
+      value: '15-30'
+    },
+    supply: [
+      {
+        '@type': 'HowToSupply',
+        name: `${herbName} supplement or dried herb`
+      },
+      {
+        '@type': 'HowToSupply', 
+        name: 'Water or appropriate carrier'
+      }
+    ],
+    tool: [
+      {
+        '@type': 'HowToTool',
+        name: 'Measuring spoon or scale'
+      }
+    ],
+    step: steps.map((step, index) => ({
+      '@type': 'HowToStep',
+      position: index + 1,
+      name: step.name,
+      text: step.text,
+      ...(step.image && {
+        image: {
+          '@type': 'ImageObject',
+          url: step.image
+        }
+      })
+    })),
+    author: {
+      '@type': 'Person',
+      name: MEDICAL_EXPERTS['tcm-expert'].name,
+      url: MEDICAL_EXPERTS['tcm-expert'].url
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'HerbScience',
+      url: 'https://herbscience.shop'
+    }
+  }
+}
