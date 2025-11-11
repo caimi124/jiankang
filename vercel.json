@@ -75,28 +75,28 @@
       "permanent": true
     },
     {
-      "source": "/herbs/rosae-caninae-fructus",
-      "destination": "https://herbscience.shop/herb-finder",
+      "source": "/herb-finder/rosae-caninae-fructus",
+      "destination": "https://herbscience.shop/herbs/rosae-caninae-fructus",
       "permanent": true
     },
     {
-      "source": "/herbs/foeniculi-vulgaris-fructus",
-      "destination": "https://herbscience.shop/herb-finder",
-      "permanent": true
-    },
-    {
-      "source": "/herbs/matricariae-flos",
-      "destination": "https://herbscience.shop/herbs/chamomile",
+      "source": "/herb-finder/foeniculi-vulgaris-fructus",
+      "destination": "https://herbscience.shop/herbs/foeniculi-vulgaris-fructus",
       "permanent": true
     },
     {
       "source": "/herb-finder/matricariae-flos",
-      "destination": "https://herbscience.shop/herbs/chamomile",
+      "destination": "https://herbscience.shop/herbs/matricariae-flos",
       "permanent": true
     },
     {
-      "source": "/herbs/elderberry",
-      "destination": "https://herbscience.shop/herb-finder",
+      "source": "/herb-finder/angelicae-radix",
+      "destination": "https://herbscience.shop/herbs/angelicae-radix",
+      "permanent": true
+    },
+    {
+      "source": "/herb-finder/crataegi-fructus-cum-flore",
+      "destination": "https://herbscience.shop/herbs/crataegi-fructus-cum-flore",
       "permanent": true
     }
   ],
