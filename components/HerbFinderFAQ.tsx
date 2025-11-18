@@ -15,28 +15,40 @@ interface HerbFinderFAQProps {
 
 const faqDataEn: FAQItem[] = [
   {
-    question: "How do I search for herbs based on my symptoms?",
-    answer: "Use our enhanced search bar to type your symptoms like 'sleep problems', 'anxiety', or 'low energy'. You can also click on the category buttons above the search bar for quick filtering by health concerns."
+    question: "How do I find herbs by symptoms?",
+    answer: "Use our Herb Finder search bar to type your specific symptoms like 'sleep problems', 'stress and anxiety', 'low energy', or 'digestive issues'. You can also click on the Popular Categories buttons for quick filtering by common health concerns like Sleep Support, Immune Boost, or Digestive Health."
   },
   {
-    question: "What do the safety levels mean?",
-    answer: "High Safety: Generally safe for most people with minimal side effects. Medium Safety: Safe when used properly but may have interactions or contraindications. Use with Caution: Requires professional guidance due to potential risks or strong effects."
+    question: "What are the best herbs for stress and anxiety?",
+    answer: "Popular herbs for stress and anxiety include Ashwagandha, Holy Basil (Tulsi), Rhodiola, and Ginseng. These adaptogenic herbs help your body manage stress responses. Use our Herb Finder to filter by 'stress relief' or search for 'anxiety' to see all options with safety information and personalized recommendations."
+  },
+  {
+    question: "How do I find safe herbal supplements?",
+    answer: "Our Herb Finder includes safety ratings for each herb. Filter by 'High Safety' to see herbs that are generally safe for most people. Each herb page includes detailed safety information, potential side effects, drug interactions, and contraindications. We recommend consulting healthcare professionals before starting any herbal supplement."
+  },
+  {
+    question: "Can I search herbs by body constitution or body type?",
+    answer: "Yes! Our Herb Finder allows you to filter herbs by TCM body constitution types including Qi deficiency, Yang deficiency, Yin deficiency, and more. First, take our free TCM Constitution Test to discover your body type, then use the 'Constitution Type' filter to find herbs specifically suited to your body's needs."
+  },
+  {
+    question: "What herbs are good for sleep support?",
+    answer: "Common herbs for sleep support include Valerian Root, Chamomile, Ashwagandha, and Holy Basil. Search 'sleep' in our Herb Finder or click the 'Sleep & Relaxation' category button to see all herbs that help with insomnia, relaxation, and sleep quality improvement."
+  },
+  {
+    question: "Which herbs help boost the immune system?",
+    answer: "Immune-boosting herbs include Ginseng, Astragalus, Echinacea, and Reishi Mushroom. Use our Herb Finder to filter by 'Immune Support' category or search for 'immune' to find herbs that strengthen your body's natural defenses with detailed dosage and safety information."
   },
   {
     question: "How are herbs matched to constitution types?",
-    answer: "Our system uses Traditional Chinese Medicine (TCM) principles to match herbs with constitution types like Qi deficiency, Yang deficiency, etc. Each herb is categorized based on its traditional therapeutic properties and modern research."
-  },
-  {
-    question: "Can I combine multiple herbs together?",
-    answer: "While many herbs can be safely combined, we strongly recommend consulting with a qualified healthcare practitioner or TCM doctor before combining herbs, especially if you have medical conditions or take medications."
+    answer: "Our system uses Traditional Chinese Medicine (TCM) principles to match herbs with constitution types like Qi deficiency, Yang deficiency, Yin deficiency, etc. Each herb is categorized based on its traditional therapeutic properties and modern research to provide personalized herbal recommendations."
   },
   {
     question: "Are these herbs suitable for pregnant or nursing women?",
-    answer: "Many herbs have specific contraindications for pregnancy and nursing. Always check the contraindications section for each herb and consult your healthcare provider before use during pregnancy or breastfeeding."
+    answer: "Many herbs have specific contraindications for pregnancy and nursing. Always check the contraindications section for each herb and consult your healthcare provider before using any herbal supplements during pregnancy or breastfeeding."
   },
   {
-    question: "How accurate is the herb information in your database?",
-    answer: "Our database contains information from traditional sources and modern research. However, this is for educational purposes only and should not replace professional medical advice. Always consult qualified practitioners."
+    question: "How do I use the Herb Finder search tool?",
+    answer: "Simply type your symptoms, health goals, or herb names into the search bar (e.g., 'energy', 'digestion', 'turmeric'). Use the Advanced Filters to narrow results by constitution type, primary benefit, or safety level. Click on any herb card to see detailed information including benefits, dosage, safety, and scientific research."
   }
 ]
 
@@ -86,13 +98,13 @@ export default function HerbFinderFAQ({ language }: HerbFinderFAQProps) {
           <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-100 rounded-full mb-4">
             <HelpCircle className="w-6 h-6 text-blue-600" />
           </div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-2">
-            {language === 'zh' ? '常见问题' : 'Frequently Asked Questions'}
-          </h3>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            {language === 'zh' ? '草药搜索常见问题' : 'Herb Finder FAQ - Common Questions About Finding Herbs'}
+          </h2>
           <p className="text-gray-600">
             {language === 'zh' 
-              ? '关于草药搜索和使用的常见问题解答' 
-              : 'Common questions about herb search and usage'
+              ? '关于如何使用草药搜索器、找到安全草药、体质匹配的常见问题' 
+              : 'Find answers about using our Herb Finder, safe herbal supplements, and personalized recommendations'
             }
           </p>
         </div>

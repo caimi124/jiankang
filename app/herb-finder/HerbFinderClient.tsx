@@ -335,20 +335,32 @@ export default function HerbFinderClient() {
               <Leaf className="w-10 h-10 text-white" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Find Herbs That Match Your Body & Health Goals
+              Herb Finder – Find Safe, Evidence-Based Herbs for Your Health Goals
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover the perfect natural remedies from our comprehensive database of <span className="font-semibold text-green-600">{total || herbs.length} traditional herbs</span>. 
-              Search by symptoms, health goals, or constitution type.
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-4">
+              Search <span className="font-semibold text-green-600">{total || herbs.length}+ safe, evidence-based herbs</span> by symptoms, health goals, or body constitution. 
+              Get personalized herbal recommendations based on TCM principles.
             </p>
+            <div className="flex flex-wrap justify-center gap-3 text-sm text-gray-500 max-w-2xl mx-auto">
+              <span className="flex items-center">
+                <Shield className="w-4 h-4 mr-1 text-green-600" aria-hidden="true" />
+                Safe herbal supplements
+              </span>
+              <span className="flex items-center">
+                <Target className="w-4 h-4 mr-1 text-green-600" aria-hidden="true" />
+                Find herbs by symptoms
+              </span>
+              <span className="flex items-center">
+                <Users className="w-4 h-4 mr-1 text-green-600" aria-hidden="true" />
+                Body type matching
+              </span>
+            </div>
           </div>
 
           {/* Popular Categories */}
           <div className="mb-8">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-              <Target className="w-5 h-5 mr-2 text-green-600" />
-              Popular Categories
-            </h3>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Find Herbs by Health Goals</h2>
+            <p className="text-gray-600 mb-4 text-sm">Quickly find herbs for stress relief, sleep support, immune boost, and more</p>
             <div className="flex flex-wrap gap-3">
               {popularCategories.map((category) => (
                 <PopularCategory
@@ -370,11 +382,11 @@ export default function HerbFinderClient() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Search by name, symptoms, benefits, or ingredients... (e.g., 'sleep', 'anxiety', 'ginseng')"
+                  placeholder="Find herbs by symptoms (e.g., 'stress', 'sleep problems', 'low energy', 'anxiety', 'digestion')..."
                   className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                   value={filters.search}
                   onChange={(e) => handleFilterChange('search', e.target.value)}
-                  aria-label="Search herbs by name, symptoms, or benefits"
+                  aria-label="Search herbs by symptoms, health goals, or body type"
                   role="searchbox"
                 />
               </div>
@@ -641,6 +653,118 @@ export default function HerbFinderClient() {
               <div className="mt-6 text-green-100 text-sm">
                 Pro Tip: Use the category buttons above for quick health-focused searches, 
                 or try specific symptoms like &quot;sleep problems&quot; or &quot;low energy&quot;
+              </div>
+            </div>
+          )}
+
+          {/* Educational Content - How It Works & Safety Guide */}
+          {!error && herbs.length > 0 && (
+            <div className="mt-12 grid md:grid-cols-2 gap-6">
+              {/* How to Use Herb Finder */}
+              <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                    <Search className="w-6 h-6 text-green-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900">How to Use Herb Finder</h3>
+                </div>
+                <ul className="space-y-3 text-gray-700">
+                  <li className="flex items-start">
+                    <span className="text-green-600 font-bold mr-2">1.</span>
+                    <span><strong>Search by symptoms:</strong> Type your health concerns like &quot;stress&quot;, &quot;sleep problems&quot;, or &quot;low energy&quot;</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-green-600 font-bold mr-2">2.</span>
+                    <span><strong>Filter by categories:</strong> Click Popular Categories for quick health-focused searches</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-green-600 font-bold mr-2">3.</span>
+                    <span><strong>Match by body type:</strong> Take our Constitution Test first, then filter by your body type</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-green-600 font-bold mr-2">4.</span>
+                    <span><strong>Check safety:</strong> Review safety ratings, side effects, and drug interactions</span>
+                  </li>
+                </ul>
+                <div className="mt-6">
+                  <a 
+                    href="/constitution-test"
+                    className="inline-flex items-center text-green-600 hover:text-green-700 font-medium"
+                  >
+                    Take Free Body Constitution Test →
+                  </a>
+                </div>
+              </div>
+
+              {/* Safe Herbal Use Guide */}
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 shadow-lg border border-blue-100">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                    <Shield className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900">Safe Herbal Use Guide</h3>
+                </div>
+                <ul className="space-y-3 text-gray-700">
+                  <li className="flex items-start">
+                    <Shield className="w-5 h-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span><strong>Start with high-safety herbs</strong> if you&apos;re new to herbal supplements</span>
+                  </li>
+                  <li className="flex items-start">
+                    <AlertCircle className="w-5 h-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span><strong>Check drug interactions</strong> if you take medications or have medical conditions</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Heart className="w-5 h-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span><strong>Follow recommended dosages</strong> listed on each herb page</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Users className="w-5 h-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span><strong>Consult healthcare professionals</strong> before starting any new herbal regimen</span>
+                  </li>
+                </ul>
+                <div className="mt-6 bg-blue-100 rounded-lg p-4">
+                  <p className="text-sm text-blue-900">
+                    <strong>Pro Tip:</strong> Personalized herbal recommendations work best when matched to your body constitution type.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Why Choose Our Herb Finder */}
+          {!error && herbs.length > 0 && (
+            <div className="mt-12 bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+                Why Use Our Evidence-Based Herb Finder?
+              </h3>
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Target className="w-8 h-8 text-green-600" />
+                  </div>
+                  <h4 className="font-bold text-gray-900 mb-2">Personalized Matching</h4>
+                  <p className="text-gray-600 text-sm">
+                    Find herbs matched to your specific body type and health goals using TCM principles
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Shield className="w-8 h-8 text-blue-600" />
+                  </div>
+                  <h4 className="font-bold text-gray-900 mb-2">Safety First</h4>
+                  <p className="text-gray-600 text-sm">
+                    Every herb includes detailed safety information, side effects, and drug interaction warnings
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Brain className="w-8 h-8 text-purple-600" />
+                  </div>
+                  <h4 className="font-bold text-gray-900 mb-2">Evidence-Based</h4>
+                  <p className="text-gray-600 text-sm">
+                    Backed by traditional wisdom and modern scientific research for reliable recommendations
+                  </p>
+                </div>
               </div>
             </div>
           )}

@@ -3,9 +3,9 @@ import { Metadata } from 'next'
 import HerbFinderClient from './HerbFinderClient'
 
 export const metadata: Metadata = {
-  title: 'Herb Finder | Search Safe, Evidence-Based Herbs for Your Body | HerbScience',
-  description: 'Discover the best herbs for your body type. Search our evidence-based Herb Finder now! 64+ herbs by symptom, health goal, or constitution type.',
-  keywords: 'herb finder, herbal medicine search, TCM herbs database, natural remedies finder, herbs by symptom, herbs by body type, safe herbal remedies, evidence-based herbs, herbal supplement search, traditional medicine database',
+  title: 'Herb Finder - Find Herbs by Symptoms, Body Type & Health Goals | HerbScience',
+  description: 'Find the perfect herbs for your health needs with our evidence-based Herb Finder. Search 64+ herbs by symptoms, body constitution, or health goals. Safe herbal supplements with personalized recommendations.',
+  keywords: 'herb finder, find herbs by symptoms, herbs for body constitution, herbal search tool, safe herbal supplements, herb database, herbs by health goals, TCM constitution herbs, personalized herbal recommendations, best herbs for stress and anxiety, herbs for sleep support, immune boosting herbs, natural remedies finder, evidence-based herbs, herbal supplement search, body type test herbs',
   robots: {
     index: true,
     follow: true,
@@ -13,8 +13,8 @@ export const metadata: Metadata = {
   authors: [{ name: 'HerbScience Team' }],
   publisher: 'HerbScience',
   openGraph: {
-    title: 'Herb Finder - Find the Right Herbs for Your Health Goals',
-    description: 'Search 64+ evidence-based herbs by symptom, health goal, or constitution type. Personalized herbal recommendations.',
+    title: 'Herb Finder - Find Herbs by Symptoms & Body Type',
+    description: 'Search 64+ safe, evidence-based herbs by symptoms, health goals, or body constitution. Get personalized herbal recommendations based on TCM principles.',
     url: 'https://herbscience.shop/herb-finder',
     type: 'website',
     images: [
@@ -28,8 +28,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Herb Finder - Search Safe, Evidence-Based Herbs',
-    description: 'Find the perfect herbs for your body type and health goals.',
+    title: 'Herb Finder - Find Herbs by Symptoms & Body Type',
+    description: 'Search 64+ safe, evidence-based herbs. Find herbs for stress, sleep, immunity, digestion, and more. Personalized recommendations.',
     images: ['/images/herb-finder-og.jpg']
   },
   alternates: {
