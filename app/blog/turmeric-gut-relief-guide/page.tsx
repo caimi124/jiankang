@@ -2,7 +2,8 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import Navigation from '../../../components/Navigation'
 import Breadcrumb from '../../../components/Breadcrumb'
-import { Calendar, User, Tag, Share2, Bookmark, ArrowLeft, Clock, TrendingUp, AlertCircle, CheckCircle, Info, ChevronUp, Heart, Star } from 'lucide-react'
+import BlogActionButtons from '../../../components/blog/BlogActionButtons'
+import { Calendar, User, Tag, ArrowLeft, Clock, TrendingUp, AlertCircle, CheckCircle, Info, ChevronUp, Heart, Star } from 'lucide-react'
 import Script from 'next/script'
 
 export const metadata: Metadata = {
@@ -232,35 +233,7 @@ export default function TurmericGutReliefGuidePage() {
                 <span className="text-sm">Evidence-based</span>
               </div>
               <div className="flex-1"></div>
-              <button 
-                onClick={() => {
-                  if (navigator.share) {
-                    navigator.share({
-                      title: 'Turmeric Benefits for Gut Health',
-                      url: window.location.href
-                    })
-                  }
-                }}
-                className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-green-600 transition-colors"
-              >
-                <Share2 className="w-4 h-4" />
-                <span className="text-sm">Share</span>
-              </button>
-              <button 
-                onClick={() => {
-                  const saved = localStorage.getItem('savedArticles') || '[]'
-                  const savedArray = JSON.parse(saved)
-                  if (!savedArray.includes(window.location.pathname)) {
-                    savedArray.push(window.location.pathname)
-                    localStorage.setItem('savedArticles', JSON.stringify(savedArray))
-                    alert('Article saved!')
-                  }
-                }}
-                className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-green-600 transition-colors"
-              >
-                <Bookmark className="w-4 h-4" />
-                <span className="text-sm">Save</span>
-              </button>
+              <BlogActionButtons title="Turmeric Benefits for Gut Health" />
             </div>
 
             {/* Quick Key Takeaways */}
