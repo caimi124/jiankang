@@ -42,6 +42,11 @@ async function getHerbData(slug: string) {
 		'holy basil': 'holy-basil',
 		'ocimum-sanctum': 'holy-basil',
 		'ocimum-tenuiflorum': 'holy-basil',
+		// Bacopa Monnieri 别名
+		'bacopa-monnieri': 'bacopa',
+		'brahmi': 'bacopa',
+		'water-hyssop': 'bacopa',
+		'bacopa monnieri': 'bacopa',
 		
 		// 🎯 拉丁学名映射（修复Google抓取但未索引的问题）
 		'rosae-caninae-fructus': 'rose-hip', // 玉米须 - 玫瑰果
@@ -407,6 +412,9 @@ export async function generateStaticParams() {
 			{ slug: 'echinacea' },
 			{ slug: 'holy-basil' },
 			{ slug: 'rhodiola-crenulata' },
+			{ slug: 'bacopa' },
+			{ slug: 'bacopa-monnieri' },
+			{ slug: 'brahmi' },
 			// 🎯 拉丁学名页面（修复Google抓取问题）
 			{ slug: 'rosae-caninae-fructus' },
 			{ slug: 'matricariae-flos' },

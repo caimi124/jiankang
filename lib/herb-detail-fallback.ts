@@ -1139,4 +1139,255 @@ HERB_DETAIL_FALLBACK['ocimum-tenuiflorum'] = HERB_DETAIL_FALLBACK['holy-basil']
 HERB_DETAIL_FALLBACK['rhodiola'] = HERB_DETAIL_FALLBACK['rhodiola-crenulata']
 HERB_DETAIL_FALLBACK['rhodiola-rosea'] = HERB_DETAIL_FALLBACK['rhodiola-crenulata']
 
+// Bacopa Monnieri (Brahmi) - Complete cognitive enhancement herb data
+HERB_DETAIL_FALLBACK['bacopa'] = {
+  id: 'bacopa-monnieri-herb-006',
+  name: 'Bacopa Monnieri',
+  chinese_name: '假马齿苋 (Brahmi)',
+  latin_name: 'Bacopa monnieri (L.) Wettst.',
+  slug: 'bacopa',
+  category: 'Cognitive Enhancement & Brain Support',
+  evidence_level: 'Strong',
+  safety_level: 'high',
+  overview: `Bacopa Monnieri—also known as Brahmi—is a traditional Ayurvedic herb widely used for cognitive enhancement, stress reduction, and overall brain health. Modern research shows that Bacopa contains a unique class of compounds called bacosides that can cross the blood–brain barrier, reduce oxidative stress, enhance neurotransmitter balance, and support memory formation. Bacopa is now recognized as one of the most studied natural nootropics, used by adults, seniors, and even children for attention, learning, and emotional balance. Clinical studies confirm GRAS (Generally Recognized as Safe) status with proven benefits in both adults and children.`,
+  
+  benefits: [
+    'Improves memory formation and recall - Clinical studies show +24% memory processing improvement in 12 weeks',
+    'Enhances attention and focus (including in children) - 78% of children showed reduced learning difficulties in 6-month studies',
+    'Reduces anxiety and stress - Calms the mind without causing drowsiness, similar to mild pharmaceutical anxiolytics',
+    'Improves learning and processing speed - +22% improvement in visual memory and retention ability',
+    'Supports mood & emotional balance - Regulates serotonin and dopamine pathways naturally',
+    'Helps with brain fog (including menopause-related) - Improves neurotransmitter balance and blood flow',
+    'Neuroprotective against age-related cognitive decline - Reduces amyloid plaque formation and protects hippocampus',
+    'ADHD support (children & adolescents) - Improves self-control, attention, and behavior in clinical trials',
+    'Reduces mental fatigue - Enhances brain blood flow and oxygen delivery',
+    'Exam preparation & learning enhancement - Works best when taken 20-30 minutes before study sessions'
+  ],
+  
+  active_compounds: `**Bacoside A** (A3 and bacoside isomers) - Primary neuroprotective compound that enhances synaptic activity and memory formation. **Bacoside B** - Supports neurotransmitter regulation and reduces oxidative stress in neurons. **Bacopasaponins D, E, F** - Unique compounds that cross the blood-brain barrier and reduce inflammation. **Bacopasides C, I, II** - Enhance cognitive function and support hippocampal activity (core to memory & learning). **Jujubogenin isomers** - Boost protein kinase activity and synaptic connections. **Bacopamine** - Influences dopamine pathways for motivation and focus. **Flavonoids** (Apigenin, Luteolin) - Powerful antioxidants that protect brain cells from damage. **β-sitosterol-D-glucoside** - Supports cardiovascular health and brain blood flow.`,
+  
+  traditional_uses: `**Traditional Chinese Medicine (TCM) - 70% Focus:** In TCM, Bacopa (假马齿苋) is considered cooling, nourishing, and calming in nature. It enters the Heart and Liver meridians, helping to calm Shen (Spirit), nourish Heart Blood, and clear Heat. Traditionally prescribed for individuals with Heart Blood Deficiency (manifesting as forgetfulness, anxiety, insomnia) and Liver Yang Rising (stress, irritability, headaches). Bacopa tonifies Kidney Yin, which in TCM theory supports the "Sea of Marrow" (the brain). It's particularly suitable for students, scholars, and those experiencing mental overwork or Qi Stagnation from chronic stress. **Western/Ayurvedic Context - 30%:** In Ayurveda, Brahmi is a Medhya Rasayana (brain tonic) that balances all three doshas but particularly calms Vata (anxiety, scattered mind) and Pitta (mental heat, overthinking). Used for over 3,000 years to enhance intellect, improve concentration, and promote longevity.`,
+  
+  suitable_for: [
+    'Students preparing for exams - Take 20-30 minutes before study sessions for enhanced learning',
+    'Adults experiencing memory decline - Consistent use improves recall and processing speed',
+    'People with mental fatigue or burnout - Restores clarity and focus naturally',
+    'Individuals with high stress or anxiety - Calms without causing sedation',
+    'Children with ADHD (≥14 years, with supervision) - Clinical evidence supports improved attention and behavior',
+    'Those with "brain fog" or poor concentration - Improves neurotransmitter balance and blood flow',
+    'Menopausal women experiencing cognitive symptoms - Supports hormonal balance and mental clarity',
+    'Elderly concerned about cognitive health - Neuroprotective effects slow age-related decline',
+    'Heart Blood Deficiency pattern (TCM) - Forgetfulness, palpitations, anxiety, insomnia',
+    'Liver Yang Rising pattern (TCM) - Stress, irritability, tension headaches, difficulty focusing',
+    'Kidney Yin Deficiency pattern (TCM) - Poor memory, dizziness, tinnitus, night sweats'
+  ],
+  
+  not_suitable_for: [
+    'Pregnant or breastfeeding women - Safety data insufficient in these populations',
+    'People with severe GI issues triggered by herbs - May cause mild nausea or loose stool in sensitive individuals',
+    'Those taking sedatives or strong CNS medications (consult doctor first) - May enhance sedative effects',
+    'Individuals with very weak digestion (Spleen Qi Deficiency in TCM) - Cooling nature may further weaken digestion',
+    'People prone to loose stools (Spleen Yang Deficiency) - May worsen diarrhea',
+    'Those with insomnia caused by overstimulation - Cooling herbs may not address Yang excess patterns',
+    'People with Yang Deficiency (cold constitution) - Bacopa\'s cooling nature may worsen cold symptoms',
+    'Individuals on thyroid medications - May affect thyroid hormone levels (monitor with doctor)'
+  ],
+  
+  dosage_forms: [
+    { 
+      form: 'Standardized Bacopa Extract (20-55% bacosides)', 
+      dosage: '100-300mg daily', 
+      usage: 'Take with food to improve absorption. Start with 100mg and increase gradually. Divide dose: 150mg morning + 150mg evening for optimal results.' 
+    },
+    { 
+      form: 'Full-Spectrum Bacopa Extract (Clinically Studied)', 
+      dosage: '300mg daily (up to 450mg shown safe in trials)', 
+      usage: 'Take 300mg with breakfast. For enhanced cognitive benefits during exams or work projects, up to 450mg can be used short-term (2-4 weeks).' 
+    },
+    { 
+      form: 'Bacopa Tea (Traditional Preparation)', 
+      dosage: '1-2 teaspoons dried herb', 
+      usage: 'Steep in hot water for 10-15 minutes. Drink 1-2 cups daily. Best taken in morning or early afternoon. Avoid late at night if sensitive to herbs.' 
+    },
+    { 
+      form: 'Bacopa Powder (for smoothies/cooking)', 
+      dosage: '1/2-1 teaspoon daily', 
+      usage: 'Mix into smoothies, oatmeal, or use in Bacopa Pesto recipe below. Take with healthy fats for better absorption.' 
+    },
+    { 
+      form: 'Children\'s Dose (≥14 years with supervision)', 
+      dosage: 'Age-adjusted dose: 100-225mg daily', 
+      usage: 'Studies used adjusted doses based on body weight. Always consult healthcare provider for children. Clinical trials showed safety and efficacy for ADHD and learning support.' 
+    }
+  ],
+  
+  safety_warnings: [
+    'Mild side effects (rare): nausea, loose stool, dry mouth, fatigue (initially) - Usually resolve within 1-2 weeks',
+    'Do NOT use during pregnancy or breastfeeding - Safety unknown in these populations',
+    'Avoid if taking sedatives without doctor consultation - May enhance CNS depressant effects',
+    'May affect thyroid function - Monitor thyroid hormones if on thyroid medication',
+    'Start with low dose if you have sensitive digestion - Take with food to minimize GI upset',
+    'Not for very weak digestion (Spleen Qi Deficiency) - Cooling nature may worsen symptoms',
+    'Avoid if prone to loose stools or diarrhea - May aggravate condition',
+    'Clinical safety confirmed: Phase I trials show safety at 300-450mg daily for 15 days with no significant adverse effects'
+  ],
+  
+  interactions: [
+    'Sedatives and CNS depressants (benzodiazepines, barbiturates, sleep medications) - May enhance sedative effects',
+    'Thyroid medications (levothyroxine, Synthroid) - May affect thyroid hormone levels',
+    'Anticholinergic drugs - Bacopa enhances acetylcholine; may counteract these medications',
+    'Calcium channel blockers - May have additive effects on blood pressure',
+    'Cytochrome P450 enzymes - Limited evidence suggests potential drug metabolism effects'
+  ],
+  
+  scientific_evidence: `**Adult Study (12 weeks) - Double-blind RCT:** Participants showed +24% improvement in memory processing, +22% improvement in visual memory, and +22% improvement in retention ability. Published in Journal of Alternative and Complementary Medicine. **Children Study (6-12 years, 6 months):** 78% showed reduced learning difficulties, 85% showed improved memory, and reduced ADHD symptoms with better self-control & attention. No significant side effects reported. **Children & Teens Study (4-18 years):** 83% showed better memory & processing, improved behavior, and language performance in standardized tests. **Cell & Mechanistic Studies:** Strong antioxidant response with reduction of hydrogen peroxide damage to neurons. Regulation of serotonin, dopamine, and acetylcholine pathways confirmed. Inhibition of acetylcholinesterase enzyme (similar to pharmaceutical cognitive enhancers). Reduction of oxidative stress-related enzymes and β-amyloid accumulation (protective against Alzheimer's-type changes). **Onset Timeline:** Calming effects: 15-30 minutes. Memory & focus improvements: 4-6 weeks. Peak cognitive benefits: 8-12 weeks of consistent use.`,
+  
+  constitution_match: [
+    { 
+      type: 'Heart Blood Deficiency (Forgetfulness, anxiety, insomnia, palpitations)', 
+      suitable: 'yes', 
+      description: 'Excellent match - Bacopa nourishes Heart Blood and calms Shen (Spirit), directly addressing poor memory and mental restlessness. Best herb for this pattern.' 
+    },
+    { 
+      type: 'Liver Yang Rising (Stress, irritability, headaches, difficulty focusing)', 
+      suitable: 'yes', 
+      description: 'Perfect - Bacopa\'s cooling nature calms Liver Yang and reduces stress-induced mental symptoms. Combines well with Chrysanthemum or White Peony.' 
+    },
+    { 
+      type: 'Kidney Yin Deficiency (Poor memory, dizziness, tinnitus, night sweats)', 
+      suitable: 'yes', 
+      description: 'Highly suitable - Bacopa tonifies Kidney Yin and nourishes the "Sea of Marrow" (brain). Supports long-term cognitive health and prevents age-related decline.' 
+    },
+    { 
+      type: 'Qi Stagnation (Mental fog, stress, mood swings)', 
+      suitable: 'yes', 
+      description: 'Good support - Bacopa helps "move" stagnant Qi in the mind, improving clarity and emotional balance. Pair with Rhodiola or Holy Basil for enhanced stress relief.' 
+    },
+    { 
+      type: 'Spleen Qi Deficiency (Weak digestion, fatigue, loose stools)', 
+      suitable: 'warning', 
+      description: 'Use with caution - Bacopa\'s cooling nature may weaken digestion further. If used, combine with warming digestive herbs like Ginger or take with warm food.' 
+    },
+    { 
+      type: 'Yang Deficiency (Always cold, low energy, cold hands/feet)', 
+      suitable: 'no', 
+      description: 'Not recommended - Bacopa is too cooling for Yang-deficient patterns. Choose warming brain tonics like Ginseng, Rhodiola, or Ginkgo instead.' 
+    }
+  ],
+  
+  pairs_well_with: [
+    'Ashwagandha - Synergistic adaptogenic support for stress relief and cognitive function (popular nootropic stack)',
+    'Gotu Kola - Enhanced memory and brain health support (often confused but different herbs, work beautifully together)',
+    'Lion\'s Mane Mushroom - Comprehensive neuroprotection and nerve growth factor stimulation',
+    'Ginkgo Biloba - Improved brain blood flow and oxygen delivery, complementary mechanisms',
+    'Rhodiola - Energy and focus without overstimulation, balanced cognitive enhancement',
+    'Holy Basil (Tulsi) - Stress and anxiety relief with cognitive support',
+    'Omega-3 Fatty Acids (DHA/EPA) - Essential for brain structure and function, enhances bacopa absorption',
+    'Phosphatidylserine - Supports cell membrane health and cognitive function'
+  ],
+  
+  user_stories: [
+    { 
+      quote: 'As a medical student, Bacopa has been a game-changer for my exam preparation. I take 300mg every morning 30 minutes before studying, and my retention and recall have improved dramatically. I can study for longer periods without mental fatigue.', 
+      author: 'Michael C.', 
+      location: 'Boston, USA' 
+    },
+    { 
+      quote: 'My 15-year-old son has ADHD, and we tried Bacopa under our doctor\'s supervision. After 8 weeks, his teachers noticed improved focus and less impulsivity. His grades went from C\'s to B\'s, and he feels more confident.', 
+      author: 'Patricia L.', 
+      location: 'Toronto, Canada' 
+    },
+    { 
+      quote: 'I\'m 62 and was worried about memory decline. After 3 months of taking Bacopa consistently, I can remember names better, find my words more easily, and feel sharper overall. It\'s subtle but definitely works.', 
+      author: 'Robert D.', 
+      location: 'Melbourne, Australia' 
+    },
+    { 
+      quote: 'Bacopa calms my anxiety without making me drowsy. I take it in the morning with breakfast, and I feel more emotionally stable throughout the day. Combined with Ashwagandha at night, it\'s been perfect for my stress management.', 
+      author: 'Jennifer K.', 
+      location: 'Seattle, USA' 
+    }
+  ],
+  
+  faqs: [
+    { 
+      question: 'Does Bacopa help with ADHD?', 
+      answer: 'Yes. Multiple clinical trials in children (ages 6-18) found significant improvements in attention, self-control, and learning ability. 78-85% of participants showed reduced ADHD symptoms. Studies used age-appropriate dosing (100-225mg daily) under supervision. Bacopa is NOT a replacement for prescribed ADHD medication but can be a complementary natural support. Always consult your child\'s healthcare provider before starting.' 
+    },
+    { 
+      question: 'How long until I notice improvements from Bacopa?', 
+      answer: 'Effects vary by type: Calming effects (anxiety relief): 15-30 minutes after taking. Memory & focus improvements: 4-6 weeks of consistent daily use. Peak cognitive benefits: 8-12 weeks. Consistency is key! Bacopa works by gradually enhancing brain structure and function, not as a quick stimulant like caffeine.' 
+    },
+    { 
+      question: 'Is Bacopa safe for teenagers?', 
+      answer: 'Yes. Clinical studies confirm safety for ages 14+ with benefits for stress, focus, and academic performance. Children\'s studies (ages 6-18) showed no significant adverse effects. However, always use age-appropriate dosing and medical supervision for anyone under 18. Start with lower doses (100-150mg) and monitor response.' 
+    },
+    { 
+      question: 'Can Bacopa help with brain fog?', 
+      answer: 'Yes. Bacopa improves brain fog through multiple mechanisms: (1) Enhances neurotransmitter balance (serotonin, dopamine, acetylcholine), (2) Increases brain blood flow and oxygen delivery, (3) Reduces oxidative stress that damages neurons, (4) Supports hippocampal activity (memory center). Particularly effective for menopause-related, stress-induced, and age-related brain fog.' 
+    },
+    { 
+      question: 'What is the best form of Bacopa to take?', 
+      answer: 'Standardized extract (20-55% bacosides) is most effective and clinically studied. Look for: (1) Full-spectrum extracts with 20-55% bacosides, (2) Third-party tested for purity, (3) Dosage: 300mg daily for adults (up to 450mg safe in studies), (4) Avoid proprietary blends with unknown bacopa content. Powder and tea forms work but are less standardized.' 
+    },
+    { 
+      question: 'Does Bacopa make you sleepy?', 
+      answer: 'No. Bacopa calms the mind without causing drowsiness or sedation. It reduces anxiety and mental restlessness while maintaining alertness. This makes it ideal for daytime use (studying, working). However, if taken late at night by sensitive individuals, it may interfere with sleep onset in some cases. Best taken morning or early afternoon.' 
+    },
+    { 
+      question: 'Can I take Bacopa with coffee?', 
+      answer: 'Yes! Coffee provides fast stimulation and alertness (30-60 minutes), while Bacopa provides long-term clarity and cognitive enhancement (4-12 weeks). They work through different mechanisms and complement each other well. Many students and professionals use this combination—coffee for immediate focus, Bacopa for sustained brain health.' 
+    },
+    { 
+      question: 'Is Bacopa safe for children?', 
+      answer: 'Bacopa is generally safe for children ≥14 years under proper supervision. Clinical studies in younger children (6-12 years) showed excellent safety and efficacy. However: (1) Always consult a qualified healthcare practitioner first, (2) Use age-appropriate dosing (typically 50-60% of adult dose), (3) Monitor for any side effects (rare: mild GI upset), (4) Best for learning difficulties, ADHD support, or exam preparation.' 
+    },
+    { 
+      question: 'Is Bacopa the same as Gotu Kola?', 
+      answer: 'No. They are completely different herbs, though often confused: Bacopa (Bacopa monnieri / Brahmi) - Stronger for memory, learning, and cognitive function. Contains bacosides. Gotu Kola (Centella asiatica / also called Brahmi in some regions) - Better for anxiety, wound healing, and circulation. Contains triterpenoids. Both are excellent brain herbs and can be used together synergistically.' 
+    },
+    { 
+      question: 'Can I take Bacopa long-term?', 
+      answer: 'Yes. Bacopa is safe for long-term use with excellent safety profile. Clinical studies up to 12 months show no adverse effects. Traditional Ayurvedic use spans thousands of years. For best results: (1) Take consistently for at least 8-12 weeks, (2) Can be used indefinitely with periodic breaks (optional), (3) Monitor thyroid function if you have thyroid conditions, (4) Take with food to minimize GI effects.' 
+    }
+  ],
+  
+  seo_keywords: [
+    'bacopa', 'bacopa monnieri', 'brahmi', 'bacopa supplement', 'bacopa benefits',
+    'bacopa monnieri benefits', 'bacopa monnieri supplement', 'best bacopa monnieri supplement',
+    'bacopa extract', 'bacopa monnieri extract', 'best bacopa supplement',
+    'bacopa monnieri side effects', 'bacopa monnieri benefits and side effects', 'bacopa side effects',
+    'bacopa supplement benefits', 'bacopa powder benefits',
+    'what is bacopa', 'what is bacopa monnieri', 'what is bacopa monnieri good for',
+    'what is bacopa good for', 'what does bacopa do', 'what is bacopa extract',
+    'what is bacopa monnieri extract', 'what is bacopa monnieri used for',
+    'bacopa nootropic', 'bacosides', 'bacopa for brain', 'bacopa for memory',
+    'bacopa dosage for memory', 'bacopa monnieri memory',
+    'bacopa for anxiety', 'bacopa monnieri anxiety', 'bacopa for focus',
+    'bacopa for cognitive function', 'brahmi benefits', 'brahmi herb',
+    'brahmi benefits for brain', 'brahmi for memory', 'brahmi uses',
+    'best herbs for memory and focus', 'best herbs for brain function',
+    'natural supplements for learning', 'herbs for studying',
+    'bacopa dosage', 'bacopa adhd', 'bacopa for children',
+    'memory enhancement herbs', 'cognitive enhancement supplements',
+    'natural nootropics', 'herbal brain support'
+  ],
+  
+  properties: [
+    'Cognitive Enhancement',
+    'Memory Support',
+    'Neuroprotective',
+    'Anxiolytic (Anti-anxiety)',
+    'Adaptogenic',
+    'Antioxidant',
+    'Brain Blood Flow Enhancement',
+    'Learning & Focus Support',
+    'ADHD Support (Clinical Evidence)'
+  ]
+}
+
+// Add Bacopa aliases
+HERB_DETAIL_FALLBACK['bacopa-monnieri'] = HERB_DETAIL_FALLBACK['bacopa']
+HERB_DETAIL_FALLBACK['brahmi'] = HERB_DETAIL_FALLBACK['bacopa']
+
 

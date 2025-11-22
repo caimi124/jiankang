@@ -395,6 +395,103 @@ export default function HerbDetailClient({ herbData, slug }: HerbDetailClientPro
                         </div>
                       </div>
                     </div>
+                  ) : slug === 'bacopa' || slug === 'bacopa-monnieri' || slug === 'brahmi' ? (
+                    <div className="space-y-6">
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                        <p className="text-sm text-blue-900 font-medium">💡 Best taken with food for absorption. Consistency is key—memory benefits build over 4-12 weeks.</p>
+                      </div>
+                      
+                      {/* Daily Supplementation */}
+                      <div className="flex items-start gap-3">
+                        <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">1</div>
+                        <div>
+                          <p className="font-medium text-gray-900">Daily Cognitive Support (Extract)</p>
+                          <p className="text-gray-700 text-sm">Take 300mg standardized bacopa extract (20-55% bacosides) with breakfast. For exam prep or intense mental work, take 20-30 minutes before study sessions. Pair with <Link href="/herb-finder?search=ashwagandha" className="text-green-700 hover:text-green-800 underline">Ashwagandha</Link> for stress relief or <Link href="/herb-finder?search=ginkgo" className="text-green-700 hover:text-green-800 underline">Ginkgo</Link> for enhanced blood flow.</p>
+                        </div>
+                      </div>
+
+                      {/* Recipe 1: Bacopa Pesto */}
+                      <div className="border-t border-gray-200 pt-4">
+                        <div className="flex items-start gap-3 mb-3">
+                          <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">2</div>
+                          <div className="flex-1">
+                            <p className="font-medium text-gray-900 mb-1">🌿 Bacopa Pesto (Brahmi Basil Pesto)</p>
+                            <p className="text-xs text-gray-600 italic mb-2">A flavorful way to add Bacopa to your daily meals</p>
+                          </div>
+                        </div>
+                        
+                        <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-4 ml-9">
+                          <p className="text-sm font-semibold text-gray-800 mb-2">Ingredients:</p>
+                          <ul className="text-sm text-gray-700 space-y-1 mb-3">
+                            <li>• 1 cup soaked pine nuts (soaked overnight, drained)</li>
+                            <li>• 1/2 cup fresh basil</li>
+                            <li>• 1/2 cup fresh Bacopa leaves (or 1 tsp dried Bacopa powder)</li>
+                            <li>• Juice of 1 lemon</li>
+                            <li>• 1 tsp Himalayan salt</li>
+                            <li>• 50ml (1.7 oz) water or olive oil</li>
+                          </ul>
+                          
+                          <p className="text-sm font-semibold text-gray-800 mb-2">Instructions:</p>
+                          <ol className="text-sm text-gray-700 space-y-1 mb-3">
+                            <li>1. Blend all ingredients in high-speed blender until smooth</li>
+                            <li>2. Store in clean jar in refrigerator (use within 3 days)</li>
+                          </ol>
+                          
+                          <p className="text-xs text-blue-800 bg-blue-100 rounded px-2 py-1">
+                            <strong>How to use:</strong> Spread on toast, pasta, sandwiches, roast vegetables, or mix into salad dressing. 1-2 tbsp provides gentle cognitive support daily.
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Recipe 2: Bacopa Lentil Stew */}
+                      <div className="border-t border-gray-200 pt-4">
+                        <div className="flex items-start gap-3 mb-3">
+                          <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">3</div>
+                          <div className="flex-1">
+                            <p className="font-medium text-gray-900 mb-1">🍲 Bacopa Lentil Stew (Comforting & Nourishing)</p>
+                            <p className="text-xs text-gray-600 italic mb-2">Ideal for stress relief, students, and calming meals</p>
+                          </div>
+                        </div>
+                        
+                        <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-lg p-4 ml-9">
+                          <p className="text-sm font-semibold text-gray-800 mb-2">Ingredients:</p>
+                          <ul className="text-sm text-gray-700 space-y-1 mb-3">
+                            <li>• 1-2 cups fresh Bacopa leaves (or 2 tsp dried powder)</li>
+                            <li>• 3/4 cup mung dal (mung beans)</li>
+                            <li>• 1/4 tsp turmeric powder</li>
+                            <li>• 1 tsp ghee + 2 tsp coconut oil</li>
+                            <li>• 1 tsp mustard seeds, 1 dried red chili</li>
+                            <li>• 1 tsp urad dal, 1 tsp chana dal</li>
+                            <li>• Pinch of asafoetida, 1/2 tsp cumin seeds</li>
+                            <li>• 5-6 curry leaves, salt, fresh lemon juice</li>
+                          </ul>
+                          
+                          <p className="text-sm font-semibold text-gray-800 mb-2">Instructions:</p>
+                          <ol className="text-sm text-gray-700 space-y-1 mb-3">
+                            <li>1. Pressure cook mung beans with turmeric and 2 cups water for 10 minutes</li>
+                            <li>2. Rinse Bacopa leaves and curry leaves. Blend into coarse paste</li>
+                            <li>3. Heat ghee + coconut oil. Add mustard seeds until they pop</li>
+                            <li>4. Add chili, urad dal, chana dal, asafoetida, cumin. Toast until fragrant</li>
+                            <li>5. Add Bacopa paste and cook lightly until bright green</li>
+                            <li>6. Mix in cooked lentils. Add salt and lemon juice</li>
+                            <li>7. Serve warm with rice or flatbread</li>
+                          </ol>
+                          
+                          <p className="text-xs text-amber-800 bg-amber-100 rounded px-2 py-1">
+                            <strong>Perfect for:</strong> Evening meals, cold days, stress relief, students needing calming brain-nourishing food. Supports Heart Blood and calms Shen (Spirit) in TCM.
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Tea Option */}
+                      <div className="flex items-start gap-3">
+                        <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">4</div>
+                        <div>
+                          <p className="font-medium text-gray-900">Traditional Bacopa Tea (Brahmi Tea)</p>
+                          <p className="text-gray-700 text-sm">Steep 1-2 teaspoons dried Bacopa in hot water for 10-15 minutes. Drink 1-2 cups daily (morning or early afternoon). For best results, take consistently for 8-12 weeks. Avoid late at night if sensitive to herbs.</p>
+                        </div>
+                      </div>
+                    </div>
                   ) : (
                     <div className="space-y-3">
                       <div className="flex items-start gap-3">
