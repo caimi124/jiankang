@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import Header from '@/components/Header'
 import TurmericClient from './TurmericClient'
+import { generateHerbProductSchema } from '@/lib/utils'
 
 // SEO优化的元数据 - 基于KGR关键词研究优化
 export const metadata: Metadata = {
@@ -81,15 +82,81 @@ const structuredData = {
   'wordCount': 2800
 }
 
+// Product Schema - Google要求的必需字段
+const productSchema = generateHerbProductSchema(
+  'Turmeric',
+  'Curcuma longa',
+  [
+    'Reduces inflammation and joint pain',
+    'Supports liver health and detoxification',
+    'Improves digestion and gut health',
+    'Powerful antioxidant protection',
+    'May support brain and heart health'
+  ],
+  'https://herbscience.shop/herbs/turmeric'
+)
+
+// Breadcrumb Schema
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  '@id': 'https://herbscience.shop/herbs/turmeric#breadcrumb',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: {
+        '@type': 'WebPage',
+        '@id': 'https://herbscience.shop/',
+        name: 'HerbScience - Natural Health & Herbal Medicine'
+      }
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Herbs',
+      item: {
+        '@type': 'WebPage',
+        '@id': 'https://herbscience.shop/herb-finder',
+        name: 'Herb Finder - Browse Natural Herbs & Remedies'
+      }
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: 'Turmeric',
+      item: {
+        '@type': 'WebPage',
+        '@id': 'https://herbscience.shop/herbs/turmeric',
+        name: 'Turmeric Benefits and Uses'
+      }
+    }
+  ]
+}
+
 export default function TurmericPage() {
   return (
     <>
       <Header />
       
       {/* 结构化数据 */}
+      {/* Article Schema - 内容型 */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      
+      {/* Product Schema - Google 必需的 offers & aggregateRating */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      
+      {/* Breadcrumb Schema - 导航结构 */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       
       <TurmericClient />

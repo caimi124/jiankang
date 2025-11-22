@@ -54,12 +54,111 @@ const nextConfig = {
     pagesBufferLength: 2,
   },
 
-  // 安全性头部配置
+
+  // 🎯 重定向规则（优化顺序，避免循环）
+  async redirects() {
+    return [
+      // ===== 1. index.html 清理 =====
+      {
+        source: '/index.html',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/zh/index.html',
+        destination: '/zh',
+        permanent: true,
+      },
+      
+      // ===== 2. 旧 URL 格式重定向（herb-finder → herbs）=====
+      {
+        source: '/herb-finder/:slug',
+        destination: '/herbs/:slug',
+        permanent: true,
+      },
+      
+      // ===== 3. 草药页面URL规范化 =====
+      {
+        source: '/herbs/pumpkin-seed',
+        destination: '/herbs/pumpkin-seeds',
+        permanent: true,
+      },
+      {
+        source: '/herbs/cloves',
+        destination: '/herbs/clove',
+        permanent: true,
+      },
+      {
+        source: '/herbs/rhodiola-rosea',
+        destination: '/herbs/rhodiola',
+        permanent: true,
+      },
+      
+      // ===== 4. 测试页面重定向 =====
+      {
+        source: '/test',
+        destination: '/constitution-test',
+        permanent: true,
+      },
+      {
+        source: '/test/:path*',
+        destination: '/constitution-test/:path*',
+        permanent: true,
+      },
+      {
+        source: '/simple-test',
+        destination: '/constitution-test/quick',
+        permanent: true,
+      },
+      
+      // ===== 5. 旧路径重定向 =====
+      {
+        source: '/articles',
+        destination: '/blog',
+        permanent: true,
+      },
+      {
+        source: '/articles/:path*',
+        destination: '/blog/:path*',
+        permanent: true,
+      },
+      {
+        source: '/quiz',
+        destination: '/constitution-test',
+        permanent: true,
+      },
+      {
+        source: '/quiz/:path*',
+        destination: '/constitution-test/:path*',
+        permanent: true,
+      },
+      
+      // ===== 6. 功能页面重命名 =====
+      {
+        source: '/ingredient-checker',
+        destination: '/constitution-test',
+        permanent: true,
+      },
+      {
+        source: '/about-us',
+        destination: '/about',
+        permanent: true,
+      },
+    ]
+  },
+
+  // 🔧 安全和性能 Headers（合并版）
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: '/:path*',
         headers: [
+          // HTTPS 强制
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload'
+          },
+          // 安全性
           {
             key: 'X-Content-Type-Options',
             value: 'nosniff'
@@ -80,6 +179,7 @@ const nextConfig = {
             key: 'Permissions-Policy',
             value: 'geolocation=(), microphone=(), camera=()'
           },
+          // CSP（内容安全策略）
           {
             key: 'Content-Security-Policy',
             value: [
@@ -96,118 +196,6 @@ const nextConfig = {
               "form-action 'self'",
               "frame-ancestors 'self'"
             ].join('; ')
-          }
-        ]
-      }
-    ]
-  },
-
-  // 基本重定向（保留核心功能）
-  async redirects() {
-    return [
-      // 修复重复URL问题 - 移除 index.html
-      {
-        source: '/index.html',
-        destination: '/',
-        permanent: true,
-      },
-      {
-        source: '/zh/index.html',
-        destination: '/zh',
-        permanent: true,
-      },
-      
-      // 🎯 强制HTTPS重定向（消除http://重定向链）
-      {
-        source: '/:path*',
-        has: [
-          {
-            type: 'header',
-            key: 'x-forwarded-proto',
-            value: 'http',
-          },
-        ],
-        destination: 'https://herbscience.shop/:path*',
-        permanent: true,
-      },
-      
-      // 🌐 规范化域名（消除www重定向）
-      {
-        source: '/:path*',
-        has: [
-          {
-            type: 'host',
-            value: 'www.herbscience.shop',
-          },
-        ],
-        destination: 'https://herbscience.shop/:path*',
-        permanent: true,
-      },
-      
-      // 🔧 测试页面重定向
-      {
-        source: '/test',
-        destination: '/constitution-test',
-        permanent: true,
-      },
-      {
-        source: '/test/:path*',
-        destination: '/constitution-test/:path*',
-        permanent: true,
-      },
-      
-      // 🌿 草药页面URL规范化
-      {
-        source: '/herbs/pumpkin-seed',
-        destination: '/herbs/pumpkin-seeds',
-        permanent: true,
-      },
-      {
-        source: '/herbs/cloves',
-        destination: '/herbs/clove',
-        permanent: true,
-      },
-      {
-        source: '/herb-finder/:slug',
-        destination: '/herbs/:slug',
-        permanent: true,
-      },
-      
-      // 📚 旧文章路径重定向
-      {
-        source: '/articles/:path*',
-        destination: '/blog/:path*',
-        permanent: true,
-      },
-      {
-        source: '/quiz/:path*',
-        destination: '/constitution-test/:path*',
-        permanent: true,
-      },
-    ]
-  },
-
-  // 🔧 强制HTTPS和安全headers
-  async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers: [
-          {
-            key: 'Strict-Transport-Security',
-            value: 'max-age=63072000; includeSubDomains; preload'
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff'
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY'
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block'
           }
         ]
       }

@@ -24,6 +24,10 @@ Disallow: /articles
 Disallow: /articles/
 Disallow: /quiz
 Disallow: /quiz/
+Disallow: /herb-finder/
+Disallow: /ingredient-checker
+Disallow: /knowledge-center
+Disallow: /user-experiences
 
 # ✅ 允许Googlebot完全访问（除了上述路径）
 User-agent: Googlebot
@@ -36,6 +40,9 @@ Disallow: /test-enhanced
 Disallow: /simple-test
 Disallow: /articles
 Disallow: /quiz
+Disallow: /herb-finder/
+Disallow: /ingredient-checker
+Disallow: /knowledge-center
 Crawl-delay: 0
 
 # ✅ 允许Googlebot抓取图片

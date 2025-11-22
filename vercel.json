@@ -4,20 +4,22 @@
   "framework": "nextjs",
   "redirects": [
     {
-      "source": "/(.*)",
+      "source": "/:path*",
       "has": [
         { "type": "host", "value": "www.herbscience.shop" }
       ],
-      "destination": "https://herbscience.shop/$1",
-      "permanent": true
+      "destination": "https://herbscience.shop/:path*",
+      "permanent": true,
+      "statusCode": 301
     },
     {
-      "source": "/(.*)",
+      "source": "/:path((?!_next|api|favicon.ico|robots.txt|sitemap.xml).*)",
       "has": [
         { "type": "header", "key": "x-forwarded-proto", "value": "http" }
       ],
-      "destination": "https://herbscience.shop/$1",
-      "permanent": true
+      "destination": "https://herbscience.shop/:path*",
+      "permanent": true,
+      "statusCode": 301
     },
     {
       "source": "/index.html",

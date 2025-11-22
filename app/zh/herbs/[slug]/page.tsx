@@ -6,6 +6,7 @@ import { getFallbackHerb } from '@/lib/herb-detail-fallback'
 import { headers } from 'next/headers'
 import { generateHerbSlug, normalizeSlug } from '@/lib/herb-slug-utils'
 import { translateHerbData } from '@/lib/herb-translations-zh'
+import { generateHerbProductSchema, generateMedicalContentSchema, generateMedicalFAQSchema } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 export const dynamicParams = true
@@ -257,9 +258,143 @@ export default async function HerbPage({ params }: HerbPageProps) {
 
   // 应用中文翻译
   const translatedHerb = translateHerbData(herb)
+  
+  // 生成中文页面的 URL
+  const herbUrl = `https://herbscience.shop/zh/herbs/${resolvedParams.slug}`
+  
+  // 生成产品 Schema（Google 要求的必需字段）
+  const productSchema = generateHerbProductSchema(
+    herb.name,
+    herb.latin_name || '',
+    herb.benefits || [],
+    herbUrl
+  )
+  
+  // 生成医疗内容 Schema
+  const medicalContentSchema = generateMedicalContentSchema(
+    herb.name,
+    herb.latin_name || '',
+    herb.benefits || [],
+    herb.safety_warnings || [],
+    herbUrl,
+    'tcm-expert'
+  )
+  
+  // 生成 FAQ Schema（如果有）
+  const faqJsonLd = Array.isArray(herb.faqs) && herb.faqs.length > 0
+    ? generateMedicalFAQSchema(herb.faqs, herb.name, herbUrl)
+    : null
+  
+  // 生成面包屑 Schema
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    '@id': `${herbUrl}#breadcrumb`,
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: '首页',
+        item: {
+          '@type': 'WebPage',
+          '@id': 'https://herbscience.shop/zh/',
+          name: 'HerbScience - 天然健康与草药医学'
+        }
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: '草药查询',
+        item: {
+          '@type': 'WebPage',
+          '@id': 'https://herbscience.shop/zh/herb-finder',
+          name: '草药查询 - 浏览天然草药与疗法'
+        }
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: herb.name,
+        item: {
+          '@type': 'WebPage',
+          '@id': herbUrl,
+          name: `${herb.name}的功效与用途`
+        }
+      }
+    ]
+  }
+  
+  // 生成文章 Schema
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    '@id': `${herbUrl}#article`,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': herbUrl },
+    headline: `${herb.name} (${herb.latin_name}) - 循证健康指南`,
+    description: herb.overview,
+    inLanguage: 'zh',
+    datePublished: '2024-10-01T00:00:00Z',
+    dateModified: new Date().toISOString(),
+    author: {
+      '@type': 'Organization',
+      '@id': 'https://herbscience.shop/#organization',
+      name: 'HerbScience',
+      url: 'https://herbscience.shop'
+    },
+    publisher: {
+      '@type': 'Organization',
+      '@id': 'https://herbscience.shop/#organization',
+      name: 'HerbScience',
+      url: 'https://herbscience.shop',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://herbscience.shop/logo.png',
+        width: 256,
+        height: 256
+      }
+    }
+  }
 
   // 使用中文版的ZhHerbDetailClient
   const ZhHerbDetailClient = (await import('./ZhHerbDetailClient')).default
-  return <ZhHerbDetailClient herbData={translatedHerb} slug={resolvedParams.slug} />
+  
+  return (
+    <>
+      {/* JSON-LD 结构化数据 */}
+      {/* 产品信息Schema - Google 必需的 offers & aggregateRating */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      
+      {/* 医疗内容Schema - E-A-T优化 */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalContentSchema) }}
+      />
+      
+      {/* 文章Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      
+      {/* FAQ Schema（如果存在） */}
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
+      
+      {/* 面包屑Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      
+      <ZhHerbDetailClient herbData={translatedHerb} slug={resolvedParams.slug} />
+    </>
+  )
 }
 
