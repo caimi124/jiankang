@@ -6,7 +6,7 @@ import { getFallbackHerb } from '@/lib/herb-detail-fallback'
 import { headers } from 'next/headers'
 import { generateHerbSlug, normalizeSlug } from '@/lib/herb-slug-utils'
 import { translateHerbData } from '@/lib/herb-translations-zh'
-import { generateHerbProductSchema, generateMedicalContentSchema, generateMedicalFAQSchema } from '@/lib/utils'
+import { generateHerbProductSchema, generateMedicalContentSchema, generateMedicalFAQSchema, truncateDescription } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 export const dynamicParams = true
@@ -202,7 +202,10 @@ export async function generateMetadata({ params }: HerbPageProps): Promise<Metad
   }
 
   const title = `${herb.name} - 功效、用法与安全性 | HerbScience`
-  const description = herb.overview || `了解${herb.name}的传统用途、现代应用、剂量建议和安全性信息。`
+  
+  // ✅ 优化中文 Meta Description（Bing/Google：120-155 字符）
+  const rawDescription = herb.overview || `了解${herb.name}的传统用途、现代应用、剂量建议和安全性信息。基于科学证据的草药指南。`
+  const description = truncateDescription(rawDescription, 155, 120)
 
   return {
     title,

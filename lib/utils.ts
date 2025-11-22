@@ -450,3 +450,140 @@ export function generateHowToSchema(
     }
   }
 }
+
+// ============================================
+// 🎯 SEO Meta Description 生成工具（Bing/Google 优化）
+// ============================================
+
+/**
+ * 生成符合 Bing/Google 规范的 Meta Description
+ * 
+ * 最佳实践：
+ * - 长度：120-160 字符（最佳 155 字符）
+ * - 包含主要关键词
+ * - 吸引点击的行动召唤
+ * - 避免特殊字符和 HTML 实体
+ * 
+ * @param text - 原始文本
+ * @param maxLength - 最大长度（默认 155）
+ * @param minLength - 最小长度（默认 120）
+ * @returns 优化后的 Meta Description
+ */
+export function truncateDescription(
+  text: string,
+  maxLength: number = 155,
+  minLength: number = 120
+): string {
+  // 1. 清理文本
+  let cleaned = text
+    .replace(/\s+/g, ' ') // 多个空格合并
+    .replace(/[\r\n\t]/g, ' ') // 移除换行和制表符
+    .trim()
+  
+  // 2. 如果太短，返回原文
+  if (cleaned.length <= minLength) {
+    return cleaned
+  }
+  
+  // 3. 如果长度合适，直接返回
+  if (cleaned.length >= minLength && cleaned.length <= maxLength) {
+    return cleaned
+  }
+  
+  // 4. 如果太长，智能截断（在句子边界）
+  if (cleaned.length > maxLength) {
+    // 在最大长度附近找句子边界
+    const cutoff = maxLength - 3 // 留空间给省略号
+    let truncated = cleaned.substring(0, cutoff)
+    
+    // 尝试在句号、逗号或空格处截断
+    const lastPeriod = truncated.lastIndexOf('. ')
+    const lastComma = truncated.lastIndexOf(', ')
+    const lastSpace = truncated.lastIndexOf(' ')
+    
+    if (lastPeriod > minLength) {
+      truncated = cleaned.substring(0, lastPeriod + 1)
+    } else if (lastComma > minLength) {
+      truncated = cleaned.substring(0, lastComma)
+    } else if (lastSpace > minLength) {
+      truncated = cleaned.substring(0, lastSpace)
+    }
+    
+    return truncated.trim() + '...'
+  }
+  
+  return cleaned
+}
+
+/**
+ * 为草药页面生成 SEO 优化的 Meta Description
+ * 
+ * @param herbName - 草药名称
+ * @param latinName - 拉丁学名
+ * @param benefits - 主要功效列表
+ * @returns 优化的 Meta Description（120-155 字符）
+ */
+export function generateHerbMetaDescription(
+  herbName: string,
+  latinName: string,
+  benefits: string[]
+): string {
+  // 获取前 2 个主要功效
+  const topBenefits = benefits.slice(0, 2).join(', ').toLowerCase()
+  
+  // 构建描述
+  const description = `${herbName} (${latinName}): ${topBenefits}. Learn evidence-based benefits, safe dosage, side effects & how to use from licensed experts.`
+  
+  // 截断到合适长度
+  return truncateDescription(description, 155, 120)
+}
+
+/**
+ * 为博客文章生成 SEO 优化的 Meta Description
+ * 
+ * @param title - 文章标题
+ * @param excerpt - 摘要或首段
+ * @returns 优化的 Meta Description（120-155 字符）
+ */
+export function generateBlogMetaDescription(
+  title: string,
+  excerpt: string
+): string {
+  // 如果摘要长度合适，直接使用
+  if (excerpt.length >= 120 && excerpt.length <= 155) {
+    return truncateDescription(excerpt, 155, 120)
+  }
+  
+  // 否则，从标题和摘要组合
+  const description = `${excerpt}. Read expert insights on ${title.toLowerCase()}.`
+  
+  return truncateDescription(description, 155, 120)
+}
+
+/**
+ * 为一般页面生成 SEO 优化的 Meta Description
+ * 
+ * @param pageTitle - 页面标题
+ * @param content - 页面主要内容
+ * @param keywords - 关键词列表
+ * @returns 优化的 Meta Description（120-155 字符）
+ */
+export function generatePageMetaDescription(
+  pageTitle: string,
+  content: string,
+  keywords: string[] = []
+): string {
+  // 如果内容长度合适，直接使用
+  if (content.length >= 120 && content.length <= 155) {
+    return truncateDescription(content, 155, 120)
+  }
+  
+  // 否则，添加关键词上下文
+  const keywordContext = keywords.length > 0 
+    ? ` Learn about ${keywords.slice(0, 2).join(' and ')}.`
+    : ''
+  
+  const description = `${content}${keywordContext}`
+  
+  return truncateDescription(description, 155, 120)
+}

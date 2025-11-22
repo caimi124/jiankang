@@ -16,6 +16,7 @@ import { Calendar, User, Tag, ArrowLeft, Clock, ExternalLink } from 'lucide-reac
 import Link from 'next/link'
 import { getBlogPostBySlug } from '../../../lib/sanity'
 import { PortableText } from '@portabletext/react'
+import { generateBlogMetaDescription, truncateDescription } from '@/lib/utils'
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -52,12 +53,6 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     }
   }
 
-  // 🎯 SEO优化：截断过长的文本
-  const truncateText = (text: string, maxLength: number): string => {
-    if (text.length <= maxLength) return text
-    return text.slice(0, maxLength - 3).trim() + '...'
-  }
-
   // 安全地提取keywords
   const keywords = (post as any).seoKeywords?.join(', ') || 
     post.tags?.map((tag: any) => {
@@ -82,13 +77,13 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     return `Read about ${post.title} on HerbScience - evidence-based herbal medicine insights.`
   }
 
-  // 🎯 生成优化的 title 和 description
+  // ✅ 优化 SEO Meta Tags（Bing/Google 最佳实践）
   const rawTitle = (post as any).seoTitle || post.title
   const rawDescription = getDescription()
   
-  // SEO最佳实践：Title 50-60字符，Description 150-160字符
-  const optimizedTitle = truncateText(rawTitle, 60)
-  const optimizedDescription = truncateText(rawDescription, 160)
+  // Title: 50-60 字符，Description: 120-155 字符
+  const optimizedTitle = truncateDescription(rawTitle, 60, 50)
+  const optimizedDescription = generateBlogMetaDescription(post.title, rawDescription)
   
   return {
     title: optimizedTitle,
@@ -96,7 +91,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     keywords,
     authors: [{ name: (post.author as any)?.name || post.author || 'HerbScience Team' }],
     openGraph: {
-      title: truncateText(post.title, 60),
+      title: truncateDescription(post.title, 60, 30),
       description: optimizedDescription,
       type: 'article',
       url: `https://herbscience.shop/blog/${resolvedParams.slug}`,
@@ -106,13 +101,13 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
           url: '/hero-bg.svg',
           width: 1200,
           height: 630,
-          alt: truncateText(post.title, 100)
+          alt: truncateDescription(post.title, 100, 30)
         }
       ]
     },
     twitter: {
       card: 'summary_large_image',
-      title: truncateText(post.title, 60),
+      title: truncateDescription(post.title, 60, 30),
       description: optimizedDescription,
       images: ['/hero-bg.svg']
     },
