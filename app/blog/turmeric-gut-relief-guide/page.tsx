@@ -7,8 +7,8 @@ import { Calendar, User, Tag, ArrowLeft, Clock, TrendingUp, AlertCircle, CheckCi
 import Script from 'next/script'
 
 export const metadata: Metadata = {
-  title: 'Turmeric Benefits for Gut Health and Inflammation: How Curcumin Helps Reduce Pain | HerbScience',
-  description: 'Discover turmeric benefits for gut health, inflammation, and pain relief. Learn how to use turmeric powder, tea, and supplements effectively. Complete guide with dosage, safety tips, and real results.',
+  title: 'Turmeric for Gut Health: Curcumin Benefits Guide | HerbScience',
+  description: 'Complete guide to turmeric benefits for gut health, inflammation, and pain relief. Learn dosage, usage tips, and safe ways to use turmeric daily.',
   keywords: ['turmeric benefits', 'turmeric for gut health', 'turmeric tea benefits', 'turmeric for inflammation', 'curcumin benefits', 'turmeric pain relief', 'turmeric powder for inflammation', 'best turmeric supplement', 'turmeric with black pepper', 'turmeric benefits for men', 'turmeric benefits for women', 'health benefits of turmeric', 'turmeric tea for inflammation', 'how much turmeric per day', 'turmeric supplement for joint pain', '10 serious side effects of turmeric', 'turmeric side effects', 'curcumin side effects'],
   authors: [{ name: 'HerbScience Team' }],
   openGraph: {
