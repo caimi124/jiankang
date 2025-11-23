@@ -48,6 +48,11 @@ async function getHerbData(slug: string) {
 		'brahmi': 'bacopa',
 		'water-hyssop': 'bacopa',
 		'bacopa monnieri': 'bacopa',
+		// Cordyceps 别名
+		'cordyceps-sinensis': 'cordyceps',
+		'cordyceps-militaris': 'cordyceps',
+		'caterpillar-fungus': 'cordyceps',
+		'dong-chong-xia-cao': 'cordyceps',
 		
 		// 🎯 拉丁学名映射（修复Google抓取但未索引的问题）
 		'rosae-caninae-fructus': 'rose-hip', // 玉米须 - 玫瑰果

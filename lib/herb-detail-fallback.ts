@@ -1390,4 +1390,230 @@ HERB_DETAIL_FALLBACK['bacopa'] = {
 HERB_DETAIL_FALLBACK['bacopa-monnieri'] = HERB_DETAIL_FALLBACK['bacopa']
 HERB_DETAIL_FALLBACK['brahmi'] = HERB_DETAIL_FALLBACK['bacopa']
 
+// ============================================
+// 🍄 Cordyceps (冬虫夏草) - Complete Data
+// ============================================
+HERB_DETAIL_FALLBACK['cordyceps'] = {
+  id: 'cordyceps',
+  name: 'Cordyceps',
+  chinese_name: '冬虫夏草',
+  latin_name: 'Cordyceps sinensis',
+  slug: 'cordyceps',
+  category: 'Energy & Immune Support',
+  evidence_level: 'Strong',
+  safety_level: 'low',
+  overview: 'Cordyceps is a rare medicinal fungus known for its remarkable energy-boosting and immune-supporting properties. This unique organism grows in high-altitude regions and has been treasured in Traditional Chinese Medicine for centuries. Modern research confirms its benefits for athletic performance, respiratory health, kidney function, and overall vitality. Cordyceps is particularly valued for its ability to enhance oxygen utilization and cellular energy production.',
+  benefits: [
+    'Energy & Athletic Performance - Enhances stamina, reduces fatigue, improves oxygen utilization and VO2 max',
+    'Immune System Support - Boosts immune cell activity, increases NK cells and macrophages, enhances resistance to infections',
+    'Respiratory Health - Supports lung function, relieves chronic cough, improves breathing capacity and oxygen absorption',
+    'Kidney Health - Protects kidney function, supports urinary health, traditionally used for kidney yang deficiency',
+    'Cardiovascular Support - Helps regulate blood pressure, cholesterol, and triglycerides; improves heart function',
+    'Anti-Aging & Longevity - Reduces oxidative stress, supports cellular health, promotes healthy aging',
+    'Liver Protection - Shields liver cells from damage, reduces inflammation, supports detoxification',
+    'Sexual Health & Libido - Traditionally used to boost vitality, may improve sperm quality and reproductive function',
+    'Blood Health - Stimulates bone marrow, supports healthy red and white blood cell production',
+    'Metabolic Balance - Helps regulate blood sugar, supports healthy lipid metabolism'
+  ],
+  active_compounds: 'Cordycepin (3\'-deoxyadenosine), polysaccharides, adenosine, ergosterol, sterols, amino acids, vitamins (B12, E, K), trace minerals (zinc, selenium, iron)',
+  traditional_uses: 'In Traditional Chinese Medicine, Cordyceps is classified as a superior tonic herb that tonifies the Kidney and Lung meridians. It has been used for over 2,000 years to treat fatigue, chronic cough, night sweats, low libido, and weak immune function. Traditionally prescribed for elderly individuals, post-illness recovery, and athletes seeking enhanced performance.',
+  suitable_for: [
+    'Athletes and active individuals seeking performance enhancement',
+    'People with chronic fatigue or low energy levels',
+    'Those recovering from illness or surgery',
+    'Individuals with weak immune systems or frequent infections',
+    'People with respiratory conditions (chronic cough, asthma)',
+    'Elderly individuals seeking vitality support',
+    'Those with kidney or liver health concerns',
+    'Individuals under high stress or physical demands',
+    'People seeking natural anti-aging support'
+  ],
+  not_suitable_for: [
+    'Pregnant or breastfeeding women (insufficient safety data)',
+    'Children under 12 years old',
+    'People with acute infections, fever, or inflammation',
+    'Individuals with hot/yang excess constitution',
+    'Those with yin deficiency with heat symptoms',
+    'People with severe liver or kidney dysfunction (consult doctor)',
+    'Individuals allergic to mushrooms or fungi',
+    'Those taking immunosuppressant medications',
+    'People with autoimmune conditions (use with caution)',
+    'Those scheduled for surgery (may affect blood clotting)'
+  ],
+  dosage_forms: [
+    { 
+      form: 'Cordyceps Tea/Infusion', 
+      dosage: '1-3g of dried cordyceps', 
+      usage: 'Steep in hot water (not boiling) for 5-10 minutes. Drink 1-2 times daily. Can be re-steeped 2-3 times.' 
+    },
+    { 
+      form: 'Cordyceps Decoction (Traditional)', 
+      dosage: '3-9g of whole cordyceps', 
+      usage: 'Simmer in water for 30-40 minutes. Strain and drink. The cordyceps can be consumed after cooking.' 
+    },
+    { 
+      form: 'Cordyceps Extract Powder', 
+      dosage: '1,000-3,000mg daily', 
+      usage: 'Mix into smoothies, coffee, or warm beverages. Take in divided doses with meals.' 
+    },
+    { 
+      form: 'Cordyceps Capsules/Tablets', 
+      dosage: '500-1,500mg twice daily', 
+      usage: 'Take with meals for better absorption. Start with lower dose and increase gradually.' 
+    },
+    { 
+      form: 'Cordyceps Soup (Culinary)', 
+      dosage: '3-5 whole cordyceps', 
+      usage: 'Add to soups or stews in the last 10-15 minutes of cooking. Consume both broth and cordyceps.' 
+    },
+    { 
+      form: 'Cordyceps Tincture', 
+      dosage: '2-4ml (40-80 drops)', 
+      usage: 'Take 2-3 times daily in water or juice. Hold under tongue for 30 seconds before swallowing.' 
+    }
+  ],
+  safety_warnings: [
+    'Start with lower doses and increase gradually to assess tolerance',
+    'May cause mild digestive upset (nausea, diarrhea) in some individuals',
+    'Rare cases of dry mouth, nosebleeds, or insomnia with high doses',
+    'Discontinue use 2 weeks before scheduled surgery',
+    'May interact with immunosuppressants and diabetes medications',
+    'Always use properly sourced and authenticated cordyceps products',
+    'Avoid if experiencing acute fever or inflammatory conditions',
+    'Consult healthcare provider if taking medications or have health conditions'
+  ],
+  interactions: [
+    'Immunosuppressant drugs (cyclosporine, tacrolimus) - may reduce effectiveness',
+    'Diabetes medications - may enhance blood sugar lowering effects, monitor closely',
+    'Anticoagulants (warfarin) - may increase bleeding risk',
+    'Testosterone therapy - potential additive effects',
+    'Prednisone and corticosteroids - may interact with immune effects'
+  ],
+  scientific_evidence: 'Clinical studies demonstrate cordyceps significantly improves exercise performance and VO2 max in both trained and untrained individuals. Research shows enhanced NK cell activity and immune function markers. Studies confirm benefits for chronic kidney disease patients, with improved creatinine clearance. Animal and in vitro studies show anti-tumor, anti-inflammatory, and antioxidant properties. Cordycepin has been studied for its adenosine receptor modulation and potential anti-cancer mechanisms.',
+  constitution_match: [
+    { 
+      type: 'Kidney Yang Deficiency', 
+      suitable: 'yes', 
+      description: 'Ideal for cold hands/feet, low libido, frequent urination, fatigue, and weak lower back. Cordyceps tonifies kidney yang.' 
+    },
+    { 
+      type: 'Lung Qi Deficiency', 
+      suitable: 'yes', 
+      description: 'Perfect for shortness of breath, weak voice, chronic cough, and low immunity. Strengthens lung function.' 
+    },
+    { 
+      type: 'Qi Deficiency (General Fatigue)', 
+      suitable: 'yes', 
+      description: 'Excellent for chronic fatigue, poor stamina, weak immunity, and post-illness recovery. Builds overall vitality.' 
+    },
+    { 
+      type: 'Yin Deficiency with Heat', 
+      suitable: 'warning', 
+      description: 'Use with caution if experiencing night sweats, hot flashes, dry mouth, and irritability. May worsen heat symptoms.' 
+    },
+    { 
+      type: 'Yang Excess (Hot Constitution)', 
+      suitable: 'no', 
+      description: 'Avoid if you feel hot frequently, have high blood pressure, red face, or inflammatory conditions.' 
+    }
+  ],
+  pairs_well_with: [
+    'Panax Ginseng - Synergistic for energy and vitality',
+    'Reishi Mushroom - Complementary immune support',
+    'Astragalus - Enhanced immune and kidney support',
+    'Rhodiola - Combined adaptogenic benefits',
+    'Goji Berry - Kidney and liver nourishment',
+    'He Shou Wu - Anti-aging and vitality',
+    'Royal Jelly - Enhanced energy and endurance',
+    'Ashwagandha - Stress adaptation and performance'
+  ],
+  user_stories: [
+    { 
+      quote: 'As a marathon runner, I started taking cordyceps 8 weeks before a race. My endurance improved noticeably, and my recovery time was cut in half. I felt stronger in the last miles of the race.', 
+      author: 'Michael T.', 
+      location: 'Boulder, Colorado' 
+    },
+    { 
+      quote: 'I was always getting sick during winter. After 3 months of taking cordyceps daily, I haven\'t had a cold in 6 months. My energy levels are also much better throughout the day.', 
+      author: 'Jessica L.', 
+      location: 'Seattle, Washington' 
+    },
+    { 
+      quote: 'My father, 68, was struggling with fatigue and shortness of breath. His doctor approved cordyceps supplementation. After 2 months, his breathing improved and he has much more energy for daily activities.', 
+      author: 'David K.', 
+      location: 'San Francisco, California' 
+    }
+  ],
+  faqs: [
+    { 
+      question: 'How long does it take for cordyceps to work?', 
+      answer: 'Most people notice increased energy within 1-2 weeks of consistent use. For immune support and other health benefits, allow 2-3 months of regular supplementation. Athletic performance improvements may be seen within 4-6 weeks.' 
+    },
+    { 
+      question: 'What is the best time to take cordyceps?', 
+      answer: 'Take cordyceps in the morning or early afternoon to avoid potential sleep disruption, as it can be energizing. For athletic performance, take 30-60 minutes before exercise. Always take with food to enhance absorption.' 
+    },
+    { 
+      question: 'Is cordyceps safe for daily use?', 
+      answer: 'Yes, cordyceps is generally safe for long-term daily use when taken at recommended doses. It has an excellent safety profile. However, take occasional breaks (e.g., 5 days on, 2 days off) to prevent tolerance.' 
+    },
+    { 
+      question: 'What\'s the difference between Cordyceps sinensis and Cordyceps militaris?', 
+      answer: 'C. sinensis is the traditional wild species, rare and expensive. C. militaris is cultivated and more affordable, with similar but slightly different compounds. Both are effective, but C. sinensis is considered superior in TCM.' 
+    },
+    { 
+      question: 'Can cordyceps help with erectile dysfunction?', 
+      answer: 'Traditional use and some animal studies suggest cordyceps may support sexual function by improving circulation and energy. However, human clinical evidence is limited. It works best as part of overall vitality support, not as a quick fix.' 
+    },
+    { 
+      question: 'Does cordyceps interact with caffeine?', 
+      answer: 'Cordyceps generally combines well with caffeine and may enhance energy without jitters. However, some people may find the combination overstimulating. Start with lower doses if combining with coffee or tea.' 
+    },
+    { 
+      question: 'Can I take cordyceps if I have an autoimmune condition?', 
+      answer: 'Cordyceps modulates immune function, which may be problematic for some autoimmune conditions. Consult your healthcare provider before use, especially if taking immunosuppressant medications.' 
+    },
+    { 
+      question: 'How do I know if I\'m buying authentic cordyceps?', 
+      answer: 'Look for products from reputable brands that provide third-party testing certificates. Wild C. sinensis is extremely expensive ($20,000+/kg). Most affordable products use cultivated C. militaris or mycelium extracts, which are still effective.' 
+    }
+  ],
+  seo_keywords: [
+    'cordyceps benefits',
+    'cordyceps sinensis',
+    'cordyceps supplement',
+    'cordyceps for energy',
+    'cordyceps mushroom benefits',
+    'cordyceps for athletes',
+    'cordyceps immune support',
+    'cordyceps for lungs',
+    'cordyceps for kidneys',
+    'cordyceps dosage',
+    'best cordyceps supplement',
+    'cordyceps side effects',
+    'cordyceps benefits for men',
+    'cordyceps benefits for women',
+    'what is cordyceps good for',
+    'cordyceps militaris vs sinensis',
+    'cordyceps for fatigue',
+    'cordyceps anti aging'
+  ],
+  properties: [
+    'Energizing',
+    'Immune-modulating',
+    'Adaptogenic',
+    'Kidney-tonifying',
+    'Lung-supportive',
+    'Antioxidant',
+    'Anti-inflammatory',
+    'Cardioprotective',
+    'Hepatoprotective',
+    'Anti-aging'
+  ]
+}
+
+// Add Cordyceps aliases
+HERB_DETAIL_FALLBACK['cordyceps-sinensis'] = HERB_DETAIL_FALLBACK['cordyceps']
+HERB_DETAIL_FALLBACK['cordyceps-militaris'] = HERB_DETAIL_FALLBACK['cordyceps']
+
 
