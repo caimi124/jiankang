@@ -23,6 +23,29 @@ export const revalidate = 60 // 重新验证时间（秒）
 // Static articles (local blog posts not in Sanity)
 const staticLocalArticles = [
   {
+    id: 1758713619594,
+    _id: '1758713619594',
+    title: "What Is Echinacea Good For? A Practical Guide to Personalized Immune Support",
+    excerpt: "Clear, TCM-informed guide to echinacea benefits, dosing, and safety. Learn how to use echinacea tablets, tincture, capsules, or drops for personalized immune support.",
+    category: "science",
+    author: "HerbScience Team",
+    publishedAt: "2025-01-27",
+    readTime: 9,
+    featured: true,
+    featured_image: null,
+    slug: { current: "what-is-echinacea-good-for-personalized-immune-support" },
+    tags: [
+      "echinacea benefits",
+      "echinacea immune support",
+      "echinacea tablets",
+      "echinacea tincture",
+      "echinacea supplement",
+      "echinacea capsules",
+      "echinacea drops",
+      "TCM body type"
+    ]
+  },
+  {
     id: 1758713619593,
     _id: '1758713619593',
     title: "Red Onion vs White Onion: Which Is Healthier? (Science-Backed Comparison)",

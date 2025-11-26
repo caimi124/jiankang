@@ -90,6 +90,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     // 🎯 博客文章（硬编码 - 使用实际文件夹名称）
     {
+      url: `${baseUrl}/blog/what-is-echinacea-good-for-personalized-immune-support`,
+      lastModified: '2025-01-27',
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    {
       url: `${baseUrl}/blog/red-onion-vs-white-onion-health-benefits`,
       lastModified: '2025-01-27',
       changeFrequency: 'monthly',

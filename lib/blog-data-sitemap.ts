@@ -12,6 +12,13 @@ export interface StaticBlogPost {
 
 // 🎯 所有已发布的博客文章列表（按发布时间倒序）
 export const staticBlogPosts: StaticBlogPost[] = [
+  // 📅 2025-01-27 新增的 Echinacea 文章
+  {
+    slug: 'what-is-echinacea-good-for-personalized-immune-support',
+    title: 'What Is Echinacea Good For? A Practical Guide to Personalized Immune Support',
+    publishedAt: '2025-01-27',
+    priority: 0.9
+  },
   // 📅 2025-01-26 新增的Ginger系列
   {
     slug: 'ginger-tablets-chews-nausea-bloating-guide',

@@ -125,6 +125,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 export async function generateStaticParams() {
   // 返回一些常见的博客文章slugs
   return [
+    { slug: 'what-is-echinacea-good-for-personalized-immune-support' },
     { slug: 'turmeric-gut-relief-guide' },
     { slug: 'herbs-for-anxiety-natural-alternatives' },
     { slug: 'turmeric-pregnancy-safety-guide' },
@@ -450,16 +451,26 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               {/* 相关链接 */}
               <div className="px-8 py-8 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Related Resources</h3>
+                {(() => {
+                  const title = (post.title || '').toLowerCase()
+                  let herbSlug = 'turmeric'
+                  let herbName = 'Turmeric'
+                  if (title.includes('echinacea')) { herbSlug = 'echinacea'; herbName = 'Echinacea' }
+                  else if (title.includes('ginger')) { herbSlug = 'ginger'; herbName = 'Ginger' }
+                  else if (title.includes('ashwagandha')) { herbSlug = 'ashwagandha'; herbName = 'Ashwagandha' }
+                  else if (title.includes('rhodiola')) { herbSlug = 'rhodiola'; herbName = 'Rhodiola' }
+                  else if (title.includes('onion')) { herbSlug = 'onion'; herbName = 'Onion' }
+                  return (
                 <div className="grid md:grid-cols-2 gap-6">
                   <Link 
-                    href="/herbs/turmeric"
+                    href={`/herbs/${herbSlug}`}
                     className="group block p-6 bg-white dark:bg-gray-800 rounded-xl hover:shadow-md transition-all duration-200 border border-transparent hover:border-green-200 dark:hover:border-green-700"
                   >
                     <h4 className="font-semibold text-gray-900 dark:text-white group-hover:text-green-600 dark:group-hover:text-green-400 mb-2">
-                      Complete Turmeric Herb Profile
+                      {`Complete ${herbName} Herb Profile`}
                     </h4>
                     <p className="text-gray-600 dark:text-gray-300 text-sm">
-                      Detailed scientific information about turmeric's properties, dosage, and safety.
+                      Detailed scientific information about this herb's properties, dosage, and safety.
                     </p>
                     <div className="flex items-center text-blue-600 dark:text-blue-400 mt-3">
                       <span className="text-sm">Learn more</span>
@@ -472,10 +483,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     className="group block p-6 bg-white dark:bg-gray-800 rounded-xl hover:shadow-md transition-all duration-200 border border-transparent hover:border-green-200 dark:hover:border-green-700"
                   >
                     <h4 className="font-semibold text-gray-900 dark:text-white group-hover:text-green-600 dark:group-hover:text-green-400 mb-2">
-                      Check Turmeric Safety
+                      {`Check ${herbName} Safety`}
                     </h4>
                     <p className="text-gray-600 dark:text-gray-300 text-sm">
-                      Analyze turmeric interactions with your medications and supplements.
+                      Analyze interactions with your medications and supplements.
                     </p>
                     <div className="flex items-center text-blue-600 dark:text-blue-400 mt-3">
                       <span className="text-sm">Check safety</span>
@@ -483,6 +494,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     </div>
                   </Link>
                 </div>
+                  )
+                })()}
               </div>
             </article>
 
@@ -508,6 +521,147 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 // 本地博客文章数据作为备用
 function getLocalBlogPost(slug: string) {
   const localPosts = {
+    'what-is-echinacea-good-for-personalized-immune-support': {
+      title: 'What Is Echinacea Good For? A Practical Guide to Personalized Immune Support',
+      excerpt: 'Clear, TCM-informed guide to echinacea benefits, dosing, and safety. Learn how to use echinacea tablets, tincture, capsules, or drops for personalized immune support.',
+      author: 'HerbScience Team',
+      publishedAt: '2025-01-27',
+      read_time: '9',
+      category: 'science',
+      tags: [
+        'echinacea benefits',
+        'echinacea immune support',
+        'echinacea tablets',
+        'echinacea tincture',
+        'echinacea supplement',
+        'echinacea capsules',
+        'echinacea drops',
+        'echinacea dosage for cold',
+        'what is echinacea good for',
+        'TCM body type'
+      ],
+      seoTitle: 'What Is Echinacea Good For? Benefits, Dosage, Tablets vs Tincture | HerbScience',
+      seoDescription: 'Evidence-based echinacea benefits and dosage. Compare echinacea tablets vs tincture vs capsules. Use TCM body-type guidance to personalize echinacea immune support safely.',
+      seoKeywords: [
+        'echinacea benefits',
+        'echinacea immune support',
+        'echinacea tablets',
+        'echinacea tincture',
+        'echinacea capsules',
+        'echinacea drops',
+        'best echinacea supplement',
+        'echinacea dosage',
+        'echinacea dosage for cold'
+      ],
+      description: 'Use echinacea the smart way: when to take it, how much, and which form fits you best — guided by TCM body types to reduce side effects and maximize results.',
+      faqs: [
+        { question: 'What is echinacea good for?', answer: 'Echinacea is commonly used for short-term immune support, especially at the first sign of a cold or during seasonal stress. It may help shorten illness duration when taken early and consistently for a brief period.' },
+        { question: 'What is the best echinacea supplement: tablets, tincture, or capsules?', answer: 'Tincture and liquid drops absorb quickly and are ideal at the first symptom. Tablets and capsules are convenient for daily short-term use. Choose based on your routine and sensitivity.' },
+        { question: 'What is the echinacea dosage for a cold?', answer: 'Typical adult use: 300–500 mg echinacea tablets or capsules 2–3 times daily, or 2–3 servings of tincture per day at first symptoms. Use for 5–10 days and avoid long-term daily use.' },
+        { question: 'Who should avoid echinacea?', answer: 'People with autoimmune conditions, severe allergies to Asteraceae (daisy family), or pronounced Yang-deficient cold constitutions should avoid or use with medical guidance. Pregnant or breastfeeding individuals should consult a clinician.' }
+      ],
+      content: `
+<p><strong>Echinacea</strong> is a popular <strong>herbal supplement</strong> known for <strong>immune support</strong>. But generic advice like “take echinacea for a cold” often leads to guessing. This practical guide shows exactly <em>when</em> and <em>how</em> to use <strong>echinacea tablets</strong>, <strong>echinacea tincture</strong>, <strong>capsules</strong>, or <strong>drops</strong> — and how to personalize your plan using <strong>Traditional Chinese Medicine (TCM)</strong> body types to reduce side effects and get better results.</p>
+
+<h2>Why Personalization Matters (TCM Body Types)</h2>
+<p>Not everyone responds to an <strong>echinacea supplement</strong> the same way. In TCM, your <strong>constitution</strong> guides herb selection:</p>
+<ul>
+  <li><strong>Yang‑deficient (cold, low energy):</strong> May do better with gentle warming support; pair echinacea with ginger tea and avoid long-term use.</li>
+  <li><strong>Yin‑deficient (dry, warm, irritable):</strong> Often responds well to short-term <strong>echinacea immune support</strong>, especially at the first sign of a cold.</li>
+  <li><strong>Balanced constitution:</strong> Generally safe for short-term prevention during seasonal stress.</li>
+  </ul>
+
+<h2>1) Early Cold or Flu Symptoms</h2>
+<p><em>Scenario:</em> scratchy throat, sneezing, fatigue.</p>
+<p><strong>Action:</strong> Start echinacea at the very first sign to potentially shorten illness duration.</p>
+<ul>
+  <li><strong>Echinacea tea or liquid tincture:</strong> 2–3 times daily at first symptoms.</li>
+  <li><strong>Echinacea tablets or capsules:</strong> 300–500 mg, 2–3 times daily for 5–10 days.</li>
+  <li><strong>TCM Tip:</strong> Dry/warm constitutions respond best. Cold, fatigued types can pair with warm ginger tea.</li>
+</ul>
+<p><em>Practical tip:</em> Begin immediately — waiting until a full-blown cold develops is less effective.</p>
+
+<h2>2) High‑Stress Lifestyle</h2>
+<p><em>Scenario:</em> long work hours, travel, poor sleep, or seasonal stress.</p>
+<p><strong>Action:</strong> Use an <strong>echinacea supplement</strong> preventively for <strong>1–2 weeks</strong> during peak stress.</p>
+<ul>
+  <li>Short-term <strong>echinacea capsules</strong> or <strong>tincture</strong> daily for 1–2 weeks.</li>
+  <li>Pair with vitamin C, good sleep, and hydration.</li>
+  <li><strong>TCM Tip:</strong> Stress often creates Qi deficiency (low energy). If cold hands/feet, combine with Qi‑tonifying herbs like <em>Astragalus</em>.</li>
+</ul>
+
+<h2>3) School Season (Kids)</h2>
+<p><em>Scenario:</em> school/daycare exposure.</p>
+<ul>
+  <li>Use pediatric <strong>echinacea drops</strong> according to label at first sniffles.</li>
+  <li>Combine with elderberry syrup for added <strong>immune support</strong>.</li>
+  <li><strong>TCM Tip:</strong> Children with sensitive digestion may need smaller doses or alternatives.</li>
+</ul>
+
+<h2>4) Smart Combinations</h2>
+<p><strong>Goal:</strong> boost immunity without overload.</p>
+<ul>
+  <li><strong>Elderberry + echinacea tincture:</strong> seasonal protection.</li>
+  <li><strong>Zinc + echinacea tablets:</strong> short-term boost.</li>
+  <li><strong>Vitamin C + echinacea capsules:</strong> daily resilience.</li>
+</ul>
+<p><strong>TCM Tip:</strong> Avoid long-term daily use. Cycle herbs based on constitution to prevent imbalance.</p>
+
+<h2>5) Safety & Side Effects</h2>
+<ul>
+  <li><strong>Avoid if:</strong> autoimmune disorders, severe Asteraceae allergies, or pronounced Yang‑deficient cold constitution.</li>
+  <li><strong>Possible side effects:</strong> mild GI upset, rash, headache.</li>
+  <li><strong>Pregnancy & breastfeeding:</strong> consult a healthcare provider.</li>
+</ul>
+
+<h2>Quick Reference</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Scenario</th>
+      <th>Form</th>
+      <th>Timing</th>
+      <th>TCM Tip</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Early cold</td>
+      <td>Tea, <strong>echinacea tincture</strong>, <strong>capsules</strong></td>
+      <td>First sign, 2–3×/day</td>
+      <td>Dry/warm constitution responds best</td>
+    </tr>
+    <tr>
+      <td>Stress & fatigue</td>
+      <td><strong>Capsules</strong>, <strong>tincture</strong></td>
+      <td>1–2 weeks</td>
+      <td>Combine with Qi‑tonifying support if cold/low energy</td>
+    </tr>
+    <tr>
+      <td>Children</td>
+      <td>Pediatric <strong>drops</strong></td>
+      <td>First sniffle</td>
+      <td>Watch digestive sensitivity</td>
+    </tr>
+    <tr>
+      <td>Seasonal prevention</td>
+      <td><strong>Capsules</strong>, tablets, <strong>tincture</strong></td>
+      <td>Short cycles</td>
+      <td>Cycle based on constitution</td>
+    </tr>
+  </tbody>
+ </table>
+
+<h2>Key Takeaways</h2>
+<ul>
+  <li>Use echinacea at the <strong>right time</strong>: first symptoms or seasonal stress.</li>
+  <li>Pick the form that fits your lifestyle: <strong>echinacea tablets</strong>, <strong>tincture</strong>, <strong>capsules</strong>, or <strong>drops</strong>.</li>
+  <li>Let <strong>TCM body type</strong> guide dosing and duration to improve results and reduce side effects.</li>
+</ul>
+
+<p><strong>Core value:</strong> Stop guessing. Use <em>personalized</em> echinacea plans — grounded in TCM — to support immunity safely and effectively.</p>
+`
+    },
     'herb-drug-interaction-safety': {
       title: 'Herb-Drug Interaction Safety: Evidence-Based Guide to Using Herbs with Medications',
       excerpt: 'Learn how to safely combine herbal supplements with prescription medications. Evidence-based interactions, risk factors, and practical safety steps.',
