@@ -8,6 +8,7 @@ import ReadingExperience from '../../../components/ReadingExperience'
 import RelatedArticles from '../../../components/RelatedArticles'
 import PerformanceMonitor from '../../../components/PerformanceMonitor'
 import EnhancedBlogContent from '../../../components/EnhancedBlogContent'
+import EchinaceaBlogContent from '../../../components/EchinaceaBlogContent'
 // 🎨 使用新的 Blog UX 优化组件
 import { ReadingProgress } from '../../../components/blog/ReadingProgress'
 import { SmartCTA } from '../../../components/blog/SmartCTA'
@@ -358,7 +359,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               {/* 文章正文 */}
               <div className="px-8 pb-8">
                 {/* 特殊优化的文章 - 使用增强版组件 */}
-                {resolvedParams.slug === 'why-some-herbs-work-for-you-and-others-dont' ? (
+                {resolvedParams.slug === 'what-is-echinacea-good-for-personalized-immune-support' ? (
+                  <EchinaceaBlogContent />
+                ) : resolvedParams.slug === 'why-some-herbs-work-for-you-and-others-dont' ? (
                   <EnhancedBlogContent 
                     content={(post as any).content || ''}
                     title={post.title}
