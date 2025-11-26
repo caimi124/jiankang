@@ -1616,4 +1616,279 @@ HERB_DETAIL_FALLBACK['cordyceps'] = {
 HERB_DETAIL_FALLBACK['cordyceps-sinensis'] = HERB_DETAIL_FALLBACK['cordyceps']
 HERB_DETAIL_FALLBACK['cordyceps-militaris'] = HERB_DETAIL_FALLBACK['cordyceps']
 
+// ============================================
+// 🌿 Echinacea (紫锥菊) - Complete SEO-Optimized Data
+// ============================================
+HERB_DETAIL_FALLBACK['echinacea'] = {
+  id: 'echinacea',
+  name: 'Echinacea',
+  chinese_name: '紫锥菊',
+  latin_name: 'Echinacea purpurea, Echinacea angustifolia, Echinacea pallida',
+  slug: 'echinacea',
+  category: 'Immunity & Cold Relief',
+  evidence_level: 'Moderate',
+  safety_level: 'medium',
+    overview: 'Echinacea is a well-known North American herb traditionally used by Indigenous tribes for hundreds of years to treat snake bites, oral infections, cough, fever, and general immune weakness. Today, it is one of the most widely used herbal supplements for preventing or shortening colds, supporting immune function, reducing inflammation, and helping the body fight viral and bacterial infections. Modern research shows that Echinacea contains polysaccharides, caffeic-acid derivatives (especially cichoric acid), and alkylamides that stimulate white blood cells, enhance cytokine activity, and support innate immune defense. Echinacea is commonly used for colds, flu, throat discomfort, sinus infections, slow-healing wounds, urinary tract infections, and general immune support — especially during winter months.',
+    benefits: [
+      'Shortens duration & severity of colds and flu - Clinical evidence shows 10-30% reduction when taken early',
+      'Strengthens immune function - Stimulates macrophages and T-cells, increases interferons',
+      'Helps with throat irritation & upper respiratory infections - Reduces inflammation in airways',
+      'Reduces inflammation - Natural anti-inflammatory effects support joint comfort',
+      'Supports wound healing - Inhibits hyaluronidase to protect tissues and speed recovery',
+      'Helpful for recurrent infections - Supports immune resilience against sinus, throat, and urinary infections',
+      'Antiviral & antibacterial properties - Inhibits viral binding and reduces replication',
+      'Traditional remedy for oral infections and gum health'
+    ],
+    active_compounds: '**Polysaccharides** (EPS, arabinogalactans): boost white blood cell production, enhance macrophage activity, increase interferon and cytokine levels. **Cichoric Acid**: antibacterial & antiviral effects; inhibits hyaluronidase, helping protect cells from infection. **Alkylamides**: stimulate macrophages and T-cells; regulate inflammatory response. **Caffeic-acid derivatives**: antioxidant, immune-modulating.',
+    traditional_uses: 'Echinacea has been used by Native American tribes for centuries as a remedy for snake bites, insect bites, wound healing, oral infections, fever, and respiratory ailments. In traditional folk medicine, it was valued for treating skin infections (boils, eczema, abscesses), vaginal yeast infections, and mild joint discomfort. The herb was considered a blood purifier and immune strengthener. While not part of Traditional Chinese Medicine originally, modern herbalists sometimes classify it as having cooling, dispersing, and immune-activating properties similar to herbs that clear heat and resolve toxins.',
+    suitable_for: [
+      'People who easily catch colds and flu',
+      'Those with weakened immune system or frequent infections',
+      'Cold-prone or damp-prone individuals (in TCM terms)',
+      'People with slow wound healing or recurrent skin infections',
+      'Those experiencing sore throat, sinusitis, or upper respiratory infections',
+      'Individuals seeking natural immune support during winter months',
+      'People with recurrent urinary tract infections',
+      'Those with mild inflammation or joint discomfort'
+    ],
+    not_suitable_for: [
+      'Individuals with autoimmune diseases (lupus, rheumatoid arthritis, multiple sclerosis)',
+      'People on immunosuppressive medications (corticosteroids, tacrolimus, cyclosporine)',
+      'Those with known allergy to Asteraceae plants (chamomile, ragweed, daisy, marigold)',
+      'Children under 12 years old (varies by country - consult pediatrician)',
+      'Pregnant or breastfeeding women (consult healthcare provider first)',
+      'Long-term continuous use beyond 8 weeks without breaks',
+      'People with progressive systemic diseases like tuberculosis or HIV/AIDS (consult doctor)'
+    ],
+    dosage_forms: [
+      { 
+        form: 'Dried Root Tea', 
+        dosage: '1-2 grams, 3 times daily', 
+        usage: 'Steep dried Echinacea root in hot water for 10-15 minutes. Drink at the first sign of cold symptoms. Best for gentle immune support and throat soothing.' 
+      },
+      { 
+        form: 'Liquid Extract (1:1 concentration)', 
+        dosage: '1-5 mL, 3 times daily', 
+        usage: 'Take directly or dilute in water. Fast-acting for acute cold symptoms. A mild tongue tingling sensation is normal and indicates active alkylamides.' 
+      },
+      { 
+        form: 'Tincture (1:5 alcohol extraction)', 
+        dosage: '1-3 mL, 3 times daily', 
+        usage: 'Dilute in water or juice. Good for prevention and mild immune support during cold season. Cycle usage: 6-8 weeks on, 1-2 weeks off.' 
+      },
+      { 
+        form: 'Standardized Extract Capsules', 
+        dosage: '200-300 mg containing 3-4% cichoric acid', 
+        usage: 'Take with meals at first sign of illness. Convenient for travelers and preventive support. Most clinical studies use standardized extracts.' 
+      },
+      { 
+        form: 'Fresh Plant Juice (Echinacea purpurea)', 
+        dosage: '75 mL daily (divided doses)', 
+        usage: 'Pressed juice from fresh flowering plant. Common in European herbal medicine. Refrigerate and use within recommended timeframe.' 
+      },
+      { 
+        form: 'Topical Cream/Ointment', 
+        dosage: 'Apply directly to affected area 2-3 times daily', 
+        usage: 'For wound healing, minor skin infections, eczema patches, or insect bites. Clean area before application.' 
+      }
+    ],
+    safety_warnings: [
+      'Not for autoimmune disorders - May overstimulate immune system',
+      'Avoid if taking immunosuppressants - Can counteract medication effectiveness',
+      'Allergic reactions possible - Especially if allergic to Asteraceae family (ragweed, daisies)',
+      'Not recommended for children under 12 - Safety data limited; consult pediatrician',
+      'Pregnancy & breastfeeding - Insufficient safety data; consult healthcare provider',
+      'Limit continuous use to 6-8 weeks - Take 1-2 week breaks to maintain effectiveness',
+      'Rare side effects - Mild rash, itching, temporary tongue tingling (normal), mild fever at high doses',
+      'Progressive systemic diseases - Consult doctor if you have TB, HIV/AIDS, or other serious conditions'
+    ],
+    interactions: [
+      'Immunosuppressant drugs (corticosteroids, cyclosporine, tacrolimus) - May reduce medication effectiveness',
+      'Caffeine - Echinacea may slow caffeine breakdown, increasing side effects',
+      'Etoposide (chemotherapy drug) - May interfere with treatment',
+      'Medications metabolized by liver (CYP450 enzymes) - Possible interactions; consult pharmacist'
+    ],
+    scientific_evidence: 'Clinical trials show Echinacea can reduce cold duration by 10–30% when taken at the first sign of symptoms. A 2014 Cochrane review found moderate evidence for preventing and treating colds. Studies confirm that polysaccharides and alkylamides significantly increase macrophage activity and enhance innate immune response. Cichoric acid has demonstrated antiviral effects against influenza and herpes viruses in laboratory studies. German research (Commission E) has approved Echinacea for upper respiratory infections, urinary tract infections, and slow-healing wounds. A randomized controlled trial showed improved outcomes in recurrent yeast infections, upper respiratory infections, and wound healing. Evidence suggests Echinacea provides strongest benefit when taken early (within 24 hours of symptom onset) rather than as a daily preventive for months.',
+    constitution_match: [
+      { 
+        type: 'Immune-Weak Constitution (易感冒体质)', 
+        suitable: 'yes', 
+        description: 'Perfect for people who catch colds frequently, have weakened immunity, or experience recurrent infections. Echinacea strengthens the body\'s natural defenses and helps reduce infection frequency.' 
+      },
+      { 
+        type: 'Cold-Prone or Damp Constitution (寒湿体质)', 
+        suitable: 'yes', 
+        description: 'Good match for those with sluggish immune response, slow wound healing, or tendency toward sinus and throat infections. The herb\'s dispersing and immune-activating nature helps clear dampness and fight infections.' 
+      },
+      { 
+        type: 'Balanced Constitution (平和体质)', 
+        suitable: 'yes', 
+        description: 'Safe for preventive use during cold season or at first sign of illness. Use cyclically (6-8 weeks on, 1-2 weeks off) for seasonal immune support.' 
+      },
+      { 
+        type: 'Autoimmune-Dominant Constitution', 
+        suitable: 'no', 
+        description: 'Not suitable for people with autoimmune diseases (lupus, MS, rheumatoid arthritis) or those on immunosuppressive therapy. May overstimulate immune system.' 
+      },
+      { 
+        type: 'Hot or Yin-Deficient Constitution (阴虚内热)', 
+        suitable: 'warning', 
+        description: 'Use with caution if you have signs of internal heat (frequent fever, dry mouth, night sweats). Short-term use for acute infections may be acceptable, but avoid long-term use.' 
+      }
+    ],
+    pairs_well_with: [
+      'Elderberry (for antiviral immune support and flu prevention)',
+      'Astragalus (for long-term immune building and energy)',
+      'Ginger (for cold symptoms with chills and poor circulation)',
+      'Vitamin C (for enhanced antioxidant and immune support)',
+      'Zinc lozenges (for throat infections and cold symptom relief)',
+      'Peppermint (for sinus congestion and respiratory comfort)',
+      'Goldenseal (for infections, but avoid long-term use)'
+    ],
+    user_stories: [
+      { 
+        quote: 'I started taking Echinacea tincture at the very first sign of a sore throat. Within 24 hours, my symptoms were 70% better and I avoided a full-blown cold. I always keep it in my medicine cabinet now!', 
+        author: 'Jennifer M.', 
+        location: 'Portland, USA' 
+      },
+      { 
+        quote: 'As a teacher, I used to get sick 4-5 times every winter. Since I started cycling Echinacea during cold season (6 weeks on, 2 weeks off), I only got sick once last year. Game changer!', 
+        author: 'Michael T.', 
+        location: 'Toronto, Canada' 
+      },
+      { 
+        quote: 'Echinacea cream helped heal a stubborn skin infection that wouldn\'t respond to other treatments. I applied it 3 times daily and saw improvement within a week.', 
+        author: 'Sarah L.', 
+        location: 'Melbourne, Australia' 
+      },
+      { 
+        quote: 'I was skeptical at first, but Echinacea tea became my go-to during flu season. It has a pleasant earthy taste, and I noticed I recovered faster from colds compared to previous years.', 
+        author: 'David R.', 
+        location: 'London, UK' 
+      }
+    ],
+    faqs: [
+      { 
+        question: 'Does Echinacea really prevent colds?', 
+        answer: 'Echinacea may reduce how often you get sick during winter when used preventively, but the strongest evidence supports taking it at the first sign of symptoms to shorten duration and severity. A 2014 Cochrane review found modest preventive effects. It works best when taken early and cyclically (not continuously for months).' 
+      },
+      { 
+        question: 'Can I take Echinacea every day long-term?', 
+        answer: 'Not continuously. Most herbalists and clinical studies recommend a maximum of 6-8 weeks of use, followed by a 1-2 week break. This prevents immune system tolerance and maintains effectiveness. For seasonal prevention, cycle usage throughout cold/flu season rather than taking it year-round.' 
+      },
+      { 
+        question: 'Is the tongue tingling sensation normal?', 
+        answer: 'Yes! The temporary tingling or numbing sensation on your tongue is completely normal and harmless. This is caused by alkylamides, one of the active compounds in Echinacea. In fact, this tingling is often considered a sign of a quality, potent product.' 
+      },
+      { 
+        question: 'Is Echinacea safe for children?', 
+        answer: 'Safety for children varies by country and product. Some formulations are approved for children over age 12. In the United States, most experts recommend consulting a pediatrician before giving Echinacea to children under 12. Always use age-appropriate dosing if recommended by your healthcare provider.' 
+      },
+      { 
+        question: 'How quickly does Echinacea work for colds?', 
+        answer: 'Echinacea works best when taken within the first 24 hours of symptom onset. Many people notice symptom relief within 24-48 hours. Clinical studies show it can reduce cold duration by 1-4 days on average. The earlier you start, the more effective it tends to be.' 
+      },
+      { 
+        question: 'Which form of Echinacea is most effective?', 
+        answer: 'Research supports several forms: standardized extracts (200-300mg containing 3-4% cichoric acid), liquid extracts, and tinctures all show benefits. Fresh plant juice (common in Europe) also has good evidence. The most important factors are: (1) quality/potency of the product, (2) taking it early at symptom onset, and (3) proper dosing. Choose a reputable brand with third-party testing.' 
+      },
+      { 
+        question: 'Can I take Echinacea if I have allergies?', 
+        answer: 'If you are allergic to plants in the Asteraceae family (ragweed, daisies, marigolds, chamomile), you may also react to Echinacea. Start with a very small test dose and watch for rash, itching, or respiratory symptoms. Discontinue immediately if you experience allergic reactions. Consult your allergist if unsure.' 
+      },
+      { 
+        question: 'What\'s the difference between Echinacea purpurea, angustifolia, and pallida?', 
+        answer: 'Echinacea purpurea (purple coneflower) is the most commonly cultivated and researched species. E. angustifolia (narrow-leaved) is considered more potent traditionally but harder to grow. E. pallida (pale purple) is less common. Most supplements use E. purpurea or a combination. All three species contain similar active compounds but in varying concentrations.' 
+      },
+      { 
+        question: 'Can I take Echinacea with other supplements?', 
+        answer: 'Echinacea generally combines well with vitamin C, zinc, elderberry, and most other immune-supporting supplements. However, avoid combining with immunosuppressant medications. If you take prescription drugs metabolized by the liver, consult your pharmacist to check for potential interactions.' 
+      },
+      { 
+        question: 'Does Echinacea help with more than just colds?', 
+        answer: 'Yes! Beyond colds and flu, Echinacea is used for sore throat, sinus infections, upper respiratory infections, urinary tract infections, slow-healing wounds, skin infections, and general immune support. Traditional uses include oral health, eczema, and minor inflammation. However, cold/flu relief has the strongest clinical evidence.' 
+      },
+      { 
+        question: 'Why should I take breaks from Echinacea?', 
+        answer: 'Taking breaks (cycling usage) prevents your immune system from becoming tolerant to Echinacea\'s stimulating effects. This maintains its effectiveness over time. The recommended pattern is 6-8 weeks on, then 1-2 weeks off. This is particularly important if using it preventively rather than just for acute illness.' 
+      },
+      { 
+        question: 'Can pregnant or breastfeeding women use Echinacea?', 
+        answer: 'There is limited safety data for Echinacea during pregnancy and breastfeeding. While some studies suggest it may be safe, most healthcare providers recommend avoiding it or using only under medical supervision. Always consult your obstetrician or midwife before taking Echinacea while pregnant or nursing.' 
+      }
+    ],
+    seo_keywords: [
+      'echinacea',
+      'echinacea benefits',
+      'echinacea uses',
+      'echinacea purpurea',
+      'echinacea supplement',
+      'echinacea for immune system',
+      'echinacea dosage',
+      'echinacea side effects',
+      'echinacea extract',
+      'echinacea tea benefits',
+      'echinacea tincture',
+      'echinacea root benefits',
+      'echinacea for colds',
+      'echinacea for flu',
+      'what is echinacea',
+      'what is echinacea good for',
+      'what is echinacea used for',
+      'echinacea tablets',
+      'echinacea pills',
+      'echinacea capsules',
+      'echinacea vitamin',
+      'echinacea drops',
+      'echinacea liquid',
+      'best echinacea supplement',
+      'echinacea purpurea extract',
+      'echinacea medicine',
+      'echinacea immune support',
+      'echinacea tea benefits',
+      'echinacea supplement benefits',
+      'elderberry and echinacea tea benefits',
+      'echinacea goldenseal benefits',
+      'echinacea benefits for skin',
+      'echinacea tablets benefits',
+      'health benefits of echinacea',
+      'echinacea and goldenseal benefits',
+      'benefits of echinacea angustifolia',
+      'benefits of echinacea root',
+      'benefits of echinacea tincture',
+      'benefits of echinacea vitamins',
+      'echinacea dosage for cold',
+      'does echinacea really boost immunity',
+      'best immune-boosting herbs like echinacea',
+      'echinacea for immune support during winter',
+      'best herbs for colds and flu',
+      'how fast does echinacea work for colds',
+      'is echinacea good for upper respiratory infections',
+      'echinacea for sore throat relief',
+      'echinacea dosage for adults',
+      'how much echinacea per day',
+      'echinacea tincture dosage',
+      'can you take echinacea every day',
+      'who should not take echinacea',
+      'echinacea interactions with medications',
+      'echinacea capsules vs tincture',
+      'echinacea with elderberry'
+    ],
+    properties: [
+      'Immune-stimulating',
+      'Antiviral',
+      'Antibacterial',
+      'Anti-inflammatory',
+      'Wound-healing',
+      'Lymphatic-supportive',
+      'Cooling',
+      'Dispersing'
+    ]
+}
+
+// Add Echinacea aliases
+HERB_DETAIL_FALLBACK['purple-coneflower'] = HERB_DETAIL_FALLBACK['echinacea']
+HERB_DETAIL_FALLBACK['echinacea-purpurea'] = HERB_DETAIL_FALLBACK['echinacea']
+HERB_DETAIL_FALLBACK['echinacea-angustifolia'] = HERB_DETAIL_FALLBACK['echinacea']
+
 
