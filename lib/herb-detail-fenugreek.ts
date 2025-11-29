@@ -47,20 +47,20 @@ export const FENUGREEK_DETAIL = {
 
 In Traditional Chinese Medicine (TCM), fenugreek is classified as a warming herb that tonifies Kidney Yang and disperses cold, making it particularly suitable for individuals with Yang deficiency constitution. Modern research confirms its effectiveness for metabolic health, hormonal balance, and weight management.
 
-**Core Benefits**: Blood sugar control • Testosterone support • Breastfeeding milk supply • Digestive aid • Hair growth • Weight loss support`,
+Core Benefits: Blood sugar control • Testosterone support • Breastfeeding milk supply • Digestive aid • Hair growth • Weight loss support`,
 
   // ===== 活性成分（详细说明作用机制） =====
-  active_compounds: `**Saponins (4-5%)**: Anti-inflammatory, cholesterol-lowering, and testosterone-boosting compounds. The steroidal saponins mimic hormones and support male reproductive health.
+  active_compounds: `Saponins (4-5%): Anti-inflammatory, cholesterol-lowering, and testosterone-boosting compounds. The steroidal saponins mimic hormones and support male reproductive health.
 
-**Diosgenin**: A plant steroid that serves as a precursor to testosterone and estrogen synthesis, supporting hormonal balance in both men and women.
+Diosgenin: A plant steroid that serves as a precursor to testosterone and estrogen synthesis, supporting hormonal balance in both men and women.
 
-**4-Hydroxyisoleucine**: A unique amino acid that enhances insulin secretion and improves glucose metabolism, making fenugreek effective for blood sugar regulation.
+4-Hydroxyisoleucine: A unique amino acid that enhances insulin secretion and improves glucose metabolism, making fenugreek effective for blood sugar regulation.
 
-**Trigonelline (Alkaloid)**: Supports neuroprotection, blood sugar control, and may help with memory and cognitive function.
+Trigonelline (Alkaloid): Supports neuroprotection, blood sugar control, and may help with memory and cognitive function.
 
-**Mucilage (Soluble Fiber, 25-30%)**: Forms a gel-like substance in the digestive tract, slowing carbohydrate absorption and promoting satiety for weight loss.
+Mucilage (Soluble Fiber, 25-30%): Forms a gel-like substance in the digestive tract, slowing carbohydrate absorption and promoting satiety for weight loss.
 
-**Flavonoids & Polyphenols**: Powerful antioxidants that reduce oxidative stress, support cardiovascular health, and protect cells from damage.`,
+Flavonoids & Polyphenols: Powerful antioxidants that reduce oxidative stress, support cardiovascular health, and protect cells from damage.`,
 
   // ===== 作用机制（面向欧美用户的科学解释） =====
   mechanism_of_action: [
@@ -120,68 +120,68 @@ In Traditional Chinese Medicine (TCM), fenugreek is classified as a warming herb
   // ===== 传统中医应用 =====
   traditional_uses: `In Traditional Chinese Medicine, fenugreek (胡芦巴) is known as "Hu Lu Ba" and has been used for over 1,000 years to:
 
-• **Warm and Tonify Kidney Yang (温补肾阳)**: Used for cold-type conditions like lower back pain, cold extremities, impotence, and frequent urination.
-• **Disperse Cold and Relieve Pain (散寒止痛)**: Treats cold-related abdominal pain, hernias, and menstrual cramps.
-• **Support Reproductive Health**: Used to treat male infertility, low libido, and female hormonal imbalances.
+• Warm and Tonify Kidney Yang (温补肾阳): Used for cold-type conditions like lower back pain, cold extremities, impotence, and frequent urination.
+• Disperse Cold and Relieve Pain (散寒止痛): Treats cold-related abdominal pain, hernias, and menstrual cramps.
+• Support Reproductive Health: Used to treat male infertility, low libido, and female hormonal imbalances.
 
-**TCM Properties**: Warm nature (温), Bitter-Sweet taste (苦甘), enters Kidney and Liver meridians (入肾肝经).
+TCM Properties: Warm nature (温), Bitter-Sweet taste (苦甘), enters Kidney and Liver meridians (入肾肝经).
 
-**Classic Formula Pairing**: Often combined with cinnamon, fennel, or ginger to enhance its warming and yang-tonifying effects.`,
+Classic Formula Pairing: Often combined with cinnamon, fennel, or ginger to enhance its warming and yang-tonifying effects.`,
 
   // ===== 中医体质匹配（核心价值主张） =====
   constitution_match: [
     {
       type: 'Yang Deficiency (阳虚质)',
       suitable: 'yes' as const,
-      description: '✅ **HIGHLY RECOMMENDED**: Fenugreek\'s warming nature is ideal for Yang-deficient individuals who feel cold easily, have cold hands/feet, low energy, and weak digestion. It tonifies Kidney Yang, boosts metabolism, and improves circulation.',
+      description: 'HIGHLY RECOMMENDED: Fenugreek\'s warming nature is ideal for Yang-deficient individuals who feel cold easily, have cold hands/feet, low energy, and weak digestion. It tonifies Kidney Yang, boosts metabolism, and improves circulation.',
       recommendations: 'Take 600mg extract or 5-10g seeds daily. Combine with warming herbs like cinnamon, ginger, or clove for enhanced effect.'
     },
     {
       type: 'Qi Deficiency (气虚质)',
       suitable: 'yes' as const,
-      description: '✅ **RECOMMENDED**: Fenugreek supports energy production, reduces fatigue, and strengthens digestive function. Its nutrient-dense profile helps rebuild Qi and improve stamina.',
+      description: 'RECOMMENDED: Fenugreek supports energy production, reduces fatigue, and strengthens digestive function. Its nutrient-dense profile helps rebuild Qi and improve stamina.',
       recommendations: 'Start with 300mg extract twice daily. Pair with ginseng or astragalus for comprehensive Qi support.'
     },
     {
       type: 'Phlegm-Dampness (痰湿质)',
       suitable: 'warning' as const,
-      description: '⚠️ **USE WITH CAUTION**: While fenugreek aids weight loss and metabolism, its warming nature may aggravate dampness in some individuals. Monitor for signs of increased phlegm or heaviness.',
+      description: 'USE WITH CAUTION: While fenugreek aids weight loss and metabolism, its warming nature may aggravate dampness in some individuals. Monitor for signs of increased phlegm or heaviness.',
       recommendations: 'Use moderate doses (300mg daily) and combine with drying herbs like poria or atractylodes. Avoid if experiencing severe dampness symptoms.'
     },
     {
       type: 'Yin Deficiency (阴虚质)',
       suitable: 'no' as const,
-      description: '❌ **NOT RECOMMENDED**: Fenugreek\'s warming nature can further deplete Yin and aggravate heat symptoms like night sweats, dry mouth, irritability, and insomnia in Yin-deficient individuals.',
+      description: 'NOT RECOMMENDED: Fenugreek\'s warming nature can further deplete Yin and aggravate heat symptoms like night sweats, dry mouth, irritability, and insomnia in Yin-deficient individuals.',
       recommendations: 'Choose cooling herbs like dendrobium, lily bulb, or American ginseng instead. If using fenugreek, limit to very small doses (<300mg) and monitor closely.'
     },
     {
       type: 'Damp-Heat (湿热质)',
       suitable: 'no' as const,
-      description: '❌ **NOT RECOMMENDED**: The warming property can exacerbate damp-heat conditions like acne, oily skin, digestive issues with foul odor, and inflammatory conditions.',
+      description: 'NOT RECOMMENDED: The warming property can exacerbate damp-heat conditions like acne, oily skin, digestive issues with foul odor, and inflammatory conditions.',
       recommendations: 'Focus on heat-clearing herbs like dandelion, burdock, or plantain. Avoid fenugreek until damp-heat is resolved.'
     },
     {
       type: 'Blood Stasis (血瘀质)',
       suitable: 'warning' as const,
-      description: '⚠️ **USE WITH CAUTION**: Fenugreek can improve circulation, but its warming nature may not address the root cause of blood stasis. Best used with circulation-enhancing herbs.',
+      description: 'USE WITH CAUTION: Fenugreek can improve circulation, but its warming nature may not address the root cause of blood stasis. Best used with circulation-enhancing herbs.',
       recommendations: 'Combine with turmeric, hawthorn, or salvia for better circulation support. Use 300-600mg daily.'
     },
     {
       type: 'Qi Stagnation (气郁质)',
       suitable: 'warning' as const,
-      description: '⚠️ **MODERATE USE**: Fenugreek may help with metabolic aspects of stress but doesn\'t directly address emotional stagnation.',
+      description: 'MODERATE USE: Fenugreek may help with metabolic aspects of stress but doesn\'t directly address emotional stagnation.',
       recommendations: 'Pair with stress-relieving herbs like holy basil, rhodiola, or rose. Use 300mg daily.'
     },
     {
       type: 'Special Constitution (特禀质)',
       suitable: 'warning' as const,
-      description: '⚠️ **ALLERGY RISK**: Fenugreek belongs to the legume family. Individuals allergic to peanuts, soybeans, or chickpeas may have cross-reactions.',
+      description: 'ALLERGY RISK: Fenugreek belongs to the legume family. Individuals allergic to peanuts, soybeans, or chickpeas may have cross-reactions.',
       recommendations: 'Start with very small doses (100mg) and monitor for allergic reactions. Discontinue immediately if any symptoms appear.'
     },
     {
       type: 'Balanced Constitution (平和质)',
       suitable: 'yes' as const,
-      description: '✅ **SAFE FOR GENERAL USE**: Individuals with balanced constitution can use fenugreek safely for metabolic support, hormone balance, or preventive health.',
+      description: 'SAFE FOR GENERAL USE: Individuals with balanced constitution can use fenugreek safely for metabolic support, hormone balance, or preventive health.',
       recommendations: 'Use 300-600mg daily for maintenance. Adjust based on health goals (higher for testosterone/lactation, moderate for blood sugar).'
     }
   ],
@@ -266,15 +266,15 @@ In Traditional Chinese Medicine (TCM), fenugreek is classified as a warming herb
 
   // ===== 安全警告 =====
   safety_warnings: [
-    '🤰 **Pregnancy Warning**: Do NOT use during pregnancy. Fenugreek may stimulate uterine contractions and cause premature labor or miscarriage.',
-    '💊 **Drug Interactions**: May interact with diabetes medications (hypoglycemia risk), blood thinners (warfarin), and thyroid medications. Consult your doctor before combining.',
-    '🩸 **Blood Sugar**: Monitor blood glucose closely if diabetic. Fenugreek can significantly lower blood sugar, potentially causing hypoglycemia when combined with medications.',
-    '🥜 **Allergy Risk**: May cause allergic reactions in people sensitive to peanuts, soybeans, or chickpeas (legume family cross-reactivity).',
-    '👃 **Maple Syrup Odor**: High doses may cause sweat and urine to smell like maple syrup (harmless but notable).',
-    '💊 **Thyroid**: Very high doses (>100g daily) may interfere with thyroid function. Use moderate doses and monitor thyroid levels if you have thyroid conditions.',
-    '🤱 **Breastfeeding**: While generally safe for lactation, discontinue if baby shows signs of digestive upset (gas, diarrhea).',
-    '🩺 **Hormone-Sensitive Conditions**: Use caution if you have breast cancer, uterine fibroids, or endometriosis due to phytoestrogen content. Consult oncologist or gynecologist.',
-    '⚠️ **Start Low**: Begin with small doses (300mg or 5g seeds) to assess tolerance, especially if you have a sensitive digestive system.',
+    'Pregnancy Warning: Do NOT use during pregnancy. Fenugreek may stimulate uterine contractions and cause premature labor or miscarriage.',
+    'Drug Interactions: May interact with diabetes medications (hypoglycemia risk), blood thinners (warfarin), and thyroid medications. Consult your doctor before combining.',
+    'Blood Sugar: Monitor blood glucose closely if diabetic. Fenugreek can significantly lower blood sugar, potentially causing hypoglycemia when combined with medications.',
+    'Allergy Risk: May cause allergic reactions in people sensitive to peanuts, soybeans, or chickpeas (legume family cross-reactivity).',
+    'Maple Syrup Odor: High doses may cause sweat and urine to smell like maple syrup (harmless but notable).',
+    'Thyroid: Very high doses (>100g daily) may interfere with thyroid function. Use moderate doses and monitor thyroid levels if you have thyroid conditions.',
+    'Breastfeeding: While generally safe for lactation, discontinue if baby shows signs of digestive upset (gas, diarrhea).',
+    'Hormone-Sensitive Conditions: Use caution if you have breast cancer, uterine fibroids, or endometriosis due to phytoestrogen content. Consult oncologist or gynecologist.',
+    'Start Low: Begin with small doses (300mg or 5g seeds) to assess tolerance, especially if you have a sensitive digestive system.',
   ],
 
   // ===== 药物相互作用 =====
@@ -338,31 +338,31 @@ In Traditional Chinese Medicine (TCM), fenugreek is classified as a warming herb
   ],
 
   // ===== 科学研究总结（E-A-T信号） =====
-  scientific_evidence: `**Clinical Evidence Summary** (Based on peer-reviewed studies):
+  scientific_evidence: `Clinical Evidence Summary (Based on peer-reviewed studies):
 
-**Blood Sugar & Diabetes**:
+Blood Sugar & Diabetes:
 - A 2020 meta-analysis of 18 RCTs found that fenugreek supplementation (10-50g daily) significantly reduced fasting blood glucose (-26.3 mg/dL) and HbA1c (-0.85%) in type 2 diabetes patients.
 - 4-hydroxyisoleucine improves insulin secretion by 30-40% in pre-diabetic individuals.
 
-**Testosterone & Male Health**:
+Testosterone & Male Health:
 - A 2011 study in Phytotherapy Research showed 600mg fenugreek extract increased free testosterone by 12.26% and total testosterone by 6.57% in men aged 25-52 over 8 weeks.
 - Participants also reported improved libido (82%), sexual performance (66%), and energy levels (81%).
 
-**Lactation Support**:
+Lactation Support:
 - Multiple studies confirm fenugreek increases breast milk production. A 2018 study found mothers taking 900mg three times daily produced 20-40% more milk within 72 hours.
 - The galactagogue effect is attributed to phytoestrogens mimicking prolactin.
 
-**Weight Loss**:
+Weight Loss:
 - A 2015 study published in Obesity showed 8g fenugreek fiber daily reduced appetite by 17% and increased satiety, leading to reduced caloric intake and weight loss.
 
-**Hair Growth**:
+Hair Growth:
 - Topical fenugreek seed extract applied 2-3 times weekly for 6 months improved hair density by 30% and reduced dandruff in 70% of participants (pilot study).
 
-**Safety Profile**:
+Safety Profile:
 - Fenugreek is Generally Recognized as Safe (GRAS) when used in culinary amounts.
 - Mild side effects may include digestive upset, gas, or maple syrup-scented body odor (harmless).
 
-**Evidence Level**: ⭐⭐⭐⭐ STRONG (Multiple RCTs and meta-analyses confirm efficacy for blood sugar, testosterone, and lactation)`,
+Evidence Level: STRONG (Multiple RCTs and meta-analyses confirm efficacy for blood sugar, testosterone, and lactation)`,
 
   // ===== FAQ（基于用户搜索意图） =====
   faqs: [
