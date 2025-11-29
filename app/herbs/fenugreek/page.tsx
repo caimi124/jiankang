@@ -13,8 +13,8 @@ export const revalidate = 86400 // 24 hours
 
 // ===== SEO优化的Metadata（基于KGR数据） =====
 export const metadata: Metadata = {
-  title: 'Fenugreek Benefits for Men & Women: Testosterone, Lactation & Blood Sugar | HerbScience',
-  description: 'Discover fenugreek benefits for testosterone boosting (men), breastfeeding milk supply (women), blood sugar control, and weight loss. Science-backed dosage guide + TCM body type matching. 600+ studies reviewed.',
+  title: 'Fenugreek: Testosterone, Milk Supply & Blood Sugar Benefits',
+  description: 'Science-backed fenugreek guide: boost testosterone, increase milk supply, control blood sugar. TCM body type matching. Find your personalized dosage.',
   
   keywords: [
     // 最佳KGR关键词 (<0.25)
@@ -48,8 +48,8 @@ export const metadata: Metadata = {
   authors: [{ name: 'HerbScience Team' }, { name: 'Zeng Chuping, Licensed Pharmacist & TCM Expert' }],
   
   openGraph: {
-    title: 'Fenugreek: Complete Guide for Men, Women & Blood Sugar Control',
-    description: 'Evidence-based fenugreek guide: testosterone support for men, lactation boost for women, blood sugar regulation, weight loss. Find your ideal dosage based on TCM body type.',
+    title: 'Fenugreek: Testosterone, Milk Supply & Blood Sugar Benefits',
+    description: 'Science-backed guide: boost testosterone, increase milk supply, control blood sugar. TCM body type matching for personalized dosage.',
     type: 'article',
     url: 'https://herbscience.shop/herbs/fenugreek',
     siteName: 'HerbScience',
@@ -66,8 +66,8 @@ export const metadata: Metadata = {
   
   twitter: {
     card: 'summary_large_image',
-    title: 'Fenugreek: Testosterone, Lactation & Blood Sugar Benefits',
-    description: 'Science-backed guide to fenugreek for men\'s health, breastfeeding, blood sugar control. Personalized dosage by TCM body type.',
+    title: 'Fenugreek: Testosterone, Milk Supply & Blood Sugar',
+    description: 'Science-backed guide: boost testosterone, increase milk supply, control blood sugar. Find your personalized TCM dosage.',
     images: ['https://herbscience.shop/herbs/fenugreek/opengraph-image']
   },
   
