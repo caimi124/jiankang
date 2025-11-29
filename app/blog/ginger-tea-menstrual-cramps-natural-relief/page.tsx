@@ -685,9 +685,9 @@ export default function GingerTeaMenstrualCrampsPage() {
                     <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                     <span className="text-gray-700"><strong>Improve mood and circulation</strong> — tackle both physical and emotional symptoms</span>
                   </li>
-                  <li className="flex items-start gap-3">
+                  <li className="flex items-start gap-2">
                     <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700"><strong>Support hormonal balance</strong> — work with your body, not against it</span>
+                    <span className="text-gray-700"><strong>Support hormonal balance</strong> — work with your body, not against it. For deeper hormonal support, explore <Link href="/blog/ashwagandha-for-women-hormone-balance" className="text-purple-600 hover:underline font-semibold">Ashwagandha for women&apos;s hormone balance</Link></span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />

@@ -100,6 +100,102 @@ export default function AshwagandhaForWomenPage() {
     "wordCount": 2800
   }
 
+  const medicalWebPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    "@id": "https://herbscience.shop/blog/ashwagandha-for-women-hormone-balance",
+    "url": "https://herbscience.shop/blog/ashwagandha-for-women-hormone-balance",
+    "name": "Ashwagandha for Women: Hormone Balance & Stress Relief",
+    "description": "Evidence-based guide on ashwagandha benefits for female health, hormonal imbalance treatment, safe dosage, and side effects.",
+    "datePublished": "2025-01-26",
+    "dateModified": new Date().toISOString().split('T')[0],
+    "specialty": "Women's Health, Herbal Medicine, Endocrinology",
+    "medicalAudience": {
+      "@type": "MedicalAudience",
+      "audienceType": "Women seeking natural hormone balance solutions"
+    },
+    "about": {
+      "@type": "MedicalCondition",
+      "name": "Hormonal Imbalance",
+      "alternateName": ["Hormone Imbalance", "PMS", "Cortisol Dysregulation"]
+    },
+    "reviewedBy": {
+      "@type": "Person",
+      "name": "曾楚平 (Zeng Chuping)",
+      "jobTitle": "Licensed Pharmacist",
+      "hasCredential": {
+        "@type": "EducationalOccupationalCredential",
+        "credentialCategory": "Pharmacy License",
+        "educationalLevel": "Professional Degree"
+      }
+    }
+  }
+
+  const howToSchema = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Safely Take Ashwagandha for Hormone Balance",
+    "description": "Step-by-step guide for women to use ashwagandha safely for hormonal balance and stress relief",
+    "totalTime": "PT5M",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "position": 1,
+        "name": "Choose Your Form",
+        "text": "Select between capsules (300-600mg), powder (1/4-1/2 tsp), or tincture based on your preference. Look for standardized extracts with 5% withanolides."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 2,
+        "name": "Determine Timing",
+        "text": "For hormone balance: take morning and evening with food. For sleep: take 1-2 hours before bed."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 3,
+        "name": "Start with Low Dose",
+        "text": "Begin with 300mg daily for the first week to assess tolerance before increasing to 600mg if needed."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 4,
+        "name": "Match to TCM Body Type",
+        "text": "Take the constitution test to determine if ashwagandha is right for your specific body type and health needs."
+      }
+    ]
+  }
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://herbscience.shop"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://herbscience.shop/blog"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Women's Health",
+        "item": "https://herbscience.shop/blog?category=womens-health"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": "Ashwagandha for Women",
+        "item": "https://herbscience.shop/blog/ashwagandha-for-women-hormone-balance"
+      }
+    ]
+  }
+
   const faqStructuredData = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -157,6 +253,18 @@ export default function AshwagandhaForWomenPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalWebPageSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
       <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50">

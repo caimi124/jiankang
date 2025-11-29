@@ -569,7 +569,7 @@ export default function TurmericGutReliefGuidePage() {
               <h2>Try Turmeric Today</h2>
               
               <p>
-                Add turmeric to your diet or supplement routine and experience gut relief, reduced inflammation, and better energy.
+                Add turmeric to your diet or supplement routine and experience gut relief, reduced inflammation, and better energy. Not sure about dosage? Check our complete guide: <Link href="/blog/how-much-turmeric-per-day" className="text-green-600 hover:underline font-semibold">How Much Turmeric Per Day?</Link>
               </p>
               
               <div className="bg-gradient-to-br from-green-500 via-emerald-500 to-teal-500 rounded-2xl p-8 my-8 text-white shadow-xl">
@@ -613,7 +613,7 @@ export default function TurmericGutReliefGuidePage() {
             {/* Related Articles */}
             <div className="mt-12 pt-8 border-t border-gray-200">
               <h3 className="text-xl font-semibold text-gray-900 mb-6">Related Articles</h3>
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid md:grid-cols-3 gap-6">
                 <Link 
                   href="/herbs/turmeric"
                   className="group block p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
@@ -623,6 +623,30 @@ export default function TurmericGutReliefGuidePage() {
                   </h4>
                   <p className="text-gray-600 text-sm">
                     Detailed scientific information about turmeric's properties, dosage, and safety.
+                  </p>
+                </Link>
+                
+                <Link 
+                  href="/blog/ashwagandha-for-women-hormone-balance"
+                  className="group block p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
+                >
+                  <h4 className="font-semibold text-gray-900 group-hover:text-green-600 mb-2">
+                    Ashwagandha for Women&apos;s Hormones
+                  </h4>
+                  <p className="text-gray-600 text-sm">
+                    Manage stress and inflammation hormones naturally with this powerful adaptogen.
+                  </p>
+                </Link>
+                
+                <Link 
+                  href="/blog/how-much-turmeric-per-day"
+                  className="group block p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
+                >
+                  <h4 className="font-semibold text-gray-900 group-hover:text-green-600 mb-2">
+                    How Much Turmeric Per Day?
+                  </h4>
+                  <p className="text-gray-600 text-sm">
+                    Safe dosage guide with evidence-based recommendations for daily turmeric intake.
                   </p>
                 </Link>
                 

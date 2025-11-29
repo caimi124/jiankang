@@ -43,6 +43,18 @@ export const staticBlogPosts: StaticBlogPost[] = [
   
   // 📅 早期Turmeric系列
   {
+    slug: 'how-much-turmeric-per-day',
+    title: 'How Much Turmeric Per Day? Safe Dosage Guide (2025 Update)',
+    publishedAt: '2025-01-20',
+    priority: 0.9 // 高搜索量关键词
+  },
+  {
+    slug: '10-serious-side-effects-of-turmeric',
+    title: '10 Serious Side Effects of Turmeric You Should Know',
+    publishedAt: '2025-01-20',
+    priority: 0.85
+  },
+  {
     slug: 'turmeric-dosage-guide',
     title: 'Turmeric Dosage Guide: How Much Should You Take?',
     publishedAt: '2025-01-20',

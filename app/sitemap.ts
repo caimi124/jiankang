@@ -102,6 +102,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/blog/how-much-turmeric-per-day`,
+      lastModified: currentDate, // Dynamic update
+      changeFrequency: 'daily', // High priority for indexing
+      priority: 0.95, // High search volume keyword
+    },
+    {
+      url: `${baseUrl}/blog/10-serious-side-effects-of-turmeric`,
+      lastModified: currentDate,
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    {
       url: `${baseUrl}/blog/ginger-tablets-chews-nausea-bloating-guide`,
       lastModified: '2025-01-26',
       changeFrequency: 'monthly',
@@ -115,9 +127,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/blog/ashwagandha-for-women-hormone-balance`,
-      lastModified: '2025-01-24',
-      changeFrequency: 'monthly',
-      priority: 0.9,
+      lastModified: currentDate, // Dynamic - signals active maintenance
+      changeFrequency: 'daily', // High priority for Google
+      priority: 0.95, // Highest priority blog post
     },
     {
       url: `${baseUrl}/blog/turmeric-gut-relief-guide`,
