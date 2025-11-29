@@ -10,6 +10,18 @@ import Link from 'next/link'
 // Static fallback articles (defined outside component)
 const staticArticles = [
   {
+    id: 1732881600000,
+    title: "Fenugreek for Men: Boosting Testosterone Naturally",
+    excerpt: "Science-backed guide: 600mg fenugreek daily boosts testosterone 12-20%. Learn dosage, timing, and safety. Complete practical guide for men 30-60.",
+    category: "science",
+    author: "HerbScience Team",
+    publishedAt: "2024-11-29",
+    readTime: 8,
+    featured_image: null,
+    slug: { current: "fenugreek-for-men-testosterone-boost" },
+    tags: ["fenugreek for men", "fenugreek testosterone", "fenugreek benefits for men", "fenugreek dosage for testosterone", "natural testosterone booster", "fenugreek for muscle building", "fenugreek for libido", "mens health", "testosterone support"]
+  },
+  {
     id: 1758713619593,
     title: "Red Onion vs White Onion: Which Is Healthier? (Science-Backed Comparison)",
     excerpt: "Red onion vs white onion — which is healthier? Discover the key differences in antioxidants, quercetin, anthocyanins, digestion benefits, and how to use each for maximum health impact. Evidence-based guide for Western readers.",

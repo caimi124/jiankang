@@ -23,6 +23,30 @@ export const revalidate = 60 // 重新验证时间（秒）
 // Static articles (local blog posts not in Sanity)
 const staticLocalArticles = [
   {
+    id: 1732881600000,
+    _id: '1732881600000',
+    title: "Fenugreek for Men: Boosting Testosterone Naturally",
+    excerpt: "Science-backed guide: 600mg fenugreek daily boosts testosterone 12-20%. Learn dosage, timing, and safety. Complete practical guide for men 30-60.",
+    category: "science",
+    author: "HerbScience Team",
+    publishedAt: "2024-11-29",
+    readTime: 8,
+    featured: true,
+    featured_image: null,
+    slug: { current: "fenugreek-for-men-testosterone-boost" },
+    tags: [
+      "fenugreek for men",
+      "fenugreek testosterone",
+      "fenugreek benefits for men",
+      "fenugreek dosage for testosterone",
+      "natural testosterone booster",
+      "fenugreek for muscle building",
+      "fenugreek for libido",
+      "mens health",
+      "testosterone support"
+    ]
+  },
+  {
     id: 1758713619594,
     _id: '1758713619594',
     title: "What Is Echinacea Good For? A Practical Guide to Personalized Immune Support",
