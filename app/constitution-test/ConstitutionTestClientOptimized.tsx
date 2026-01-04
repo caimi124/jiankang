@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { questions, scoreOptions, calculateConstitution, constitutionInfo, type ConstitutionType } from './questions'
 
@@ -11,6 +12,49 @@ const Header = dynamic(() => import('../../components/Header'), {
     <div className="bg-white/95 backdrop-blur-md border-b border-gray-200/50 h-20" />
   )
 })
+
+const adviceFailScenarios: Record<ConstitutionType, string[]> = {
+  '平和': [
+    '跟风补“更强的补品”反而打破你原本的平衡。',
+    '一次叠加太多 adaptogen，让身体进入过度刺激。'
+  ],
+  '气虚': [
+    '直接上高剂量提神补剂，未补气先透支。',
+    '长时间喝冰冷排毒饮，脾胃更无力。'
+  ],
+  '阳虚': [
+    '照搬“清热排毒”饮食，越喝越冷。',
+    '冬天坚持生冷沙拉，反而拉肚子。'
+  ],
+  '阴虚': [
+    '再用辛辣或咖啡提神，只会更燥更难睡。',
+    '晚上服用温热类补品，让夜间盗汗加剧。'
+  ],
+  '痰湿': [
+    '补品越浓越腻，最后全部堆成湿困。',
+    '久坐少动再喝甜补汤，身重更明显。'
+  ],
+  '湿热': [
+    '热毒型体质硬吃大补，长痘、口苦更严重。',
+    '晚上熬夜再吃温阳补剂，睡眠完全崩盘。'
+  ],
+  '血瘀': [
+    '简单补血不通络，症状反复卡在同一处。',
+    '忽略循环问题，只加营养，瘀堵更明显。'
+  ],
+  '气郁': [
+    '强行提神不疏肝，越补越胸闷。',
+    '长期焦虑再服温热补药，火气上冲。'
+  ],
+  '特禀': [
+    '没有做敏感性筛查就乱补，过敏反应频发。',
+    '忽视过敏史尝试新粉末，皮疹瞬间爆发。'
+  ],
+  '脾虚': [
+    '生冷代餐让脾胃更弱，补品无法吸收。',
+    '餐后马上吃油腻补品，胀气反复。'
+  ]
+}
 
 /**
  * 🌿 TCM Constitution Test - Optimized Production Version
@@ -75,126 +119,46 @@ export default function ConstitutionTestClientOptimized() {
   // Welcome Screen
   if (currentStep === 'welcome') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50">
+      <div className="min-h-screen bg-gray-50">
         <Header />
+        <div className="max-w-4xl mx-auto px-4 py-12 space-y-10">
+          <div className="rounded-3xl bg-white p-10 text-center shadow-xl border border-gray-100">
+            <p className="text-sm uppercase tracking-[0.3em] text-green-600">
+              This is not a quiz.
+            </p>
+            <h1 className="mt-4 text-4xl font-semibold text-gray-900">
+              This is a personal assessment.
+            </h1>
+            <p className="mt-4 text-lg text-gray-600">
+              It explains why common supplement advice stops working for you and why “再加一种补充剂”不会解决问题。
+            </p>
+            <button
+              onClick={handleStartTest}
+              className="mt-8 inline-flex items-center justify-center rounded-full bg-green-600 px-10 py-4 text-lg font-semibold text-white shadow-lg transition hover:bg-green-700"
+            >
+              Start the assessment
+            </button>
+            <p className="mt-3 text-xs text-gray-500">Free · No login · Instant results</p>
+          </div>
 
-        <div className="container mx-auto px-4 py-8">
-          <div className="max-w-4xl mx-auto">
-            {/* Hero Section */}
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-green-500 to-blue-500 rounded-full mb-6">
-                <span className="text-3xl text-white">🌿</span>
-              </div>
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-                Discover Your <span className="text-green-600">TCM Body Type</span> in 5 Minutes
-              </h1>
-              <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
-                Discover your unique body type with our quick and evidence-based Traditional Chinese Medicine constitution test.
-                In just 5 minutes, answer 35 simple questions to uncover your constitution type and get
-                <strong> personalized herbal recommendations, safe diet guidance, and holistic lifestyle tips</strong>.
-              </p>
-
-              {/* Primary CTA Button */}
-              <div className="mb-8">
-                <button
-                  onClick={handleStartTest}
-                  className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-10 py-4 rounded-xl text-xl font-bold hover:from-green-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
-                >
-                  Start Free Constitution Test
-                </button>
-                <p className="text-sm text-gray-500 mt-3">
-                  ✨ Free • No Registration Required • Instant Results
-                </p>
-              </div>
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="rounded-2xl border border-gray-200 bg-white p-6">
+              <p className="text-xs uppercase tracking-[0.2em] text-green-700">How we assess</p>
+              <h2 className="mt-3 text-xl font-semibold text-gray-900">不止于“答题”</h2>
+              <ul className="mt-4 space-y-3 text-sm text-gray-700">
+                <li>35 个生活与体感指标，源自官方体质判定标准。</li>
+                <li>评分按倾向加权，输出中文原名 + 现代解释。</li>
+                <li>记下“你常见的失灵场景”，方便后续比对。</li>
+              </ul>
             </div>
-
-            {/* Why Take This TCM Constitution Test */}
-            <div className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-800 text-center mb-8">
-                Why Take This <span className="text-green-600">Holistic Health Quiz</span>?
-              </h2>
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
-                  <div className="text-3xl mb-4">⚡</div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">Evidence-Based Assessment</h3>
-                  <p className="text-gray-600">Based on official TCM Constitution Classification Standards (China Association of Chinese Medicine, 2009), covering all <strong>9 TCM body constitutions</strong></p>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
-                  <div className="text-3xl mb-4">🎯</div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">Personalized Herbal Recommendations</h3>
-                  <p className="text-gray-600">Get safe herbal guidance and body type analysis with lifestyle recommendations tailored to your constitution</p>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
-                  <div className="text-3xl mb-4">🌱</div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">Holistic Wellness Insights</h3>
-                  <p className="text-gray-600">Complete wellness guidance including <strong>energy herbs, sleep support herbs, and immune boosting herbs</strong> recommendations for better sleep, energy, and immunity</p>
-                </div>
-              </div>
-            </div>
-
-            {/* What You'll Get Section */}
-            <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-8 mb-8">
-              <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">What You'll Get After This Constitution Test</h2>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="text-lg font-semibold text-green-700 mb-3">🎯 Your TCM Constitution Type</h3>
-                  <p className="text-gray-700 mb-4">Discover which of the <strong>9 TCM body constitutions</strong> you belong to: Balanced, Qi-deficient, Yang-deficient, Yin-deficient, Blood-stasis, Phlegm-damp, Damp-heat, Qi-stagnation, or Special constitution</p>
-
-                  <h3 className="text-lg font-semibold text-green-700 mb-3">🌿 Safe Herbal Recommendations</h3>
-                  <p className="text-gray-700">Personalized herb suggestions including <strong>immune boosting herbs, stress relief herbs, and natural supplements</strong> that actually work for your constitution</p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-green-700 mb-3">🍽️ Diet & Lifestyle Tips</h3>
-                  <p className="text-gray-700 mb-4">Practical, everyday adjustments for better energy, sleep, and immunity based on your constitution</p>
-
-                  <h3 className="text-lg font-semibold text-green-700 mb-3">⚕️ Wellness Insights</h3>
-                  <p className="text-gray-700">Understand your natural tendencies and how to restore balance with personalized recommendations</p>
-                </div>
-              </div>
-            </div>
-
-            {/* FAQ Section */}
-            <div className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-800 text-center mb-8">Frequently Asked Questions</h2>
-              <div className="space-y-6">
-                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-3">Q1: How accurate is this TCM body type quiz?</h3>
-                  <p className="text-gray-600">This quiz is based on the official TCM Constitution Classification Standards used by practitioners worldwide. While it provides valuable insights, it is not a substitute for professional medical advice.</p>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-3">Q2: Do I need to register or pay to see my results?</h3>
-                  <p className="text-gray-600">No. The TCM Body Constitution Test is <strong>free, requires no registration</strong>, and you'll get instant results after completing the 35 questions.</p>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-3">Q3: What makes this different from a regular body type quiz?</h3>
-                  <p className="text-gray-600">Unlike general "body type" quizzes, this assessment is rooted in Traditional Chinese Medicine and backed by clinical research, covering <strong>9 constitution types</strong>.</p>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-3">Q4: Can I use the herbal recommendations immediately?</h3>
-                  <p className="text-gray-600">Yes, but always consult a qualified TCM practitioner before starting any herbal supplement, especially if you are pregnant, breastfeeding, or on medication.</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Final CTA Section */}
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 text-center shadow-xl">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Ready to Begin?</h2>
-              <p className="text-gray-600 mb-6">
-                This <strong>5-minute TCM Constitution Test</strong> includes 35 easy-to-answer questions.
-                Answer honestly for the most accurate results and unlock your <strong>personalized herbal recommendations</strong> today.
-              </p>
-              <button
-                onClick={handleStartTest}
-                className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-10 py-4 rounded-xl text-xl font-bold hover:from-green-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
-              >
-                Start My Constitution Assessment
-              </button>
-              <p className="text-sm text-gray-500 mt-4">
-                ✨ Free • No Registration Required • Instant Results
-              </p>
-              <p className="text-xs text-gray-400 mt-2">
-                This assessment is for educational purposes only • Consult a qualified TCM practitioner for treatment
-              </p>
+            <div className="rounded-2xl border border-gray-200 bg-white p-6">
+              <p className="text-xs uppercase tracking-[0.2em] text-green-700">How to interpret</p>
+              <h2 className="mt-3 text-xl font-semibold text-gray-900">结果会指向下一步</h2>
+              <ul className="mt-4 space-y-3 text-sm text-gray-700">
+                <li>一句话告诉你“为什么别人有效、我没感觉”。</li>
+                <li>推荐下一步：去 Herb Finder 验证，或预约更深入拆解。</li>
+                <li>保留体质记录，未来新增内容都以此为核心。</li>
+              </ul>
             </div>
           </div>
         </div>
@@ -309,134 +273,63 @@ export default function ConstitutionTestClientOptimized() {
         throw new Error('Unable to calculate constitution results')
       }
 
+      const scenarioList = adviceFailScenarios[result.primary] || []
+      const herbFinderLink = `/herb-finder?constitution=${encodeURIComponent(primaryInfo.name)}`
+
       return (
-        <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50">
+        <div className="min-h-screen bg-gray-50">
           <Header />
-
-          <div className="container mx-auto px-4 py-8">
-            <div className="max-w-4xl mx-auto">
-              {/* Results Header */}
-              <div className="text-center mb-12">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-green-500 to-blue-500 rounded-full mb-6">
-                  <span className="text-3xl text-white">🎉</span>
-                </div>
-                <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-                  Your TCM Constitution
-                </h2>
-                <div className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
-                  <p className="text-3xl md:text-4xl font-bold mb-2">{primaryInfo.name}</p>
-                  <p className="text-xl font-medium">{primaryInfo.englishName}</p>
-                </div>
+          <div className="max-w-4xl mx-auto px-4 py-10 space-y-8">
+            <div className="rounded-3xl bg-white p-8 shadow border border-gray-100">
+              <p className="text-xs uppercase tracking-[0.3em] text-green-600">Constitution description</p>
+              <h2 className="mt-3 text-3xl font-semibold text-gray-900">{primaryInfo.name}</h2>
+              <p className="text-sm text-gray-500">{primaryInfo.englishName}</p>
+              <p className="mt-4 text-gray-700">{primaryInfo.description}</p>
+              <div className="mt-6 rounded-2xl bg-green-50 p-4 text-sm text-green-900">
+                {primaryInfo.modernInterpretation}
               </div>
+            </div>
 
-              {/* Constitution Overview */}
-              <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl mb-8">
-                <h3 className="text-2xl font-bold text-gray-800 mb-4">About Your Constitution</h3>
-                <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                  {primaryInfo.description}
-                </p>
-                <div className="bg-blue-50 rounded-xl p-6">
-                  <h4 className="text-lg font-semibold text-blue-800 mb-3">Modern Interpretation</h4>
-                  <p className="text-blue-700">{primaryInfo.modernInterpretation}</p>
-                </div>
-              </div>
+            <div className="rounded-3xl bg-white p-8 shadow border border-gray-100">
+              <p className="text-xs uppercase tracking-[0.3em] text-green-600">When advice fails</p>
+              <h3 className="mt-3 text-2xl font-semibold text-gray-900">常见的“补不上”情境</h3>
+              <ul className="mt-5 space-y-3 text-gray-700">
+                {scenarioList.map((scenario, idx) => (
+                  <li key={idx} className="flex items-start gap-3">
+                    <span className="text-green-600 mt-1">•</span>
+                    <span>{scenario}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-              {/* Characteristics & Lifestyle */}
-              <div className="grid md:grid-cols-2 gap-8 mb-8">
-                <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl">
-                  <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
-                    <span className="text-2xl mr-2">✨</span>
-                    Key Characteristics
-                  </h3>
-                  <ul className="space-y-3">
-                    {primaryInfo.characteristics.map((characteristic, index) => (
-                      <li key={index} className="flex items-start">
-                        <span className="text-green-500 mr-3 mt-1">•</span>
-                        <span className="text-gray-700">{characteristic}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl">
-                  <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
-                    <span className="text-2xl mr-2">🎯</span>
-                    Lifestyle Advice
-                  </h3>
-                  <ul className="space-y-3">
-                    {primaryInfo.lifestyleAdvice.map((advice, index) => (
-                      <li key={index} className="flex items-start">
-                        <span className="text-blue-500 mr-3 mt-1">•</span>
-                        <span className="text-gray-700">{advice}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              {/* Dietary Recommendations */}
-              <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl mb-8">
-                <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-                  <span className="text-2xl mr-2">🥗</span>
-                  Dietary Recommendations
-                </h3>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="bg-green-50 rounded-xl p-6">
-                    <h4 className="text-lg font-semibold text-green-800 mb-3">✅ Include in Your Diet</h4>
-                    <div className="space-y-2">
-                      {primaryInfo.dietaryRecommendations.include.map((food, index) => (
-                        <div key={index} className="text-green-700 flex items-center">
-                          <span className="mr-2">🌟</span>
-                          {food}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="bg-red-50 rounded-xl p-6">
-                    <h4 className="text-lg font-semibold text-red-800 mb-3">⚠️ Limit or Avoid</h4>
-                    <div className="space-y-2">
-                      {primaryInfo.dietaryRecommendations.avoid.map((food, index) => (
-                        <div key={index} className="text-red-700 flex items-center">
-                          <span className="mr-2">⚡</span>
-                          {food}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Recommended Herbs */}
-              <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl mb-8">
-                <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-                  <span className="text-2xl mr-2">🌿</span>
-                  Recommended Herbs
-                </h3>
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {primaryInfo.recommendedHerbs?.slice(0, 6).map((herb, index) => (
-                    <div key={index} className="bg-green-50 rounded-lg p-4 text-center">
-                      <div className="text-2xl mb-2">🌱</div>
-                      <div className="font-medium text-green-800">{herb}</div>
-                    </div>
-                  ))}
-                </div>
-                <p className="text-sm text-gray-600 mt-4 italic">
-                  * Always consult with a qualified TCM practitioner before starting any herbal regimen.
-                </p>
-              </div>
-
-              {/* Actions */}
-              <div className="text-center space-y-4">
-                <button
-                  onClick={handleRestartTest}
-                  className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-green-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
+            <div className="rounded-3xl bg-gradient-to-r from-green-600 to-emerald-600 p-8 text-white shadow-lg">
+              <p className="text-sm uppercase tracking-[0.3em] text-white/80">Next steps</p>
+              <h3 className="mt-3 text-2xl font-semibold">让判断开始发挥作用</h3>
+              <p className="mt-3 text-white/80">
+                选择一个动作，验证你刚得到的体质结果。
+              </p>
+              <div className="mt-6 flex flex-col gap-4 md:flex-row">
+                <Link
+                  href={herbFinderLink}
+                  className="flex-1 rounded-2xl bg-white px-6 py-4 text-center text-gray-900 font-semibold shadow hover:bg-gray-100 transition"
                 >
-                  Take Test Again
+                  See herbs that align with your constitution
+                </Link>
+                <button
+                  type="button"
+                  className="flex-1 rounded-2xl border border-white/40 px-6 py-4 text-center text-white/80 font-semibold cursor-not-allowed"
+                  title="Coming soon"
+                >
+                  Book a deeper breakdown (coming soon)
                 </button>
-                <p className="text-sm text-gray-600">
-                  Share your results with friends or consult a TCM practitioner for personalized guidance
-                </p>
               </div>
+              <button
+                onClick={handleRestartTest}
+                className="mt-6 text-sm text-white/80 underline-offset-4 hover:underline"
+              >
+                Retake the assessment
+              </button>
             </div>
           </div>
         </div>

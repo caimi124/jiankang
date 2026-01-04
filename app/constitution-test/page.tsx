@@ -70,42 +70,34 @@ export default function ConstitutionTestPage() {
     mainEntity: [
       {
         '@type': 'Question',
-        name: 'How accurate is this TCM body type quiz?',
+        name: 'Why do I need a constitution test before choosing herbs?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'This quiz is based on the official TCM Constitution Classification Standards (China Association of Chinese Medicine, 2009) used by practitioners worldwide. While it provides valuable insights into your body constitution, it is not a substitute for professional medical advice from a qualified TCM practitioner.'
+          text: 'Because the same herb can warm one person and overheat another. This constitution assessment shows which body pattern you follow so you know whether a supplement fits you before you add it.'
         }
       },
       {
         '@type': 'Question',
-        name: 'Do I need to register or pay to see my results?',
+        name: 'Is this just a quiz?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'No. The TCM Body Constitution Test is completely free, requires no registration, and you will get instant results after completing the 35 questions. No payment or personal information is required.'
+          text: 'No. It is a personal assessment built on the official 2009 TCM Constitution Classification Standard. The output includes your traditional pattern name, a modern translation, and the most common “why advice fails” situations.'
         }
       },
       {
         '@type': 'Question',
-        name: 'What makes this different from a regular body type quiz?',
+        name: 'How long does it take and what do I get?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Unlike general "body type" quizzes, this assessment is rooted in Traditional Chinese Medicine and backed by clinical research. It covers all 9 official TCM constitution types: Balanced, Qi-deficient, Yang-deficient, Yin-deficient, Blood-stasis, Phlegm-damp, Damp-heat, Qi-stagnation, and Special constitution.'
+          text: 'You will answer 35 sensation‑based questions in about two minutes. The result page immediately highlights your constitution, a short description of why generic advice misses you, and the next recommended step.'
         }
       },
       {
         '@type': 'Question',
-        name: 'Can I use the herbal recommendations immediately?',
+        name: 'What happens after I finish the test?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'While the recommendations are evidence-based, you should always consult a qualified TCM practitioner or healthcare provider before starting any herbal supplement, especially if you are pregnant, breastfeeding, taking medications, or have existing health conditions.'
-        }
-      },
-      {
-        '@type': 'Question',
-        name: 'How long does the TCM constitution test take?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'The test takes approximately 5 minutes to complete. It consists of 35 carefully designed questions about your physical and emotional well-being, sleep patterns, digestion, and energy levels.'
+          text: 'You can jump straight into the Herb Finder filtered by your constitution or book a deeper breakdown. Every CTA points you back to constitution-based decisions.'
         }
       }
     ]

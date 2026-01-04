@@ -24,11 +24,11 @@ export default function Header() {
 
   // 精简导航项目 - 突出体质测试作为主打功能
   const navigationItems = useMemo(() => [
-    { href: '/', label: t.nav.home, icon: '🏠' },
-    { href: '/constitution-test', label: t.nav.constitutionTest, icon: '🧠', featured: true },
-    { href: '/herb-finder', label: t.nav.herbFinder, icon: '🔍' },
-    { href: '/blog', label: t.nav.blog, icon: '📝' },
-    { href: '/about', label: t.nav.about, icon: 'ℹ️' }
+    { href: '/', label: t.nav.home },
+    { href: '/constitution-test', label: t.nav.constitutionTest, primary: true },
+    { href: '/herb-finder', label: t.nav.herbFinder },
+    { href: '/blog', label: t.nav.blog },
+    { href: '/about', label: t.nav.about }
   ], [t])
 
   const isActive = useCallback((href: string) => {
@@ -69,66 +69,41 @@ export default function Header() {
             />
 
             {/* Desktop Navigation - Premium Spacing */}
-            <nav className="hidden lg:flex items-center gap-1">
-              <Link
-                href={getLocalizedHref('/')}
-                className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                  isActive('/')
-                    ? 'bg-green-600 text-white shadow-sm'
-                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-                }`}
-              >
-                <span className="text-base">🏠</span>
-                <span>{t.nav.home}</span>
-              </Link>
+            <nav className="hidden lg:flex items-center gap-2">
+              {navigationItems.map((item) => {
+                const localizedHref = getLocalizedHref(item.href)
+                const active = isActive(item.href)
 
-              <Link
-                href={getLocalizedHref('/constitution-test')}
-                className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                  isActive('/constitution-test')
-                    ? 'bg-green-600 text-white shadow-sm'
-                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-                }`}
-              >
-                <span className="text-base">🧠</span>
-                <span>{t.nav.constitutionTest}</span>
-              </Link>
+                if (item.primary) {
+                  return (
+                    <Link
+                      key={item.href}
+                      href={localizedHref}
+                      className={`px-4 py-2 text-sm font-semibold rounded-full transition-all duration-200 shadow-sm ${
+                        active
+                          ? 'bg-green-700 text-white'
+                          : 'bg-green-600 text-white hover:bg-green-700'
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
+                  )
+                }
 
-              <Link
-                href={getLocalizedHref('/herb-finder')}
-                className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                  isActive('/herb-finder')
-                    ? 'bg-green-600 text-white shadow-sm'
-                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-                }`}
-              >
-                <span className="text-base">🔍</span>
-                <span>{t.nav.herbFinder}</span>
-              </Link>
-
-              <Link
-                href={getLocalizedHref('/blog')}
-                className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                  isActive('/blog')
-                    ? 'bg-green-600 text-white shadow-sm'
-                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-                }`}
-              >
-                <span className="text-base">📝</span>
-                <span>{t.nav.blog}</span>
-              </Link>
-              
-              <Link
-                href={getLocalizedHref('/about')}
-                className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                  isActive('/about')
-                    ? 'bg-green-600 text-white shadow-sm'
-                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-                }`}
-              >
-                <span className="text-base">ℹ️</span>
-                <span>{t.nav.about}</span>
-              </Link>
+                return (
+                  <Link
+                    key={item.href}
+                    href={localizedHref}
+                    className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                      active
+                        ? 'text-green-700 bg-green-50'
+                        : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                )
+              })}
             </nav>
           </div>
 
@@ -173,32 +148,28 @@ export default function Header() {
         {isMobileMenuOpen && (
           <div className="lg:hidden absolute left-0 right-0 top-full bg-white border-b border-gray-200 shadow-lg">
             <div className="px-4 py-4 space-y-2">
-              {navigationItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={getLocalizedHref(item.href)}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`flex items-center px-3 py-2 rounded-lg transition-all ${
-                    item.featured
-                      ? isActive(item.href)
-                        ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-lg'
-                        : 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-md relative'
-                      : isActive(item.href)
-                        ? 'bg-green-600 text-white'
-                        : 'text-gray-700 hover:bg-gray-100'
-                  }`}
-                >
-                  <span className="mr-3 text-lg">{item.icon}</span>
-                  <span className={`font-medium ${item.featured ? 'font-semibold' : ''}`}>
+              {navigationItems.map((item) => {
+                const localizedHref = getLocalizedHref(item.href)
+                const active = isActive(item.href)
+                return (
+                  <Link
+                    key={item.href}
+                    href={localizedHref}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`flex items-center px-4 py-2 rounded-lg text-base font-medium transition-all ${
+                      item.primary
+                        ? active
+                          ? 'bg-green-700 text-white shadow-lg'
+                          : 'bg-green-600 text-white shadow'
+                        : active
+                          ? 'bg-green-50 text-green-700'
+                          : 'text-gray-800 hover:bg-gray-100'
+                    }`}
+                  >
                     {item.label}
-                  </span>
-                  {item.featured && !isActive(item.href) && (
-                    <span className="ml-auto text-xs bg-yellow-400 text-yellow-900 px-2 py-1 rounded-full font-bold">
-                      Hot
-                    </span>
-                  )}
-                </Link>
-              ))}
+                  </Link>
+                )
+              })}
             </div>
           </div>
         )}

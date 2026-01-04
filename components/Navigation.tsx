@@ -11,6 +11,7 @@ interface NavItem {
   href: string
   ariaLabel?: string
   description?: string
+  primary?: boolean
 }
 
 export default function Navigation() {
@@ -45,7 +46,8 @@ export default function Navigation() {
       name: t.nav.constitutionTest,
       href: '/constitution-test',
       ariaLabel: 'Take TCM body constitution assessment',
-      description: 'Discover your Traditional Chinese Medicine body type'
+      description: 'Discover your Traditional Chinese Medicine body type',
+      primary: true
     },
     {
       name: t.nav.herbFinder,
@@ -188,7 +190,7 @@ export default function Navigation() {
               />
 
               {/* Desktop Navigation - Premium Spacing */}
-              <div className="hidden lg:flex items-center gap-1" role="menubar">
+              <div className="hidden lg:flex items-center gap-2" role="menubar">
                 {navItems.map((item) => {
                   const localizedHref = addLocalePrefix(item.href)
                   const isCurrentPage = pathname === localizedHref || pathname.startsWith(localizedHref + '/')
@@ -196,10 +198,14 @@ export default function Navigation() {
                     <Link
                       key={item.name}
                       href={localizedHref}
-                      className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2 ${
-                        isCurrentPage
-                          ? 'bg-green-600 text-white shadow-sm'
-                          : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                      className={`text-sm font-medium rounded-full transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2 ${
+                        item.primary
+                          ? isCurrentPage
+                            ? 'bg-green-700 text-white px-4 py-2 shadow-sm'
+                            : 'bg-green-600 text-white px-4 py-2 hover:bg-green-700 shadow-sm'
+                          : isCurrentPage
+                            ? 'text-green-700 bg-green-50 px-3 py-2'
+                            : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-3 py-2'
                       }`}
                       role="menuitem"
                       aria-label={item.ariaLabel}
@@ -327,10 +333,14 @@ export default function Navigation() {
                           ref={(el) => {
                             menuItemsRef.current[index] = el
                           }}
-                          className={`block px-3 py-2 text-base font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-lg mx-2 ${
-                            pathname === localizedHref
-                              ? 'text-green-600 bg-green-50'
-                              : 'text-gray-700 hover:text-green-600 hover:bg-gray-50'
+                          className={`block px-4 py-2 text-base font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-lg mx-2 ${
+                            item.primary
+                              ? pathname === localizedHref
+                                ? 'bg-green-700 text-white shadow'
+                                : 'bg-green-600 text-white'
+                              : pathname === localizedHref
+                                ? 'text-green-700 bg-green-50'
+                                : 'text-gray-700 hover:text-green-600 hover:bg-gray-50'
                           }`}
                           role="menuitem"
                           aria-label={item.ariaLabel}

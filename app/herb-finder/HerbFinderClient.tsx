@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useCallback, useMemo, memo } from 'react'
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import type { Herb } from '../../lib/herbs-recommendation'
 import { HERBS_DATABASE } from '../../lib/herbs-data-complete'
 
@@ -102,13 +104,13 @@ const PopularCategory = memo(({ iconName, label, onClick, isActive }: {
 
 PopularCategory.displayName = 'PopularCategory'
 
-const popularCategories = [
-  { iconName: 'moon' as const, label: 'Sleep & Relaxation', keywords: ['镇静安神', '情绪平衡', '改善睡眠'] },
-  { iconName: 'zap' as const, label: 'Energy & Vitality', keywords: ['能量提升', '补气养血', '体力增强'] },
-  { iconName: 'shield' as const, label: 'Immune Support', keywords: ['免疫支持', '增强免疫', '抗病毒'] },
-  { iconName: 'heart' as const, label: 'Digestive Health', keywords: ['消化健康', '健脾', '胃部调理'] },
-  { iconName: 'brain' as const, label: 'Mental Clarity', keywords: ['改善记忆', '脑部健康', '注意力'] },
-  { iconName: 'users' as const, label: 'Women\'s Health', keywords: ['女性调理', '月经调理', '美容护肤'] }
+const scenarioFilters = [
+  { iconName: 'moon' as const, label: '睡眠补品越吃越沉', keywords: ['镇静安神', '改善睡眠', '情绪平衡'] },
+  { iconName: 'zap' as const, label: '越补越累或心悸', keywords: ['能量提升', '补气养血', '体力增强'] },
+  { iconName: 'shield' as const, label: '感冒/过敏反复', keywords: ['免疫支持', '增强免疫', '抗病毒'] },
+  { iconName: 'heart' as const, label: '调理肠胃却更胀', keywords: ['消化健康', '健脾', '胃部调理'] },
+  { iconName: 'brain' as const, label: '专注/情绪反复失控', keywords: ['情绪管理', '压力与焦虑', '改善记忆'] },
+  { iconName: 'users' as const, label: '女性调理没方向', keywords: ['女性调理', '月经调理', '美容护肤'] }
 ]
 
 export default function HerbFinderClient() {
@@ -203,7 +205,7 @@ export default function HerbFinderClient() {
         filtered = filtered.filter(herb => {
           // 热门类别筛选 - 基于关键词匹配
           if (filters.category) {
-            const category = popularCategories.find(cat => cat.label === filters.category)
+            const category = scenarioFilters.find(cat => cat.label === filters.category)
             if (category) {
               const hasMatchingKeyword = category.keywords.some(keyword =>
                 herb.efficacy?.includes(keyword) ||
@@ -362,7 +364,7 @@ export default function HerbFinderClient() {
             <h2 className="text-xl font-bold text-gray-900 mb-2">Find Herbs by Health Goals</h2>
             <p className="text-gray-600 mb-4 text-sm">Quickly find herbs for stress relief, sleep support, immune boost, and more</p>
             <div className="flex flex-wrap gap-3">
-              {popularCategories.map((category) => (
+              {scenarioFilters.map((category) => (
                 <PopularCategory
                   key={category.label}
                   iconName={category.iconName}

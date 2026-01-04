@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import GoogleAnalytics, { GoogleTagManagerNoScript } from '../components/GoogleAnalytics'
+import SiteFooter from '../components/SiteFooter'
 
 export const metadata: Metadata = {
   title: 'HerbScience.shop | Evidence-Based Herbal Medicine Guide',
@@ -182,7 +183,10 @@ export default function RootLayout({
       <body className="antialiased">
         {/* Google Tag Manager (noscript) - 必须放在body开始处 */}
         <GoogleTagManagerNoScript />
-        {children}
+        <div className="min-h-screen flex flex-col">
+          <div className="flex-1">{children}</div>
+          <SiteFooter />
+        </div>
       </body>
     </html>
   )
