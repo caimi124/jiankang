@@ -70,20 +70,75 @@ export default function ConstitutionTestClientOptimized() {
 
   if (currentStep === 'welcome') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-white flex flex-col items-center justify-center px-4 py-12">
-        <div className="max-w-3xl w-full space-y-6 text-center bg-white/90 rounded-3xl p-8 shadow-xl border border-gray-100">
-          <p className="text-xs uppercase tracking-[0.4em] text-green-600">Body Constitution Test</p>
-          <h1 className="text-3xl font-semibold text-gray-900">Personal, safe, and low pressure</h1>
-          <p className="text-gray-700">
-            This short test helps identify your body constitution patterns. It takes about {QUIZ_DURATION} to complete.
-          </p>
-          <p className="text-xs text-gray-500">No medical diagnosis. No personal data is sold.</p>
-          <button
-            onClick={handleStartTest}
-            className="w-full rounded-full bg-green-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition hover:bg-green-700"
-          >
-            Start the test
-          </button>
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-white px-4 py-10">
+        <div className="mx-auto w-full max-w-4xl space-y-8">
+          <nav className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white/80 px-6 py-4 shadow-sm">
+            <a href="/" className="text-lg font-semibold text-gray-900">
+              HerbScience
+            </a>
+            <a href="/" className="text-sm text-green-700 hover:text-green-800">
+              Back to Home
+            </a>
+          </nav>
+
+          <section className="rounded-3xl border border-gray-100 bg-white/90 p-8 shadow-xl">
+            <p className="text-xs uppercase tracking-[0.4em] text-green-600">Body Constitution Test</p>
+            <h1 className="mt-3 text-3xl font-semibold text-gray-900">
+              Understand Your Body Constitution Before Choosing Herbs
+            </h1>
+            <p className="mt-4 text-gray-700">
+              This short questionnaire identifies your body constitution patterns so you can see why the same herbs feel
+              different for different people. It is designed to be calm, non-medical, and respectful of your time.
+            </p>
+          </section>
+
+          <section className="rounded-3xl border border-gray-100 bg-white/90 p-6 shadow-sm">
+            <div className="grid gap-4 sm:grid-cols-3">
+              <div className="rounded-2xl border border-gray-200 bg-green-50/80 p-4 text-sm leading-tight text-gray-700">
+                <p className="text-xl font-semibold text-green-800">⏱️</p>
+                <p className="font-semibold text-gray-900">Takes about {QUIZ_DURATION}</p>
+                <p className="text-xs text-gray-500">so you can get clarity faster.</p>
+              </div>
+              <div className="rounded-2xl border border-gray-200 bg-white p-4 text-sm leading-tight text-gray-700">
+                <p className="text-xl font-semibold text-green-800">🛡️</p>
+                <p className="font-semibold text-gray-900">No medical diagnosis</p>
+                <p className="text-xs text-gray-500">just thoughtful insight.</p>
+              </div>
+              <div className="rounded-2xl border border-gray-200 bg-white p-4 text-sm leading-tight text-gray-700">
+                <p className="text-xl font-semibold text-green-800">🔒</p>
+                <p className="font-semibold text-gray-900">No personal data sold</p>
+                <p className="text-xs text-gray-500">Your answers stay within HerbScience.</p>
+              </div>
+            </div>
+          </section>
+
+          <section className="rounded-3xl border border-gray-100 bg-white/90 p-8 shadow-xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-gray-500">What you will receive</p>
+            <div className="mt-4 space-y-3 text-gray-700">
+              <div className="rounded-2xl border border-gray-200 bg-green-50/70 p-4">
+                <p className="text-sm font-semibold text-gray-900">Constitution type</p>
+                <p className="text-xs text-gray-600">A gentle portrait of your constitution profile.</p>
+              </div>
+              <div className="rounded-2xl border border-gray-200 bg-green-50/70 p-4">
+                <p className="text-sm font-semibold text-gray-900">Key tendencies</p>
+                <p className="text-xs text-gray-600">What your body naturally leans toward and why.</p>
+              </div>
+              <div className="rounded-2xl border border-gray-200 bg-green-50/70 p-4">
+                <p className="text-sm font-semibold text-gray-900">General herb direction</p>
+                <p className="text-xs text-gray-600">Guidance on what feels fitting and when to pause.</p>
+              </div>
+            </div>
+          </section>
+
+          <section className="rounded-3xl border border-gray-100 bg-white/90 p-8 text-left shadow-lg">
+            <p className="text-sm text-gray-500">We keep the focus on clarity—no sales pressure, just a thoughtful tool.</p>
+            <button
+              onClick={handleStartTest}
+              className="mt-6 w-full rounded-full bg-green-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition hover:bg-green-700"
+            >
+              Get My Constitution Insight
+            </button>
+          </section>
         </div>
       </div>
     )
